@@ -1,0 +1,105 @@
+@media only screen and (max-width:767px) {
+.welcomescreen .tablebase {
+    padding: 21px 40px;
+    width: 80%;
+}
+
+h3 {
+    font-size: 26px;
+}
+
+h4 {
+    font-size: 22px;
+}
+
+h5{
+    font-size: 16px;
+}
+
+h6 {
+    font-size: 12px;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+.mainscreen .logo img {
+    max-height: 110px;
+}
+
+.welcomescreen .logo img {
+    max-height: 110px;
+}
+
+.welcomescreen .logo img {
+    max-height: 100px;
+}
+
+p {
+    font-size: 14px;
+}
+
+.welcomescreen .tablebase h4 {
+    font-size: 18px;
+}
+
+.welcomescreen .tablebase h6 {
+    font-size: 12px;
+}
+
+.spacertl {
+    padding: 0px 20px;
+}
+
+/****** Modal Cart Css *****/
+.btn-default {
+    font-size: 15px;
+    line-height: 50px;
+}
+
+}
+
+@media only screen and (min-width:768px) and (max-width:991px) {
+.list-menu .card .item-price h5 {
+    font-size: 16px;
+}
+#productDetailModal .modal-dialog, #cartModal .modal-dialog, #cartModal .sticky-cart {
+    left: calc(50% - 300px);
+    max-width: 600px;
+}
+
+#productDetailModal .modal-content, #cartModal .modal-content {
+    height: 96.5%;
+}
+}
+
+
+@media only screen and (min-width:992px) and (max-width:1199px) {
+    #productDetailModal .modal-dialog, #cartModal .modal-dialog, #cartModal .sticky-cart  {
+        left: calc(50% - 300px);
+        max-width: 600px;
+    }
+
+    #productDetailModal .modal-content, #cartModal .modal-content {
+        height: 96.5%;
+    }
+}
+
+@media only screen and (min-width:1200px) {
+.category-menu h6 {
+    font-size: 150%;
+    font-weight: bold;
+}
+#productDetailModal .modal-dialog, #cartModal .modal-dialog, #cartModal .sticky-cart {
+    left: calc(50% - 300px);
+    max-width: 600px;
+}
+
+#productDetailModal .modal-content, #cartModal .modal-content {
+    height: 96.5%;
+}
+}
+
+
+

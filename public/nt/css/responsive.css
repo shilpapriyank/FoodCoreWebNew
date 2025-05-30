@@ -1,0 +1,459 @@
+:root {
+    --primary-color-orange: var(--primary-color-orange);
+    --font-color-dynamic: var(--font-color-dynamic);
+    --background-color-dynamic: var(--background-color-dynamic);
+    --border-color-dynamic: var(--border-color-dynamic);
+    --headerfont-color-dynamic: var(--headerfont-color-dynamic);
+    --icon-color-dynamic: var(--icon-color-dynamic);
+}
+
+/*** Responsive Css ***/
+@media only screen and (max-width:767px) {
+    .header .align-form {
+        display: block;
+    }
+    
+    .choose-order.modal-your-order h2 {
+        font-size: 16px;
+        margin-top: 15px;
+        margin-bottom: 0px;
+    }
+    
+    .modal-your-order .modal-title {
+        font-size: 15px !important;
+        padding: 16px 35px;
+    }
+    
+    .choose-order.modal-your-order .order-btns a {
+        min-width: 109px;
+        border-radius: 10px;
+        padding: 14px 20px;
+        margin: 18px 7px;
+        line-height: 1.9;
+        font-size: 14px;
+    }
+    
+    .choose-order.modal-your-order .order-btns a i {
+        font-size: 15px;
+    }
+    
+    .header .align-form label {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    
+    .header .align-form select {
+        width: 49%;
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+    
+    .takeout h4 {
+        font-size: 12px;
+    }
+    
+    .categories-info {
+        padding: 15px 0px 10px 0px;
+    }
+    
+    .categories-info .small-heading {
+        margin-top: 15px;
+    }
+    
+    .itembox .text {
+        order: 2;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .itembox .img {
+        order: 1;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .itembox {
+        border-radius: 8px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        height: auto;
+    }
+    
+    .itembox .img img {
+        height: 150px;
+    }
+    
+    .modal-your-order .modal-body {
+        padding: 10px 13px;
+    }
+    
+    .btn-default {
+        font-size: 13px;
+        line-height: 35px;
+        padding: 0px 15px;
+    }
+    
+    .modal-your-order .nav-tabs>li>button{
+        font-size: 13px;
+    }
+    
+    .modal-product .sppr {
+        padding: 4px 19px;
+    }
+    
+    .circle-icons {
+        flex-wrap: wrap;
+    }
+    
+    .circle-icons a {
+        margin-bottom: 5px;
+        padding: 0px 5px;
+        text-align: center;
+    }
+    
+    .modal-your-order .btn-close {
+        top: 18px;
+    }
+    
+    .sub-menu ul {
+        padding: 0px 0px;
+    }
+    
+    .circle-icons .circle-box.size-count {
+        font-size: 15px;
+    }
+    
+    .circle-icons .circle-box {
+        width: 45px;
+        height: 45px;
+        border-radius: 45px;
+        padding: 12px 0px;
+        margin: 0 auto;
+    }
+    
+    .modal-product .card .accordion-button {
+        font-size: 12px;
+        padding: 2px 0px;
+    }
+    
+    .circle-icons {
+        margin-bottom: 0px;
+    }
+    
+    .header .logo {
+        border: none;
+        padding: 10px 10px;
+    }
+    
+    .loginmodal .btn-default {
+        padding: 0px 3px;
+        margin: 5px 0px;
+    }
+    
+    .modal-your-order h2 {
+        font-size: 16px;
+    }
+    
+    .dropdown.profile-dropdown {
+        margin: 10px 0px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .info-address {
+        padding: 35px 0px;
+    }
+    
+    .info-address .large-heading {
+        margin-top: 20px;
+    }
+    
+    .takeout .icon {
+        margin: 0px 15px;
+    }
+    
+    .sub-menu li a {
+        font-size: 10px;
+        padding: 4px 0.625rem;
+    }
+    
+    .normal-form .form-control {
+        margin-bottom: 10px;
+    }
+    
+    .infobox {
+        margin-bottom: 10px;
+    }
+    
+    .address-modal.modal-your-order .form-control {
+        margin-bottom: 10px;
+    }
+    
+    .textsmall {
+        display: block !important;
+    }
+    
+    .heading {
+        display: block !important;
+    }
+    
+    /*** New css ***/
+    .order-details {
+        padding: 10px 5px 0px 5px;
+    }
+    
+    p {
+        font-size: 14px;
+    }
+    
+    
+    .infobox h3.heading .text {
+        max-width: 100%;
+        padding-right: 0px;
+        padding-bottom: 10px;
+    }
+    
+    .header {
+        padding-bottom: 10px;
+    }
+    
+    .modal-your-order .radio-box {
+        padding: 11px 36px 11px 16px;
+    }
+    
+    .modal-product .itemimg {
+        height: 150px;
+        margin-top: 20px;
+        width: 100%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+    
+    .categories-info {
+        padding: 20px 5px !important;
+    }
+    
+    .tip-order .form-control {
+        margin-left: 3px;
+    }
+    
+    .quantity__input {
+        height: 45px;
+    }
+    
+    .modal div {
+        font-size: 12px;
+    }
+    
+    .info-address .row.normal-form>div {
+        margin-bottom: 15px !important;
+    }
+    
+    h5 {
+        font-size: 14px;
+    }
+
+    .sidebar {
+        margin-top: 10px;
+    }
+    
+    }
+    
+    @media only screen and (min-width:768px) and (max-width:991px) {
+    .header .align-form {
+        display: block;
+    }
+    
+    .header .align-form label {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        margin-right: 10px;
+    }
+    
+    .header .align-form select {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    
+    .header .logo i {
+        margin-right: 10px;
+        top: 6px;
+        font-size: 20px;
+    }
+    
+    .header .logo img {
+        max-height: 37px;
+    }
+    
+    .header .align-form label {
+        font-size: 13px;
+    }
+    
+    .takeout {
+        margin-left: 0px;
+    }
+    
+    .header .align-form select {
+        padding: 10px 17px 10px 16px;
+        font-size: 13px;
+        margin-left: 10px;
+        width: 37.6%;
+    }
+    
+    .modal-product .card .accordion-button {
+        padding: 3px 0px;
+        font-size: 11px;
+    }
+    
+    .modal-product .modal-dialog {
+        max-width: 730px;
+    }
+    
+    p {
+        font-size: 14px;
+    }
+    
+    .takeout .icon {
+        margin: 0px 12px;
+    }
+    
+    .categories-info {
+        padding: 60px 20px;
+    }
+    
+    h3.heading {
+        font-size: 11px;
+    }
+    
+    h3.heading .btn-default.small {
+        font-size: 10px;
+        line-height: 24px;
+        padding: 0px 9px;
+    }
+    
+    /*** New css ***/
+    .total-table {
+        font-size: 14px;
+    }
+    
+    .infobox h3.heading .text {
+        max-width: 59%;
+    }
+    
+    .header {
+        padding-bottom: 10px;
+    }
+    
+    .sidebar {
+        padding-top: 20px;
+    }
+    
+    .tip-order .form-control {
+        margin-left: 3px;
+    }
+    
+    .categories-info {
+        padding: 20px 5px !important;
+    }
+    
+    }
+    
+    @media only screen and (min-width:992px) and (max-width:1199px) {
+    .header .align-form label {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        margin-right: 10px;
+        margin-left: 10px;
+        font-size: 13px;
+    }
+    
+    .header .align-form select {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    
+    .takeout h4 {
+        font-size: 12px;
+    }
+    
+    .header .logo img {
+        max-height: 35px;
+    }
+    
+    .header .logo i {
+        margin-right: 0px;
+    }
+    
+    .itembox h3 {
+        font-size: 13px;
+    }
+    
+    .itembox p {
+        font-size: 12px;
+    }
+    
+    .takeout .icon {
+        margin: 0px 10px;
+    }
+    
+    .profile-dropdown .btn-secondary {
+        padding: 0;
+        font-size: 14px;
+    }
+    
+    .profile-dropdown .btn-secondary i {
+        margin-right: 5px;
+    }
+    
+    
+    /*** New css ***/
+    .total-table {
+        font-size: 14px;
+    }
+    
+    .infobox h3.heading .text {
+        max-width: 67%;
+    }
+    
+    .tip-order>div:last-child {
+        width: 100%;
+    }
+    
+    .tip-order>div {
+        width: 33.33%;
+    }
+    
+    .tip-order .form-control {
+        margin-left: 3px;
+    }
+    
+    }
+    
+    @media only screen and (min-width:1200px) and (max-width:1399px) {
+    .header .align-form label {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        margin-right: 0px;
+        margin-left: 10px;
+        font-size: 13px;
+        min-width: 82px;
+    }
+    
+    .header .align-form select {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    
+    .takeout h4 {
+        font-size: 13px;
+    }
+    
+    .infobox h3.heading .text {
+        max-width: 73%;
+    }
+        
+    }
+    

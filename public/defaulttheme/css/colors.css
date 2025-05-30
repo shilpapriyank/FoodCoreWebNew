@@ -1,0 +1,788 @@
+:root {
+    --primary-color-orange: var(--primary-color-orange);
+    --font-color-dynamic: var(--font-color-dynamic);
+    --background-color-dynamic: var(--background-color-dynamic);
+    --border-color-dynamic: var(--border-color-dynamic);
+    --headerfont-color-dynamic: var(--headerfont-color-dynamic);
+    --icon-color-dynamic: var(--icon-color-dynamic);
+    --category-font-size:var(--category-font-size);
+	--category-background-color:var(--category-background-color);
+	--category-font-color:var(--category-font-color);
+    --lbl_active_button_bg:var(--lbl_active_button_bg);
+    --lbl_deactive_button_bg:var(--lbl_deactive_button_bg);
+    --lbl_active_bg:var(--lbl_active_bg);
+    --lbl_deactive_bg:var(--lbl_deactive_bg);
+    --lbl_deactive_button_name:var(--lbl_deactive_button_name);
+    --lbl_active_button_name:var(--lbl_active_button_name);
+    --lbl_disable_button_bg:var(--lbl_disable_button_bg);
+    --lbl_disable_button_name:var(--lbl_disable_button_name);
+    --lbl_active_name:var(--lbl_active_name);
+    --lbl_white:var(--lbl_white);
+    --lbl_red:var(--lbl_red);
+    --lbl_black:var(--lbl_black);
+    --lbl_light_gray:var(--lbl_light_gray);
+}
+
+p {
+    color: var(--lbl_light_gray) !important;
+}
+
+h3 {
+    color: var(--lbl_light_gray) !important;
+}
+
+h1 {
+    color: var(--lbl_black);
+}
+
+h4 {
+    color: var(--lbl_black);
+}
+
+h6 {
+    color: var(--lbl_black);
+}
+
+
+.color_black {
+    color: var(--lbl_black);
+}
+
+.color_000 {
+    color: var(--lbl_black);
+}
+
+.color_white {
+    color: var(--lbl_white);
+}
+
+.color_orange {
+    color: var(--primary-color-orange);
+}
+
+.color_lightgrey {
+    color: #F3F3F3;
+}
+
+.color_grey {
+    color: var(--lbl_light_gray) !important;
+}
+
+.color_fb {
+    color: #0076FB;
+}
+
+
+.label_small {
+    color: var(--lbl_white) !important;
+}
+
+.input_small {
+    border-bottom: 1px solid #fff;
+    color: #FFFFFF;
+}
+
+.or_text {
+    color: var(--lbl_white) !important;
+}
+
+
+.orange_submit {
+    border-color: var(--lbl_active_bg) !important;
+    background-color: var(--lbl_active_bg) !important;
+    color: var(--lbl_active_name) !important;
+}
+
+.orange_submit_disabled {
+    background-color: var(--lbl_disable_button_bg)
+}
+
+.disabled_class {
+    background-color:  var(--lbl_disable_button_bg) !important;
+}
+
+/****************** BLUE BUTTON *******************/
+.blue_btn,
+.blue_btn.blue_btn_porder,
+.modal.getfod .blue_btn,
+.blue_btn.nextbtn {
+    background-color: var(--lbl_active_button_bg);
+    color: var(--lbl_active_button_name);
+}
+
+.loginBtnLarge {
+    box-shadow: var(--primary-color-orange) !important;
+}
+
+.blue_btn.skip_btn:hover,
+.blue_btn.active {
+    background: var(--lbl_active_button_bg);
+    border-color: var(--lbl_active_button_bg);
+    color: #fff;
+}
+
+.blue_btn.blue_btn_porder.disabled {
+    background:  var(--lbl_disable_button_bg);
+    color: var(--lbl_black);
+}
+
+/****************** GREY BUTTON *******************/
+.grey_btn {
+    background-color: #F2F2F2;
+    color:  var(--lbl_black)
+}
+
+.grey_btn:hover,
+.grey_btn.active {
+    background-color: var(--lbl_active_bg);
+    color: var(--lbl_active_name);
+}
+
+.grey_btn.disabled {
+    background-color:var(--lbl_disable_button_bg);
+    color: #0D191B;
+}
+
+
+/****************** ORANGE BUTTON *******************/
+.orange_price_btn {
+    border: 1px solid var(--lbl_active_bg);
+    background-color: var(--lbl_active_bg);
+    color: var(--lbl_active_name) !important;
+}
+
+.orange_price_btn:hover,
+.orange_price_btn.active {
+    background: var(--lbl_white) !important;
+    color: var(--lbl_active_bg);
+    border-color: var(--lbl_active_bg);
+}
+
+.orange_side_btn {
+    background: #fff;
+    color: var(--primary-color-orange);
+    border-color: var(--primary-color-orange);
+}
+
+.orange_side_btn:hover,
+.orange_side_btn.active {
+    background-color: var(--primary-color-orange);
+    color: #fff;
+    border-color: var(--primary-color-orange);
+}
+
+/****************** LIGHT ORANGE BUTTON *******************/
+.orange_btn,
+.light_orange_btn {
+    background-color: #FBEFEA;
+    color: var(--primary-color-orange);
+}
+
+.orange_btn:hover,
+.orange_btn.active,
+.light_orange_btn:hover,
+.light_orange_btn.active {
+    background: var(--lbl_active_bg);
+    color: var(--lbl_active_name);
+    border-color: var(--primary-color-orange);
+}
+
+/****************** ORANGE BORDER BUTTON *******************/
+.orange_bord_btn {
+    color: var(--primary-color-orange);
+    border: 1px solid var(--primary-color-orange);
+}
+
+.orange_bord_btn:hover,
+.orange_bord_btn.active {
+    background-color: var(--primary-color-orange);
+    color: #fff;
+}
+
+.orange_bd_btn {
+    color: var(--primary-color-orange);
+    border: 1px solid var(--primary-color-orange);
+}
+
+.orange_bd_btn:hover,
+.orange_bd_btn.active {
+    background-color: var(--primary-color-orange);
+    color: #fff;
+}
+
+.orange_btn_submit {
+    border-color: var(--lbl_active_button_bg);
+    background-color: var(--lbl_active_button_bg);
+    color: var(--lbl_active_button_name) !important;
+}
+
+.register_btn_submit {
+    border-color: var(--primary-color-orange);
+    background-color: #fff !important;
+    text-decoration: underline;
+    font-size: 18px;
+    color: var(--lbl_light_gray) !important;
+    text-align: right;
+}
+
+/****************** WHITE BUTTON *******************/
+.submit_white {
+    background-color: #FFFFFF;
+    color: var(--primary-color-orange);
+}
+
+.submit_white:hover,
+.submit_white.active {
+    background: #3A86F3;
+    border-color: #3A86F3;
+    color: #fff;
+}
+
+
+
+.s-btn {
+    background-color: #3A66B8;
+    color: #FFFFFF;
+    border: 1px solid #3A66B8;
+}
+
+.s-btn.gp {
+    color: #9A9797;
+    border: 1px solid #9A9797;
+    background: none;
+}
+
+.s-btn.app {
+    color: #000000;
+    border: 1px solid #000000;
+    background: none;
+}
+
+
+.btn_primary {
+    color: var(--lbl_light_gray) !important;
+}
+
+
+.ora {
+    background: var(--lbl_active_bg) !important;
+    color: var(--lbl_active_name) !important;
+}
+
+span.cls {
+    color: var(--lbl_light_gray) !important;
+}
+
+.forgot {
+    color: var(--primary-color-orange);
+}
+
+.b-right {
+    border-right: 1px solid #D4D4D4;
+}
+
+.b-bottom {
+    border-bottom: 1px solid #D4D4D4;
+}
+
+hr {
+    border-top: 1px solid #D4D4D4;
+}
+
+.grey_border {
+    border-top: 1px solid #D4D4D4;
+}
+
+.bg_total {
+    background-color: #F3F3F3;
+}
+
+.inf {
+    border: 1px solid #F3F3F3;
+    color: var(--lbl_black);
+}
+
+.nav-pills>li>a {
+    border-bottom: 1px solid #F2F2F2;
+    color: var(--lbl_light_gray);
+}
+
+.nav-pills>li.active>a,
+.nav-pills>li.active>a:focus,
+.nav-pills>li.active>a:hover {
+    border-color: var(--primary-color-orange);
+    background: none;
+    color: var(--primary-color-orange);
+}
+
+
+.bg_total p span {
+    color: var(--lbl_black);
+}
+
+
+.bg_total h6 {
+    color: var(--lbl_black);
+}
+
+
+.spe_btn a {
+    border: 1px solid #F3F3F3;
+    color: #0D191B;
+}
+
+.spe_btn .box h3 {
+    color: var(--lbl_black);
+}
+
+.inf h6 {
+    color: var(--lbl_black);
+}
+
+.inf h6 span {
+    color: var(--lbl_light_gray);
+}
+
+.inf h6 em {
+    color: var(--lbl_black);
+}
+
+.right-content.account input {
+    border: 1px solid var(--lbl_light_gray);
+    color: var(--primary-color-orange);
+}
+
+#pickup.checkout input {
+    border: 1px solid var(--lbl_light_gray);
+    color: var(--lbl_light_gray);
+}
+
+.checkbox label {
+    color: var(--lbl_light_gray);
+}
+
+#pickup.checkout .checkbox label input {
+    border: 1px solid var(--lbl_light_gray);
+}
+
+.bgg_orange {
+    background: var(--primary-color-orange);
+}
+
+.bg_grey {
+    background-color: #F2F2F2;
+}
+
+.full_grey_border_selected {
+    border: 2.5px solid var(--primary-color-orange);
+}
+
+.numbers {
+    background-color: var(--lbl_active_bg);
+    color: var(--lbl_active_name);
+}
+
+#pickup .line {
+    background-color: var(--lbl_active_bg);
+}
+
+#pickup .cal ul li:hover,
+#pickup .cal ul li.active {
+    color: var(--primary-color-orange);
+}
+
+#pickup .cal ul li:hover span,
+#pickup .cal ul li.active span {
+    background-color: var(--primary-color-orange);
+    color: #fff;
+}
+
+#pickup .cal ul li span {
+    background-color: #F2F2F2;
+    color: var(--lbl_black);
+}
+
+.modal h5 {
+    color: var(--lbl_black);
+}
+
+
+.modal hr {
+    border-top: 1px solid var(--lbl_light_gray);
+}
+
+
+.modal h5 span {
+       color: var(--lbl_light_gray);
+}
+.modal h5 span.red {
+    color: var(--lbl_red);
+}
+
+.modal em {
+    color: #C7C7C7;
+}
+
+.modal .table hr {
+    border-bottom: 1px solid var(--lbl_light_gray);
+}
+
+.modal .table th {
+    color: var(--lbl_black);
+}
+
+
+.modal .table td h5 {
+    color: var(--primary-color-orange);
+}
+
+
+/* .modal .table td:last-child {
+	padding-top:38px;
+} */
+.modal .table td:last-child {
+    padding-top: 0px;
+}
+
+.modal .or {
+    color: var(--lbl_light_gray);
+    background: #fff;
+}
+
+.modal input {
+    border: 1px solid var(--lbl_light_gray);
+    color: var(--lbl_light_gray);
+    /* background: #fff; */
+}
+
+.modal input.submit {
+    border-color: var(--primary-color-orange);
+    background-color: var(--primary-color-orange);
+    /* color:#fff; */
+}
+
+
+
+.modal .forg {
+    color: var(--lbl_light_gray);
+}
+
+.modal .regi {
+    color: var(--primary-color-orange);
+}
+
+.modal.address input {
+    margin-bottom: 39px;
+}
+
+.modal.address p {
+    color: var(--lbl_black);
+}
+
+.modal.address p span {
+    color: var(--primary-color-orange);
+}
+
+.modal.address .nav-tabs>li>a {
+    background-color: #F2F2F2;
+}
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+    border-radius: 20px !important;
+    background-color: var(--lbl_active_bg) !important;
+    color: #fff !important;
+}
+
+.modal.address input.submit {
+    color: #fff;
+    border-color: #3A86F3;
+    background-color: #3A86F3;
+}
+
+.modal h3 {
+    color: var(--lbl_black);color: #0D191B;
+}
+
+
+#pickup .or {
+    color: var(--lbl_light_gray);
+}
+
+#pickup .submit {
+    background-color: #FBEFEA;
+    color: var(--primary-color-orange);
+}
+
+
+/****** NEW CSS ADD 12-09-2020 ******/
+.left-menu,
+.left-menu .logos .bell span em {
+    background-color: var(--primary-color-orange);
+}
+
+.left-menu .links ul li:hover a em,
+.left-menu .links ul li.active a em {
+    background: #fff;
+    color: var(--primary-color-orange) !important;
+}
+
+.right-content.account .user .pencil {
+    background-color: var(--primary-color-orange);
+}
+
+.orange_div {
+    background-color: var(--primary-color-orange);
+}
+
+#pickup .btns a {
+    border: 1.5px solid var(--lbl_active_bg);
+    color: var(--lbl_active_bg);
+}
+
+#pickup .btns a:hover,
+#pickup .btns a.active {
+    background: var(--lbl_active_bg);
+    color: var(--lbl_active_name);
+}
+
+.categories-ul ul li a {
+    border: 1px solid var(--primary-color-orange);
+    /* color: var(--primary-color-orange); */
+    color: var(--category-font-color);
+    background-color: var(--category-background-color);
+    
+}
+
+.categories-ul ul li a:hover,
+.categories-ul ul li a.active {
+    background: var(--lbl_active_bg );
+    color: var(--lbl_active_name) !important;
+}
+
+#pickup .register .regi {
+    color: var(--primary-color-orange);
+}
+
+.inf.active {
+    background-color: var(--primary-color-orange);
+}
+
+.right-content.p-2 .rt-s .ora .red {
+    color: var(--primary-color-orange);
+}
+
+.right-content.p-2 .free p span.active {
+    background-color: var(--lbl_active_bg);
+    color: var(--lbl_active_name);
+}
+
+.sun a:hover,
+.sun a.active {
+    border-color: var(--primary-color-orange);
+}
+
+.sun a:hover:before,
+.sun a.active:before {
+    background-color: var(--primary-color-orange);
+}
+
+.quantity button:visited {
+    background: var(--primary-color-orange);
+    border-color: var(--primary-color-orange);
+    color: #fff;
+}
+
+.quantity button:hover,
+.quantity button.active {
+    background: none;
+    border-color: var(--primary-color-orange);
+    color: var(--primary-color-orange);
+}
+
+.modal.noti .bd.active:before,
+.notification .bd.active:before {
+    background-color: var(--primary-color-orange);
+}
+
+
+.modal.getfod .btns a {
+    border: 1.5px solid var(--primary-color-orange);
+    color: var(--primary-color-orange);
+}
+
+.modal.getfod .btns a:hover,
+.modal.getfod .btns a.active {
+    background: var(--primary-color-orange);
+    color: #fff;
+}
+
+.customForm input:focus,
+.customForm textarea:focus {
+    border-color: var(--primary-color-orange) !important;
+}
+
+.customForm input:focus+.formlabel,
+.customForm input:valid+.formlabel,
+.customForm textarea:focus+.formlabel {
+    color: var(--primary-color-orange);
+}
+
+.right-content .dele .btn-primary .fa {
+    color: var(--primary-color-orange);
+}
+
+#pickup .btn_submit_new {
+    background-color: var(--primary-color-orange);
+    color: #fff !important;
+}
+
+/******************************* Changes CSS ***********************************/
+.color_red {
+    color: var(--lbl_red);
+}
+
+.color_green {
+    color: var(--primary-color-orange) !important;
+}
+
+.bg_green {
+    background: var(--lbl_active_bg) !important;
+    color: var(--lbl_active_bg);
+}
+
+.bg_greenn {
+    background: #EBEBEB !important;
+}
+
+.color_white {
+    color: var(--lbl_white) !important;
+}
+
+.right-content .cart em {
+    background-color: var(--lbl_active_bg);
+}
+
+.orange_btn.remove-hover:hover {
+    background-color: #FBEFEA;
+    color: var(--primary-color-orange);
+}
+
+.pickupBtn,
+.pickupBtn:hover,
+.orderPriceBtn {
+    background: transparent !important;
+    color: var(--primary-color-orange) !important;
+}
+
+.orderPriceBtn {
+    border: 0px;
+}
+
+.remove-bg {
+    background: transparent !important;
+}
+
+.modal-body {
+    border-color: var(--primary-color-orange);
+}
+
+.table-responsive th {
+    background: var(--primary-color-orange);
+    color: #fff;
+}
+
+.modal .table-responsive th {
+    background: transparent !important;
+    color: inherit !important;
+}
+
+.notification.testimonials .bd.active .fa {
+    color: var(--primary-color-orange);
+}
+
+
+.right-content.account .input-error {
+    border-color: var(--lbl_red) !important;
+}
+
+
+.right-content.account .with-errors {
+    color: var(--lbl_red);
+}
+
+
+#pickup.checkout .normal-input-style input:focus,
+#pickup.checkout .left-input-style input:focus,
+#pickup.checkout .right-input-style input:focus {
+    border-color: inherit !important;
+}
+
+
+
+#pickup.checkout select {
+    border: 1px solid var(--lbl_light_gray);
+    color: var(--lbl_light_gray);
+}
+
+#billingCountry {
+    border: 1px solid var(--lbl_light_gray);
+    color: var(--lbl_light_gray);
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.color_ligthgray {
+    color: var(--lbl_light_gray);
+}
+
+
+.prod-details .new-tabs .nav-tabs>li.active>a {
+    background: var(--primary-color-orange);
+    color: #000 !important;
+}
+
+.prod-details .new-tabs .nav-tabs>li.active>a,
+.prod-details .new-tabs .nav-tabs>li.active>a:focus,
+.prod-details .new-tabs .nav-tabs>li.active>a:hover,
+.prod-details .new-tabs .nav-tabs>li:hover a {
+    background: var(--lbl_active_bg);
+    color: var(--lbl_active_name) !important;
+}
+
+.cat_color {
+    color: white;
+}
+
+.deselect {
+    color: black !important;
+}
+
+.text-dynamic {
+    color: var(--primary-color-orange) !important;
+}
+
+.non-hover:hover {
+    background-color: #F2F2F2 !important;
+    color: var(--lbl_black) ;
+}
+
+.customForm textarea:focus+.formlabel,
+.customForm textarea:valid+.formlabel,
+.customForm textarea:focus+.formlabel {
+    color: var(--primary-color-orange);
+}
+
+
+.modal .login-form .orange_btn_submit {
+    color: var(--lbl_active_button_name) !important;
+}
+
+.modal .login-form .orange_submit_disabled {
+    color: #fff !important;
+}
+
+.otp-input {
+    color: black !important;
+}

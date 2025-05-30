@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cambridge Pizza's Home Page - Cambridge Pizza's Pizza, Order Pizza Online for Delivery</title>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="assets/css/animate.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/owl.theme.default.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datepicker.css">
+<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<header class="fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-md navbar-dark" aria-label="Eighth navbar example">
+            <div class="container">
+                <a class="navbar-brand logo d-none d-lg-inline d-sm-none d-md-inline" href="index.html"><img src="assets/img/logo.png" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand logo d-inline d-sm-inline d-lg-none d-md-none" href="index.html"><img src="assets/img/logo.png" /></a>
+                <ul class="d-inline d-sm-inline d-lg-none d-md-none">
+                <li class="cart">
+                    <a href="cart.html">
+                        <div class="cart-box">
+                            <img src="assets/img/icon-cart.svg" />
+                            Cart
+                        </div>
+                        <div class="cart-quantity-badge">0</div>
+                    </a>
+                </li>
+                </ul>
+                <div class="collapse navbar-collapse" id="navbarsExample07">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="active d-inline d-sm-inline d-lg-none d-md-none"><a class="close-menu-btn" href="#"><img src="assets/img/icon-close-btn.svg" /></a></li>
+                    <li class="active d-inline-block d-sm-inline-block d-lg-none d-md-none">
+                        <div class="sign-in">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#login-modal">
+                                <img src="assets/img/icon-profile.svg" />
+                                <h6>sign in & earn rewards</h6>
+                            </a>
+                        </div>
+                    </li>
+                    <li><a href="order-online.html" class="nav-link">Order <br />Online</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="coupons.html" class="nav-link">Coupons</a></li>
+                    <li><a href="trackers.html" class="nav-link">Trackers</a></li>
+                    <li><a href="rewards.html" class="nav-link">Rewards</a></li>
+                    <li><a href="francais.html" class="nav-link">français</a></li>
+                    <li class="button-link d-none d-sm-none d-lg-flex d-sm-flex">
+                        <button id="location-click">Locations</button>
+                    </li>
+                    <li class="active d-none d-sm-none d-lg-flex d-md-flex">
+                        <div class="sign-in">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#login-modal">
+                                <img src="assets/img/icon-profile.svg" />
+                                <h6>sign in & earn rewards</h6>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="cart d-none d-sm-none d-lg-flex d-md-flex">
+                        <a href="cart.html">
+                            <div class="cart-box">
+                                <img src="assets/img/icon-cart.svg" />
+                                Cart
+                            </div>
+                            <div class="cart-quantity-badge">0</div>
+                        </a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <section class="mob-nav d-block d-sm-block d-lg-none d-md-none">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 text-left"><a href="#">Tracker</a></div>
+                <div class="col-6 text-end"><a href="#">Sign In</a></div>
+            </div>
+        </div>
+    </section>
+</header> 
+<div id="location-popup-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="#" class="btn-close-popup">x</a>
+                <p><b>Are you looking for your local Delivery or Pickup store?</b></p>
+                <div class="circle-icons">
+                    <a href="delivery.html">
+                        <span class="circle-box"><img src="assets/img/icon-delivery-white.svg" /></span>
+                        <label>Delivery</label>
+                    </a>
+                    <span class="separate">- OR -</span>
+                    <a href="Pickup.html">
+                        <span class="circle-box"><img src="assets/img/icon-Pickup-white.svg" /></span>
+                        <label>Pickup</label>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<main>
+    <section class="location-search">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>SELECT YOUR LOCAL STORE</h1>
+                </div>
+            </div>
+            <div class="coupon-banner">
+                <div class="row g-0 align-items-center">
+                    <div class="col-lg-1 col-sm-1 col-2 coupon-tag text-center">
+                        <i class="fa fa-tag" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-lg-11 col-sm-11 col-10 text-center">
+                        <h2>COUPON SELECTED!</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="select-type mt-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">LET'S GET STARTED! IS THIS ORDER FOR DELIVERY OR Pickup?</div>
+                            <div class="card-body">
+                                <div class="circle-icons justify-content-start text-center">
+                                    <a href="#" class="show-me" show-this="delivery-form" hide-this="Pickup-form">
+                                        <span class="circle-box"><img src="assets/img/icon-delivery-white.svg" /></span>
+                                        <label>Delivery</label>
+                                    </a>
+                                    <span class="separate">- OR -</span>
+                                    <a href="#" class="show-me" show-this="Pickup-form" hide-this="delivery-form">
+                                        <span class="circle-box"><img src="assets/img/icon-carryout-white.svg" /></span>
+                                        <label>Pickup</label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="delivery-form hide-this">
+                                <div class="container">
+                                    <form class="row justify-content-center">
+                                        <div class="col-lg-8 col-sm-8 col-12">
+                                            <div class="delivery">
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-end col-sm-3 col-12">
+                                                        <label>Address Type:</label>
+                                                    </div>
+                                                    <div class="col-lg-9 col-sm-9 col-12">
+                                                        <select>
+                                                            <option>House</option>
+                                                            <option>Apartment</option>
+                                                            <option>Business</option>
+                                                            <option>Campus/Base</option>
+                                                            <option>Hotel</option>
+                                                            <option>Dormitory</option>
+                                                            <option>Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-end col-sm-3 col-12">
+                                                        <label><b><span>*</span>Street Address:</b></label>
+                                                    </div>
+                                                    <div class="col-lg-9 col-sm-9 col-12">
+                                                        <input type="text" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-end col-sm-3 col-12">
+                                                        <label>Suite/Apt #</label>
+                                                    </div>
+                                                    <div class="col-lg-9 col-sm-9 col-12">
+                                                        <input type="text" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 text-end col-sm-3 col-12">
+                                                        <label><b><span>*</span>City</b></label>
+                                                    </div>
+                                                    <div class="col-lg-9 col-sm-9 col-12">
+                                                        <input type="text" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-end">
+                                                    <div class="col-lg-5 col-sm-5 col-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-5 pr-1 text-end col-sm-5 col-12">
+                                                                <label><b><span>*</span>Province</b></label>
+                                                            </div>
+                                                            <div class="col-lg-7 pl-1 col-sm-7 col-12">
+                                                                <select>
+                                                                    <option value="ALBERTA">AB</option>
+                                                                    <option value="BRITISH COLUMBIA">BC</option>
+                                                                    <option value="MANITOBA">MB</option>
+                                                                    <option value="NEW BRUNSWICK">NB</option>
+                                                                    <option value="NEWFOUNDLAND AND LABRADOR">NL</option>
+                                                                    <option value="NOVA SCOTIA">NS</option>
+                                                                    <option value="NORTHWEST TERRITORIES">NT</option>
+                                                                    <option value="NUNAVUT">NU</option>
+                                                                    <option value="ONTARIO">ON</option>
+                                                                    <option value="PRINCE EDWARD ISLAND">PE</option>
+                                                                    <option value="QUEBEC">QC</option>
+                                                                    <option value="SASKATCHEWAN">SK</option>
+                                                                    <option value="YUKON">YT</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-sm-6 col-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-5 pr-0 text-end col-sm-5 col-12">
+                                                                <label><b><span>*</span>Postal Code:</b></label>
+                                                            </div>
+                                                            <div class="col-lg-7 col-sm-7 col-12">
+                                                                <input type="text" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-sm-12 col-12 text-center">
+                                                        <p class="sm-size">* Indicates required field.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-center col-sm-12 col-12">
+                                                        <h5>All Deliveries Are Zero Contact. <a href="#">LEARN MORE</a></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-center col-sm-12 col-12">
+                                                        <a href="#" class="btn-default w-50" data-bs-toggle="modal" data-bs-target="#order-time-modal">Continue for Delivery</a>
+                                                    </div>
+                                                </div>
+                                            </div>	
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="Pickup-form hide-this px-3">
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-12 text-center">
+                                        <div class="Pickup">
+                                            <p>Pickup orders must be placed 15 minutes before the store's closing time.</p>
+                                            <div class="embed-responsive embed-responsive-16by9">
+                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2899.3274432939584!2d-80.32663668457165!3d43.391084979131136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b89cd14aba9db%3A0x17d5496346e101ea!2sCambridge%20Pizza!5e0!3m2!1sen!2sin!4v1668093026963!5m2!1sen!2sin" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                            </div>
+                                        </div>	
+                                    </div>
+                                </div>
+                                <div class="row my-3 store-list">
+                                    <div class="col-12">
+                                        <!-- STORE ADDRESS -->
+                                        <div class="card">
+                                            <div class="card-header"><i class="fa fa-home"></i> STORE LIST</div>
+                                            <div class="card-body py-0">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 col-12 border-end pr-0 py-3">
+                                                        <h6>Cambridge Pizza</h6>
+                                                        <p>350 Hespeler Rd, Cambridge, ON N1R 7N7, Canada</p>
+                                                        <p><b>Phone Number:</b><br /><a href="tel:5196222228">519-622-2228</a></p>
+                                                        <p><a href="#" class="btn-default btn-orange">Future Pikcup Order</a></p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-12 py-3 border-end">
+                                                        <h6>PICKUP HOURS</h6>
+                                                        <p><b>Sun :</b>11:00am-11:00pm</p>
+                                                        <p><b>Mon :</b>11:00am-11:00pm</p>
+                                                        <p><b>Tue :</b>11:00am-11:00pm</p>
+                                                        <p><b>Wed :</b>11:00am-11:00pm</p>
+                                                        <p><b>Thu :</b>11:00am-11:00pm</p>
+                                                        <p><b>Fri :</b>11:00am-11:00pm</p>
+                                                        <p><b>Sat :</b>11:00am-11:00pm</p>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-12 py-3">
+                                                        <h6>Delivery HOURS</h6>
+                                                        <p><b>Sun :</b>11:00am-11:00pm</p>
+                                                        <p><b>Mon :</b>11:00am-11:00pm</p>
+                                                        <p><b>Tue :</b>11:00am-11:00pm</p>
+                                                        <p><b>Wed :</b>11:00am-11:00pm</p>
+                                                        <p><b>Thu :</b>11:00am-11:00pm</p>
+                                                        <p><b>Fri :</b>11:00am-11:00pm</p>
+                                                        <p><b>Sat :</b>11:00am-11:00pm</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+</main>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 xs-px-0">
+                <ul class="foot-nav">
+                    <li><a href="email-offers.html">Email Offers</a></li>
+                    <li><a href="gift-cards.html">Gift Cards</a></li>
+                    <li><a href="catering.html">Catering</a></li>
+                    <li><a href="join-our-team.html">Join Our Team</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="terms-of-use.html">Terms Of Use</a></li>
+                    <li><a href="contact-faq.html">Contact Us + FAQ</a></li>
+                    <li><a href="nutritional-guide.html">Nutritional Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <ul class="footer-social">
+                    <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fab fa-tiktok"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="footer-legal">
+                    <p>An additional charge may apply for premium toppings, sauces, extra cheese, and special pizza types including: Handmade Pan Pizzas, Thin Crust Pizzas, Gluten Free Pizzas and Feast Pizzas.</p>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal-Label" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="login-modal-Label">SIGN IN TO YOUR PIZZA PROFILE</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Don't have one? <a href="#">CREATE ONE <i class="fa fa-caret-right" aria-hidden="true"></i></a></p>
+				<form>
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 col-12">
+							<label>Email</label>
+							<input type="email" class="form-control" placeholder=""/>
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 col-12">
+							<label>Password</label>
+							<input type="password" class="form-control" placeholder=""/>
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 col-12">
+							<a class="forgot-password" href="#">FORGOT PASSWORD?</a>
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-lg-6 col-sm-6 col-12">
+							<a href="#" class="btn-default btn-orange w-100"><i class="fa fa-lock" aria-hidden="true"></i> Sign In For this Order</a>
+						</div>
+						<div class="col-lg-6 col-sm-6 col-12">
+							<a href="#" class="btn-default w-100"><i class="fa fa-lock" aria-hidden="true"></i> Sign In & Keep Me Signed In</a>
+							<label class="help">Securely access your recent orders, saved locations, and payment methods. <a href="#"><img src="assets/img/question-mark.png" alt=""/></label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ORDER TIMING MODAL -->
+<div class="modal fade" id="order-time-modal" tabindex="-1" aria-labelledby="order-time-modal-Label" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="login-modal-Label">Choose your order time</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Pick a date and time for your future order.</p>
+                <div class="row my-4">
+                    <div class="col-lg-6 col-sm-6 col-12">
+                        <a href="#" class="btn-default w-100 show-me" make-it-active="yes" show-this="asap-date-form" hide-this="later-date-form">ASAP</a>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                        <a href="#" class="btn-default w-100 show-me" make-it-active="yes" show-this="later-date-form" hide-this="asap-date-form">Later On</a>
+                    </div>
+                </div>
+                <form class="asap-date-form hide-this my-3">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12 col-sm-12 col-12 text-center">
+                            <h4>7.30pm, today, Wed Nov 09</h4>
+                            <a href="#" class="btn-default mt-3 px-5">Confirm Selection</a>
+                        </div>
+                    </div>
+				</form>
+				<form class="later-date-form hide-this">
+					<div class="row">
+						<div class="col-lg-12 col-sm-12 col-12 text-center">
+							<h4>SELECT TIME</h4>
+                            <div class="d-block mx-auto" id="datetimepicker4"></div>
+						</div>	
+					</div>
+					<div class="row my-3 justify-content-center">
+						<div class="col-lg-12 col-md-12 col-12 text-center">
+                            <a href="#" class="btn-default mt-3 px-5">Confirm Selection</a>
+						</div>
+					</div>
+				</form>
+                <div class="row mt-4">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <h6><i class="fa fa-clock"></i> Delivery Window</h6>
+                        <p>06:30 AM - 08:30 PM</p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <h6><i class="fa fa-clock"></i> Pickup Window</h6>
+                        <p>06:30 AM - 08:30 PM</p>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/wow.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.js"></script> 
+<script src="assets/js/custom.js"></script>
+<script src="assets/js/bootstrap-datepicker.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script><script>
+$(function () {
+	$('#datetimepicker4').datetimepicker({
+			format: 'LT',
+        inline:true
+	});	
+});	
+</script>
+</body>
+</html>

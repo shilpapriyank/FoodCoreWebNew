@@ -1,0 +1,28 @@
+:root {
+    --color-blue: #306499;
+    --bg-blue: #306499;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-orange:var(--primary-color-orange);
+    --bg-orange: var(--primary-color-orange);
+    --color-242424: #242424;
+    --color-010101: #010101;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, p , a {
+    color: var(--color-black);
+}
+
+a {
+    -webkit-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    text-decoration: none;
+}
+
+.color-white {
+    color: #fff;
+}
+
+.color-black {
+    color: #000 !important;
+}

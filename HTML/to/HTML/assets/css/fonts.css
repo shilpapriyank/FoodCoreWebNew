@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--color-black);
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.font-montserrat {
+    font-family: 'Montserrat', sans-serif !important; 
+}
+
+p {
+    font-size: 14px;
+}
+
+h1 {
+    font-size:54px;
+    line-height: 1.5;
+}
+
+h2 {
+    font-size: 48px;
+    line-height: 1.4;
+}
+
+h3 {
+    font-size:22px;
+    line-height: 1.5;
+}
+
+h4 {
+    font-size:27px;
+    line-height: 1.5;
+}
+
+h5 {
+    font-size:24px;
+    line-height: 1.5;
+}
+
+h6 {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+.font18 {
+    font-size: 18px;
+}
+
+.font14 {
+    font-size: 14px;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
+.font10 {
+    font-size: 10px;
+}
+
+.font8 {
+    font-size: 8px;
+}
+
+.btn-default {
+    display: inline-block;
+    background: var(--bg-orange);
+    color: var(--color-010101);
+    font-size: 18px;
+    line-height: 52px;
+    padding: 0px 20px;
+    min-width: 200px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+.btn-default:hover {
+    background: var(--bg-blue);
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.form-control {
+    background: none;
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid rgba(48, 100, 153, .50);
+    color: var(--color-black);
+    font-size: 14px;
+    height: 45px;
+    padding: 0px;
+    margin-bottom: 20px;
+}
+
+.form-control.otpinput {
+    border: 1px solid rgba(48, 100, 153, 1);
+    height: 52px;
+    width: 42px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    margin: 0px 2px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.form-control:focus,
+.form-control:active {
+    background: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: var(--color-black);
+}
+
+.form-control::-webkit-input-placeholder {
+    color: var(--color-black);
+}
+
+.largebutton.btn-default {
+    border-radius: 0px 0px 10px 10px;
+    text-align: center;
+    color: var(--color-white);
+    letter-spacing: 2px;
+    line-height: 60px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/**/
+.font13 {
+    font-size: 13px;
+}
+
+.list-menu .card .item-price h5.color-black {
+    color: var(--color-black);
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}

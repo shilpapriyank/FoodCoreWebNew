@@ -1,0 +1,1323 @@
+@media only screen and (max-width: 767px) {
+	.row-eq-height {
+		display: inline-block;
+		width: 100%;
+		margin: 0px;
+	}
+
+	.small-text-center {
+		text-align: center;
+	}
+
+	.small-text-left {
+		text-align: left;
+	}
+
+	.small-text-right {
+		text-align: right;
+	}
+
+	.navbar-brand {
+		width: 50%;
+		height: 110px;
+	}
+
+	.navbar-default {
+		min-height: 110px;
+	}
+
+	.navbar-right {
+		margin-right: -15px;
+	}
+
+	.navbar-default .navbar-toggle {
+		margin-top: 32px;
+		margin-right: 0px;
+		border: none;
+	}
+
+	.navbar-default .navbar-toggle:focus,
+	.navbar-default .navbar-toggle:hover {
+		border: none;
+		background: none;
+	}
+
+	.navbar-nav>li {
+		margin-top: 10px;
+	}
+
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+		text-align: center;
+		padding: 5px 15px;
+	}
+
+	#header .navbar-default .navbar-nav>li>a {
+		text-align: center;
+	}
+
+	.navbar-default .navbar-toggle .icon-bar {
+		background: #000;
+	}
+
+	#pickup .btns a {
+		margin-bottom: 20px;
+	}
+
+	.g-btn,
+	.orange-btn,
+	.blue-btn {
+		margin: 10px 0;
+	}
+
+	.numbers {
+		position: relative;
+		top: 0;
+		left: 0px;
+		margin: 0;
+		margin-bottom: 20px;
+	}
+
+	#pickup .line {
+		display: none;
+	}
+
+	.modal-body {
+		padding: 30px 0px;
+	}
+
+	.modal h3 {
+		font-size: 20px;
+	}
+
+	#pickup.checkout .s-left {
+		padding: 0px;
+	}
+
+	#pickup .sp-d {
+		padding-left: 5px;
+	}
+
+
+	.left-menu {
+		width: 100%;
+	}
+
+	.left-menu .logos .bell {
+		margin-left: 40px;
+	}
+
+	.left-menu .logo,
+	.left-menu .links ul li a span,
+	.left-menu .soc,
+	.left-menu .terms,
+	.left-menu .log .sign span {
+		display: inline-block;
+	}
+
+	.left-menu .links ul {
+		padding: 0 25px;
+		padding-right: 60px;
+	}
+
+	.left-menu ul li a {
+		text-align: left;
+	}
+
+	.left-menu .links ul li a .fa {
+		margin-right: 10px;
+	}
+
+	.left-menu .log .sign {
+		text-align: left;
+		float: left;
+	}
+
+	.left-menu .log .sign .fa {
+		margin-right: 10px;
+	}
+
+	.right-content {
+		padding: 35px 0px;
+	}
+
+	.swiper-slide {
+		padding: 20px 15px;
+		padding-top: 120px;
+	}
+
+	.swiper-slide h6 {
+		font-size: 18px;
+	}
+
+	.swiper-slide h6 span {
+		font-size: 14px;
+	}
+
+	.right-content .ora {
+		width: auto;
+		font-size: 13px;
+		margin-bottom: 15px;
+	}
+
+	.right-content .dele .btn-primary {
+		font-size: 16px;
+	}
+
+	.right-content .cart {
+		margin-top: 20px;
+	}
+
+	.right-content .hung ul li {
+		float: none;
+		display: inline-block;
+		text-align: left;
+	}
+
+
+
+	.right-content {
+		width: 100%;
+	}
+
+
+	.right-content.p-2 {
+		padding: 35px 15px;
+	}
+
+	/*.left-menu:hover ~ .right-content, .left-menu:hover {
+	width: 100%;
+}*/
+
+	h1 {
+		font-size: 27px !important;
+	}
+
+	.right-content.p-2 .rt-s .ora {
+		padding: 10px 15px;
+	}
+
+	#pickup .register input,
+	.modal.address input {
+		margin-bottom: 20px;
+	}
+
+
+	.left-menu {
+		width: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999;
+		overflow-y: scroll;
+		height: 100vh;
+	}
+
+	.left-menu.active-left {
+		/*width:100%;*/
+	}
+
+	.left-menu .links ul {
+		padding: 0 0px;
+	}
+
+	.left-menu .links ul li,
+	.left-menu.active-left .links ul li {
+		padding: 0 25px;
+		padding-right: 60px;
+	}
+
+	.left-menu .links ul li.active:before {
+		content: '';
+		background: url(../images/active-arrow.png) 50% 50% no-repeat;
+		background-size: cover;
+		position: relative;
+		width: 28px;
+		height: 85px;
+		position: absolute;
+		top: -8px;
+		right: 0;
+	}
+
+	.left-menu {
+		width: 0;
+		display: none;
+	}
+
+	#pickup.checkout input {
+		margin-bottom: 15px;
+		font-size: 14px !important;
+	}
+
+	.right-content,
+	#pickup {
+		padding-top: 15px;
+	}
+
+	.right-content h1 {
+		margin-bottom: 25px;
+	}
+
+	.right-content .cart {
+		margin-top: 0px;
+	}
+
+	#main .space-right {
+		padding-right: 0px;
+	}
+
+	.right-content .xsnoflush {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	#main .itemimage {
+		margin-left: 0px;
+	}
+
+	#main .itembox {
+		padding-left: 0px;
+	}
+
+	html,
+	body {
+		overflow-x: hidden;
+	}
+
+	#pickup .left-a a,
+	.rt-total span {
+		font-size: 18px !important;
+	}
+
+	#pickup h1 {
+		margin-bottom: 10px;
+	}
+
+	#pickup.checkout .btns {
+		margin-top: 15px;
+	}
+
+	.c-btn .g-btn {
+		max-width: 182px !important;
+	}
+
+	#main .s-piza .itembox {
+		margin-left: 15px;
+		padding-left: 15px;
+	}
+
+	.right-content.account .user {
+		margin-bottom: 25px;
+	}
+
+	.right-content .pizza-in .b-right {
+		border-right: 0px;
+	}
+
+	.right-content.p-2 {
+		padding-top: 15px;
+	}
+
+	#pickup .cal .blue-btn {
+		width: 280px;
+	}
+
+	.modal {
+		z-index: 999999999999;
+	}
+
+	#myModal-calander.modal .close {
+		top: -11px;
+		right: 22px;
+	}
+
+	.modal.choose-time div#datetimepicker4 {
+		width: 235px;
+	}
+
+	.bootstrap-datetimepicker-widget table td {
+		padding: 0px 5px !important;
+	}
+
+	.bootstrap-datetimepicker-widget table td.minute {
+		padding: 5px !important;
+	}
+
+	#pickup .o-btn .orange_bord_btn {
+		width: 90% !important;
+	}
+
+	#pickup .padding_0_right {
+		padding-left: 0px;
+	}
+
+	#pickup .or {
+		margin: 0px 0px;
+	}
+
+	#pickup .o-btn,
+	.xs-flush {
+		padding: 0px;
+	}
+
+	.margin_top_55 {
+		margin: 0px;
+	}
+
+	.fluid-box {
+		padding: 20px !important;
+		display: flex;
+		margin-bottom: 20px !important;
+	}
+
+	#pickup .btns a {
+		width: 120px !important;
+		margin: 0px 10px;
+		height: 61px !important;
+	}
+
+	.pickup-delivery_img {
+		width: 30px !important;
+		height: 28px !important;
+	}
+
+	#pickup .btns a {
+		padding: 7px !important;
+	}
+
+	.light_orange_btn {
+		min-width: auto !important;
+		padding: 0px 0px !important;
+		width: 100%;
+	}
+
+	.grey_btn {
+		min-width: auto !important;
+		padding: 0px 0px !important;
+		width: 100%;
+	}
+
+	.modal.address .nav-tabs>li>a {
+		width: auto !important;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	.modal h5 {
+		font-size: 14px !important;
+	}
+
+	.modal-body h4 {
+		font-size: 18px !important;
+	}
+
+	.modal .close {
+		top: 7px !important;
+		right: 25px !important;
+	}
+
+	.modal .table td h5 span {
+		font-size: 12px !important;
+	}
+
+	.modal .table h5 .padding_top_38 {
+		padding-top: 30px;
+	}
+
+	.table-responsive>.table>tbody>tr>td,
+	.table-responsive>.table>tbody>tr>th,
+	.table-responsive>.table>tfoot>tr>td,
+	.table-responsive>.table>tfoot>tr>th,
+	.table-responsive>.table>thead>tr>td,
+	.table-responsive>.table>thead>tr>th {
+		white-space: pre-wrap !important;
+	}
+
+	.modal .table td h5 {
+		padding: 0px !important;
+	}
+
+	.pin-location {
+		max-width: 75%;
+		margin-top: 0px;
+	}
+
+	.light_orange_btn {
+		font-size: 20px;
+	}
+
+	.orange_bord_btn {
+		width: 100%;
+	}
+
+	.xs-mt-50 {
+		margin-top: 50px !important;
+	}
+
+	.xs-mt-20 {
+		margin-top: 20px !important;
+	}
+
+	.xs-mb-15 {
+		margin-bottom: 15px !important;
+	}
+
+	.xs-mb-0 {
+		margin-bottom: 0px !important;
+	}
+
+	.xs-mt-0 {
+		margin-top: 0px !important;
+	}
+
+	.xs-mt-10 {
+		margin-top: 10px !important;
+	}
+
+	/* .right-content .hung ul li {
+		width: 46%;
+		float: left;
+		margin: 1% 2%;
+		margin-bottom: 15px;
+	} */
+
+	.right-content .hung ul li h4 {
+		font-size: 16px !important;
+		margin-top: 0px !important;
+	}
+
+	#main .s-piza .itembox {
+		left: 0px;
+	}
+
+	.logo-wid {
+		margin-bottom: 15px;
+	}
+
+	.right-content .cart em {
+		top: -10px;
+	}
+
+	.app-places {
+		margin-top: 0px !important;
+		width: 100%;
+		text-align: center;
+	}
+
+	.app-places img {
+		max-height: 50px !important;
+	}
+
+	#main .s-piza .itembox {
+		width: 100% !important;
+		left: 0px;
+		margin-left: 0px;
+		padding-left: 20px;
+		margin-bottom: 20px;
+	}
+
+	#main .s-piza .itembox h3 {
+		font-size: 18px;
+		margin-top: 15px;
+	}
+
+	#main .s-piza .itembox .orange_price_btn {
+		margin: 0px;
+	}
+
+	.orange_btn .fa {
+		font-size: 20px;
+	}
+
+	#main .s-piza .itemimage {
+		max-width: 100% !important;
+	}
+
+	.angle-round {
+		width: 28px !important;
+		height: 28px !important;
+		line-height: 28px !important;
+	}
+
+	.right-content .pizza-in .angle {
+		top: 70%;
+		right: -10px;
+	}
+
+	.prod-details .new-tabs .nav-tabs li a {
+		font-size: 12px;
+	}
+
+	.prod-details .new-tabs .nav-tabs li {
+		margin-right: 0px;
+	}
+
+	.right-content.p-2 .free p {
+		margin-bottom: 10px !important;
+	}
+
+	.right-content.p-2 .rt-s .ora,
+	.bg_total {
+		width: 90%;
+		margin: 0px 5% 10px 5%;
+	}
+
+	.bg_total {
+		padding: 15px !important;
+	}
+
+	.bg_total h3 {
+		margin: 10px 0px !important;
+	}
+
+	.cart-box .img {
+		padding: 15px !important;
+	}
+
+	.cart-box .bd {
+		margin-top: 25px !important;
+	}
+
+	.modal .forg,
+	.modal .register_btn_submit {
+		width: 100%;
+	}
+
+	.modal {
+		text-align: center;
+		padding: 0 !important;
+	}
+
+	.modal:before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		vertical-align: middle;
+		margin-right: -4px;
+	}
+
+	.modal-dialog {
+		display: inline-block;
+		text-align: left;
+		vertical-align: middle;
+	}
+
+	.makeStyles-container-1 {
+		display: inline-block;
+		flex-wrap: unset;
+	}
+
+	.xs-my-0 {
+		margin-left: 0px !important;
+		margin-right: 0px !important;
+	}
+
+	.xs-my-15 {
+		margin-left: 15px !important;
+		margin-right: 15px !important;
+	}
+
+	.xs-pl-0 {
+		padding-left: 0px !important;
+	}
+
+	.xs-px-15,
+	.xsnoflush {
+		padding-left: 15px !important;
+		padding-right: 15px !important;
+	}
+
+	.xs-px-0 {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+	.xs-d-block {
+		display: block !important;
+	}
+
+	.customForm .error {
+		margin-bottom: 10px;
+		display: inline-block;
+	}
+
+	#pickup .sp-d {
+		padding-left: 15px;
+	}
+
+	#pickup .removembottom {
+		padding-left: 0px;
+	}
+
+	.confirmationmodal_input {
+		font-size: 16px !important;
+		width: auto !important;
+		max-width: 100% !important;
+		padding: 0px !important;
+		margin-left: 0px !important;
+		line-height: 30px !important;
+	}
+
+	.modal .meredian {
+		margin-top: 10px !important;
+		margin-left: -5px !important;
+	}
+
+	.table-responsive tr:first-child td {
+		border-top: 0px !important;
+	}
+
+	.table-responsive {
+		margin-top: 10px !important;
+	}
+
+	.left-menu.active-left {
+		width: 80% !important;
+		display: inline-block;
+	}
+
+	.left-menu .logos {
+		padding: 15px !important;
+	}
+
+	.left-menu .links ul li a {
+		text-align: left !important;
+	}
+
+	.left-menu .soc a {
+		font-size: 32px !important;
+	}
+
+	/* .menu-action-icon a {
+	background:#FF7332;
+	width: 48px;
+	height: 48px;
+	border-radius: 48px;
+    display: inline-block;
+    text-align: center;
+    line-height: 48px;
+	color: #fff;
+	font-size:24px;
+	margin-top: 30px;
+} */
+
+	.right-content .cate .b-right {
+		border: 0px !important;
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+	.categories-ul ul li {
+		display: inline-block;
+	}
+
+	.categories-ul ul li a {
+		width: auto !important;
+		font-size: 13px;
+		margin: 0px 2px;
+	}
+
+	.right-content .pizza-in .s-piza {
+		padding: 15px !important;
+	}
+
+	.quantity button {
+		width: 36px;
+		height: 36px;
+	}
+
+	.size_20 {
+		font-size: 17px !important;
+	}
+
+	.size_22 {
+		font-size: 19px !important;
+	}
+
+	.size_24,
+	h3 {
+		font-size: 21px !important;
+	}
+
+	h1,
+	#pickup .dd h5 {
+		font-size: 24px !important;
+	}
+
+	#main .s-piza .itembox .add-to-cart .blue_btn {
+		font-size: 16px !important;
+		margin: 0px;
+	}
+
+	.right-content .ora {
+		width: 90%;
+		margin: 10px 5%;
+		line-height: 1.4;
+		padding: 5px 10px;
+		border-radius: 15px;
+	}
+
+	.bg_total.mini-cart {
+		margin-top: 15px !important;
+	}
+
+	.lg-160 {
+		height: auto !important;
+	}
+
+	.width_400,
+	.forgot {
+		width: 100% !important;
+	}
+
+	#pickup .removembottom {
+		padding-left: 0px !important;
+	}
+
+	.right-content.s-c {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+	.orange_btn.fav {
+		padding-left: 5px !important;
+		padding-right: 0px !important;
+	}
+
+	.unitPrice {
+		line-height: 1.6 !important;
+	}
+
+	.right-content {
+		padding: 0px;
+	}
+
+	#menu-btn {
+		top: 20px;
+		width: 30px;
+	}
+
+	#menu-btn span:first-child {
+		width: 15px;
+	}
+
+	#menu-btn span:nth-child(2n) {
+		width: 30px;
+	}
+
+	#menu-btn span:last-child {
+		width: 15px;
+		float: right;
+	}
+
+	.general-small-header .logo {
+		max-height: 35px;
+	}
+	#portal {
+		position: relative !important;
+		z-index: 999999 !important;
+	}
+	.general-small-header {
+		position: fixed;
+		background: #fff;
+		width: 100%;
+		top: 0px;
+		z-index: 99999;
+		left: 0px;
+		margin: 0px;
+		padding: 10px 0px;
+	}
+
+	.general-small-header h6 {
+		margin: 10px 0px 0px 0px;
+		font-size: 16px;
+	}
+
+	.general-small-header a {
+		font-size: 16px !important;
+	}
+
+	.general-small-footer {
+		position: fixed;
+		background: #fff;
+		width: 100%;
+		bottom: 0px;
+		z-index: 99999;
+		left: 0px;
+		margin: 0px;
+		padding: 10px 0px;
+
+	}
+
+	.padding-bootom-mobile {
+		margin-bottom: 100px !important;
+	}
+
+	.margin_top_2 {
+		margin-top: 2px !important;
+	}
+
+	.xs-100 {
+		padding-top: 100px;
+	}
+
+	.xs-50 {
+		padding-top: 50px !important;
+	}
+
+	.xs-150 {
+		padding-top: 150px;
+	}
+
+	.xs-125 {
+		padding-top: 125px;
+	}
+	.xs-175{
+		padding-top: 175px;
+	}
+
+	.left-menu.active-left {
+		z-index: 999999;
+	}
+
+	.right-content hr {
+		margin-top: 10px;
+	}
+
+	.total.padding_top_25 {
+		padding-top: 0px;
+	}
+
+	.xs-w-100 {
+		width: 100% !important;
+	}
+
+	.pers a,
+	.pers input {
+		width: 20%;
+		margin-right: 3.5%;
+		text-align: center;
+		padding: 0px;
+	}
+
+	.submit_white {
+		line-height: 40px;
+		padding: 0px;
+	}
+
+	#pickup.checkout .btns a {
+		font-size: 18px !important;
+	}
+
+	.customForm .error {
+		font-size: 16px !important;
+	}
+
+	.rt-total span span.price {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.xs--mt-20 {
+		margin-top: -12px !important;
+	}
+
+	.vh-75 {
+		height: auto !important;
+	}
+}
+
+@media only screen and (min-width:320px) and (max-width:360px) {
+	.fluid-box {
+		padding: 20px 10px !important;
+	}
+
+	.pin-location {
+		margin-top: 0px;
+	}
+
+	#pickup input.search {
+		padding-left: 30px;
+	}
+
+	.size_20 {
+		font-size: 15px !important;
+	}
+
+	#pickup .btns a {
+		font-size: 20px !important;
+	}
+
+	#pickup .dd h5,
+	.light_orange_btn {
+		font-size: 18px !important;
+	}
+
+	.confirmationmodal_input,
+	#pickup input {
+		font-size: 12px !important;
+	}
+
+	.uparrow-margin {
+		margin-top: 0px !important;
+	}
+
+	.modal .close {
+		right: 5px !important;
+	}
+
+	.left-menu.active-left .links ul li a em,
+	.left-menu.active-left .links ul li a .fa {
+		font-size: 18px !important;
+	}
+
+	.right-content .hung ul li h4 {
+		font-size: 14px !important;
+		word-break: break-all;
+	}
+}
+
+@media only screen and (min-width:710px) and (max-width:767px) {
+	.fluid-box {
+		display: inline-block !important;
+		width: 100%;
+	}
+
+	.pin-location {
+		max-width: 50%;
+	}
+
+	.light_orange_btn,
+	.orange_bord_btn,
+	.blue_btn.blue_btn_porder {
+		min-width: 220px !important;
+		width: auto !important;
+		padding: 0px 20px !important;
+	}
+
+	.modal {
+		width: 76%;
+		margin-left: 12%;
+	}
+}
+
+
+@media only screen and (min-width:768px) and (max-width:1169px) {
+	.sm-flush {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+	.size_20 {
+		font-size: 18px !important;
+	}
+
+	.size_22 {
+		font-size: 20px !important;
+	}
+
+	.size_19 {
+		font-size: 17px !important;
+	}
+
+	.pin-location {
+		width: 40px;
+		height: auto;
+	}
+
+	.blue_btn,
+	.light_orange_btn {
+		width: auto !important;
+		max-width: 100% !important;
+		padding-left: 15px !important;
+		padding-right: 15px !important;
+		height: 56px !important;
+		line-height: 56px !important;
+		min-width: unset !important;
+	}
+
+	#main .s-piza .itembox .add-to-cart .blue_btn {
+		font-size: 16px !important;
+		padding-left: 15px !important;
+		padding-right: 15px !important;
+		height: 48px !important;
+		line-height: 48px !important;
+	}
+
+	.confirmationmodal_input {
+		font-size: 30px !important;
+		line-height: 56px;
+	}
+
+	.modal .close {
+		top: 10px !important;
+		right: 25px !important;
+	}
+
+	h1 {
+		font-size: 36px;
+	}
+
+	.ora {
+		width: auto;
+		padding: 0px 25px;
+		line-height: 56px;
+		margin-top: 0px !important;
+	}
+
+	.right-content .hung ul li {
+		width: 200px;
+		margin-right: 10px;
+		margin-bottom: 20px;
+	}
+
+	.left-menu.active-left {
+		width: 20% !important;
+	}
+
+	.left-menu .logos .bell {
+		width: 48px;
+		height: 48px;
+	}
+
+	.left-menu.active-left .links ul li {
+		padding-left: 10px;
+		padding-right: 20px;
+	}
+
+	.left-menu .logos .bell img {
+		margin-top: -10px;
+		width: 50%;
+	}
+
+	.left-menu .links ul li a .fa {
+		font-size: 22px;
+		line-height: 54px;
+	}
+
+	.left-menu .links ul li a em {
+		padding: 0px 9px !important;
+		font-size: 13px !important;
+	}
+
+	.left-menu.active-left .terms {
+		text-align: center;
+	}
+
+	.categories-ul ul li {
+		display: inline-block;
+		margin: 5px 5px;
+	}
+
+	.categories-ul ul li a {
+		font-size: 16px;
+	}
+
+	.right-content .cate .b-right {
+		border-right: 0px !important;
+	}
+
+	.right-content .cate {
+		padding-right: 0px !important;
+		padding-left: 0px !important;
+	}
+
+	.right-content .rt-s {
+		padding-left: 15px !important;
+		padding-right: 15px !important;
+	}
+
+	.xs-my-15 {
+		margin-left: 15px !important;
+		margin-right: 15px !important;
+	}
+
+	.right-content.account .forgot {
+		margin-bottom: 15px;
+	}
+
+	.quantity button {
+		width: 40px;
+		height: 40px;
+	}
+
+	#main .s-piza .itemimage {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+	#main .s-piza .itembox {
+		padding-left: 35px;
+		padding-right: 20px;
+		width: 125%;
+	}
+
+	#main .s-piza .itembox h3 {
+		font-size: 22px;
+	}
+
+	.orange_price_btn {
+		line-height: 45px;
+	}
+
+	.right-content .pizza-in .s-piza {
+		padding-bottom: 20px;
+	}
+
+	.next-buuton-width {
+		min-width: 120px !important;
+	}
+
+
+}
+
+@media only screen and (max-width:767px) {
+	.xs-175 {
+		padding-top: 175px !important;
+	}
+
+	.general-small-header a {
+		font-size: 14px !important;
+	}
+
+	.xs-r-15 {
+		padding-right: 15px !important;
+	}
+
+	.xs-l-15 {
+		padding-left: 15px !important;
+	}
+
+	#pickup .in h5.mt-25 {
+		margin-top: 0px !important;
+	}
+
+	#timeWindow {
+		margin-top: 5px !important;
+	}
+
+	.bottomPadding15 {
+		padding-bottom: 15px !important;
+	}
+
+	.bottomPadding20 {
+		padding-bottom: 20px !important;
+	}
+
+	.floatRight {
+		float: right;
+	}
+
+	.margin-left-5 {
+		margin-left: 10px !important;
+	}
+
+	.heart-left {
+		position: absolute;
+		right: 25px;
+	}
+
+	.margin-top-0 {
+		margin-top: 0px !important;
+	}
+
+	.modal-backdrop {
+		z-index: 99999 !important;
+	}
+
+	.content-center {
+		display: row !important;
+		justify-content: center !important;
+	}
+
+	.window-center {
+		display: flex;
+		justify-content: center
+	}
+
+	.serch-input-section input {
+		/* width: auto !important; */
+		width: 75% !important;
+		margin-left: 2% !important;
+	}
+
+	.search-button {
+		margin: 2.5px 5px 5px 10px;
+		width: 14% !important;
+	}
+
+	#payment span {
+		display: inline-block !important ;
+		width: auto !important;
+		height: auto !important;
+		vertical-align: top !important;
+		margin-bottom: 0px !important;
+	}
+	.p-cancel{
+		float: right !important;
+	}
+	.gerycheckout-min{
+		min-width: 126px !important;
+		}
+	.w-auto{
+		width:auto !important
+	}
+	.clear-icon {
+		left: 69% !important;
+	}
+	.search-button-disabled {
+		width: 14% !important;
+	}
+   .center-gpay{
+	display: flex !important;
+	justify-content: center !important;
+   }
+   .otp-input{
+	padding-left: 8px !important;
+	height: 42.9px !important;
+   }
+   .w-33{
+	width: 11.33% !important;
+   }
+   .otp-popup .blue_btn{
+	min-width: 125.5px;
+   }
+  iframe{
+	width:300px !important
+  }
+  .select-btn{
+	padding: 0px 10px !important;
+	width: auto !important;
+}
+
+.list-view .w-50 {
+    width: 100%;
+}
+
+#time-slot .modal-dialog{
+	width: 95% !important;
+}
+}
+
+@media only screen and (min-width:320px) and (max-width:380px) {
+	#pickup .o-btn .orange_bord_btn {
+		width: 100% !important;
+		margin-left: 0px !important;
+	}
+
+	.confirmationmodal_input,
+	#pickup input {
+		font-size: 16px !important;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+	#main .s-piza .itemimage {
+		max-width: 50% !important;
+	}
+	.select-btn{
+		right: 5px !important;
+	}
+
+
+}
+

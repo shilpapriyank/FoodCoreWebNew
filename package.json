@@ -9,14 +9,44 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "@sentry/nextjs": "^9.22.0",
+    "@tanstack/react-query": "^5.76.2",
+    "@tanstack/react-query-devtools": "^5.76.2",
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3.6",
+    "cookies-next": "^5.1.0",
+    "dotenv": "^16.5.0",
+    "jquery": "^3.7.1",
+    "md5": "^2.3.0",
+    "moment": "^2.30.1",
+    "next": "15.3.2",
+    "next-images": "^1.8.5",
+    "next-redux-wrapper": "^8.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.2"
+    "react-error-boundary": "^6.0.0",
+    "react-intl": "^7.1.11",
+    "react-redux": "^9.2.0",
+    "react-toastify": "^11.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/jquery": "^3.5.32",
+    "@types/md5": "^2.3.5",
+    "@types/moment": "^2.11.29",
+    "@types/next-redux-wrapper": "^2.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-dom": "^19"
+    "@types/react-dom": "^19",
+    "@types/react-intl": "^2.3.18",
+    "@types/react-redux": "^7.1.34",
+    "@types/react-toastify": "^4.0.2",
+    "@types/redux-devtools-extension": "^2.13.0",
+    "@types/redux-logger": "^3.0.13",
+    "@types/redux-persist": "^4.0.0",
+    "@types/redux-thunk": "^2.1.32",
+    "typescript": "^5"
   }
 }

@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="assets/css/font-awesome.css">
+<link rel="stylesheet" href="assets/css/colors.css">
+<link rel="stylesheet" href="assets/css/font.css">
+<link rel="stylesheet" href="assets/css/generic.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<title>Welcome</title>
+</head>
+<body>
+
+<!-- HEADER -->
+<section class="header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-2 text-center col-md-4 col-12">
+                <a class="logo" href="index.html"><i class="fa fa-angle-left"></i> <img src="assets/img/logo.jpg" /></a>
+            </div>
+            <div class="col-lg-8 col-md-8 col-12">
+                <form>
+                    <div class="align-form">
+                        <label>Your order</label>
+                        <a class="takeout" data-bs-toggle="modal" data-bs-target="#exampleModal-yourorder">
+                            <i class="fa arrow fa-angle-right"></i>
+                            <i class="fa icon fa-shopping-bag"></i>
+                            <div>
+                                <h4>Takeout<br/><span>737 Golf Links Road Unit #F2A, Hamilton, Ontario, L9K 1L5</span></h4>
+                            </div>
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-12 text-md-end col-12">
+                <div class="dropdown profile-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-user-circle"></i> Welcome Mike!
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="info-address">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-9 col-md-8 col-12">
+                <div class="row">
+                    <div class="col-lg-12 mb-lg-5 mb-md-4 col-md-12 col-12">
+                        <a class="btn-default" href="add-to-order.html"><i class="fa me-1 fa-angle-left"></i> Back to order</a>
+                    </div>
+                    <div class="col-lg-12 mb-lg-4 mb-md-4 col-md-12 col-12">
+                        <h4 class="large-heading color-green"><strong>My profile</strong></h4>
+                    </div>
+                </div>
+                <div class="row normal-form">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <label>First name</label>
+                        <div class="search">
+                            <input type="text" class="form-control search" value="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <label>Last name</label>
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <label>Birthdate</label>
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <label>Gender</label>
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <label>Email</label>
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <label>Phone number</label>
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-12">
+                        <label>Address</label>
+                        <textarea type="text" class="form-control" placeholder=""></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center">
+                    <div class="col-lg-4 text-center text-lg-start text-md-start col-md-6 col-12">
+                        <a class="address-nfound fs-14" href="#">Edit my profile</a>
+                    </div>
+                    <div class="col-lg-4 my-lg-0 my-md-0 my-3 text-center col-md-6 col-12">
+                        <a class="address-nfound fs-14 color-black" href="#">Delete my profile</a>
+                    </div>
+                    <div class="col-lg-4 mt-md-3 mt-0 mt-lg-0  text-center text-lg-end text-md-end col-md-12 col-12">
+                        <a class="btn-default" href="#">Edit my password <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-12">
+                <h4 class="large-heading color-green">
+                    <a class="btn-default float-end  rounded-circle" data-bs-toggle="modal" data-bs-target="#exampleModal-add_address"><i class="fa m-0 fa-plus"></i></a>
+                    <strong>My addresses</strong><br/>
+                    <span class="color-black fs-12"><span class="color-green">1</span> available address</span>
+                </h4>
+                <hr/>
+                <div class="address-div">
+                    <a class="fa mt-2 color-green float-end fa-star-o" href="#"></a>
+                    <p>1295 Upper Paradise Road, Hamilton Ontario, LB 2T2</p>
+                    <a class="address-nfound fs-14" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Product -->
+<div class="modal modal-product fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-8 sppr col-md-8 col-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-12">
+                                    <h2>12" Butter Chicken Pizza</h2>
+                                    <p>Mozzarella cheese, butter chicken sauce, Indian style, red onion, green peppers, chicken</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-end p-0 col-md-4 col-12">
+                            <img class=" itemimg" src="assets/img/S_PIZZA.jpg" alt="" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 sppr col-md-12 col-12">
+                            <h3>Size</h3>
+                            <div class="circle-icons text-center">
+                                <a href="#">
+                                    <span class="circle-box size-count">10"</span>
+                                    <label>Small</label>
+                                </a>
+                                <a href="#">
+                                    <span class="circle-box size-count active">12"</span>
+                                    <label class="active">Medium</label>
+                                </a>
+                                <a href="#">
+                                    <span class="circle-box size-count">14"</span>
+                                    <label>Large</label>
+                                </a>
+                                <a href="#">
+                                    <span class="circle-box size-count">16"</span>
+                                    <label>X-Large</label>
+                                </a>
+                            </div>
+                            <div class="accordion" id="toppings-accordion">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="card mb-2 accordion-item">
+                                            <div class="card-header accordion-header" id="accordionCrust">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCrust" aria-expanded="true" aria-controls="collapseCrust">
+                                                    Crust  <sup>*</sup> <i class="fa fa-check ml-2 text-success"></i>
+                                                </button>
+                                            </div>
+                                            <div class="card-body accordion-collapse collapse" id="collapseCrust" aria-labelledby="accordionCrust" data-bs-parent="#toppings-accordion">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="radio" name="crust" /> Homemade Regular Crust</p>
+                                                        <p><input type="radio" name="crust" /> Thin Crust</p>
+                                                    </div>
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="radio" name="crust" /> Extra Thin Crust</p>
+                                                        <p><input type="radio" name="crust" /> Thick Crust</span><span class="color-green ml-2">$0.50</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="card mb-2 accordion-item">
+                                            <div class="card-header accordion-header" id="accordionSauce">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSauce" aria-expanded="true" aria-controls="collapseSauce">
+                                                    Sauce <sup>*</sup>
+                                                </button>
+                                            </div>
+                                            <div class="card-body accordion-collapse collapse" id="collapseSauce" aria-labelledby="accordionSauce" data-bs-parent="#toppings-accordion">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="checkbox" /> <span> Regular Sauce</p>
+                                                        <p><input type="checkbox" /> <span> BBQ Sauce</p>
+                                                    </div>
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="checkbox" /> <span> Extra Sauce</p>
+                                                        <p><input type="checkbox" /> <span> Easy Sauce</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="card mb-2 accordion-item">
+                                            <div class="card-header accordion-header" id="accordionStyle">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStyle" aria-expanded="true" aria-controls="collapseStyle">
+                                                    Choose Style <sup>*</sup>
+                                                </button>
+                                            </div>
+                                            <div class="card-body accordion-collapse collapse" id="collapseStyle" aria-labelledby="accordionStyle" data-bs-parent="#toppings-accordion">
+                                                <p><input type="checkbox" /> <span> Indian Style</span><span class="color-green ml-2">$1.00</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="card mb-2 accordion-item">
+                                            <div class="card-header accordion-header" id="accordionExtra">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExtra" aria-expanded="true" aria-controls="collapseExtra">
+                                                    Extra Toppings - Medium <small>Free toppings remaining: <span>99</span></small>
+                                                </button>
+                                            </div>
+                                            <div class="card-body accordion-collapse collapse" id="collapseExtra" aria-labelledby="accordionExtra" data-bs-parent="#toppings-accordion">
+                                                <div class="row special-toppings">
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p>
+                                                            <input type="checkbox" class="topping-checkbox" /> <span>Feta Cheese</span><span class="color-green ml-2">$1.00</span>
+                                                        </p>
+                                                        <p><input type="checkbox" /> <span> Four Cheese Blend</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Mozzarella Cheese</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Parmesan Cheese</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Double Cheese</span><span class="color-green ml-2">$2.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Dairy Free Cheese</span><span class="color-green ml-2">$5.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Broccoli</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Roasted Red Peppers</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Mushrooms</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Green Peppers</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Green Olives</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Grilled Zucchini</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Eggplant</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Hot Banana Peppers</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Jalapeno Peppers</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Kalamata Olives</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Pineapples</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Red Onions</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Roasted Garlic</span><span class="color-green ml-2">$1.00</span></p>
+                                                    </div>
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="checkbox" /> <span> Roma Tomatoes</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Sun-dried Tomatoes Sun-dried Tomatoes Sun-dried Tomatoes</span><span class="color-green ml-2">$2.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Cilantro</span><span class="color-green ml-2">$5.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Green Chili</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Ginger</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Asparagus</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Paneer</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Peas</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Corn</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Pepperoni</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Pepperoni (Halal)</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Anchovies</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Bacon Crumble</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Bacon Strips</span><span class="color-green ml-2">$2.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Chicken</span><span class="color-green ml-2">$2.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Chicken (Halal)</span><span class="color-green ml-2">$3.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Tandoori Chicken</span><span class="color-green ml-2">$2.50</span></p>                                
+                                                        <p><input type="checkbox" /> <span> Ground Beef</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Smoked Ham</span><span class="color-green ml-2">$2.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Hot Italian Sausage</span><span class="color-green ml-2">$2.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Mild Italian Sausage</span><span class="color-green ml-2">$3.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Salami</span><span class="color-green ml-2">$2.50</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="card mb-2 accordion-item">
+                                            <div class="card-header accordion-header" id="accordionDips">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDips" aria-expanded="true" aria-controls="collapseDips">
+                                                    Choose Dip
+                                                </button>
+                                            </div>
+                                            <div class="card-body accordion-collapse collapse" id="collapseDips" aria-labelledby="accordionDips" data-bs-parent="#toppings-accordion">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="checkbox" /> <span> Jalapeno Cheddar Dip</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Creamy Garlic Dip</span><span class="color-green ml-2">$1.00</span></p>
+                                                    </div>
+                                                    <div class="col-lg-12 col-md-12 col-12">
+                                                        <p><input type="checkbox" /> <span> Ranch Dip</span><span class="color-green ml-2">$1.00</span></p>
+                                                        <p><input type="checkbox" /> <span> Marinara Dip</span><span class="color-green ml-2">$1.00</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row m-auto">
+                        <div class="col-lg-12 ms-auto col-md-12 col-12">
+                            <div class="row">
+                                <div class="col-lg-4 p-0 col-md-5 col-12">
+                                    <div class="quantity qty-container">
+                                        <button class="qty-btn-minus btn-light quantity__minus" type="button">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <input type="text" name="qty" value="0" class="input-qty quantity__input"/>
+                                        <button class="qty-btn-plus btn-light quantity__plus" type="button">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 ms-auto p-0 col-md-5 col-12">
+                                    <a class="btn-default btn-order" href="add-to-order.html">Add to order <span>$11.49</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Order -->
+<div class="modal modal-your-order fade" id="exampleModal-yourorder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <h5 class="modal-title fs-5" id="staticBackdropLabel">YOUR ORDER</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 order-btns text-center col-md-12 col-12">
+                            <a class="btn-default active" id="takeout-btn"><i class="fa fa-shopping-bag"></i> Takeout</a>
+                            <a class="btn-default" id="delivery-btn"><i class="fa fa-car"></i> Delivery</a>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div id="takeout" class="row">
+                        <div class="col-lg-12 text-center col-md-12 col-12">
+                            <h2>Choose a restaurant</h2>
+                        </div>
+                        <div class="col-lg-12 mb-4 col-md-12 col-12">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">By address</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">By location</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-12">
+                                            <label>Address</label>
+                                            <div class="search">
+                                                <input type="text" class="form-control search" value="undefined undefined, undefined, undefined, undefined" />
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                            <div class="text-center">
+                                                <a class="address-nfound" href="#">Address not found ?</a>
+                                            </div>
+                                            <label>Apt #</label>
+                                            <input type="text" class="form-control" placeholder="Optional"/>
+                                            <div class="text-center short-info">
+                                                <p><i class="fa fa-info-circle"></i><br/> Variable '$position.latitude' is invalid. Received a null input for a non-null variable. Variable '$address.civicNumber' is invalid. No value provided for a non-null variable.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-12">
+                                            <div class="attention">
+                                                <i class="fa fa-map-marker"></i>
+                                                <span>Attention! Restaurants are shown in an alphabetic order since the geolocation is deactivated</span>
+                                            </div>
+                                            <label class="radio-box">
+                                                <input type="radio" />
+                                                Ancaster<br/><span>737 Golf Links Road Unit #F2A, Hamilton, Ontario, L9K 1L5</span>
+                                            </label>
+                                            <label class="radio-box">
+                                                <input type="radio" />
+                                                Ancaster<br/><span>737 Golf Links Road Unit #F2A, Hamilton, Ontario, L9K 1L5</span>
+                                            </label>
+                                            <label class="radio-box">
+                                                <input type="radio" />
+                                                Ancaster<br/><span>737 Golf Links Road Unit #F2A, Hamilton, Ontario, L9K 1L5</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-12 text-center mt-2 col-md-12 col-12">
+                                            <a class="link-green" href="#">Add a promotion</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="delivery" class="row d-none">
+                        <div class="col-lg-12 text-center col-md-12 col-12">
+                            <h2 class="fs-16">Enter your address</h2>
+                        </div>
+                        <div class="col-lg-12 mb-4 col-md-12 col-12">
+                            <label>Address</label>
+                            <div class="search">
+                                <input type="text" class="form-control search" value="undefined undefined, undefined, undefined, undefined" />
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="text-center">
+                                <a class="address-nfound" href="#">Address not found ?</a>
+                            </div>
+                            <label>Apt #</label>
+                            <input type="text" class="form-control" placeholder="Optional"/>
+                            <div class="text-center short-info">
+                                <p><i class="fa fa-info-circle"></i><br/> Variable '$position.latitude' is invalid. Received a null input for a non-null variable. Variable '$address.civicNumber' is invalid. No value provided for a non-null variable.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn-default w-100" href="#">Confirm</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add-Address -->
+<div class="modal modal-your-order address-modal fade" id="exampleModal-add_address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <h5 class="modal-title fs-5" id="staticBackdropLabel">Add New Address</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form>
+                <div class="modal-body">
+                    <div class="row mt-3">
+                        <div class="col-lg-12 mb-4 col-md-12 col-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-12">
+                                    <label>Find your address</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <label>Address 1</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <label>Address 2</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <label>Enter Apt. Buzzer...</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <label>City</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <label>Province/State</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <label>Postal Code</label>
+                                    <input type="text" class="form-control" placeholder="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-default w-100" type="submit">Save Address</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- <script src="assets/js/bootstrap.bundle.min.js"></script> -->
+<script src="assets/js/owl.carousel.min.js"></script>
+<script src="assets/js/custom.js"></script>
+</body>
+</html>
