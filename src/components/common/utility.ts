@@ -453,9 +453,9 @@ export const ORDER_TIME_TYPE:OrderTimeTypes = {
     }
 }
 
-// export const getOrderTimeType = (text: any) => {
-//     return ORDER_TIME_TYPE.find((item: any) => item.text === text)
-// }
+export const getOrderTimeType = (text: string) => {
+    return Object.values(ORDER_TIME_TYPE).find(item => item.text === text);
+};
 
 export const getOrderType = (value: string) => {
     let orderTypeArray = [{

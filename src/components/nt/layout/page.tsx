@@ -1,17 +1,20 @@
-// import React from "react";
-// import Header from "./header/header.component";
-// import Footer from "./footer/footer.component";
-// import CategoryHeader from "../category/category-header/category-header";
+import React from "react";
 
-// const Layout = ({ children, handleChangeAddress, page }) => {
-//   return (
-//     <>
-//       <Header handleChangeAddress={handleChangeAddress} page={page} />
-//       {/* <CategoryHeader /> */}
-//       {children}
-//       <Footer />
-//     </>
-//   );
-// };
+interface HeaderProps {
+    handleChangeAddress?: () => void;
+    page?: string;
+}
 
-// export default Layout;
+const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
+    return (
+        <div>
+            <p>This is Header component</p>
+            {page && <p>Current page: {page}</p>}
+            {handleChangeAddress && (
+                <button onClick={handleChangeAddress}>Change Address</button>
+            )}
+        </div>
+    );
+};
+
+export default Header;
