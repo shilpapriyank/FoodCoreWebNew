@@ -7,7 +7,7 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER,
+  REGISTER
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
@@ -58,88 +58,3 @@ export const persistor = persistStore(store);
 // Types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-// import { configureStore } from "@reduxjs/toolkit";
-// import {
-//   persistStore,
-//   persistReducer,
-//   FLUSH,
-//   REHYDRATE,
-//   PAUSE,
-//   PERSIST,
-//   PURGE,
-//   REGISTER,
-// } from "redux-persist";
-// import storage from "redux-persist/lib/storage";
-// import logger from "redux-logger";
-// import { combineReducers } from "redux";
-// import restaurantsReducer from "./restaurants/restaurantSlice";
-
-// const rootReducer = combineReducers({
-//     restaurants: restaurantsReducer,
-// });
-
-// const persistConfig = {
-//   key: "root",
-//   storage,
-// };
-
-// const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// export const store = configureStore({
-//   reducer: persistedReducer,
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: {
-//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-//       },
-//     }).concat(logger),
-// });
-
-// export const persistor = persistStore(store);
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
-//export type AppStore = typeof store;
-
-// import { configureStore } from "@reduxjs/toolkit";
-// import logger from "redux-logger";
-// import restaurantsReducer from "./restaurants/restaurantSlice"; // <-- Import the reducer here
-
-// export const store = configureStore({
-//   reducer: {
-//     restaurants: restaurantsReducer,
-//   },
-//   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-// });
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
-
-// import { configureStore } from "@reduxjs/toolkit";
-// import logger from "redux-logger"; // optional for debugging
-
-// export const store = configureStore({
-//   reducer: {
-//     restaurants: restaurantsReducer, // ✅ key name: "restaurants"
-//   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(logger),
-// });
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
-
-// import { configureStore } from "@reduxjs/toolkit";
-// import logger from "redux-logger"; // optional: only for logging
-
-// export const store = configureStore({
-//   reducer: {
-//     restaurants: restaurantsReducer, // ✅ added here
-//   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(logger),
-// });
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;

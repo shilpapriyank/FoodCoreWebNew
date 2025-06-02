@@ -3,15 +3,39 @@ import { LocationServices } from "../locations/location.service";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
 import { RestaurantsServices } from "./restaurant.service";
 
+interface Restaurant {
+  id: number;
+  name: string;
+  url: string;
+  // Add more fields
+}
+
+interface RestaurantDetail {
+  id: number;
+  name: string;
+  defaultLocation?: {
+    displaylistview?: string;
+    // Add more fields
+  };
+}
+
+interface BannerDetail {
+  image: string;
+  link: string;
+}
+
 interface RestaurantState {
-  restaurantsList: any[];
-  restaurantdetail: any;
+  //restaurantsList: any[];
+  restaurantsList: Restaurant[];
+  // restaurantdetail: any;
+  restaurantdetail: RestaurantDetail | null;
   leftmenutoggle: boolean;
   restaurantslocationlist: any[];
   restaurantslocationlistwithtime: any[];
   restaurantstiminglist: any[];
   ischangeurl: boolean;
-  bannerDetails: any[];
+  //bannerDetails: any[];
+  bannerDetails: BannerDetail[];
   appversion: string;
 }
 
@@ -28,21 +52,39 @@ const initialState: RestaurantState = {
 };
 
 // Async thunks for API calls
-export const getRestaurantsList = createAsyncThunk(
+// export const getRestaurantsList = createAsyncThunk(
+//   "restaurants/getRestaurantsList",
+//   async (params: {
+//     restauranturl?: string;
+//     locationurl?: string | undefined;
+//     defaultLocationId?: number;
+//   }) => {
+//     const res = await RestaurantsServices.getRestaurantsList(
+//       params.restauranturl ?? "",
+//       params.locationurl ?? "",
+//       params.defaultLocationId ?? 0
+//     );
+//     return res;
+//   }
+// );
+export const getRestaurantsList = createAsyncThunk<Restaurant[], {
+  restauranturl?: string;
+  locationurl?: string;
+  defaultLocationId?: number;
+}>(
   "restaurants/getRestaurantsList",
-  async (params: {
-    restauranturl?: string;
-    locationurl?: string;
-    defaultLocationId?: number;
-  }) => {
+  async (params) => {
+        console.log("Calling getRestaurantsList with params:", params);
     const res = await RestaurantsServices.getRestaurantsList(
-      params.restauranturl,
-      params.locationurl,
-      params.defaultLocationId
+      params.restauranturl ?? "",
+      params.locationurl ?? "",
+      params.defaultLocationId ?? 0
     );
+    console.log("Response:", res);
     return res;
   }
 );
+
 
 export const getHomepageBannerDetails = createAsyncThunk(
   "restaurants/getHomepageBannerDetails",
@@ -80,7 +122,9 @@ const restaurantsSlice = createSlice({
   name: "restaurants",
   initialState,
   reducers: {
-    setRestaurantDetail(state, action: PayloadAction<any>) {
+    // setRestaurantDetail(state, action: PayloadAction<any>) {
+    setRestaurantDetail(state, action: PayloadAction<RestaurantDetail | null>) {
+
       state.restaurantdetail = action.payload;
     },
     updateRestaurantDetail(state, action: PayloadAction<any>) {
