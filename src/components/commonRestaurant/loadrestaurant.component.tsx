@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { RestaurantsServices } from "../../../redux/restaurants/restaurant.service";
+import { RestaurantsServices } from "../../../redux/restaurants/restaurants.service";
 
 interface LoadRestaurantProps {
   children: React.ReactNode;

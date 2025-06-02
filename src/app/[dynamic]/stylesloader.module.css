@@ -1,0 +1,16 @@
+.customloader {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: conic-gradient(#0000 10%, #FF7332);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 16px), #000 0);
+    animation: s3 0.5s infinite linear;
+    align-items: center;
+    margin: 0 auto;
+}
+
+@keyframes s3 {
+    to {
+        transform: rotate(1turn)
+    }
+}

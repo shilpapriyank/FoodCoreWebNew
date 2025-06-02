@@ -3,9 +3,7 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 
-
 let responseclass = new ResponseModel();
-
 
 export class LocationServices {
   static async getLocationInfo(restaurantId: any) {

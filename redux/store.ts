@@ -23,7 +23,6 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["restaurants"],
 };
 
 // Create persisted reducer

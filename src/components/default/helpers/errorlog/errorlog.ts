@@ -4,7 +4,7 @@ import {
   getLocationIdFromStorage,
   getRestaurantIdFromStorage,
   getRestaurantNameFromStorage,
-} from "../../common/localstore";
+} from "../../../common/localstore";
 import { getAuthKey } from "../../common/auth";
 
 interface ResponseClass {
