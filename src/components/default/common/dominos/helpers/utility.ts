@@ -55,7 +55,7 @@ export const ThemeObj = {
 }
 
 //GET THEME DETAILS FROM THEME TYPE VALUE
-export const ThemeTypeObj = [{
+export const ThemeTypeObj: ThemeType[] = [{
   name: "default",
   value: 1,
   url: "dt"

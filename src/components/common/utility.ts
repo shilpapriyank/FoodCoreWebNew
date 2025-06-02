@@ -14,9 +14,14 @@ export const ThemeObj = {
     tableorder: "tableorder",
     newtheme: "newtheme",
 }
+type ThemeType = {
+    name: string;
+    value: number;
+    url: string;
+};
 
 //GET THEME DETAILS FROM THEME TYPE VALUE
-export const ThemeTypeObj = [{
+export const ThemeTypeObj: ThemeType[] = [{
     name: "default",
     value: 1,
     url: "dt"
@@ -502,7 +507,7 @@ export const isSeoDetail = (url: any) => {
     return isGetSeo;
 }
 
-export const checkIntegerValue = (value:any = 0) => {
+export const checkIntegerValue = (value: any = 0) => {
     let zero = 0
     let intValue = value ?? zero;
     intValue = intValue === "" ? zero : intValue;
@@ -1050,9 +1055,9 @@ export const calculateFinalCountTable = (subOptionList: any, selectedOption: any
     return finalcount;
 }
 
-export const convertOptionToStrList = (...optionList :any) => {
-    const optionStrList :any = []
-    optionList?.map((item :any) => {
+export const convertOptionToStrList = (...optionList: any) => {
+    const optionStrList: any = []
+    optionList?.map((item: any) => {
         const str = item?.reduce((acc: any, cur: any, index: any) => ` ${acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === (item.length - 1) ? "" : ","}${" "}`}`, "")
         optionStrList.push(str);
     })
@@ -1248,7 +1253,7 @@ export const calculateNettotal = (lstcarttopping: any, selectedsize: any, quanti
     let fsum = 0;
 
     if (lstcarttopping && lstcarttopping.length > 0) {
-        lstcarttopping.forEach((data :any) => {
+        lstcarttopping.forEach((data: any) => {
             const selectedOption = selectedTopping?.list?.find((option: any) => option?.optionId === data?.optionId)
             const paidQty = parseInt(data.paidQty) || 0; // Only this many need to be paid
             if (paidQty > 0) {
