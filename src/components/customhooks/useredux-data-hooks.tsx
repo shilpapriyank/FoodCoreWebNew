@@ -1,3 +1,5 @@
+// src/components/customhooks/useredux-data-hook.ts
+
 import { shallowEqual, useSelector } from "react-redux";
 import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
@@ -86,5 +88,6 @@ export const useReduxData = () => {
     //   cartItemsAmountTotal,
     //   cartItemsQuantity,
   };
+
 };
 

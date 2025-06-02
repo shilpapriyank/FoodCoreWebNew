@@ -1,7 +1,7 @@
 export class ResponseModel {
-  result = {};
-  status = "";
-  message = "";
+  result: any = '';
+  status: number = 0;;
+  message: string = "";
 }
 
 export class RestaurantCustomModel {
