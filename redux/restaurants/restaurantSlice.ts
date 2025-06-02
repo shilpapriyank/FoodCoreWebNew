@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RestaurantsServices } from "./restaurant.service";
 import { LocationServices } from "../locations/location.service";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
+import { RestaurantsServices } from "./restaurant.service";
 
 interface RestaurantState {
   restaurantsList: any[];

@@ -14,6 +14,7 @@ export class RestaurantsServices {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantsList";
     const location = ENDPOINTS.GET_RESTAURANTS;
+    console.log("location in new", location);
     const data = {
       restaurantDetailRequest: {
         restaurantURL: restauranturl,
@@ -28,6 +29,7 @@ export class RestaurantsServices {
       false,
       0
     );
+    console.log("restaurant list in new ", responseclass);
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

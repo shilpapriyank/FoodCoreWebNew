@@ -21,10 +21,10 @@ interface Marker {
 
 const ORDERTYPE = {
   PICKUP: "Pickup",
-  DELIVERY: "Delivery"
+  DELIVERY: "Delivery",
 } as const;
 
-export type OrderType = typeof ORDERTYPE[keyof typeof ORDERTYPE];
+export type OrderType = (typeof ORDERTYPE)[keyof typeof ORDERTYPE];
 
 export const getLoactionMarker = (addressList: Address[]): Marker[] => {
   return addressList.map((item, index) => ({
@@ -35,7 +35,7 @@ export const getLoactionMarker = (addressList: Address[]): Marker[] => {
     phone: item.phone,
     city: item.cityName,
     zipcode: item.zipcode,
-    address1: item.address1
+    address1: item.address1,
   }));
 };
 
@@ -52,29 +52,29 @@ export const ThemeObj = {
   FD123456: "FD123456",
   tableorder: "tableorder",
   newtheme: "newtheme",
-}
+};
 
-//GET THEME DETAILS FROM THEME TYPE VALUE
-export const ThemeTypeObj = [{
-  name: "default",
-  value: 1,
-  url: "dt"
-},
-{
-  name: "dominos",
-  value: 2,
-  url: "dm"
-},
-{
-  name: "tableorder",
-  value: 201,
-  url: "to"
-},
-{
-  name: "newtheme",
-  value: 4,
-  url: "nt"
-}
+export const ThemeTypeObj: ThemeType[] = [
+  {
+    name: "default",
+    value: 1,
+    url: "dt",
+  },
+  {
+    name: "dominos",
+    value: 2,
+    url: "dm",
+  },
+  {
+    name: "tableorder",
+    value: 201,
+    url: "to",
+  },
+  {
+    name: "newtheme",
+    value: 4,
+    url: "nt",
+  },
 ];
 
 interface ThemeType {
@@ -88,9 +88,9 @@ export const GetThemeDetails = (value: number): ThemeType | undefined => {
     { name: "default", value: 1, url: "dt" },
     { name: "dominos", value: 2, url: "dm" },
     { name: "tableorder", value: 201, url: "to" },
-    { name: "newtheme", value: 4, url: "nt" }
+    { name: "newtheme", value: 4, url: "nt" },
   ];
-  return ThemeTypeObj.find(x => x.value === value);
+  return ThemeTypeObj.find((x) => x.value === value);
 };
 
 export const GetThemeDetailsByName = (value: string): ThemeType | undefined => {
@@ -98,9 +98,9 @@ export const GetThemeDetailsByName = (value: string): ThemeType | undefined => {
     { name: "default", value: 1, url: "dt" },
     { name: "dominos", value: 2, url: "dm" },
     { name: "tableorder", value: 201, url: "to" },
-    { name: "newtheme", value: 4, url: "nt" }
+    { name: "newtheme", value: 4, url: "nt" },
   ];
-  return ThemeTypeObj.find(x => x.name === value);
+  return ThemeTypeObj.find((x) => x.name === value);
 };
 
 export const BannerName = {
@@ -111,7 +111,7 @@ export const BannerName = {
   banner5Name: "Home Page Banner5",
   banner6Name: "Home Page Banner6",
   banner7Name: "Home Page Banner7 Left",
-  banner8Name: "Home Page Banner7 Right"
+  banner8Name: "Home Page Banner7 Right",
 };
 
 export function closeModal(myclass: string): void {
@@ -138,7 +138,7 @@ export const orderDisable = (
 
   let orderDisableObj: OrderDisableObj = {
     isorderdisable: false,
-    errormessage: ""
+    errormessage: "",
   };
 
   if (location?.isOrderingDisable) {
@@ -147,19 +147,28 @@ export const orderDisable = (
   } else if (!restaurantinfo.isdelivery && !restaurantinfo.istakeaway) {
     orderDisableObj.errormessage = location.orderingMessage;
     orderDisableObj.isorderdisable = true;
-  } else if (!((location.istakeaway && pickupWindow?.length > 0) || (location.isdelivery && deliveryWindow?.length > 0))) {
-    orderDisableObj.errormessage = 'We are away for a bit. Check back soon.';
+  } else if (
+    !(
+      (location.istakeaway && pickupWindow?.length > 0) ||
+      (location.isdelivery && deliveryWindow?.length > 0)
+    )
+  ) {
+    orderDisableObj.errormessage = "We are away for a bit. Check back soon.";
     orderDisableObj.isorderdisable = true;
   } else {
     if (
       deliveryaddressinfo?.pickupordelivery === ORDERTYPE.PICKUP &&
-      (location.isTakeoutOrderingDisable || !restaurantinfo.istakeaway || !location.istakeaway)
+      (location.isTakeoutOrderingDisable ||
+        !restaurantinfo.istakeaway ||
+        !location.istakeaway)
     ) {
       orderDisableObj.errormessage = location.orderingMessage;
       orderDisableObj.isorderdisable = true;
     } else if (
       deliveryaddressinfo?.pickupordelivery === ORDERTYPE.DELIVERY &&
-      (location.isDeliveryOrderingDisable || !restaurantinfo.isdelivery || !location.isdelivery)
+      (location.isDeliveryOrderingDisable ||
+        !restaurantinfo.isdelivery ||
+        !location.isdelivery)
     ) {
       orderDisableObj.errormessage = location.orderingMessage;
       orderDisableObj.isorderdisable = true;
@@ -169,18 +178,28 @@ export const orderDisable = (
 };
 export const getImgeUrl = {};
 
-export const calculateFinalCount = (subOptionList: any[], selectedOption: any): number => {
+export const calculateFinalCount = (
+  subOptionList: any[],
+  selectedOption: any
+): number => {
   let finalcount = 0;
-  const toppingcount = subOptionList.filter(x => x.subOptionselected === true);
+  const toppingcount = subOptionList.filter(
+    (x) => x.subOptionselected === true
+  );
 
-  toppingcount.forEach(tc => {
-    const topvalue = tc.toppingValue === "" || parseInt(tc.toppingValue) === 0 ? 1 : parseInt(tc.toppingValue);
+  toppingcount.forEach((tc) => {
+    const topvalue =
+      tc.toppingValue === "" || parseInt(tc.toppingValue) === 0
+        ? 1
+        : parseInt(tc.toppingValue);
     const calculatedtopvalue =
-      selectedOption.isHalfPizza && (tc.pizzaside === "L" || tc.pizzaside === "R")
+      selectedOption.isHalfPizza &&
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        ((tc.halfPizzaPriceToppingPercentage === "" || parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100))
+          (tc.halfPizzaPriceToppingPercentage === "" ||
+          parseInt(tc.halfPizzaPriceToppingPercentage) === 0
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     finalcount += tc.subOptionToppingQuantity * calculatedtopvalue;
@@ -189,30 +208,55 @@ export const calculateFinalCount = (subOptionList: any[], selectedOption: any): 
   return finalcount;
 };
 
-export const getImagePath = (itemImage: string | null | undefined, defaultImage: string): string => {
+export const getImagePath = (
+  itemImage: string | null | undefined,
+  defaultImage: string
+): string => {
   if (itemImage !== null && itemImage !== undefined && itemImage !== "") {
     return itemImage;
   } else {
-    if (defaultImage !== "" && defaultImage !== undefined && defaultImage !== null) {
+    if (
+      defaultImage !== "" &&
+      defaultImage !== undefined &&
+      defaultImage !== null
+    ) {
       return defaultImage;
     } else {
       return "";
     }
   }
-}
-export const checkTimeStatus = (defaultLocation: any, restaurantWindowTime: any, orderType: string) => {
-  const pickupWindow = (restaurantWindowTime && restaurantWindowTime.pickupTime) && restaurantWindowTime.pickupTime;
-  const deliveryWindow = (restaurantWindowTime && restaurantWindowTime.deliveryTime) && restaurantWindowTime.deliveryTime;
+};
+export const checkTimeStatus = (
+  defaultLocation: any,
+  restaurantWindowTime: any,
+  orderType: string
+) => {
+  const pickupWindow =
+    restaurantWindowTime &&
+    restaurantWindowTime.pickupTime &&
+    restaurantWindowTime.pickupTime;
+  const deliveryWindow =
+    restaurantWindowTime &&
+    restaurantWindowTime.deliveryTime &&
+    restaurantWindowTime.deliveryTime;
 
   if (
     (defaultLocation.istakeaway && pickupWindow?.length > 0) ||
     (defaultLocation.isdelivery && deliveryWindow?.length > 0)
   ) {
-    if (orderType === ORDERTYPE.DELIVERY && defaultLocation.isdelivery && deliveryWindow?.length > 0) {
+    if (
+      orderType === ORDERTYPE.DELIVERY &&
+      defaultLocation.isdelivery &&
+      deliveryWindow?.length > 0
+    ) {
       return { isCheckTime: true };
     } else if (orderType === ORDERTYPE.DELIVERY) {
       return { isCheckTime: false, message: "" };
-    } else if (orderType === ORDERTYPE.PICKUP && defaultLocation.istakeaway && pickupWindow?.length > 0) {
+    } else if (
+      orderType === ORDERTYPE.PICKUP &&
+      defaultLocation.istakeaway &&
+      pickupWindow?.length > 0
+    ) {
       return { isCheckTime: true };
     } else if (orderType === ORDERTYPE.PICKUP) {
       return { isCheckTime: false, message: "Pickup Close" };
@@ -227,20 +271,27 @@ export const formatePhoneNumber = (number: string): string => {
 };
 
 export const unFormatePhoneNumber = (number: string): string => {
-  let unFormatedNumber = number && number.replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
+  let unFormatedNumber =
+    number &&
+    number.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
   return unFormatedNumber;
 };
 
-export const convertSecondToMinute = (second: number): { minute: number; second: number } => {
+export const convertSecondToMinute = (
+  second: number
+): { minute: number; second: number } => {
   const totalSeconds = second;
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
   function padTo2Digits(num: number) {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   }
-  return { minute: parseInt(padTo2Digits(minutes)), second: parseInt(padTo2Digits(seconds)) };
-}
+  return {
+    minute: parseInt(padTo2Digits(minutes)),
+    second: parseInt(padTo2Digits(seconds)),
+  };
+};
 
 export const allRegex = {
   phoneRegex1: /(\(?\d{1,2})/,
@@ -248,10 +299,17 @@ export const allRegex = {
   phoneRegex3: /^\($/,
   validdigit: /^\d{1,}$/,
   validateemial: /\S+@\S+\.\S+/,
-}
+};
 
 export const getNameFromURL = (url?: string): string => {
-  return url?.toLowerCase()?.toString().replace(/[^a-zA-Z0-9]/g, " ").replace(/\s{2,}/g, ' ').replace(/ /g, "-") || "";
+  return (
+    url
+      ?.toLowerCase()
+      ?.toString()
+      .replace(/[^a-zA-Z0-9]/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .replace(/ /g, "-") || ""
+  );
 };
 
 export const validateQueryString = (
@@ -261,7 +319,11 @@ export const validateQueryString = (
   menuitemURL: string = ""
 ): boolean => {
   const pattern = /[`!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?~]/;
-  const validLength = restaurantURL.length < 20 || locationURL.length < 20 || categoryURL.length < 50 || menuitemURL.length < 50;
+  const validLength =
+    restaurantURL.length < 20 ||
+    locationURL.length < 20 ||
+    categoryURL.length < 50 ||
+    menuitemURL.length < 50;
 
   if (
     validLength &&

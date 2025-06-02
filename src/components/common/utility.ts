@@ -14,9 +14,13 @@ export const ThemeObj = {
     tableorder: "tableorder",
     newtheme: "newtheme",
 }
-
-//GET THEME DETAILS FROM THEME TYPE VALUE
-export const ThemeTypeObj = [{
+type ThemeType = {
+    name: string;
+    value: number;
+    url: string;
+};
+ 
+export const ThemeTypeObj: ThemeType[]= [{
     name: "default",
     value: 1,
     url: "dt"
