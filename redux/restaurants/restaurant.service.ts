@@ -15,6 +15,7 @@ export class RestaurantsServices {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantsList";
     const location = ENDPOINTS.GET_RESTAURANTS;
+    console.log("location in new", location);
     const data = {
       restaurantDetailRequest: {
         restaurantURL: restauranturl,
@@ -22,17 +23,18 @@ export class RestaurantsServices {
         locationURL: locationurl
       }
     };
-
-    console.log(`[${methodName}] - Request Data:`, data);
-
-    responseclass = await handleAxiosPostAsync(data, location, methodName, false, 0);
-
-    console.log(`[${methodName}] - API Response:`, responseclass);
-
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-
-      console.log(`[${methodName}] - Returning result`);
-
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      false,
+      0
+    );
+    console.log("restaurant list in new ", responseclass);
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     }
     else {

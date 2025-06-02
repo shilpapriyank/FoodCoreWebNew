@@ -5,7 +5,10 @@ import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
-  const restaurantinfo = useSelector((state: RootState) => state.restaurants?.restaurantdetail, shallowEqual);
+  const restaurantinfo = useSelector(
+    (state: RootState) => state.restaurants?.restaurantdetail,
+    shallowEqual
+  );
 
   // const selecteddelivery = useSelector((state: RootState) => state.selecteddelivery, shallowEqual);
   // const userinfo = useSelector((state: RootState) => state.userdetail?.loggedinuser, shallowEqual);
@@ -87,3 +90,4 @@ export const useReduxData = () => {
   };
 
 };
+
