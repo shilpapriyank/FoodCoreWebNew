@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { LogoProps } from "../../../../types/layout-types/layout.type";
+import { LogoProps } from "../../../../types/layout-types/layout.types";
 
 const Logo = ({ logoUrl, path }: LogoProps) => {
   return (
