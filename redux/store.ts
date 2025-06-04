@@ -1,3 +1,62 @@
+// import { configureStore, combineReducers } from "@reduxjs/toolkit";
+// import {
+//   persistStore,
+//   persistReducer,
+//   FLUSH,
+//   REHYDRATE,
+//   PAUSE,
+//   PERSIST,
+//   PURGE,
+//   REGISTER,
+// } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+// import logger from "redux-logger";
+// import restaurantsReducer from "./restaurants/restaurants.slice";
+// import { createWrapper } from "next-redux-wrapper";
+
+// // Combine reducers
+// const rootReducer = combineReducers({
+//   restaurant: restaurantsReducer,
+//   // Add more reducers here
+// });
+
+// // Persist config
+// const persistConfig = {
+//   key: "root",
+//   storage,
+//   // whitelist: ["restaurant"], // Optional: specify what to persist
+// };
+
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// // Store creation
+// const makeStore = () => {
+//   return configureStore({
+//     reducer: persistedReducer,
+//     middleware: (getDefaultMiddleware) =>
+//       getDefaultMiddleware({
+//         serializableCheck: {
+//           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//         },
+//       }).concat(process.env.NODE_ENV === "development" ? [logger] : []),
+//     devTools: process.env.NODE_ENV === "development",
+//   });
+// };
+
+// // Wrapper for Next.js
+// export const wrapper = createWrapper(makeStore, {
+//   debug: process.env.NODE_ENV === "development",
+// });
+
+// // Types
+// export type AppStore = ReturnType<typeof makeStore>;
+// export type AppDispatch = ReturnType<AppStore["dispatch"]>;
+// export type RootState = ReturnType<AppStore["getState"]>;
+
+// // Persistor
+// export const store = makeStore();
+// export const persistor = persistStore(store);
+
 import { configureStore } from "@reduxjs/toolkit";
 import {
   persistStore,
@@ -7,12 +66,12 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER
+  REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import { combineReducers } from "redux";
-import restaurantsReducer from "./restaurants/restaurantSlice";
+import restaurantsReducer from "./restaurants/restaurants.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({

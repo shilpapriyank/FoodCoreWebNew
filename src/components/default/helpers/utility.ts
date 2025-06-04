@@ -21,14 +21,14 @@ export const handleAxiosPostAsync = async (
   if (isAuthorizationRequired) {
     config = {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': getAuthKey(restaurantId),
+        "Content-Type": "application/json",
+        Authorization: getAuthKey(restaurantId),
       },
     };
   } else {
     config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
   }

@@ -1,54 +1,3 @@
-// export const StorageVariable = {
-//   LOCATION_ID: 'defaultlocationId',
-//   RESTAURANT_ID: 'restaurantId',
-//   RESTAURANT_NAME: 'restaurantName',
-// } as const;
-
-// export const setLocationIdInStorage = (defaultLocationId: number): void => {
-//   localStorage.setItem(
-//     StorageVariable.LOCATION_ID,
-//     defaultLocationId > 0 ? defaultLocationId.toString() : '0'
-//   );
-// };
-
-// export const setRestaurantIdInStorage = (restaurantId: number): void => {
-//   localStorage.setItem(
-//     StorageVariable.RESTAURANT_ID,
-//     restaurantId > 0 ? restaurantId.toString() : '0'
-//   );
-// };
-
-// export const setRestaurantNameInStorage = (restaurantName: string): void => {
-//   localStorage.setItem(
-//     StorageVariable.RESTAURANT_NAME,
-//     restaurantName !== '' ? restaurantName : ''
-//   );
-// };
-
-// export const getLocationIdFromStorage = (): number => {
-//   if (typeof window !== 'undefined') {
-//     const locationId = localStorage.getItem(StorageVariable.LOCATION_ID);
-//     return locationId !== null ? parseInt(locationId, 10) : 0;
-//   }
-//   return 0;
-// };
-
-// export const getRestaurantIdFromStorage = (): number => {
-//   if (typeof window !== 'undefined') {
-//     const restaurantId = localStorage.getItem(StorageVariable.RESTAURANT_ID);
-//     return restaurantId !== null ? parseInt(restaurantId, 10) : 0;
-//   }
-//   return 0;
-// };
-
-// export const getRestaurantNameFromStorage = (): string => {
-//   if (typeof window !== 'undefined') {
-//     const restaurantName = localStorage.getItem(StorageVariable.RESTAURANT_NAME);
-//     return restaurantName ?? '';
-//   }
-//   return '';
-// };
-
 export const StorageVariable = {
   LOCATION_ID: "defaultlocationId",
   RESTAURANT_ID: "restaurantId",
@@ -57,6 +6,7 @@ export const StorageVariable = {
 
 export const setLocationIdInStorage = (defaultLocationId: number) => {
   if (typeof window !== "undefined") {
+    console.log("location id ", defaultLocationId);
     localStorage.setItem(
       StorageVariable.LOCATION_ID,
       defaultLocationId > 0 ? defaultLocationId.toString() : "0"
