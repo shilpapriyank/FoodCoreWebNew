@@ -5,45 +5,44 @@ import { RestaurantsServices } from "./restaurants.services";
 
 //import { RestaurantsServices } from "./restaurants.service";
 
-interface Restaurant {
-  id: number;
-  name: string;
-  url: string;
-  // Add more fields
-}
+// interface Restaurant {
+//   id: number;
+//   name: string;
+//   url: string;
+//   // Add more fields
+// }
 
-interface RestaurantDetail {
-  id: number;
-  name: string;
-  defaultLocation?: {
-    displaylistview?: string;
-    // Add more fields
-  };
-}
+// interface RestaurantDetail {
+//   id: number;
+//   name: string;
+//   defaultLocation?: {
+//     displaylistview?: string;
+//     // Add more fields
+//   };
+// }
 
-interface BannerDetail {
-  image: string;
-  link: string;
-}
+// interface BannerDetail {
+//   image: string;
+//   link: string;
+// }
 
-interface RestaurantState {
-  //restaurantsList: any[];
-  restaurantsList: Restaurant[];
-  // restaurantdetail: any;
-  restaurantdetail: RestaurantDetail | null;
-  leftmenutoggle: boolean;
-  restaurantslocationlist: any[];
-  restaurantslocationlistwithtime: any[];
-  restaurantstiminglist: any[];
-  ischangeurl: boolean;
-  //bannerDetails: any[];
-  bannerDetails: BannerDetail[];
-  appversion: string;
-}
+// interface RestaurantState {
+//   //restaurantsList: any[];
+//   restaurantsList: Restaurant[];
+//   restaurantsdetail: RestaurantDetail | null;
+//   leftmenutoggle: boolean;
+//   restaurantslocationlist: any[];
+//   restaurantslocationlistwithtime: any[];
+//   restaurantstiminglist: any[];
+//   ischangeurl: boolean;
+//   //bannerDetails: any[];
+//   bannerDetails: BannerDetail[];
+//   appversion: string;
+// }
 
-const initialState: RestaurantState = {
+const initialState = {
   restaurantsList: [],
-  restaurantdetail: null,
+  restaurantsdetail: null,
   leftmenutoggle: false,
   restaurantslocationlist: [],
   restaurantslocationlistwithtime: [],
@@ -53,39 +52,22 @@ const initialState: RestaurantState = {
   appversion: "",
 };
 
-// Async thunks for API calls
-// export const getRestaurantsList = createAsyncThunk(
-//   "restaurants/getRestaurantsList",
-//   async (params: {
-//     restauranturl?: string;
-//     locationurl?: string | undefined;
-//     defaultLocationId?: number;
-//   }) => {
-//     const res = await RestaurantsServices.getRestaurantsList(
-//       params.restauranturl ?? "",
-//       params.locationurl ?? "",
-//       params.defaultLocationId ?? 0
-//     );
-//     return res;
-//   }
-// );
-export const getRestaurantsList = createAsyncThunk<
-  Restaurant[],
-  {
+//Async thunks for API calls
+export const getRestaurantsList = createAsyncThunk(
+  "restaurants/getRestaurantsList",
+  async (params: {
     restauranturl?: string;
-    locationurl?: string;
+    locationurl?: string | undefined;
     defaultLocationId?: number;
+  }) => {
+    const res = await RestaurantsServices.getRestaurantsList(
+      params.restauranturl ?? "",
+      params.locationurl ?? "",
+      params.defaultLocationId ?? 0
+    );
+    return res;
   }
->("restaurants/getRestaurantsList", async (params) => {
-  console.log("Calling getRestaurantsList with params:", params);
-  const res = await RestaurantsServices.getRestaurantsList(
-    params.restauranturl ?? "",
-    params.locationurl ?? "",
-    params.defaultLocationId ?? 0
-  );
-  console.log("Response:", res);
-  return res;
-});
+);
 
 export const getHomepageBannerDetails = createAsyncThunk(
   "restaurants/getHomepageBannerDetails",
@@ -124,11 +106,11 @@ const restaurantsSlice = createSlice({
   initialState,
   reducers: {
     // setRestaurantDetail(state, action: PayloadAction<any>) {
-    setRestaurantDetail(state, action: PayloadAction<RestaurantDetail | null>) {
-      state.restaurantdetail = action.payload;
+    restaurantsdetail(state, action: any) {
+      state.restaurantsdetail = action.payload;
     },
     updateRestaurantDetail(state, action: PayloadAction<any>) {
-      state.restaurantdetail = action.payload;
+      state.restaurantsdetail = action.payload;
     },
     leftMenuToggle(state, action: PayloadAction<boolean>) {
       state.leftmenutoggle = action.payload;
@@ -136,9 +118,12 @@ const restaurantsSlice = createSlice({
     changeUrl(state, action: PayloadAction<boolean>) {
       state.ischangeurl = action.payload;
     },
+    restaurantsLocation(state, action) {
+      state.restaurantslocationlist = action.payload;
+    },
     resetRestaurant(state) {
       state.restaurantsList = [];
-      state.restaurantdetail = null;
+      state.restaurantsdetail = null;
       state.leftmenutoggle = false;
       state.restaurantslocationlist = [];
       state.restaurantstiminglist = [];
@@ -146,9 +131,9 @@ const restaurantsSlice = createSlice({
     resetBannerDetails(state) {
       state.bannerDetails = [];
     },
-    displayViewUpdate(state, action: PayloadAction<string>) {
-      if (state.restaurantdetail?.defaultLocation) {
-        state.restaurantdetail.defaultLocation.displaylistview = action.payload;
+    displayViewUpdate(state, action: any) {
+      if (state.restaurantsdetail) {
+        state.restaurantsdetail = action.payload;
       }
     },
     setAppVersion(state, action: PayloadAction<string>) {
@@ -176,8 +161,9 @@ const restaurantsSlice = createSlice({
 });
 
 export const {
-  setRestaurantDetail,
+  restaurantsdetail,
   updateRestaurantDetail,
+  restaurantsLocation,
   leftMenuToggle,
   changeUrl,
   resetRestaurant,

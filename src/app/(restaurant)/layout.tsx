@@ -17,6 +17,9 @@ export default function RestaurantLayout({
   params,
 }: LoadRestaurantProps) {
   const { restaurantURL, locationURL, defaultLocationId } = params;
+  console.log('restaurant url from (restaurant) layout', restaurantURL)
+   console.log('locationURL from (restaurant) layout', locationURL)
+    console.log('defaultLocationId from (restaurant) layout', defaultLocationId)
   return (
     <LoadRestaurant
       restaurantURL={restaurantURL}

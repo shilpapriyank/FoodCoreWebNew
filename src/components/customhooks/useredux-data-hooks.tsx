@@ -6,7 +6,7 @@ import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
   const restaurantinfo = useSelector(
-    (state: RootState) => state.restaurant?.restaurantdetail,
+    (state: RootState) => state.restaurant?.restaurantsdetail,
     shallowEqual
   );
 
@@ -35,9 +35,9 @@ export const useReduxData = () => {
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
   );
-  const defaultLocation = useSelector(
-    (state: RootState) => state.restaurant.restaurantdetail?.defaultLocation
-  );
+  // const defaultLocation = useSelector(
+  //   (state: RootState) => state.restaurant.restaurantsdetail?.defaultLocation
+  // );
   // const tableorder = useSelector((state: RootState) => state.tableorder, shallowEqual);
   // const categoryItemsList = useSelector((state: RootState) => state.category?.categoryitemlist, shallowEqual);
   // const maincategoryList = useSelector((state: RootState) => state.main?.maincategoryList, shallowEqual);
@@ -85,7 +85,7 @@ export const useReduxData = () => {
     // sessionid,
     // addressList,
     restaurantlocation,
-    defaultLocation,
+    // defaultLocation,
     // recievingTime,
     // meredian,
     // recievingDate,
