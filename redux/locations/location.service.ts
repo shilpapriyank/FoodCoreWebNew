@@ -3,9 +3,7 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 
-
 let responseclass = new ResponseModel();
-
 
 export class LocationServices {
   static async getLocationInfo(restaurantId: any) {
@@ -15,10 +13,19 @@ export class LocationServices {
     const data = {
       restaurantId: restaurantId,
       latitude: "",
-      longitude: ""
+      longitude: "",
     };
-    responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return responseclass;
@@ -32,15 +39,22 @@ export class LocationServices {
     const data = {
       restaurantId: restaurantId,
     };
-    responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return responseclass;
     }
-
   }
-
 
   static async getAllLoaction(restaurantId: any) {
     responseclass = new ResponseModel();
@@ -49,15 +63,23 @@ export class LocationServices {
     const data = {
       restaurantId: restaurantId,
       latitude: "",
-      longitude: ""
+      longitude: "",
     };
-    responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return responseclass;
     }
-
   }
 
   static async changeRestaurantLocation(restaurantId: any, locationId: any) {
@@ -66,15 +88,22 @@ export class LocationServices {
     const location = ENDPOINTS.LOCATION_BY_ID;
     const data = JSON.stringify({
       restaurantId: restaurantId,
-      locationId: locationId
+      locationId: locationId,
     });
-    responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return responseclass;
     }
-
   }
-
 }

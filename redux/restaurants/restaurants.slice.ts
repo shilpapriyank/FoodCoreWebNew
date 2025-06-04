@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LocationServices } from "../locations/location.service";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
-import { RestaurantsServices } from "./restaurant.service";
+import { RestaurantsServices } from "./restaurants.services";
 
 interface Restaurant {
   id: number;
@@ -67,24 +67,23 @@ const initialState: RestaurantState = {
 //     return res;
 //   }
 // );
-export const getRestaurantsList = createAsyncThunk<Restaurant[], {
-  restauranturl?: string;
-  locationurl?: string;
-  defaultLocationId?: number;
-}>(
-  "restaurants/getRestaurantsList",
-  async (params) => {
-        console.log("Calling getRestaurantsList with params:", params);
-    const res = await RestaurantsServices.getRestaurantsList(
-      params.restauranturl ?? "",
-      params.locationurl ?? "",
-      params.defaultLocationId ?? 0
-    );
-    console.log("Response:", res);
-    return res;
+export const getRestaurantsList = createAsyncThunk<
+  Restaurant[],
+  {
+    restauranturl?: string;
+    locationurl?: string;
+    defaultLocationId?: number;
   }
-);
-
+>("restaurants/getRestaurantsList", async (params) => {
+  console.log("Calling getRestaurantsList with params:", params);
+  const res = await RestaurantsServices.getRestaurantsList(
+    params.restauranturl ?? "",
+    params.locationurl ?? "",
+    params.defaultLocationId ?? 0
+  );
+  console.log("Response:", res);
+  return res;
+});
 
 export const getHomepageBannerDetails = createAsyncThunk(
   "restaurants/getHomepageBannerDetails",
@@ -124,7 +123,6 @@ const restaurantsSlice = createSlice({
   reducers: {
     // setRestaurantDetail(state, action: PayloadAction<any>) {
     setRestaurantDetail(state, action: PayloadAction<RestaurantDetail | null>) {
-
       state.restaurantdetail = action.payload;
     },
     updateRestaurantDetail(state, action: PayloadAction<any>) {

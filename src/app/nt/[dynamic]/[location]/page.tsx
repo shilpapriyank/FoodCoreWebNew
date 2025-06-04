@@ -8,14 +8,14 @@ export default function LocationPage() {
   const router = useRouter();
   const params = useParams();
 
-  useEffect(() => {
-    const theme = params?.dynamic;
-    const location = params?.location;
+  // useEffect(() => {
+  //   const theme = params?.dynamic;
+  //   const location = params?.location;
 
-    if (theme && location) {
-      router.push(`/nt/${theme}/${location}`);
-    }
-  }, []);
+  //   if (theme && location) {
+  //     router.push(`/nt/${theme}/${location}`);
+  //   }
+  // }, []);
 
   return (
     <div>

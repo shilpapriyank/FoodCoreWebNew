@@ -1,3 +1,4 @@
+// src/app/(restaurant)/layout.tsx
 "use client";
 
 import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
@@ -12,11 +13,13 @@ interface LoadRestaurantProps {
   };
 }
 
-export default function RestaurantLayout({
+export default function RestaurantLayoutDynamic({
   children,
   params,
 }: LoadRestaurantProps) {
   const { restaurantURL, locationURL, defaultLocationId } = params;
+  console.log("this is nt/dynamic call", params.restaurantURL);
+
   return (
     <LoadRestaurant
       restaurantURL={restaurantURL}

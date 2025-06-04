@@ -21,6 +21,7 @@ const Page: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname(); // might not be needed here
   const searchParams = useSearchParams();
+  console.log('pathname', pathname)
 
   // dynamic param comes from segment in folder name
   const dynamic = pathname?.split("/").pop() || ""; // or get from searchParams if query string
