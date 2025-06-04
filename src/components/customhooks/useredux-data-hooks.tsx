@@ -10,7 +10,7 @@ export const useReduxData = () => {
     shallowEqual
   );
 
-  // const selecteddelivery = useSelector((state: RootState) => state.selecteddelivery, shallowEqual);
+  //  const selecteddelivery = useSelector((state: RootState) => state.selecteddelivery, shallowEqual);
   // const userinfo = useSelector((state: RootState) => state.userdetail?.loggedinuser, shallowEqual);
   // const menuitem = useSelector((state: RootState) => state.menuitem, shallowEqual);
   // const cart = useSelector((state: RootState) => state.cart, shallowEqual);

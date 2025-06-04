@@ -1,6 +1,7 @@
 // import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
 // import { getTableDetails } from "../../redux/tableorder/tableorder.action";
 // import { leftRightArray } from "../default/helpers/utility";
+import { AllRegex, ColorStyleType, DefaultStyleType, DynamicColorObjTypes, OrderTimeTypes, OrderTypes, PromotionTypes, ThemeDefautStyle, ThemeType } from "@/types/common-types/common.types";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
@@ -14,11 +15,6 @@ export const ThemeObj = {
     tableorder: "tableorder",
     newtheme: "newtheme",
 }
-type ThemeType = {
-    name: string;
-    value: number;
-    url: string;
-};
 
 export const ThemeTypeObj: ThemeType[] = [{
     name: "default",
@@ -42,26 +38,26 @@ export const ThemeTypeObj: ThemeType[] = [{
 }
 ];
 
-export const PromotionType = {
+export const PromotionType: PromotionTypes = {
     Percentage: 1,
     Fixed: 2
 }
-export const GetThemeDetails = (value: any) => {
-    return ThemeTypeObj.find(x => x.value === value);
+export const GetThemeDetails = (value: number): ThemeType => {
+    return ThemeTypeObj.find(x => x.value === value)!;
 }
 
 // FORMATE THE NUMBER INTO THE (XXX) XXX-XXXX
-export const formatePhoneNumber = (number: string) => {
+export const formatePhoneNumber = (number: string): string => {
     let formateNumber = number.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")
     return formateNumber;
 }
 
 // UNFORMATE THE NUMBER FROM (XXX) XXX-XXXX TO XXXXXXXXXXX
-export const unFormatePhoneNumber = (number: string) => {
+export const unFormatePhoneNumber = (number: string): string => {
     let unFormatedNumber = number.replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
     return unFormatedNumber;
 }
-export const allRegex = {
+export const allRegex: AllRegex = {
     phoneRegex1: /(\(?\d{1,2})/,
     validwithFormatephoneRegex: /^(\(?\d{1,})\)?(\d{1,}?)(\-?\d{1,})$/,
     phoneRegex3: /^\($/,
@@ -72,16 +68,16 @@ export const allRegex = {
 
 }
 
-export const formatURL = (value: string) => {
+export const formatURL = (value: string): string => {
     let formattedString = value.toLowerCase().toString().replace(/[^a-zA-Z0-9]/g, " ").replace(/\s{2,}/g, ' ').replace(/ /g, "-");
     return formattedString;
 }
 
-export const formatStringToURLWithBlankSpace = (value: string) => {
+export const formatStringToURLWithBlankSpace = (value: string): string => {
     let formattedString = value.toLowerCase().toString().replace(/[^a-zA-Z0-9]/g, " ").replace(/\s{2,}/g, ' ').replace(/ /g, "");
     return formattedString;
 }
-export const getImagePath = (itemImage: string, defaultImage: string) => {
+export const getImagePath = (itemImage: string, defaultImage: string): string => {
     if (itemImage !== null && itemImage !== undefined && itemImage !== "") {
         return itemImage;
     } else {
@@ -94,7 +90,7 @@ export const getImagePath = (itemImage: string, defaultImage: string) => {
 }
 
 // DYNAMIC STYLE VARIABLE FOR CSS
-export const dynamicColorObj = {
+export const dynamicColorObj: DynamicColorObjTypes = {
     color: "--primary-color-orange",
     fontColor: "--font-color-dynamic",
     backgroundColor: "--background-color-dynamic",
@@ -120,30 +116,16 @@ export const dynamicColorObj = {
     lightGrayLabel: "--lbl_light_gray"
 }
 
-export const defaultStyle = {
+export const defaultStyle: DefaultStyleType = {
     color: '#004aad',
     categoryFontColor: '#15B392',
     categoryBackgroundColor: '#f6dd00',
-    // blueButtonBg:'#640D5F',
-    // blueButtonName:'#8FD14F',
-    // activeLabelBg:"#8B9A46",
-    // activeLabelName:"pink",
-    // deactiveButtonBg:'#FBEFEA',
-    // deactiveButtonName:"#f26004",
-    // disableButtonBg:"#F2F2F2",
-    // disableButtonName:"#0D191B",
-    // whiteLabel:'#D91656',
-    // redLabel:'#FF0000',
-    // // lbl_black:'#4C3BCF',
-    // blackLabel:'#4158A6',
-    // lightGrayLabel:'#06D001'
-    //// lbl_light_gray:'pink'
 }
 //DEFAULT COLOR ARRAY FOR DIFFRENT THEME
 
-export const handleDefaultDynamicFieldColor = (color = "#004aad", theme: string) => {
+export const handleDefaultDynamicFieldColor = (color = "#004aad", theme: string): ColorStyleType[] => {
     const defaultThemeColor = color || "#004aad"
-    const themeDetail = GetThemeDetails(theme)
+    const themeDetail = GetThemeDetails(+theme)
     let blueButtonBg = "#3A86F3";
     let activeLabelBg = "#004aad"
     //assign button color based on theme
@@ -155,7 +137,7 @@ export const handleDefaultDynamicFieldColor = (color = "#004aad", theme: string)
     }
 
     //set dynamic color
-    const colorStyleArray = [
+    const colorStyleArray: ColorStyleType[] = [
         { FieldName: "color", Color: defaultThemeColor },
         { FieldName: "blueButtonBg", Color: blueButtonBg },//set dynamic
         { FieldName: "blueButtonName", Color: "#ffffff" },
@@ -175,7 +157,7 @@ export const handleDefaultDynamicFieldColor = (color = "#004aad", theme: string)
     return colorStyleArray;
 
 }
-export const colorStyleArray = [
+export const colorStyleArray: ColorStyleType[] = [
     { FieldName: "color", Color: "#004aad" },
     { FieldName: "blueButtonBg", Color: "#640D5F" },//set dynamic
     { FieldName: "blueButtonName", Color: "#8FD14F" },//set dynamic
@@ -191,7 +173,7 @@ export const colorStyleArray = [
     { FieldName: "lightGrayLabel", Color: "#9C9C9C" }
 ]
 
-export const themeDefaultStyleArray = [{
+export const themeDefaultStyleArray: ThemeDefautStyle[] = [{
     url: "dm",
     color: "#FF7332",
     fontColor: "black",
@@ -214,7 +196,7 @@ export const themeDefaultStyleArray = [{
 ]
 
 //CHECK THE CARTITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
-export const checkCheckoutDisable = (cartdata: any, pickupordelivery: any, dtotal: any) => {
+export const checkCheckoutDisable = (cartdata: any, pickupordelivery: any, dtotal: any): boolean => {
     if (pickupordelivery === ORDERTYPE.Pickup || pickupordelivery === ORDERTYPE.Delivery) {
         let cartItems = cartdata?.cartDetails?.cartItemDetails
         let isAnyPickupItemNotAvailable = cartItems?.some((item: any) => item?.categorytakeoutavailable === false)
@@ -231,9 +213,10 @@ export const checkCheckoutDisable = (cartdata: any, pickupordelivery: any, dtota
     } else {
         return false;
     }
+    return false;
 }
 
-export const checkMenuItemTimeAvailability = (cartItems: any) => {
+export const checkMenuItemTimeAvailability = (cartItems: any):boolean => {
     return cartItems?.some((item: any) => item.availability == false);
 }
 
@@ -244,7 +227,7 @@ export const getCategoryDetailById = (categoryList: any, catId: any) => {
 }
 
 // FUNCTION CHECK THE IS MENUITEM AVAILABLE FOR THE TAKEOUT OR DELIVERY
-export const checkMenuItemAvailability = (categoryList: any, catId: any, pickupordelivery: any) => {
+export const checkMenuItemAvailability = (categoryList: any, catId: any, pickupordelivery: any):boolean => {
     if (catId === undefined || pickupordelivery === "") {
         return true;
     }
@@ -298,7 +281,7 @@ export const getAvailableCartRelativeData = (categoryList: any, pickupordelivery
 }
 
 
-export const getNameFromURL = (url: string) => {
+export const getNameFromURL = (url: string):string => {
     //create category name from category url(replace space with -)
     return url?.toLowerCase()?.toString().replace(/[^a-zA-Z0-9]/g, " ").replace(/\s{2,}/g, ' ').replace(/ /g, "-");
 }
@@ -353,7 +336,7 @@ export const orderDisable = (restaurantinfo: any, deliveryaddressinfo: any, rest
 
 }
 
-export const checkCategoryExist = (categoryList: any, url: string) => {
+export const checkCategoryExist = (categoryList: any, url: string):boolean => {
     if ((categoryList.some((item: any) => item.categoryslug === url))) {
         return true;
     } else {
@@ -448,7 +431,7 @@ export const onLoadSetDefaultFlag = (defaultflag: any, countryList: any, locatio
     }
 }
 
-export const ORDER_TYPE = {
+export const ORDER_TYPE:OrderTypes = {
     PICKUP: {
         text: "Pickup",
         value: 1
@@ -459,7 +442,7 @@ export const ORDER_TYPE = {
     }
 }
 
-export const ORDER_TIME_TYPE = {
+export const ORDER_TIME_TYPE:OrderTimeTypes = {
     ASAP: {
         text: "Asap",
         value: 1
@@ -470,11 +453,11 @@ export const ORDER_TIME_TYPE = {
     }
 }
 
-// export const getOrderTimeType = (text: any) => {
-//     return ORDER_TIME_TYPE.find((item: any) => item.text === text)
-// }
+export const getOrderTimeType = (text: string) => {
+    return Object.values(ORDER_TIME_TYPE).find(item => item.text === text);
+};
 
-export const getOrderType = (value: any) => {
+export const getOrderType = (value: string) => {
     let orderTypeArray = [{
         name: "Pickup",
         value: 1

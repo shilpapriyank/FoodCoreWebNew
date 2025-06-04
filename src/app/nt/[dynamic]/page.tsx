@@ -4,9 +4,9 @@
 
 import React, { useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { ThemeType } from "@/components/default/common/dominos/helpers/types/utility-type";
 import { GetThemeDetails, ThemeObj } from "@/components/common/utility";
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 
 interface Location {
   locationURL: string;
@@ -31,6 +31,8 @@ const Page: React.FC = () => {
   };
 
   useEffect(() => {
+    // console.log("Dynamic segment:", dynamic);
+    let routepath = "";
     if (!dynamic || !restaurantinfo) return;
 
     const selectedTheme: ThemeType | undefined = GetThemeDetails(
@@ -38,9 +40,6 @@ const Page: React.FC = () => {
     );
 
     if (!selectedTheme) return;
-
-    let routepath = "";
-
     if (selectedTheme.name === ThemeObj.dominos) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
     } else if (selectedTheme.name === ThemeObj.default) {
@@ -48,11 +47,17 @@ const Page: React.FC = () => {
     } else if (selectedTheme.name === ThemeObj.newtheme) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
     }
-
     router.push(routepath);
-  }, [dynamic, restaurantinfo, router]);
+    //dispatch(ChangeUrl(true))
+    return;
+  }, [])
 
-  return <div className="spinner-border text-info" role="status"></div>;
-};
+  return (
+    <>
+      <div className="spinner-border text-info" role="status">
+      </div>
+    </>
+  )
+}
 
 export default Page;

@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LocationServices } from "../locations/location.service";
+import { LocationServices } from "../location/location.service";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
 import { RestaurantsServices } from "./restaurants.services";
+
+//import { RestaurantsServices } from "./restaurants.service";
 
 interface Restaurant {
   id: number;

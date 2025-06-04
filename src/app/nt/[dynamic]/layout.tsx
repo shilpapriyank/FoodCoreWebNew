@@ -1,32 +1,23 @@
-// src/app/(restaurant)/layout.tsx
-"use client";
+import Footer from '@/components/nt/layout/footer/footer.component';
+import Header from '@/components/nt/layout/page';
+import React, { ReactNode } from 'react';
 
-import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
-import React from "react";
-
-interface LoadRestaurantProps {
-  children: React.ReactNode;
-  params: {
-    restaurantURL: string;
-    locationURL: string;
-    defaultLocationId: number;
-  };
+interface LayoutProps {
+    children: ReactNode;
+    handleChangeAddress?: () => void;
+    page?: string;
 }
 
-export default function RestaurantLayoutDynamic({
-  children,
-  params,
-}: LoadRestaurantProps) {
-  const { restaurantURL, locationURL, defaultLocationId } = params;
-  console.log("this is nt/dynamic call", params.restaurantURL);
+const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
+        console.log("Dynamic segment:", 'test');
 
-  return (
-    <LoadRestaurant
-      restaurantURL={restaurantURL}
-      locationURL={locationURL}
-      defaultLocationId={defaultLocationId}
-    >
-      {children}
-    </LoadRestaurant>
-  );
-}
+    return (
+        <>
+            <Header handleChangeAddress={handleChangeAddress} page={page} />
+            {children}
+            <Footer />
+        </>
+    );
+};
+
+export default Layout;
