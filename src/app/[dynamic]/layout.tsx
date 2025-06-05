@@ -12,7 +12,12 @@ interface LoadRestaurantProps {
     defaultLocationId: number;
   };
 }
-
+import type { Metadata } from 'next'
+ 
+ const metadata: Metadata = {
+  title: 'My Blog',
+  description: '...',
+}
 export default function RestaurantLayout({
   children,
   params,
