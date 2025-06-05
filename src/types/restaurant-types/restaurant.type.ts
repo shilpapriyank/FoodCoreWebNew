@@ -5,4 +5,6 @@ export type DefaultLocation = {
 export type RestaurantDetail = {
   themetype?: string;
   defaultLocation?: DefaultLocation;
+   restaurantId?: number;
+  IsAddressMandatoryForRegister?: boolean;
 };

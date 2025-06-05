@@ -9,7 +9,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
-        console.log("Dynamic segment:", 'test');
+    console.log("dynamic segment:", "test")
 
     return (
         <>
