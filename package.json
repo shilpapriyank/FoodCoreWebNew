@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev:local": " env-cmd -f env/.env.local next dev",
+    "dev:dev": " env-cmd -f env/.env.development next dev",
+    "dev:prod": "env-cmd -f env/.env.production next dev",
+    "build:local": "env-cmd -f env/.env.local next build",
+    "build:dev": "env-cmd -f env/.env.development next build",
+    "build:prod": "env-cmd -f env/.env.production next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -47,6 +51,7 @@
     "@types/redux-logger": "^3.0.13",
     "@types/redux-persist": "^4.0.0",
     "@types/redux-thunk": "^2.1.32",
+    "env-cmd": "^10.1.0",
     "typescript": "^5"
   }
 }
