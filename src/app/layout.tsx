@@ -12,7 +12,7 @@ import { getCookie, setCookie } from "cookies-next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ErrorBoundary } from "react-error-boundary";
-import { useEffect, useState } from "react";
+import { cache, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";
 // import en from "./lang/en.json";
@@ -21,6 +21,7 @@ import { IntlProvider } from "react-intl";
 import { usePathname } from "next/navigation";
 import { ThemeObj } from "../components/default/common/dominos/helpers/utility";
 import { store } from "../../redux/store";
+import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
 
 const clairtyCode = `(function (c,l,a,r,i,t,y){
   c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -124,8 +125,11 @@ function LoadTableOrderScript() {
     </>
   );
 }
+export const getCachedRestaurantData = cache(async (slug: string) => {
+  return RestaurantsServices.getRestaurantThemeType(slug);
+});
+export default async function RootLayout({ children }: { children: ReactNode }) {
 
-export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
