@@ -6,7 +6,6 @@ import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 let responseclass = new ResponseModel();
 
 export class RestaurantsServices {
-
   static async getRestaurantsList(
     restauranturl: string,
     locationurl: string,
@@ -20,8 +19,8 @@ export class RestaurantsServices {
       restaurantDetailRequest: {
         restaurantURL: restauranturl,
         defaultLocationId: defaultLocationId,
-        locationURL: locationurl
-      }
+        locationURL: locationurl,
+      },
     };
     responseclass = await handleAxiosPostAsync(
       data,
@@ -36,8 +35,7 @@ export class RestaurantsServices {
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
       return responseclass.result;
-    }
-    else {
+    } else {
       return [];
     }
   }
@@ -46,8 +44,17 @@ export class RestaurantsServices {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantLocationList";
     const location = ENDPOINTS.GET_RESTAURANT_LOCATIONS_LIST;
-    responseclass = await handleAxiosPostAsync(null, location, methodName, false, 0);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      null,
+      location,
+      methodName,
+      false,
+      0
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return [];
@@ -69,8 +76,17 @@ export class RestaurantsServices {
         locationId,
       },
     };
-    responseclass = await handleAxiosPostAsync(data, restaurantbannerurl, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      restaurantbannerurl,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return [];
@@ -86,15 +102,27 @@ export class RestaurantsServices {
         restaurantURL: restauranturl,
       },
     };
-    responseclass = await handleAxiosPostAsync(data, themetypeurl, methodName, false, 0);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      themetypeurl,
+      methodName,
+      false,
+      0
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return null;
     }
   }
 
-  static async getPageContentRestaurant(pageName: string, restaurantId: number): Promise<any> {
+  static async getPageContentRestaurant(
+    pageName: string,
+    restaurantId: number
+  ): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "getPageContentRestaurant";
     const getPageContent = ENDPOINTS.GET_PAGE_CONTENT_RESTAURANT;
@@ -104,30 +132,52 @@ export class RestaurantsServices {
         restaurantId,
       },
     };
-    responseclass = await handleAxiosPostAsync(data, getPageContent, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      getPageContent,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return null;
     }
   }
 
-  static async getMetadataDetails(metaDataObj: Record<string, any>): Promise<any> {
+  static async getMetadataDetails(
+    metaDataObj: Record<string, any>
+  ): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "getMetadataDetails";
     const getMetaDataDetail = ENDPOINTS.GET_METADATA_DETAILS;
     const data = {
       seoDetailRequest: metaDataObj,
     };
-    responseclass = await handleAxiosPostAsync(data, getMetaDataDetail, methodName, false);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      getMetaDataDetail,
+      methodName,
+      false
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return null;
     }
   }
 
-  static async getCurrentTime(restaurantId: number, locationId: number): Promise<any> {
+  static async getCurrentTime(
+    restaurantId: number,
+    locationId: number
+  ): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "getCurrentTime";
     const getCurrentTime = ENDPOINTS.GET_CURRENT_TIME;
@@ -136,8 +186,17 @@ export class RestaurantsServices {
       restaurantId,
       locationId,
     };
-    responseclass = await handleAxiosPostAsync(data, getCurrentTime, methodName, true, restaurantId);
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    responseclass = await handleAxiosPostAsync(
+      data,
+      getCurrentTime,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return null;

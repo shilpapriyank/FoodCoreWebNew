@@ -5,7 +5,11 @@ import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
-  const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
+  const restaurantinfo = useSelector(
+    (state: RootState) => state.restaurant?.restaurantsdetail,
+    shallowEqual
+  );
+  // const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
   const selecteddelivery = useSelector((state: RootState) => state.deliveryAddress, shallowEqual);
 
   const userinfo = useSelector((state: RootState) => state.userdetail?.loggedinuser, shallowEqual);
@@ -24,8 +28,14 @@ export const useReduxData = () => {
   const restauranttiming = useSelector((state: RootState) => state.restaurant.restaurantstiminglist);
   // const sessionid = useSelector((state: RootState) => state.session?.sessionid);
   // const addressList = useSelector((state: RootState) => state.restaurant?.restaurantslocationlist?.addressList);
-  const restaurantlocation = useSelector((state: RootState) => state.restaurant?.restaurantslocationlist);
-  const defaultLocation = useSelector((state: RootState) => state.restaurant.restaurantdetail?.defaultLocation);
+  const restaurantlocation = useSelector(
+    (state: RootState) => state.restaurant?.restaurantslocationlist
+  );
+  // const defaultLocation = useSelector(
+  //   (state: RootState) => state.restaurant.restaurantsdetail?.defaultLocation
+  // );
+  // const restaurantlocation = useSelector((state: RootState) => state.restaurant?.restaurantslocationlist);
+  // const defaultLocation = useSelector((state: RootState) => state.restaurant.restaurantdetail?.defaultLocation);
   // const tableorder = useSelector((state: RootState) => state.tableorder, shallowEqual);
   const categoryItemsList = useSelector((state: RootState) => state.category?.categoryitemlist, shallowEqual);
   // const maincategoryList = useSelector((state: RootState) => state.main?.maincategoryList, shallowEqual);
@@ -73,7 +83,7 @@ export const useReduxData = () => {
     // sessionid,
     // addressList,
     restaurantlocation,
-    defaultLocation,
+    // defaultLocation,
     // recievingTime,
     // meredian,
     // recievingDate,
