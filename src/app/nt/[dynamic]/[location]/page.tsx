@@ -1,54 +1,55 @@
-"use client";
+// "use client";
 
-import { useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-import Footer from "@/components/nt/layout/footer/footer.component";
+// import { useEffect } from "react";
+// import { useRouter, useParams } from "next/navigation";
+// import Footer from "@/components/nt/layout/footer/footer.component";
 
-export default function LocationPage() {
-  const router = useRouter();
-  const params = useParams();
+// export default function LocationPage() {
+//   const router = useRouter();
+//   const params = useParams();
 
-  // useEffect(() => {
-  //   const theme = params?.dynamic;
-  //   const location = params?.location;
+//   // useEffect(() => {
+//   //   const theme = params?.dynamic;
+//   //   const location = params?.location;
 
-  //   if (theme && location) {
-  //     router.push(`/nt/${theme}/${location}`);
-  //   }
-  // }, []);
+//   //   if (theme && location) {
+//   //     router.push(`/nt/${theme}/${location}`);
+//   //   }
+//   // }, []);
 
-  return (
-    <div>
-      this is nt/fc/location page...
-      <Footer />
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       this is nt/fc/location page...
+//       <Footer />
+//     </div>
+//   );
+// }
 
 // 'use client';
 
 // import React, { useCallback, useEffect, useState } from 'react'
 // import { useDispatch } from 'react-redux'
-// import { useReduxData } from '../../../../components/customhooks/useredux-data-hook';
-// import { setpickupordelivery } from '../../../../redux/selected-delivery-data/selecteddelivery.action';
+// import { setpickupordelivery } from '../../../../../redux/selected-delivery-data/selecteddelivery.slice';
 // import LoadLocationDirectComponent from '../../../../components/nt/common/loadlocation-direct.component';
 // import CategoryMenuItems from '../../../../components/nt/category/category-menuitems/category-menuItems.component';
 // import { useRouter } from 'next/navigation';
 // import CategoryHeader from '../../../../components/nt/category/category-header/category-header';
-// import { OrderTypes } from '../../../../redux/order/order.types';
-// import { isasap } from '../../../../redux/order/order.action';
+// import { isasap } from "../../../../../redux/order/order.slice";
 // import { OrderServices } from '../../../../redux/order/order.services';
 // import { useSearchData } from '../../../../components/customhooks/usesearchdata-hook';
 // import SearchBarComponent from '../../../../components/nt/category/category-menuitems/search-bar.component';
 // import useUtility from '../../../../components/customhooks/utility-hook';
 // import { ORDER_TYPE } from '@/components/common/utility';
 // import Layout from '../layout';
+// import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
+// import { OrderTypes } from '../../../../../redux/order/order.type';
+
 
 // const Page = () => {
 //   const dispatch = useDispatch();
 //   const { selecteddelivery, restaurantinfo, menuitem, categoryItemsList, userinfo, order } = useReduxData();
 //   const [isloadAdress, setisloadAdress] = useState(true)
-//   const b2b = restaurantinfo?.defaultLocation?.b2btype
+//   const b2b = (restaurantinfo?.defaultLocation as any)?.b2btype;
 //   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
 //   const searchdata = menuitem?.searchdata
 //   const searchtext = menuitem?.searchtext
@@ -56,6 +57,7 @@ export default function LocationPage() {
 //   const { filterCategory } = useUtility()
 //   let pickupordelivery = selecteddelivery.pickupordelivery;
 //   let menuItemsWithCat = filterCategory(searchtext !== "" ? searchdata?.menuItems : categoryItemsList, pickupordelivery);
+
 //   useEffect(() => {
 //     if (selecteddelivery?.pickupordelivery === null || Object.keys(selecteddelivery?.pickupordelivery).length === 0 || selecteddelivery?.pickupordelivery === '') {
 //       dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
@@ -108,3 +110,30 @@ export default function LocationPage() {
 // }
 
 // export default Page
+
+"use client";
+
+import { useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Footer from "@/components/nt/layout/footer/footer.component";
+
+export default function LocationPage() {
+  const router = useRouter();
+  const params = useParams();
+
+  useEffect(() => {
+    const theme = params?.dynamic;
+    const location = params?.location;
+
+    if (theme && location) {
+      router.push(`/nt/${theme}/${location}`);
+    }
+  }, []);
+
+  return (
+    <div>
+      this is nt/fc/location page...
+      <Footer />
+    </div>
+  );
+}

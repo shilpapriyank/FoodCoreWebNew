@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LocationServices } from "../location/location.service";
+import { LocationServices } from "../location/location.services";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
 import { RestaurantsServices } from "./restaurants.services";
 
@@ -20,6 +20,14 @@ import { RestaurantsServices } from "./restaurants.services";
 //     // Add more fields
 //   };
 // }
+interface RestaurantDetail {
+  id: number;
+  name: string;
+  defaultLocation?: {
+    displaylistview?: string;
+  }
+   isSchoolProgramEnabled?: boolean;
+}
 
 // interface BannerDetail {
 //   image: string;
