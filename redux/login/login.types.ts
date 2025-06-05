@@ -12,3 +12,11 @@ export interface LoginParams {
   dialCode: string;
   locationid: number;
 }
+
+export interface LoggedInUser {
+  [key: string]: any;
+}
+
+export interface LoginState {
+  loggedinuser: LoggedInUser | null;
+}

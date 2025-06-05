@@ -14,9 +14,9 @@ export class LoginServices {
     dialCode,
     locationid,
   }: {
-    username: string;
+     username: string;
     password: string;
-    restaurantId: number;
+    restaurantId: any;
     dialCode: string;
     locationid: number;
   }): Promise<ResponseModel | any> {
@@ -51,7 +51,7 @@ export class LoginServices {
   }
 
   static async getCustomerDetails(
-    restaurantId: number,
+    restaurantId: any,
     customerId: number,
     locationId: number
   ): Promise<any> {

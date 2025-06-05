@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { ResponseModel } from "@/components/common/commonclass";
-import { RegisterServices } from "./register.service";
+import { RegisterServices } from "./register.services";
 
 export interface RegisterModel {
   firstname: string;

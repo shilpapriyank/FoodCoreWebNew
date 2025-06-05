@@ -1,0 +1,6 @@
+export const RewardPointTypes = {
+    INITIAL_REWARD_POINT: "INITIAL_REWARD_POINT",
+    SET_REWARD_POINT: "SET_REWARD_POINT",
+    CLEAR_REEDEM_POINT: "CLEAR_REEDEM_POINT"
+
+} as const;
