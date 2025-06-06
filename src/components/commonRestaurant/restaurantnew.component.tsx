@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useEffect, useState, ReactNode } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import dynamic from "next/dynamic";
 import { useDispatch } from "react-redux";
 import {
@@ -55,7 +60,7 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  const params = useParams();
   // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const [loadrestaurant, setLoadrestaurant] = useState(false);
@@ -74,14 +79,9 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
     restaurant.restaurantslocationlistwithtime;
   const appVersion = restaurant?.appversion;
   const categoryitemlist = category.categoryitemlist;
-  //const sessionId = sessionid;
-  // const dynamic = params.dynamic as string | undefined;
-  // const location = params.location as string | undefined;
-
-  // const { dynamic, location } = query;
-  const dynamic = searchParams.get("dynamic");
-  const location = searchParams.get("location");
-
+  const dynamic = params.dynamic;
+  const location = params.location;
+  debugger;
   const seoDefaultData = {
     title: `Online Ordering || ${
       metaDataRestaurant?.restaurantname ?? restaurantinfo?.restaurantname
@@ -92,8 +92,8 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
     //url: `${getorigin()}${asPath}`,
   };
 
-  const isGetSeo =
-    pathname.includes("[category]") || pathname.includes("[items]");
+  // const isGetSeo =
+  //   pathname.includes("[category]") || pathname.includes("[items]");
 
   const handleSetThemeStyleDynamic = (newselectedRestaurant: any) => {
     const colorStyleArray = handleDefaultDynamicFieldColor(
@@ -113,85 +113,47 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
     }
   };
 
+  // const handleValidResponse = async (response: any, dynamic: string) => {
+  //   const restaurantId = getRestaurantIdFromStorage();
+  //   console.log("restaurant Id from Restaurant new", restaurantId);
+  //   const newselectedRestaurant = response[0];
+  //   console.log("new selected restaurant", newselectedRestaurant);
+
+  //   handleSetThemeStyleDynamic(newselectedRestaurant);
+
+  //   const isSameRestaurant =
+  //     newselectedRestaurant.restaurantId === restaurantId;
+
+  //   const locationId =
+  //     newselectedRestaurant.defaultlocationId ||
+  //     newselectedRestaurant?.defaultLocation?.locationId;
+
+  //   setLocationIdInStorage(locationId);
+  //   setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
+  //   setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
+  //   dispatch(restaurantsdetail(newselectedRestaurant));
+
+  //   // ✅ Set selectedRestaurant in local state
+  //   setSelectedRestaurant(newselectedRestaurant);
+
+  //   // ✅ Set this only after dispatch, to allow rendering
+  //   setLoadrestaurant(true);
+  // };
+
   const handleValidResponse = async (response: any, dynamic: string) => {
-    const restaurantId = getRestaurantIdFromStorage();
     const newselectedRestaurant = response[0];
 
-    if (newselectedRestaurant?.defaultLocation === null) {
-      handleSetThemeStyleDynamic(newselectedRestaurant);
-      const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
-      setthemeUrl(selectedTheme.url);
-      dispatch(restaurantsdetail(newselectedRestaurant));
-      router.push(`/${selectedTheme.url}/${dynamic}/${PAGES.REST_CLOSE}`);
-      setisResturantClose(true);
-    } else {
-      handleSetThemeStyleDynamic(newselectedRestaurant);
-      const isSameRestaurant =
-        newselectedRestaurant.restaurantId === restaurantId;
+    const locationId =
+      newselectedRestaurant.defaultlocationId ||
+      newselectedRestaurant?.defaultLocation?.locationId;
 
-      // if (!isSameRestaurant) {
-      // dispatch(clearRedux(true));
-      // dispatch(
-      //   setrewardpoint({
-      //     rewardvalue: 0,
-      //     rewardamount: 0,
-      //     rewardPoint: 0,
-      //     totalRewardPoints: 0,
-      //     redeemPoint: 0,
-      //   })
-      // );
-      //dispatch(logout());
-      //dispatch(createSessionId(uuidv4()));
-      // } else if (!sessionId) {
-      //   //dispatch(createSessionId(uuidv4()));
-      // }
+    setLocationIdInStorage(locationId);
+    setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
+    setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
 
-      const locationId =
-        newselectedRestaurant.defaultlocationId ||
-        newselectedRestaurant?.defaultLocation?.locationId;
-      console.log("location id from restaurant new", locationId);
-      setLocationIdInStorage(locationId);
-      setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
-      setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
-      // const path = asPath.split("/");
-      const pathname = usePathname();
-      const path = pathname.split("/");
-      const tableOrderTheme = GetThemeDetails(201);
-      const isTableOrderTheme = path.includes(tableOrderTheme.url);
-
-      // const loadCat = await loadCatData(
-      //   newselectedRestaurant,
-      //   isTableOrderTheme,
-      //   categoryitemlist
-      // );
-
-      // if (loadCat) {
-      //   if (isTableOrderTheme) {
-      //     newselectedRestaurant.themetype = tableOrderTheme.value;
-      //   }
-      //   dispatch(restaurantsdetail(newselectedRestaurant));
-      //   dispatch(
-      //     getSelectedRestaurantTime(
-      //       newselectedRestaurant.restaurantId,
-      //       newselectedRestaurant.defaultlocationId
-      //     )
-      //   );
-      //   setSelectedRestaurant(newselectedRestaurant);
-
-      //   if (cart?.cartitemdetail?.cartDetails?.cartItemDetails?.[0]) {
-      //     const cartItem = cart.cartitemdetail.cartDetails.cartItemDetails[0];
-      //     if (
-      //       cartItem.restaurantId !== newselectedRestaurant.restaurantId &&
-      //       cartItem.locationid !==
-      //         newselectedRestaurant.defaultLocation.locationId
-      //     ) {
-      //       dispatch(emptycart());
-      //     }
-      //   }
-
-      //   setLoadrestaurant(true);
-      // }
-    }
+    dispatch(restaurantsdetail(newselectedRestaurant));
+    setSelectedRestaurant(newselectedRestaurant);
+    setLoadrestaurant(true);
   };
 
   const handleInvalidRestaurant = (themetype: any) => {
@@ -213,31 +175,35 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   // }, []);
 
   useEffect(() => {
-    if (pathname !== "/home" && !pathname.includes(ThemeObj.FD123456)) {
-      if (dynamic && typeof dynamic === "string") {
-        const restauranturl = dynamic.toLowerCase().replace(/ /g, "-");
-        const locationurl =
-          location?.toString().toLowerCase().replace(/ /g, "-") || "";
-        const defaultlocationId = getLocationIdFromStorage();
+    console.log("Redux restaurant state:", restaurant.restaurantdetail);
+  }, [restaurant.restaurantdetail]);
 
-        RestaurantsServices.getRestaurantsList(
-          restauranturl,
-          locationurl,
-          defaultlocationId
-        ).then((response) => {
-          if (response.length > 0) {
-            handleValidResponse(response, dynamic);
-          } else {
-            handleInvalidRestaurant(themetype);
-          }
-        });
-      }
-    }
+  // useEffect(() => {
+  //   if (pathname !== "/home" && !pathname.includes(ThemeObj.FD123456)) {
+  //     if (dynamic && typeof dynamic === "string") {
+  //       const restauranturl = dynamic.toLowerCase().replace(/ /g, "-");
+  //       const locationurl =
+  //         location?.toString().toLowerCase().replace(/ /g, "-") || "";
+  //       const defaultlocationId = getLocationIdFromStorage();
 
-    if (pathname.includes(ThemeObj.FD123456)) {
-      setloadPaymentScreen(true);
-    }
-  }, [dynamic]);
+  //       RestaurantsServices.getRestaurantsList(
+  //         restauranturl,
+  //         locationurl,
+  //         defaultlocationId
+  //       ).then((response) => {
+  //         if (response.length > 0) {
+  //           handleValidResponse(response, dynamic);
+  //         } else {
+  //           handleInvalidRestaurant(themetype);
+  //         }
+  //       });
+  //     }
+  //   }
+
+  //   if (pathname.includes(ThemeObj.FD123456)) {
+  //     setloadPaymentScreen(true);
+  //   }
+  // }, [dynamic]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -245,7 +211,7 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
         setLoadrestaurant(false);
         const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
         let getResponse;
-
+        console.log("selected theme", selectedTheme);
         if (selectedTheme.name === ThemeObj.default) {
           getResponse = await restaurantsLocation(restaurantinfo?.restaurantId);
           dispatch({
@@ -334,6 +300,26 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
       dispatch(setAppVersion(getVersion()));
     }
   }, [appVersion]);
+
+  useEffect(() => {
+    if (!dynamic || typeof dynamic !== "string") return;
+
+    const restauranturl = dynamic.toLowerCase().replace(/ /g, "-");
+    const locationurl =
+      location?.toString().toLowerCase().replace(/ /g, "-") || "";
+    const defaultlocationId = getLocationIdFromStorage();
+    RestaurantsServices.getRestaurantsList(
+      restauranturl,
+      locationurl,
+      defaultlocationId
+    ).then((response) => {
+      if (response.length > 0) {
+        handleValidResponse(response, dynamic);
+      } else {
+        handleInvalidRestaurant(themetype);
+      }
+    });
+  }, [dynamic, location]);
 
   return (
     <>

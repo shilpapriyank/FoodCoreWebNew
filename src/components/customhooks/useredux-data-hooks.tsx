@@ -5,16 +5,6 @@ import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
-  // const restaurantinfo = useSelector(
-  //   (state: RootState) => state.restaurant?.restaurantdetail,
-  //   shallowEqual
-  // );
-  // // const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
-  // const selecteddelivery = useSelector(
-  //   (state: RootState) => state.deliveryAddress,
-  //   shallowEqual
-  // );
-
   // const userinfo = useSelector(
   //   (state: RootState) => state.userdetail?.loggedinuser,
   //   shallowEqual
@@ -47,7 +37,7 @@ export const useReduxData = () => {
     shallowEqual
   );
   // const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
-  // const main = useSelector((state: RootState) => state.main, shallowEqual);
+  //const main = useSelector((state: RootState) => state.main, shallowEqual);
   // const metadata = useSelector((state: RootState) => state.metadata, shallowEqual);
   const order = useSelector((state: RootState) => state.order, shallowEqual);
   const restaurant = useSelector(
@@ -66,10 +56,10 @@ export const useReduxData = () => {
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
   );
-  // const defaultLocation = useSelector(
-  //   (state: RootState) => state.restaurant.restaurantsdetail?.defaultLocation
-  // );
-  // const restaurantlocation = useSelector((state: RootState) => state.restaurant?.restaurantslocationlist);
+  const defaultLocation = useSelector(
+    (state: RootState) => state.restaurant.restaurantdetail?.defaultLocation
+  );
+
   // const defaultLocation = useSelector((state: RootState) => state.restaurant.restaurantdetail?.defaultLocation);
   // const tableorder = useSelector((state: RootState) => state.tableorder, shallowEqual);
   const categoryItemsList = useSelector(
@@ -121,7 +111,7 @@ export const useReduxData = () => {
     // sessionid,
     // addressList,
     restaurantlocation,
-    // defaultLocation,
+    defaultLocation,
     // recievingTime,
     // meredian,
     // recievingDate,
