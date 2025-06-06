@@ -1,13 +1,13 @@
 // 'use client'
-import { Metadata } from 'next';
-import React, { ReactNode } from 'react'
+import { Metadata } from "next";
+import React, { ReactNode } from "react";
 interface LayoutProps {
   children: ReactNode;
   handleChangeAddress?: () => void;
   page?: string;
 }
 // app/layout.tsx
-export const metadata:Metadata = {
+export const metadata: Metadata = {
   title: "My Food App | Home",
   description: "Order your favorite food online from My Food App.",
   keywords: ["food", "delivery", "online order", "restaurant"],
@@ -37,12 +37,12 @@ export const metadata:Metadata = {
   },
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
-  return (
-    <div>
-      {children}
-    </div>
-  )
-}
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  handleChangeAddress,
+  page,
+}) => {
+  return <div>{children}</div>;
+};
 
-export default Layout
+export default Layout;
