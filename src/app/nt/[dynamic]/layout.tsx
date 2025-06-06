@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/components/nt/layout/footer/footer.component";
-import Header from "@/components/nt/layout/page";
+import Header from "@/components/nt/layout/header/page";
 import React, { ReactNode } from "react";
 
 interface LayoutProps {

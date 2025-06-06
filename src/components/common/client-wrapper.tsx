@@ -1,3 +1,13 @@
+// 'use client'
+// import dynamic from 'next/dynamic';
+// import React, { FC, ReactNode, useEffect, useState } from 'react'
+// const ClientProviders = dynamic(() => import('@/components/common/client-providers'), {
+//   ssr: false,
+// });
+// const ClientWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+//   const [hasMounted, setHasMounted] = useState(false);
+//   useEffect(() => {
+
 "use client";
 import dynamic from "next/dynamic";
 import React, { FC, ReactNode, useEffect, useState } from "react";
@@ -17,7 +27,7 @@ const ClientWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   if (!hasMounted) return null;
   return (
     <>
-      <h1>tets</h1>
+      <h1>test</h1>
       <ClientProviders>{children}</ClientProviders>
     </>
   );
