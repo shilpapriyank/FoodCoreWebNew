@@ -50,11 +50,13 @@ const Page: React.FC = () => {
     router.push(routepath);
     //dispatch(ChangeUrl(true))
     return;
-  }, []);
+  }, [])
 
   return (
     <>
-      <div className="spinner-border text-info" role="status"></div>
+      <div className="spinner-border text-info" role="status">
+        <h1>test</h1>
+      </div>
     </>
   );
 };

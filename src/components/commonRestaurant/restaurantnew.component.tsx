@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, ReactNode } from "react";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useDispatch } from "react-redux";
 import {
@@ -51,7 +51,11 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   const { restaurant, category, userinfo, order } = useReduxData();
   const customerId = userinfo ? userinfo.customerId : 0;
   //const { loadCatData } = useLoadCatData(customerId);
-  const { query, pathname, asPath, push } = useRouter();
+  // const { query, pathname, asPath, push } = useRouter();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const [loadrestaurant, setLoadrestaurant] = useState(false);
@@ -72,15 +76,17 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   const categoryitemlist = category.categoryitemlist;
   //const sessionId = sessionid;
 
-  const { dynamic, location } = query;
+  // const { dynamic, location } = query;
+  const dynamic = searchParams.get("dynamic");
+  const location = searchParams.get("location");
+
 
   const seoDefaultData = {
-    title: `Online Ordering || ${
-      metaDataRestaurant?.restaurantname ?? restaurantinfo?.restaurantname
-    }`,
+    title: `Online Ordering || ${metaDataRestaurant?.restaurantname ?? restaurantinfo?.restaurantname
+      }`,
     description: "Online Ordering",
     image: metaDataRestaurant?.imageurl ?? restaurantinfo?.logo,
-    url: `${getorigin()}${asPath}`,
+    //url: `${getorigin()}${asPath}`,
   };
 
   const isGetSeo =
@@ -113,7 +119,7 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
       const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
       setthemeUrl(selectedTheme.url);
       dispatch(restaurantsdetail(newselectedRestaurant));
-      push(`/${selectedTheme.url}/${dynamic}/${PAGES.REST_CLOSE}`);
+      router.push(`/${selectedTheme.url}/${dynamic}/${PAGES.REST_CLOSE}`);
       setisResturantClose(true);
     } else {
       handleSetThemeStyleDynamic(newselectedRestaurant);
@@ -144,7 +150,9 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
       setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
       setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
 
-      const path = asPath.split("/");
+      // const path = asPath.split("/");
+      const pathname = usePathname();
+      const path = pathname.split('/');
       const tableOrderTheme = GetThemeDetails(201);
       const isTableOrderTheme = path.includes(tableOrderTheme.url);
 
