@@ -51,10 +51,11 @@ const Page: React.FC = () => {
     //dispatch(ChangeUrl(true))
     return;
   }, [])
-
+debugger
   return (
     <>
       <div className="spinner-border text-info" role="status">
+        <h1>test</h1>
       </div>
     </>
   )

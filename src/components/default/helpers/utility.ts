@@ -51,11 +51,11 @@ export const handleAxiosPostAsync = async (
 
     await errorLog(error, requestModel, methodName, requestUrl);
 
-    handleNotify(
-      ERRORMESSAGE.TRYAGAIN,
-      ToasterPositions.TopRight,
-      ToasterTypes.Error
-    );
+    // handleNotify(
+    //   ERRORMESSAGE.TRYAGAIN,
+    //   ToasterPositions.TopRight,
+    //   ToasterTypes.Error
+    // );
   }
 
   return responseClass;

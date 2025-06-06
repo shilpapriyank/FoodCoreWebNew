@@ -22,6 +22,7 @@ export default function RestaurantLayout({
   children,
   params,
 }: LoadRestaurantProps) {
+  debugger
   const { restaurantURL, locationURL, defaultLocationId } = params;
   console.log("restaurant url from [dynamic]/layout", restaurantURL);
   console.log("locationURL url from [dynamic]/layout", locationURL);
