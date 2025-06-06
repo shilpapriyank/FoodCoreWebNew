@@ -1,7 +1,8 @@
-"use client";
+//"use client";
 
 import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
 import React from "react";
+import RestaurantNew from "../../components/commonRestaurant/restaurantnew.component";
 
 interface LoadRestaurantProps {
   children: React.ReactNode;
@@ -17,16 +18,17 @@ export default function RestaurantLayout({
   params,
 }: LoadRestaurantProps) {
   const { restaurantURL, locationURL, defaultLocationId } = params;
-  console.log('restaurant url from (restaurant) layout', restaurantURL)
-   console.log('locationURL from (restaurant) layout', locationURL)
-    console.log('defaultLocationId from (restaurant) layout', defaultLocationId)
+  // console.log("restaurant url from (restaurant) layout", restaurantURL);
+  // console.log("locationURL from (restaurant) layout", locationURL);
+  // console.log("defaultLocationId from (restaurant) layout", defaultLocationId);
   return (
-    <LoadRestaurant
-      restaurantURL={restaurantURL}
-      locationURL={locationURL}
-      defaultLocationId={defaultLocationId}
-    >
-      {children}
-    </LoadRestaurant>
+    // <LoadRestaurant
+    //   restaurantURL={restaurantURL}
+    //   locationURL={locationURL}
+    //   defaultLocationId={defaultLocationId}
+    // >
+    //   {children}
+    // </LoadRestaurant>
+    <RestaurantNew>{children}</RestaurantNew>
   );
 }

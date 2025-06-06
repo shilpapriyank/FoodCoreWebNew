@@ -746,22 +746,20 @@ export const handleSetDeliveryTypeError = (
 //     return placeOrder;
 // }
 
-// export const clearCache = () => {
-//     let isRefresh = false;
-//     if ('caches' in window) {
-//         caches?.keys().then((names) => {
-//             names?.forEach(name => {
-//                 caches.delete(name);
-//                 isRefresh = true;
-//             })
-//             // window.location.reload(true);
-//         });
-//     }
-//     if (isRefresh)
-//         window.location.reload(true);
-//     // makes sure the page reloads. changes are only visible after you refresh.
-
-// }
+export const clearCache = () => {
+  let isRefresh = false;
+  if ("caches" in window) {
+    caches?.keys().then((names) => {
+      names?.forEach((name) => {
+        caches.delete(name);
+        isRefresh = true;
+      });
+      // window.location.reload(true);
+    });
+  }
+  if (isRefresh) window.location.reload();
+  // makes sure the page reloads. changes are only visible after you refresh.
+};
 
 export const DELIVERYSERVICES = {
   DEFAULT: 0,

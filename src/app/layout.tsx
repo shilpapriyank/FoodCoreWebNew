@@ -128,8 +128,11 @@ function LoadTableOrderScript() {
 export const getCachedRestaurantData = cache(async (slug: string) => {
   return RestaurantsServices.getRestaurantThemeType(slug);
 });
-export default async function RootLayout({ children }: { children: ReactNode }) {
-
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
@@ -308,4 +311,3 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     </html>
   );
 }
-
