@@ -163,7 +163,7 @@ import { getCookie, setCookie } from "cookies-next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { cache, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 // import en from "./lang/en.json";
 // import fr from "./lang/fr.json";
@@ -278,11 +278,7 @@ function LoadTableOrderScript() {
 export const getCachedRestaurantData = cache(async (slug: string) => {
   return RestaurantsServices.getRestaurantThemeType(slug);
 });
-export default async function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
