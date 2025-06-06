@@ -38,7 +38,6 @@ export const metadata:Metadata = {
 };
 
 const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
-    debugger
   return (
     <div>
       {children}

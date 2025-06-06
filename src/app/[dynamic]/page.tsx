@@ -23,7 +23,9 @@ const DynamicPage = () => {
 
   useEffect(() => {
     let routepath = '';
-    let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    // let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    let selectedTheme = GetThemeDetails(4);
+
     if (selectedTheme?.name === ThemeObj.dominos) {
       routepath = `/${selectedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation?.locationURL}`;
     }
@@ -31,6 +33,7 @@ const DynamicPage = () => {
       routepath = `/${selectedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation?.locationURL}/main`;
     }
     else if (selectedTheme?.name === ThemeObj.newtheme) {
+
       routepath = `/${selectedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation?.locationURL}`;
     }
     router.push(routepath);

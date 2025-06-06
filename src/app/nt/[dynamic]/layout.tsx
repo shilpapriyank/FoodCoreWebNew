@@ -24,7 +24,6 @@ import type { Metadata } from 'next'
 //   console.log("Dynamic segment:", "test");
 const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
     console.log("dynamic segment:", "test")
-debugger
   return (
     <>
       <Header handleChangeAddress={handleChangeAddress} page={page} />

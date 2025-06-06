@@ -40,10 +40,9 @@ export default async function RootLayout({
   let themeType = "default"
 
   try {
-    debugger
     // Fetch restaurant data on the server
     const rawData = await RestaurantsServices.getRestaurantThemeType("fc")
-console.log(rawData)
+    console.log(rawData)
     // Serialize the data to ensure it can be passed to client components
     restaurantData = serializeRestaurantData(rawData)
 
@@ -58,15 +57,15 @@ console.log(rawData)
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
+
         {/* Load theme-specific CSS */}
         <ThemeStyles themeType={themeType} />
       </head>
       <body>
         {/* Pass only serializable data to client components */}
-        <ClientWrapper > 
+        <ClientWrapper >
           {children}
-          </ClientWrapper>
+        </ClientWrapper>
 
         {/* Load theme-specific scripts */}
         <ThemeScripts themeType={themeType} />

@@ -3,7 +3,11 @@ import RestaurantNew from "../../components/commonRestaurant/restaurantnew.compo
 // src/app/(restaurant)/layout.tsx (Server Component)
 
 export default function RestaurantLayout({ children }: any) {
-  return <RestaurantNew>{children}</RestaurantNew>;
+  return (
+    <>
+      {children}
+    </>
+  )
 }
 
 // // src/app/(restaurant)/layout.tsx

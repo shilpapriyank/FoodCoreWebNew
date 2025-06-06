@@ -80,7 +80,6 @@ export const restaurantAllLocation = createAsyncThunk(
   }
 );
 
-export const restaurantstiming = createAsyncThunk(
   //   // "restaurant/restaurantstiming",
   //   RestaurantsTypes.RESTAURANT_TIMING,
   //   async ({
@@ -118,14 +117,14 @@ export const restaurantstiming = createAsyncThunk(
   //   }
   // );
 
-  // // Sync helper functions
-  // export const restaurantsLocation = async (restaurantId: number) => {
-  //   return await LocationServices.getLocationInfo(restaurantId);
-  // };
+  // Sync helper functions
+  export const restaurantsLocation = async (restaurantId: number) => {
+    return await LocationServices.getLocationInfo(restaurantId);
+  };
 
-  // export const restaurantsAllLocation = async (restaurantId: number) => {
-  //   return await LocationServices.getAllLoaction(restaurantId);
-  // };
+  export const restaurantsAllLocation = async (restaurantId: number) => {
+    return await LocationServices.getAllLoaction(restaurantId);
+  };
 
   // const restaurantSlice = createSlice({
   //   name: "restaurant",
@@ -146,6 +145,8 @@ export const restaurantstiming = createAsyncThunk(
   //         restaurantslocationlist: [],
   //         restaurantstiminglist: [],
   //       };
+  export const restaurantstiming = createAsyncThunk(
+
   "restaurant/restaurantstiming",
   async ({
     locationId,
