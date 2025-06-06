@@ -4,9 +4,9 @@
 
 import React, { useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { ThemeType } from "@/components/default/common/dominos/helpers/types/utility-type";
 import { GetThemeDetails, ThemeObj } from "@/components/common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { ThemeType } from "@/types/common-types/common.types";
 
 interface Location {
   locationURL: string;
@@ -21,7 +21,7 @@ const Page: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname(); // might not be needed here
   const searchParams = useSearchParams();
-  console.log('pathname', pathname)
+  console.log("pathname", pathname);
 
   // dynamic param comes from segment in folder name
   const dynamic = pathname?.split("/").pop() || ""; // or get from searchParams if query string
@@ -58,7 +58,7 @@ debugger
         <h1>test</h1>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Page;

@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -43,8 +41,8 @@ const LoadRestaurant = ({
         );
 
         if (matchedRestaurant) {
-          setRestaurantIdInStorage(matchedRestaurant.id);
-          setRestaurantNameInStorage(matchedRestaurant.name);
+          //setRestaurantIdInStorage(matchedRestaurant?.id);
+          //setRestaurantNameInStorage(matchedRestaurant.name);
           setLocationIdInStorage(defaultLocationId);
         } else {
           setRestaurantIdInStorage(0);

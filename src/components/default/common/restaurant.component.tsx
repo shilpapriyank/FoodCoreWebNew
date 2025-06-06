@@ -17,8 +17,9 @@
 //     getRestaurantIdFromStorage,
 //     setLocationIdInStorage,
 //     setRestaurantIdInStorage,
-//     setRestaurantNameInStorage,
-// } from './localstore';
+//     setRestaurantNameInStorage
+// } from '@/components/common/localstore'
+
 // import { v4 as uuidv4 } from 'uuid';
 // import { RestaurantsTypes } from '../../../redux/restaurants/restaurants.types';
 // import { clearRedux } from '../../../redux/clearredux/clearredux.action';
@@ -295,3 +296,28 @@
 // };
 
 // export default Restaurant;
+
+
+// components/Restaurant.tsx
+import React, { ReactNode } from 'react';
+
+interface RestaurantProps {
+  metaDataRestaurant: any | null;
+  themetype: string;
+  children?: ReactNode;
+}
+
+const Restaurant: React.FC<RestaurantProps> = ({ metaDataRestaurant, themetype, children }) => {
+  return (
+    <div>
+      <p>Theme Type: {themetype}</p>
+      <p>
+        MetaData: {metaDataRestaurant ? JSON.stringify(metaDataRestaurant) : 'No metadata provided'}
+      </p>
+      {children && <div>{children}</div>}
+    </div>
+  );
+};
+
+export default Restaurant;
+

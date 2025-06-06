@@ -5,7 +5,7 @@ import {
   getRestaurantIdFromStorage,
   getRestaurantNameFromStorage,
 } from "../../../common/localstore";
-import { getAuthKey } from "../../common/auth";
+import { getAuthKey } from "../../Common/auth";
 
 interface ResponseClass {
   result: any;
