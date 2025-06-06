@@ -39,7 +39,7 @@ export const fixedLengthString = (
     : decodedDesc;
 };
 
-export const getDesc = (text: string): string => {
+export const getDesc = (text: string): string => { 
   if (text) {
     const decodedDesc = decodeNTimes(text, 5);
     return decodedDesc;

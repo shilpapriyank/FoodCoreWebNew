@@ -1,3 +1,154 @@
+// // app/layout.tsx
+// 'use client';
+
+// import React, { ReactNode, useEffect, useState } from 'react';
+// import Head from 'next/head';
+// import Script from 'next/script';
+// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { Provider } from 'react-redux';
+// //import { ErrorBoundary } from 'react-error-boundary';
+// // import ToastNotify from '@/components/default/toastnotify/toast-notify.component';
+// // import Restaurant from '@/components/default/Common/restaurant.component';
+// //import ErrorFallbackComponent from '@/components/dominos/error/errorpage.component';
+// import { ThemeObj, ThemeTypeObj } from '@/components/common/utility';
+// import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
+// import { store } from '../../redux/store';
+// import en from '../../lang/en.json';
+// import fr from '../../lang/fr.json';
+// import { IntlProvider } from 'react-intl';
+// import Restaurant from '@/components/default/Common/restaurant.component';
+
+// const queryClient = new QueryClient();
+// const messages = { en, fr };
+
+// const clairtyCode = `(function (c,l,a,r,i,t,y){
+//   c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+//   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+//   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+// })(typeof window !== "undefined" && window, document, "clarity", "script", "j23ksjohu1");`;
+
+// const GMT = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+// new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+// j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+// 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+// })(window,document,'script','dataLayer','GTM-PFD3CZ8D');`;
+
+// function LoadScriptsByTheme(themeType: string) {
+//   switch (themeType) {
+//     case ThemeObj.default:
+//       return (
+//         <>
+//           <Script src="/defaulttheme/js/moment-2.10.3.js" async />
+//           <Script src="/defaulttheme/js/jquery-3.6.2.js" strategy="afterInteractive" />
+//           <Script src="/defaulttheme/js/bootstrap.min.js" crossOrigin="anonymous" strategy="lazyOnload" defer />
+//         </>
+//       );
+//     case ThemeObj.newtheme:
+//       return (
+//         <>
+//           <Script src="/nt/js/jquery.min.js" />
+//           <Script src="/dominos/js/moment-2.10.3.js" async />
+//           <Script src="/nt/js/bootstrap.bundle.min.js" strategy="afterInteractive" />
+//           <Script src="/nt/js/custom.js" />
+//         </>
+//       );
+//     case ThemeObj.dominos:
+//       return (
+//         <>
+//           <Script src="/dominos/js/jquery.min.js" />
+//           <Script src="/dominos/js/moment-2.10.3.js" async />
+//           <Script src="/dominos/js/bootstrap.bundle.min.js" strategy="afterInteractive" />
+//           <Script src="/dominos/js/wow.min.js" strategy="afterInteractive" />
+//         </>
+//       );
+//     case ThemeObj.tableorder:
+//       return (
+//         <>
+//           <Script src="/to/js/jquery.min.js" strategy="afterInteractive" />
+//           <Script src="/to/js/bootstrap.bundle.min.js" strategy="afterInteractive" />
+//           <Script src="/to/js/wow.min.js" strategy="afterInteractive" />
+//           <Script src="/to/js/fontawesome.min.js" strategy="afterInteractive" />
+//           <Script src="/to/js/custom.js" strategy="afterInteractive" />
+//         </>
+//       );
+//     case ThemeObj.FD123456:
+//       return (
+//         <>
+//           <Script src="https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/fd123456/js/bootstrap.bundle.min.js" strategy="afterInteractive" />
+//         </>
+//       );
+//     default:
+//       return null;
+//   }
+// }
+
+// export default function RootLayout({ children }: { children: ReactNode }) {
+//   const { restaurantinfo } = useReduxData();
+//   const [themeType, setThemeType] = useState<string>(ThemeObj.default);
+
+//   useEffect(() => {
+//     const selectedThemeObj = ThemeTypeObj.find(item => item.value === restaurantinfo?.themetype);
+//     if (window?.location?.pathname.includes(ThemeObj.FD123456)) {
+//       setThemeType(ThemeObj.FD123456);
+//     } else {
+//       setThemeType(selectedThemeObj?.name || ThemeObj.default);
+//     }
+//   }, [restaurantinfo]);
+
+//   useEffect(() => {
+//     if (themeType !== ThemeObj.default && themeType !== ThemeObj.FD123456) {
+//       setTimeout(() => {
+//         const src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js';
+//         const script = document.createElement('script');
+//         script.src = src;
+//         script.async = true;
+//         document.head.appendChild(script);
+//       }, 1000);
+//     }
+//   }, [themeType]);
+
+//   const locale = 'en'; // optionally read from cookie or route
+
+//   return (
+//     <html lang={locale}>
+//       <head>
+//         {process.env.NEXT_PUBLIC_ENV === 'production' && (
+//           <Script id="gtm" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: GMT }} />
+//         )}
+//       </head>
+//       <body>
+//         <Provider store={store}>
+//           <QueryClientProvider client={queryClient}>
+//             {LoadScriptsByTheme(themeType)}
+//             <div id="portal" />
+//             <div id="bottom-bash" />
+//             <Restaurant metaDataRestaurant={null} themetype="theme">
+//               {/* <ErrorBoundary FallbackComponent={ErrorFallbackComponent}> */}
+//               {/* <IntlProvider locale={locale} messages={messages[locale]}> */}
+//               {children}
+//               {/* </IntlProvider> */}
+//               {/* <ToastNotify position="bottom-right" /> */}
+//               {/* </ErrorBoundary> */}
+//             </Restaurant>
+//             <ReactQueryDevtools initialIsOpen={false} position="bottom" />
+//           </QueryClientProvider>
+//         </Provider>
+//         {process.env.NEXT_PUBLIC_ENV === 'production' && (
+//           <noscript>
+//             <iframe
+//               src="https://www.googletagmanager.com/ns.html?id=GTM-PFD3CZ8D"
+//               height={0}
+//               width={0}
+//               style={{ display: 'none', visibility: 'hidden' }}
+//             />
+//           </noscript>
+//         )}
+//       </body>
+//     </html>
+//   );
+// }
+
 // this conditionaly script
 "use client";
 
@@ -11,7 +162,6 @@ import Script from "next/script";
 import { getCookie, setCookie } from "cookies-next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ErrorBoundary } from "react-error-boundary";
 import { cache, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";
@@ -19,7 +169,7 @@ import { Provider } from "react-redux";
 // import fr from "./lang/fr.json";
 import { IntlProvider } from "react-intl";
 import { usePathname } from "next/navigation";
-import { ThemeObj } from "../components/default/common/dominos/helpers/utility";
+// import { ThemeObj } from "../components/default/common/dominos/helpers/utility";
 import { store } from "../../redux/store";
 import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
 

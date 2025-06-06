@@ -1,5 +1,6 @@
 // layout.tsx or layout/page.tsx
 import RestaurantNew from "../../components/commonRestaurant/restaurantnew.component";
+// src/app/(restaurant)/layout.tsx (Server Component)
 
 export default function RestaurantLayout({ children }: any) {
   return <RestaurantNew>{children}</RestaurantNew>;

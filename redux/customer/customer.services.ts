@@ -1,7 +1,7 @@
 import { ResponseModel } from "@/components/common/commonclass";
 import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
-import { getAuthKey } from "@/components/default/common/auth";
+import { getAuthKey } from "@/components/default/Common/auth";
 import { ENDPOINTS } from "@/components/default/config";
 import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";

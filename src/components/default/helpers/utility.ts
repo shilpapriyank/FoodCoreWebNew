@@ -5,7 +5,7 @@ import { ToasterTypes } from "./toaster/toaster-types";
 import * as Sentry from "@sentry/nextjs";
 import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { errorLog } from "./errorlog/errorlog";
-import { getAuthKey } from "../common/auth";
+import { getAuthKey } from "../Common/auth";
 import { ToasterPositions } from "./toaster/toaster-positions";
 
 export const handleAxiosPostAsync = async (

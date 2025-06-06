@@ -2,31 +2,9 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+import { AddressModel, RegisterModel } from "@/types/register-types/register.types";
 
 let responseclass = new ResponseModel();
-
-interface RegisterModel {
-  firstname: string;
-  lastname: string;
-  phone: string;
-  email: string;
-  password: string;
-  countrycode: string;
-  isVerifiedPhone: boolean;
-  businessName?: string;
-}
-
-interface AddressModel {
-  address1?: string;
-  address2?: string;
-  landmark?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  zipcode?: string;
-  addresstype?: number;
-  businessname?: string;
-}
 
 export class RegisterServices {
   static async registerUser(

@@ -7,6 +7,7 @@ import { RestaurantApiTypes } from "@/types/restaurant-types/restaurant.type";
 let responseclass = new ResponseModel();
 
 export class RestaurantsServices {
+  
   static async getRestaurantsList(
     restauranturl: string,
     locationurl: string,
