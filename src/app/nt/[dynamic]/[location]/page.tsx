@@ -1,29 +1,3 @@
-// "use client";
-
-// import { useEffect } from "react";
-// import { useRouter, useParams } from "next/navigation";
-// import Footer from "@/components/nt/layout/footer/footer.component";
-
-// export default function LocationPage() {
-//   const router = useRouter();
-//   const params = useParams();
-
-//   // useEffect(() => {
-//   //   const theme = params?.dynamic;
-//   //   const location = params?.location;
-
-//   //   if (theme && location) {
-//   //     router.push(`/nt/${theme}/${location}`);
-//   //   }
-//   // }, []);
-
-//   return (
-//     <div>
-//       this is nt/fc/location page...
-//       <Footer />
-//     </div>
-//   );
-// }
 
 // 'use client';
 
@@ -34,8 +8,8 @@
 // import CategoryMenuItems from '../../../../components/nt/category/category-menuitems/category-menuItems.component';
 // import { useRouter } from 'next/navigation';
 // import CategoryHeader from '../../../../components/nt/category/category-header/category-header';
-// import { isasap } from "../../../../../redux/order/order.slice";
-// import { OrderServices } from '../../../../redux/order/order.services';
+// import {isasap} from "../../../../../redux/order/order.slice";
+// // import { OrderServices } from '../../../../redux/order/order.services';
 // import { useSearchData } from '../../../../components/customhooks/usesearchdata-hook';
 // import SearchBarComponent from '../../../../components/nt/category/category-menuitems/search-bar.component';
 // import useUtility from '../../../../components/customhooks/utility-hook';
@@ -43,6 +17,7 @@
 // import Layout from '../layout';
 // import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 // import { OrderTypes } from '../../../../../redux/order/order.type';
+// import { OrderServices } from '../../../../../redux/order/order.services';
 
 
 // const Page = () => {
@@ -69,7 +44,7 @@
 //     if (b2b || isSchoolProgramEnabled) {
 //       dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
 //       if (order?.checktime === "") {
-//         OrderServices.getOrderTime(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId, 1).then((response: { ordertime: string }) => {
+//         OrderServices.getOrderTime(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId, '1').then((response: { ordertime: string }) => {
 //           dispatch(isasap(true));
 //           const time = response?.ordertime?.split(":")
 //           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`
@@ -111,6 +86,7 @@
 
 // export default Page
 
+
 "use client";
 
 import { useEffect } from "react";
@@ -121,14 +97,14 @@ export default function LocationPage() {
   const router = useRouter();
   const params = useParams();
 
-  useEffect(() => {
-    const theme = params?.dynamic;
-    const location = params?.location;
+  // useEffect(() => {
+  //   const theme = params?.dynamic;
+  //   const location = params?.location;
 
-    if (theme && location) {
-      router.push(`/nt/${theme}/${location}`);
-    }
-  }, []);
+  //   if (theme && location) {
+  //     router.push(`/nt/${theme}/${location}`);
+  //   }
+  // }, []);
 
   return (
     <div>

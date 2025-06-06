@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, applyMiddleware  } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -13,28 +13,33 @@ import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import { combineReducers } from "redux";
 import restaurantsReducer from "./restaurants/restaurants.slice";
-import deliveryAddressReducer from './delivery-address/delivery-address.slice';
+import deliveryaddressReducer from './delivery-address/delivery-address.slice';
 import menuItemReducer from './menu-item/menu-item.slice';
 import categoryReducer from './category/category.slice';
 import loginReducer from './login/login.slice';
 import orderReducer from './order/order.slice';
-
+import locationReducer from './location/location.slice'
+import cartReducer from './cart/cart.slice';
 
 // Combine reducers
 const rootReducer = combineReducers({
   restaurant: restaurantsReducer,
-  deliveryAddress: deliveryAddressReducer,
-  menuItem: menuItemReducer,
+  deliveryaddress: deliveryaddressReducer,
+  menuitem: menuItemReducer,
   category: categoryReducer,
   userdetail: loginReducer,
   order: orderReducer,
-  
+  location: locationReducer,
+  cart: cartReducer,
+
 });
 
 // Persist configuration
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ['userdetail', 'selecteddelivery', 'cart', 'order', 'menuitem', 'main', 'restaurantWindowTime',
+    'deliveryaddress', 'session', 'studentname', 'rewardpoints', 'restaurant', 'tableorder'],
 };
 
 // Create persisted reducer

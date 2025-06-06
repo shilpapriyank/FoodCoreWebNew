@@ -1,4 +1,4 @@
-"use client";
+// app/restaurant/layout.tsx (Server Component)
 
 import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
 import React from "react";
@@ -17,9 +17,9 @@ export default function RestaurantLayout({
   params,
 }: LoadRestaurantProps) {
   const { restaurantURL, locationURL, defaultLocationId } = params;
-  console.log('restaurant url from (restaurant) layout', restaurantURL)
-   console.log('locationURL from (restaurant) layout', locationURL)
-    console.log('defaultLocationId from (restaurant) layout', defaultLocationId)
+  // console.log('restaurant url from (restaurant) layout', restaurantURL)
+  // console.log('locationURL from (restaurant) layout', locationURL)
+  // console.log('defaultLocationId from (restaurant) layout', defaultLocationId)
   return (
     <LoadRestaurant
       restaurantURL={restaurantURL}
