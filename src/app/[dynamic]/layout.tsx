@@ -1,5 +1,5 @@
-// src/app/(restaurant)/layout.tsx
-"use client";
+// src/app/(restaurant)/layout.tsx (Server Component)
+
 
 import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
 import React from "react";

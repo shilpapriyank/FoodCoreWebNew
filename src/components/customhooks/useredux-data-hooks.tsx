@@ -5,15 +5,12 @@ import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
-  const restaurantinfo = useSelector(
-    (state: RootState) => state.restaurant?.restaurantsdetail,
-    shallowEqual
-  );
+  const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
   // const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
-  const selecteddelivery = useSelector((state: RootState) => state.deliveryAddress, shallowEqual);
+  const selecteddelivery = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
 
   const userinfo = useSelector((state: RootState) => state.userdetail?.loggedinuser, shallowEqual);
-  const menuitem = useSelector((state: RootState) => state.menuItem, shallowEqual);
+  const menuitem = useSelector((state: RootState) => state.menuitem, shallowEqual);
   // const cart = useSelector((state: RootState) => state.cart, shallowEqual);
   const category = useSelector((state: RootState) => state.category, shallowEqual);
   // const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);

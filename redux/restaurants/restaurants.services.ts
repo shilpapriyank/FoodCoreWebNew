@@ -6,6 +6,7 @@ import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 let responseclass = new ResponseModel();
 
 export class RestaurantsServices {
+  
   static async getRestaurantsList(
     restauranturl: string,
     locationurl: string,
