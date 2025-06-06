@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { LocationServices } from '../location/location.services';
-import { RestaurantsServices } from './restaurants.services';
-import { RestaurantHoursServices } from '../restaurant-hour/restauranthour.services';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { LocationServices } from "../location/location.services";
+import { RestaurantsServices } from "./restaurants.services";
+import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
+import { RestaurantsTypes } from "./restaurants.types";
 
 export interface RestaurantState {
   restaurantsList: any[];
@@ -24,11 +25,13 @@ const initialState: RestaurantState = {
   restaurantstiminglist: [],
   ischangeurl: false,
   bannerDetails: [],
-  appversion: '',
+  appversion: "",
 };
 
+// Async actions
 export const getRestaurantsList = createAsyncThunk(
-  'restaurant/getRestaurantsList',
+  // "restaurant/getRestaurantsList",
+  RestaurantsTypes.GET_RESTAURANTS_DATA,
   async ({
     restauranturl,
     locationurl,
@@ -48,11 +51,12 @@ export const getRestaurantsList = createAsyncThunk(
 );
 
 export const updaterestaurantsdetail = createAsyncThunk(
-  'restaurant/updaterestaurantsdetail',
+  //"restaurant/updaterestaurantsdetail",
+  RestaurantsTypes.UPDATE_RESTAURANT_DETAIL,
   async ({
     restauranturl,
-    locationurl,
     defaultLocationId,
+    locationurl,
   }: {
     restauranturl: string;
     locationurl: string;
@@ -67,9 +71,9 @@ export const updaterestaurantsdetail = createAsyncThunk(
   }
 );
 
-
 export const restaurantAllLocation = createAsyncThunk(
-  'restaurant/restaurantAllLocation',
+  //"restaurant/restaurantAllLocation",
+  RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
   async (restaurantId: number) => {
     const response = await LocationServices.getAllLoaction(restaurantId);
     return response;
@@ -77,23 +81,109 @@ export const restaurantAllLocation = createAsyncThunk(
 );
 
 export const restaurantstiming = createAsyncThunk(
-  'restaurant/restaurantstiming',
-  async ({ locationId, restaurantId }: { locationId: number; restaurantId: number }) => {
-    const response = await RestaurantHoursServices.getRestaurantHourList(locationId, restaurantId);
+  //   // "restaurant/restaurantstiming",
+  //   RestaurantsTypes.RESTAURANT_TIMING,
+  //   async ({
+  //     locationId,
+  //     restaurantId,
+  //   }: {
+  //     locationId: number;
+  //     restaurantId: number;
+  //   }) => {
+  //     const response = await RestaurantHoursServices.getRestaurantHourList(
+  //       locationId,
+  //       restaurantId
+  //     );
+  //     return response;
+  //   }
+  // );
+
+  // export const getHomepageBannerDetails = createAsyncThunk(
+  //   //"restaurant/getHomepageBannerDetails",
+  //   RestaurantsTypes.BANNER_DETAILS_LIST,
+  //   async ({
+  //     frompage,
+  //     restaurantId,
+  //     locationId,
+  //   }: {
+  //     frompage: string;
+  //     restaurantId: number;
+  //     locationId: number;
+  //   }) => {
+  //     return await RestaurantsServices.getHomepageBannerDetails(
+  //       frompage,
+  //       restaurantId,
+  //       locationId
+  //     );
+  //   }
+  // );
+
+  // // Sync helper functions
+  // export const restaurantsLocation = async (restaurantId: number) => {
+  //   return await LocationServices.getLocationInfo(restaurantId);
+  // };
+
+  // export const restaurantsAllLocation = async (restaurantId: number) => {
+  //   return await LocationServices.getAllLoaction(restaurantId);
+  // };
+
+  // const restaurantSlice = createSlice({
+  //   name: "restaurant",
+  //   initialState,
+  //   reducers: {
+  //     restaurantsdetail(state, action: PayloadAction<any>) {
+  //       state.restaurantdetail = action.payload;
+  //     },
+  //     leftMenuToggle(state, action: PayloadAction<boolean>) {
+  //       state.leftmenutoggle = action.payload;
+  //     },
+  //     ChangeUrl(state, action: PayloadAction<boolean>) {
+  //       state.ischangeurl = action.payload;
+  //     },
+  //     resetRestaurant(state) {
+  //       return {
+  //         ...initialState,
+  //         restaurantslocationlist: [],
+  //         restaurantstiminglist: [],
+  //       };
+  "restaurant/restaurantstiming",
+  async ({
+    locationId,
+    restaurantId,
+  }: {
+    locationId: number;
+    restaurantId: number;
+  }) => {
+    const response = await RestaurantHoursServices.getRestaurantHourList(
+      locationId,
+      restaurantId
+    );
     return response;
   }
 );
 
 export const getHomepageBannerDetails = createAsyncThunk(
-  'restaurant/getHomepageBannerDetails',
-  async ({ frompage, restaurantId, locationId }: { frompage: string; restaurantId: number; locationId: number }) => {
-    const response = await RestaurantsServices.getHomepageBannerDetails(frompage, restaurantId, locationId);
+  "restaurant/getHomepageBannerDetails",
+  async ({
+    frompage,
+    restaurantId,
+    locationId,
+  }: {
+    frompage: string;
+    restaurantId: number;
+    locationId: number;
+  }) => {
+    const response = await RestaurantsServices.getHomepageBannerDetails(
+      frompage,
+      restaurantId,
+      locationId
+    );
     return response;
   }
 );
 
 const restaurantSlice = createSlice({
-  name: 'restaurant',
+  name: "restaurant",
   initialState,
   reducers: {
     restaurantsdetail: (state, action: PayloadAction<any>) => {
@@ -115,6 +205,9 @@ const restaurantSlice = createSlice({
     resetBannerDetails: (state) => {
       state.bannerDetails = [];
     },
+    // displayViewUpdate(state, action: PayloadAction<boolean>) {
+    //   if (state.restaurantdetail?.defaultLocation) {
+    //     state.restaurantdetail.defaultLocation.displaylistview = action.payload;
     displayViewUpdate: (state, action: PayloadAction<string>) => {
       if (state.restaurantdetail) {
         state.restaurantdetail = {
@@ -131,21 +224,52 @@ const restaurantSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getRestaurantsList.fulfilled, (state, action: PayloadAction<any[]>) => {
-      state.restaurantsList = action.payload;
-    });
-    builder.addCase(updaterestaurantsdetail.fulfilled, (state, action: PayloadAction<any>) => {
-      state.restaurantdetail = action.payload;
-    });
-    builder.addCase(restaurantAllLocation.fulfilled, (state, action: PayloadAction<any[]>) => {
-      state.restaurantslocationlistwithtime = action.payload;
-    });
-    builder.addCase(restaurantstiming.fulfilled, (state, action: PayloadAction<any[]>) => {
-      state.restaurantstiminglist = action.payload;
-    });
-    builder.addCase(getHomepageBannerDetails.fulfilled, (state, action: PayloadAction<any[]>) => {
-      state.bannerDetails = action.payload;
-    });
+    // builder
+    //   .addCase(getRestaurantsList.fulfilled, (state, action) => {
+    //     state.restaurantsList = action.payload || [];
+    //   })
+    //   .addCase(updaterestaurantsdetail.fulfilled, (state, action) => {
+    //     state.restaurantdetail = action.payload;
+    //   })
+    //   .addCase(restaurantAllLocation.fulfilled, (state, action) => {
+    //     state.restaurantslocationlistwithtime = action.payload || [];
+    //   })
+    //   .addCase(restaurantstiming.fulfilled, (state, action) => {
+    //     state.restaurantstiminglist = action.payload || [];
+    //   })
+    //   .addCase(getHomepageBannerDetails.fulfilled, (state, action) => {
+    //     state.bannerDetails = action.payload || [];
+    //   });
+    builder.addCase(
+      getRestaurantsList.fulfilled,
+      (state, action: PayloadAction<any[]>) => {
+        state.restaurantsList = action.payload;
+      }
+    );
+    builder.addCase(
+      updaterestaurantsdetail.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.restaurantdetail = action.payload;
+      }
+    );
+    builder.addCase(
+      restaurantAllLocation.fulfilled,
+      (state, action: PayloadAction<any[]>) => {
+        state.restaurantslocationlistwithtime = action.payload;
+      }
+    );
+    builder.addCase(
+      restaurantstiming.fulfilled,
+      (state, action: PayloadAction<any[]>) => {
+        state.restaurantstiminglist = action.payload;
+      }
+    );
+    builder.addCase(
+      getHomepageBannerDetails.fulfilled,
+      (state, action: PayloadAction<any[]>) => {
+        state.bannerDetails = action.payload;
+      }
+    );
   },
 });
 
@@ -160,7 +284,6 @@ export const {
 } = restaurantSlice.actions;
 
 export default restaurantSlice.reducer;
-
 
 // import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import { LocationServices } from "../location/location.services";

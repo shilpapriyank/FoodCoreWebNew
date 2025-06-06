@@ -8,12 +8,12 @@ interface LayoutProps {
   handleChangeAddress?: () => void;
   page?: string;
 }
-import type { Metadata } from 'next'
+// import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: 'My location',
-  description: '...',
-}
+// export const metadata: Metadata = {
+//   title: "My Blog",
+//   description: "...",
+// };
 
 // const Layout: React.FC<LayoutProps> = ({
 //   children,
@@ -21,8 +21,25 @@ export const metadata: Metadata = {
 //   page,
 // }) => {
 //   console.log("Dynamic segment:", "test");
-const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
-  console.log("dynamic segment from nt/fc:", "test")
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My location",
+  description: "...",
+};
+
+// const Layout: React.FC<LayoutProps> = ({
+//   children,
+//   handleChangeAddress,
+//   page,
+// }) => {
+//   console.log("Dynamic segment:", "test");
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  handleChangeAddress,
+  page,
+}) => {
+  console.log("dynamic segment from nt/fc:", "test");
 
   return (
     <>
@@ -64,4 +81,3 @@ export default Layout;
 // };
 
 // export default Layout;
-

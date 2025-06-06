@@ -1,4 +1,4 @@
-import { configureStore, applyMiddleware  } from "@reduxjs/toolkit";
+import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -13,13 +13,20 @@ import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import { combineReducers } from "redux";
 import restaurantsReducer from "./restaurants/restaurants.slice";
-import deliveryaddressReducer from './delivery-address/delivery-address.slice';
-import menuItemReducer from './menu-item/menu-item.slice';
-import categoryReducer from './category/category.slice';
-import loginReducer from './login/login.slice';
-import orderReducer from './order/order.slice';
-import locationReducer from './location/location.slice'
-import cartReducer from './cart/cart.slice';
+// import deliveryAddressReducer from "./delivery-address/delivery-address.slice";
+// import menuItemReducer from "./menu-item/menu-item.slice";
+// import categoryReducer from "./category/category.slice";
+// import loginReducer from "./login/login.slice";
+// import orderReducer from "./order/order.slice";
+// import locationReducer from "./location/location.slice";
+// import mainReducer from "./main/main.slice";
+import deliveryaddressReducer from "./delivery-address/delivery-address.slice";
+import menuItemReducer from "./menu-item/menu-item.slice";
+import categoryReducer from "./category/category.slice";
+import loginReducer from "./login/login.slice";
+import orderReducer from "./order/order.slice";
+import locationReducer from "./location/location.slice";
+import cartReducer from "./cart/cart.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -30,16 +37,29 @@ const rootReducer = combineReducers({
   userdetail: loginReducer,
   order: orderReducer,
   location: locationReducer,
+  //main: mainReducer,
   cart: cartReducer,
-
 });
 
 // Persist configuration
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ['userdetail', 'selecteddelivery', 'cart', 'order', 'menuitem', 'main', 'restaurantWindowTime',
-    'deliveryaddress', 'session', 'studentname', 'rewardpoints', 'restaurant', 'tableorder'],
+  whitelist: [
+    "userdetail",
+    "selecteddelivery",
+    "cart",
+    "order",
+    "menuitem",
+    "main",
+    "restaurantWindowTime",
+    "deliveryaddress",
+    "session",
+    "studentname",
+    "rewardpoints",
+    "restaurant",
+    "tableorder",
+  ],
 };
 
 // Create persisted reducer
@@ -72,6 +92,5 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 // Types
-export type RootState = ReturnType<typeof store.getState>;
-
 export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

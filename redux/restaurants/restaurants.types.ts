@@ -13,4 +13,3 @@ export const RestaurantsTypes = {
   SET_APP_VERSION: "SET_APP_VERSION",
   DISPLAY_VIEW_TYPE: "DISPLAY_VIEW_TYPE",
 };
-

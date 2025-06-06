@@ -2,6 +2,7 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+import { RestaurantApiTypes } from "@/types/restaurant-types/restaurant.type";
 
 let responseclass = new ResponseModel();
 
@@ -11,7 +12,7 @@ export class RestaurantsServices {
     restauranturl: string,
     locationurl: string,
     defaultLocationId: number
-  ): Promise<any[]> {
+  ): Promise<RestaurantApiTypes[]> {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantsList";
     const location = ENDPOINTS.GET_RESTAURANTS;
@@ -41,7 +42,7 @@ export class RestaurantsServices {
     }
   }
 
-  static async getRestaurantLocationList(): Promise<any[]> {
+  static async getRestaurantLocationList(): Promise<RestaurantApiTypes[]> {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantLocationList";
     const location = ENDPOINTS.GET_RESTAURANT_LOCATIONS_LIST;

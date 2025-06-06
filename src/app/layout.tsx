@@ -1,7 +1,6 @@
 // // app/layout.tsx
 // 'use client';
 
-
 // import React, { ReactNode, useEffect, useState } from 'react';
 // import Head from 'next/head';
 // import Script from 'next/script';
@@ -150,8 +149,6 @@
 //   );
 // }
 
-
-
 // this conditionaly script
 "use client";
 
@@ -281,8 +278,11 @@ function LoadTableOrderScript() {
 export const getCachedRestaurantData = cache(async (slug: string) => {
   return RestaurantsServices.getRestaurantThemeType(slug);
 });
-export default async function RootLayout({ children }: { children: ReactNode }) {
-
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
