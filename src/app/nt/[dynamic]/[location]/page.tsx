@@ -107,9 +107,9 @@ export default function LocationPage() {
   // }, []);
 
   return (
-    <div>
+    <div className="text-dark">
       this is nt/fc/location page...
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

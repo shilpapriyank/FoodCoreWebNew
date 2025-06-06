@@ -1,3 +1,4 @@
+'use client'
 import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
 import Footer from "@/components/nt/layout/footer/footer.component";
 import Header from "@/components/nt/layout/page";
@@ -8,12 +9,12 @@ interface LayoutProps {
   handleChangeAddress?: () => void;
   page?: string;
 }
-// import type { Metadata } from "next";
-
+import type { Metadata } from 'next'
+ 
 // export const metadata: Metadata = {
-//   title: "My Blog",
-//   description: "...",
-// };
+//   title: 'My Blog',
+//   description: '...',
+// }
 
 // const Layout: React.FC<LayoutProps> = ({
 //   children,
@@ -21,26 +22,8 @@ interface LayoutProps {
 //   page,
 // }) => {
 //   console.log("Dynamic segment:", "test");
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "My location",
-  description: "...",
-};
-
-// const Layout: React.FC<LayoutProps> = ({
-//   children,
-//   handleChangeAddress,
-//   page,
-// }) => {
-//   console.log("Dynamic segment:", "test");
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  handleChangeAddress,
-  page,
-}) => {
-  console.log("dynamic segment from nt/fc:", "test");
-
+const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
+    console.log("dynamic segment:", "test")
   return (
     <>
       <Header handleChangeAddress={handleChangeAddress} page={page} />

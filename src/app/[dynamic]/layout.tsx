@@ -1,12 +1,8 @@
 // app/[dynamic]/layout.tsx
 import RestaurantNew from "@/components/commonRestaurant/restaurantnew.component";
 
-export default function DynamicLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <RestaurantNew>{children}</RestaurantNew>;
+export default function RestaurantLayout({ children }: any) {
+  return <>{children}</>;
 }
 
 // // src/app/(restaurant)/layout.tsx

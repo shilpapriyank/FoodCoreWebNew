@@ -23,9 +23,10 @@ const DynamicPage = () => {
   console.log("restaurant data in dynami page", restaurantinfo);
 
   useEffect(() => {
-    debugger;
     let routepath = "";
-    let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    // let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    let selectedTheme = GetThemeDetails(4);
+
     if (selectedTheme?.name === ThemeObj.dominos) {
       routepath = `/${selectedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation?.locationURL}`;
     } else if (selectedTheme?.name === ThemeObj.default) {

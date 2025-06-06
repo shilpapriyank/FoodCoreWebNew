@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, ReactNode } from "react";
-import {
-  usePathname,
-  useSearchParams,
-  useParams,
-  useRouter,
-} from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useDispatch } from "react-redux";
 import {
@@ -56,11 +51,11 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   const { restaurant, category, userinfo, order } = useReduxData();
   const customerId = userinfo ? userinfo.customerId : 0;
   //const { loadCatData } = useLoadCatData(customerId);
-  //const { query, pathname, asPath, push } = useRouter();
+  // const { query, pathname, asPath, push } = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const params = useParams();
-  const router = useRouter();
+
   // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const [loadrestaurant, setLoadrestaurant] = useState(false);
@@ -80,10 +75,12 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   const appVersion = restaurant?.appversion;
   const categoryitemlist = category.categoryitemlist;
   //const sessionId = sessionid;
-  const dynamic = params.dynamic as string | undefined;
-  const location = params.location as string | undefined;
+  // const dynamic = params.dynamic as string | undefined;
+  // const location = params.location as string | undefined;
 
-  //const { dynamic, location } = query;
+  // const { dynamic, location } = query;
+  const dynamic = searchParams.get("dynamic");
+  const location = searchParams.get("location");
 
   const seoDefaultData = {
     title: `Online Ordering || ${
@@ -92,6 +89,7 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
     description: "Online Ordering",
     image: metaDataRestaurant?.imageurl ?? restaurantinfo?.logo,
     url: `${getorigin()}${pathname}`,
+    //url: `${getorigin()}${asPath}`,
   };
 
   const isGetSeo =
@@ -155,7 +153,8 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
       setLocationIdInStorage(locationId);
       setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
       setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
-
+      // const path = asPath.split("/");
+      const pathname = usePathname();
       const path = pathname.split("/");
       const tableOrderTheme = GetThemeDetails(201);
       const isTableOrderTheme = path.includes(tableOrderTheme.url);

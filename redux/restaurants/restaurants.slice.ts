@@ -117,7 +117,7 @@ export const restaurantAllLocation = createAsyncThunk(
 //   }
 // );
 
-// // Sync helper functions
+// Sync helper functions
 export const restaurantsLocation = async (restaurantId: number) => {
   return await LocationServices.getLocationInfo(restaurantId);
 };
