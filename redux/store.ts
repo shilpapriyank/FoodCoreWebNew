@@ -45,21 +45,21 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: [
-    "userdetail",
-    "selecteddelivery",
-    "cart",
-    "order",
-    "menuitem",
-    "main",
-    "restaurantWindowTime",
-    "deliveryaddress",
-    "session",
-    "studentname",
-    "rewardpoints",
-    "restaurant",
-    "tableorder",
-  ],
+  // whitelist: [
+  //   "userdetail",
+  //   "selecteddelivery",
+  //   "cart",
+  //   "order",
+  //   "menuitem",
+  //   "main",
+  //   "restaurantWindowTime",
+  //   "deliveryaddress",
+  //   "session",
+  //   "studentname",
+  //   "rewardpoints",
+  //   "restaurant",
+  //   "tableorder",
+  // ],
 };
 
 // Create persisted reducer

@@ -46,6 +46,7 @@ export const getRestaurantsList = createAsyncThunk(
       locationurl,
       defaultLocationId
     );
+    console.log("restaurantlist response  from slice", response);
     return response;
   }
 );
