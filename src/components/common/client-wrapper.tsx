@@ -4,21 +4,21 @@ import React, { FC, ReactNode, useEffect, useState } from 'react'
 const ClientProviders = dynamic(() => import('@/components/common/client-providers'), {
   ssr: false,
 });
-const ClientWrapper:FC<{children:ReactNode}> = ({children}) => {
-     const [hasMounted, setHasMounted] = useState(false);
-     useEffect(() => {
-    
-        setHasMounted(true);
-      }, []);
-    
-      // Avoid rendering on server
-      if (!hasMounted) return null;
+const ClientWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+
+    setHasMounted(true);
+  }, []);
+
+  // Avoid rendering on server
+  if (!hasMounted) return null;
   return (
     <>
-    <h1>tets</h1>
-    <ClientProviders>
+      {/* <h1>tets from client-wrapper</h1> */}
+      <ClientProviders>
         {children}
-    </ClientProviders>
+      </ClientProviders>
     </>
   )
 }

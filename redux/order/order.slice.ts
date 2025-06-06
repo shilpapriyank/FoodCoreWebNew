@@ -12,7 +12,7 @@ const initialState: OrderState = {
     calculatedTotal: 0,
     cardShowMessage: '',
     deliveryRequestId: '',
-    futureOrderDay: ''
+    futureOrderDay: '',
 };
 
 // Example Thunks

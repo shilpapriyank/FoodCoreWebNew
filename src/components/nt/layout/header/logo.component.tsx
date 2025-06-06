@@ -7,9 +7,9 @@ const Logo = ({ logoUrl, path }: LogoProps) => {
     <>
       <Link href={path} className="logo">
         <span className="head-arrow">
-          <i className="fa fa-angle-left" />{" "}
+          <i className="fa fa-angle-left" />
         </span>
-        <img src={logoUrl} />{" "}
+        <img src={logoUrl} />
       </Link>
     </>
   );

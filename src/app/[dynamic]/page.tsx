@@ -14,8 +14,6 @@ const DynamicPage = () => {
   console.log("dynamic route", dynamic);
   const location = params?.location as string;
   const theme = params?.theme as string;
-
-  debugger;
   const restaurantinfo = useSelector(
     ({ restaurant }: any) => restaurant?.restaurantdetail,
     shallowEqual

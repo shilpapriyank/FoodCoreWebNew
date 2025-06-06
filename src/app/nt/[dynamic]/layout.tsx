@@ -1,7 +1,7 @@
 'use client'
 import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
 import Footer from "@/components/nt/layout/footer/footer.component";
-import Header from "@/components/nt/layout/page";
+import Header from "@/components/nt/layout/header/page";
 import React, { ReactNode } from "react";
 
 interface LayoutProps {
@@ -10,7 +10,7 @@ interface LayoutProps {
   page?: string;
 }
 import type { Metadata } from 'next'
- 
+
 // export const metadata: Metadata = {
 //   title: 'My Blog',
 //   description: '...',
@@ -23,7 +23,7 @@ import type { Metadata } from 'next'
 // }) => {
 //   console.log("Dynamic segment:", "test");
 const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) => {
-    console.log("dynamic segment:", "test")
+  console.log("dynamic segment:", "test")
   return (
     <>
       <Header handleChangeAddress={handleChangeAddress} page={page} />
@@ -34,33 +34,3 @@ const Layout: React.FC<LayoutProps> = ({ children, handleChangeAddress, page }) 
 };
 
 export default Layout;
-
-// import LoadRestaurant from "@/components/commonRestaurant/loadrestaurant.component";
-// import Footer from "@/components/nt/layout/footer/footer.component";
-// import Header from "@/components/nt/layout/page";
-// import React, { ReactNode } from "react";
-
-// interface LayoutProps {
-//   children: ReactNode;
-//   page?: string;
-// }
-
-// export const metadata = {
-//   title: 'My location',
-//   description: '...',
-// };
-
-// const Layout = async ({ children, page }: LayoutProps) => {
-//     console.log("dynamic segment:", "test")
-
-//   return (
-//     <>
-//       {/* You can move Header to a client component if it uses interactivity */}
-//       <Header page={page} />
-//       {children}
-//       <Footer />
-//     </>
-//   );
-// };
-
-// export default Layout;
