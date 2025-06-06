@@ -80,73 +80,72 @@ export const restaurantAllLocation = createAsyncThunk(
   }
 );
 
-  //   // "restaurant/restaurantstiming",
-  //   RestaurantsTypes.RESTAURANT_TIMING,
-  //   async ({
-  //     locationId,
-  //     restaurantId,
-  //   }: {
-  //     locationId: number;
-  //     restaurantId: number;
-  //   }) => {
-  //     const response = await RestaurantHoursServices.getRestaurantHourList(
-  //       locationId,
-  //       restaurantId
-  //     );
-  //     return response;
-  //   }
-  // );
+//   // "restaurant/restaurantstiming",
+//   RestaurantsTypes.RESTAURANT_TIMING,
+//   async ({
+//     locationId,
+//     restaurantId,
+//   }: {
+//     locationId: number;
+//     restaurantId: number;
+//   }) => {
+//     const response = await RestaurantHoursServices.getRestaurantHourList(
+//       locationId,
+//       restaurantId
+//     );
+//     return response;
+//   }
+// );
 
-  // export const getHomepageBannerDetails = createAsyncThunk(
-  //   //"restaurant/getHomepageBannerDetails",
-  //   RestaurantsTypes.BANNER_DETAILS_LIST,
-  //   async ({
-  //     frompage,
-  //     restaurantId,
-  //     locationId,
-  //   }: {
-  //     frompage: string;
-  //     restaurantId: number;
-  //     locationId: number;
-  //   }) => {
-  //     return await RestaurantsServices.getHomepageBannerDetails(
-  //       frompage,
-  //       restaurantId,
-  //       locationId
-  //     );
-  //   }
-  // );
+// export const getHomepageBannerDetails = createAsyncThunk(
+//   //"restaurant/getHomepageBannerDetails",
+//   RestaurantsTypes.BANNER_DETAILS_LIST,
+//   async ({
+//     frompage,
+//     restaurantId,
+//     locationId,
+//   }: {
+//     frompage: string;
+//     restaurantId: number;
+//     locationId: number;
+//   }) => {
+//     return await RestaurantsServices.getHomepageBannerDetails(
+//       frompage,
+//       restaurantId,
+//       locationId
+//     );
+//   }
+// );
 
-  // Sync helper functions
-  export const restaurantsLocation = async (restaurantId: number) => {
-    return await LocationServices.getLocationInfo(restaurantId);
-  };
+// Sync helper functions
+export const restaurantsLocation = async (restaurantId: number) => {
+  return await LocationServices.getLocationInfo(restaurantId);
+};
 
-  export const restaurantsAllLocation = async (restaurantId: number) => {
-    return await LocationServices.getAllLoaction(restaurantId);
-  };
+export const restaurantsAllLocation = async (restaurantId: number) => {
+  return await LocationServices.getAllLoaction(restaurantId);
+};
 
-  // const restaurantSlice = createSlice({
-  //   name: "restaurant",
-  //   initialState,
-  //   reducers: {
-  //     restaurantsdetail(state, action: PayloadAction<any>) {
-  //       state.restaurantdetail = action.payload;
-  //     },
-  //     leftMenuToggle(state, action: PayloadAction<boolean>) {
-  //       state.leftmenutoggle = action.payload;
-  //     },
-  //     ChangeUrl(state, action: PayloadAction<boolean>) {
-  //       state.ischangeurl = action.payload;
-  //     },
-  //     resetRestaurant(state) {
-  //       return {
-  //         ...initialState,
-  //         restaurantslocationlist: [],
-  //         restaurantstiminglist: [],
-  //       };
-  export const restaurantstiming = createAsyncThunk(
-
+// const restaurantSlice = createSlice({
+//   name: "restaurant",
+//   initialState,
+//   reducers: {
+//     restaurantsdetail(state, action: PayloadAction<any>) {
+//       state.restaurantdetail = action.payload;
+//     },
+//     leftMenuToggle(state, action: PayloadAction<boolean>) {
+//       state.leftmenutoggle = action.payload;
+//     },
+//     ChangeUrl(state, action: PayloadAction<boolean>) {
+//       state.ischangeurl = action.payload;
+//     },
+//     resetRestaurant(state) {
+//       return {
+//         ...initialState,
+//         restaurantslocationlist: [],
+//         restaurantstiminglist: [],
+//       };
+export const restaurantstiming = createAsyncThunk(
   "restaurant/restaurantstiming",
   async ({
     locationId,

@@ -1,25 +1,25 @@
-import type { Metadata } from "next"
-import "./globals.css"
-import "bootstrap/dist/css/bootstrap.min.css"
-import type { ReactNode } from "react"
-import { RestaurantsServices } from "../../redux/restaurants/restaurants.services"
-import { ThemeStyles } from "@/components/common/theme-styles"
+import type { Metadata } from "next";
+import "./globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import type { ReactNode } from "react";
+import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
+import { ThemeStyles } from "@/components/common/theme-styles";
 // import { ClientProviders } from "@/components/common/client-providers"
-import { ThemeScripts } from "@/components/common/theme-scripts"
-import { GetThemeDetails } from "@/components/common/utility"
-import dynamic from "next/dynamic"
-import ClientWrapper from "@/components/common/client-wrapper"
+import { ThemeScripts } from "@/components/common/theme-scripts";
+import { GetThemeDetails } from "@/components/common/utility";
+import dynamic from "next/dynamic";
+import ClientWrapper from "@/components/common/client-wrapper";
 // const ClientProviders = dynamic(() => import('@/components/common/client-providers'), {
 //   ssr: false,
 // });
 export const metadata: Metadata = {
   title: "Restaurant App",
   description: "Restaurant ordering application",
-}
+};
 
 // Helper function to serialize data for client components
 function serializeRestaurantData(data: any) {
-  if (!data) return null
+  if (!data) return null;
 
   // Only pass plain object properties that can be serialized
   return {
@@ -28,27 +28,27 @@ function serializeRestaurantData(data: any) {
     id: data.id || "",
     // Add other serializable properties you need
     // Avoid passing class instances, functions, or complex objects
-  }
+  };
 }
 
 export default async function RootLayout({
   children,
 }: {
-  children: ReactNode
+  children: ReactNode;
 }) {
-  let restaurantData = null
-  let themeType = "default"
+  let restaurantData = null;
+  let themeType = "default";
 
   try {
     // Fetch restaurant data on the server
-    const rawData = await RestaurantsServices.getRestaurantThemeType("fc")
-    console.log(rawData)
+    const rawData = await RestaurantsServices.getRestaurantThemeType("fc");
+    console.log(rawData);
     // Serialize the data to ensure it can be passed to client components
-    restaurantData = serializeRestaurantData(rawData)
+    restaurantData = serializeRestaurantData(rawData);
 
-    themeType = GetThemeDetails(rawData?.themetype)?.name || "default"
+    themeType = GetThemeDetails(rawData?.themetype)?.name || "default";
   } catch (error) {
-    console.error("Failed to fetch restaurant data:", error)
+    console.error("Failed to fetch restaurant data:", error);
     // Fallback to default theme
   }
 
@@ -63,13 +63,11 @@ export default async function RootLayout({
       </head>
       <body>
         {/* Pass only serializable data to client components */}
-        <ClientWrapper >
-          {children}
-        </ClientWrapper>
+        <ClientWrapper>{children}</ClientWrapper>
 
         {/* Load theme-specific scripts */}
         <ThemeScripts themeType={themeType} />
       </body>
     </html>
-  )
+  );
 }

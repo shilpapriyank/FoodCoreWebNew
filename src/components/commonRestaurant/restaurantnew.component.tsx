@@ -75,17 +75,20 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
   const appVersion = restaurant?.appversion;
   const categoryitemlist = category.categoryitemlist;
   //const sessionId = sessionid;
+  // const dynamic = params.dynamic as string | undefined;
+  // const location = params.location as string | undefined;
 
   // const { dynamic, location } = query;
   const dynamic = searchParams.get("dynamic");
   const location = searchParams.get("location");
 
-
   const seoDefaultData = {
-    title: `Online Ordering || ${metaDataRestaurant?.restaurantname ?? restaurantinfo?.restaurantname
-      }`,
+    title: `Online Ordering || ${
+      metaDataRestaurant?.restaurantname ?? restaurantinfo?.restaurantname
+    }`,
     description: "Online Ordering",
     image: metaDataRestaurant?.imageurl ?? restaurantinfo?.logo,
+    url: `${getorigin()}${pathname}`,
     //url: `${getorigin()}${asPath}`,
   };
 
@@ -146,13 +149,13 @@ const RestaurantNew = ({ children, metaDataRestaurant, themetype }: Props) => {
       const locationId =
         newselectedRestaurant.defaultlocationId ||
         newselectedRestaurant?.defaultLocation?.locationId;
+      console.log("location id from restaurant new", locationId);
       setLocationIdInStorage(locationId);
       setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
       setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
-
       // const path = asPath.split("/");
       const pathname = usePathname();
-      const path = pathname.split('/');
+      const path = pathname.split("/");
       const tableOrderTheme = GetThemeDetails(201);
       const isTableOrderTheme = path.includes(tableOrderTheme.url);
 
