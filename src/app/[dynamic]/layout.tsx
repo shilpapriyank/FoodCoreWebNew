@@ -1,11 +1,11 @@
 // app/[dynamic]/layout.tsx
 "use client";
-import RestaurantNew from "../../components/commonRestaurant/restaurantnew.component";
+import Restaurant from "../../components/commonRestaurant/restaurant.component";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <RestaurantNew>{children}</RestaurantNew>
+      <Restaurant>{children}</Restaurant>
     </>
   );
 }
