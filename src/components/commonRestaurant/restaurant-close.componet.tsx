@@ -74,7 +74,7 @@ const RestaurantCloseComponent = () => {
                             {location !== null && (
                               <>
                                 <div className="col-lg-6 col-sm-6 col-xs-6">
-                                  <Link
+                                  {/* <Link
                                     legacyBehavior
                                     href={
                                       "/" +
@@ -90,6 +90,20 @@ const RestaurantCloseComponent = () => {
                                     >
                                       Home Page
                                     </button>
+                                  </Link> */}
+                                  <Link
+                                    href={`/${selectedTheme.url}/${restaurantinfo.restaurantURL}/pickup`}
+                                    as={`/${selectedTheme.url}/${restaurantinfo.restaurantURL}/pickup`}
+                                  >
+                                    <a>
+                                      <button
+                                        className="blue_btn font_18px blue_btn_porder btn-primary"
+                                        type="submit"
+                                        style={{ width: 100 + "px" }}
+                                      >
+                                        Home Page
+                                      </button>
+                                    </a>
                                   </Link>
                                 </div>
                                 <div className="col-lg-6 col-sm-6 col-xs-6">

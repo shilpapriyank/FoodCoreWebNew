@@ -38,7 +38,10 @@ export const useReduxData = () => {
   );
   // const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
   //const main = useSelector((state: RootState) => state.main, shallowEqual);
-  // const metadata = useSelector((state: RootState) => state.metadata, shallowEqual);
+  const metadata = useSelector(
+    (state: RootState) => state.metadata,
+    shallowEqual
+  );
   const order = useSelector((state: RootState) => state.order, shallowEqual);
   const restaurant = useSelector(
     (state: RootState) => state.restaurant,
@@ -66,8 +69,18 @@ export const useReduxData = () => {
     (state: RootState) => state.category?.categoryitemlist,
     shallowEqual
   );
-  // const maincategoryList = useSelector((state: RootState) => state.main?.maincategoryList, shallowEqual);
-  // const selectedcategory = useSelector((state: RootState) => state.category?.selectedcategorydetail, shallowEqual);
+  // const maincategoryList = useSelector(
+  //   (state: RootState) => state.main?.maincategoryList,
+  //   shallowEqual
+  // );
+  const maincategoryList = useSelector(
+    ({ main }: any) => main?.maincategoryList,
+    shallowEqual
+  );
+  const selectedcategory = useSelector(
+    (state: RootState) => state.category?.selectedcategorydetail,
+    shallowEqual
+  );
 
   // const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
   // order?.checktime,
@@ -96,30 +109,30 @@ export const useReduxData = () => {
     selecteddelivery,
     userinfo,
     menuitem,
-    // cart,
     category,
-    // deliveryaddress,
-    // main,
-    // metadata,
+    metadata,
     order,
     restaurant,
+    restauranttiming,
+    restaurantlocation,
+    defaultLocation,
+    maincategoryList,
+    categoryItemsList,
+    selectedcategory,
+    // cart,
+    // deliveryaddress,
+    // main,
     // rewardpoints,
     // session,
     // studentdata,
     // restaurantWindowTime,
-    restauranttiming,
     // sessionid,
     // addressList,
-    restaurantlocation,
-    defaultLocation,
     // recievingTime,
     // meredian,
     // recievingDate,
     // orderTimeType,
     // tableorder,
-    // maincategoryList,
-    categoryItemsList,
-    // selectedcategory,
     // cartItemsAmountTotal,
     // cartItemsQuantity,
   };
