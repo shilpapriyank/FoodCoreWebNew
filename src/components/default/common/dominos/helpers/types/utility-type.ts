@@ -71,3 +71,8 @@ export interface CheckTimeStatusResult {
   isCheckTime: boolean;
   message?: string;
 }
+
+ export interface FutureOrderDay {
+  fullDay: string;
+  [key: string]: any; 
+}

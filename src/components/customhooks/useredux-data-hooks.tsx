@@ -31,13 +31,13 @@ export const useReduxData = () => {
     (state: RootState) => state.menuitem,
     shallowEqual
   );
-  // const cart = useSelector((state: RootState) => state.cart, shallowEqual);
+  const cart = useSelector((state: RootState) => state.cart, shallowEqual);
   const category = useSelector(
     (state: RootState) => state.category,
     shallowEqual
   );
-  // const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
-  //const main = useSelector((state: RootState) => state.main, shallowEqual);
+  const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
+  const main = useSelector((state: RootState) => state.main, shallowEqual);
   // const metadata = useSelector((state: RootState) => state.metadata, shallowEqual);
   const order = useSelector((state: RootState) => state.order, shallowEqual);
   const restaurant = useSelector(
@@ -51,7 +51,7 @@ export const useReduxData = () => {
   const restauranttiming = useSelector(
     (state: RootState) => state.restaurant.restaurantstiminglist
   );
-  // const sessionid = useSelector((state: RootState) => state.session?.sessionid);
+  const sessionid = useSelector((state: RootState) => state.session?.sessionid);
   // const addressList = useSelector((state: RootState) => state.restaurant?.restaurantslocationlist?.addressList);
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
@@ -96,10 +96,10 @@ export const useReduxData = () => {
     selecteddelivery,
     userinfo,
     menuitem,
-    // cart,
+    cart,
     category,
-    // deliveryaddress,
-    // main,
+    deliveryaddress,
+    main,
     // metadata,
     order,
     restaurant,
@@ -108,7 +108,7 @@ export const useReduxData = () => {
     // studentdata,
     // restaurantWindowTime,
     restauranttiming,
-    // sessionid,
+    sessionid,
     // addressList,
     restaurantlocation,
     defaultLocation,

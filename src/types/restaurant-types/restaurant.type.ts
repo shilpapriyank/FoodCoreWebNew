@@ -14,6 +14,7 @@ export interface Root {
 }
 
 export interface RestaurantApiTypes {
+   themetype?: string;
   restaurantname: string;
   restaurantId: number;
   facebooklink: string;
