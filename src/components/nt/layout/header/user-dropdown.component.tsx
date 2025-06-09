@@ -16,7 +16,7 @@ const UserDropdown = ({
   const router = useRouter();
   const pathname = usePathname();
   // const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
-  const selectedTheme = GetThemeDetails(4); // Assuming this is intentional and safe
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype); // Assuming this is intentional and safe
   const [isOpenDropdown, setisOpenDropdown] = useState(false);
 
   // Safely get location and restaurantURL
@@ -46,14 +46,14 @@ const UserDropdown = ({
   return (
     <>
       {userinfo === null && (
-        <button
-          className="btn btn-sm btn-default login-btn d-none d-md-block ms-1"
-          onClick={handleClikLogin}
-        >
-          Login
-        </button>
-
-
+        <div className="col-lg-2 col-md-12 text-md-end col-12 d-none d-md-block">
+          <button
+            className="btn btn-sm btn-default login-btn d-none d-md-block ms-1"
+            onClick={handleClikLogin}
+          >
+            Login
+          </button>
+        </div>
       )}
       {userinfo && (
         <li className="dropdown profile-dropdown">

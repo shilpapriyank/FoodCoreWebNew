@@ -1,7 +1,9 @@
 import React from "react";
 
 const Footer = () => {
-  return <div className="text-danger">This is footer component</div>;
+  return <div>
+
+  </div>
 };
 
 export default Footer;

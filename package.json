@@ -39,7 +39,6 @@
     "@types/jquery": "^3.5.32",
     "@types/md5": "^2.3.5",
     "@types/moment": "^2.11.29",
-    "@types/next-redux-wrapper": "^2.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { CartServices } from './cart.services';
+import { CartTypes } from './cart.type';
 
 interface CartState {
     cartData: any;
-    cartItemCount: number;
+    cartitemcount: number;
     cartTotal: any;
     deliveryCharges: any;
     rewardPoint: number | null;
@@ -13,10 +14,17 @@ interface CartState {
     orderDeliveryInstruction: string;
     paymentIntentId: string;
 }
+ interface CartItemCountParams {
+  sessionid: string;
+  locationId: any;
+  restaurantId: number;
+  customerId: any;
+}
+
 
 const initialState: CartState = {
     cartData: {},
-    cartItemCount: 0,
+    cartitemcount: 0,
     cartTotal: {},
     deliveryCharges: {},
     rewardPoint: null,
@@ -28,7 +36,7 @@ const initialState: CartState = {
 };
 
 export const getCartItem = createAsyncThunk(
-    'cart/getCartItem',
+    CartTypes.CART_DATA,
     async (params: any, { dispatch }) => {
         const response = await CartServices.getCartItemList(
             params.cartsessionId,
@@ -52,18 +60,19 @@ export const getCartItem = createAsyncThunk(
     }
 );
 
-export const getCartItemCount = createAsyncThunk(
-    'cart/getCartItemCount',
-    async (params: any) => {
-        const response = await CartServices.getCartItemCount(
-            params.cartsessionId ?? '',
-            params.locationId,
-            params.restaurantId,
-            params.customerId
-        );
-        return response;
-    }
+export const getCartItemCount = createAsyncThunk<number, CartItemCountParams>(
+  CartTypes.CART_ITEM_COUNT,
+  async (params) => {
+    const response = await CartServices.getCartItemCount(
+      params.sessionid ?? '',
+      params.locationId,
+      params.restaurantId,
+      params.customerId
+    );
+    return response;
+  }
 );
+
 
 export const deleteCartItem = createAsyncThunk(
     'cart/deleteCartItem',
@@ -106,7 +115,7 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         updateCartItemCount(state) {
-            state.cartItemCount = 0;
+            state.cartitemcount = 0;
         },
         updateCartItem(state) {
             state.cartData = {};
@@ -151,7 +160,7 @@ const cartSlice = createSlice({
                 state.cartData = action.payload;
             })
             .addCase(getCartItemCount.fulfilled, (state, action) => {
-                state.cartItemCount = action.payload;
+                state.cartitemcount = action.payload;
             })
             .addCase(deleteCartItem.fulfilled, (state, action) => {
                 // implement if needed
