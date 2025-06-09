@@ -60,7 +60,8 @@
 //         // Apply styles
 //         const colorArray = handleDefaultDynamicFieldColor(
 //           restaurantData.color,
-//           restaurantData.themetyp
+
+//           restaurantData.themetype
 //         );
 
 //         for (const [key, value] of Object.entries(dynamicColorObj)) {

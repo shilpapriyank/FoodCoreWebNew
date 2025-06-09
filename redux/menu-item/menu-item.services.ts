@@ -6,190 +6,329 @@ import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-
+import {
+  AddfavoriteArgsTypes,
+  AddItemToCartArgsTypes,
+  DeleteFavoriteArgsTypes,
+  GetAllMenuItemsPOSArgsTypes,
+  GetMenuItemListArgsTypes,
+  GetSerachResultArgsTypes,
+  QuickOrderaddToCartArgsTypes,
+  UpdateCartOrdersItemArgsTypes,
+} from "@/types/menuitem-types/menuitem.type";
 
 let responseclass = new ResponseModel();
 
 export class MenuItemServices {
-    static async getMenuItemList(
-        restaurantId?: number,
-        locationId?: number,
-        customerId?: number,
-        menuitemId?: string,
-        cartsessionId?: string,
-        cartId?: number | any
-    ): Promise<any[]> {
-        responseclass = new ResponseModel();
-        const methodName = "getMenuItemList";
-        const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
-        const data = {
-            itemDetail: {
-                restaurantId: restaurantId != undefined ? restaurantId : 0,
-                locationId: locationId != undefined ? locationId : 0,
-                customerId: customerId != undefined ? customerId : 0,
-                menuitemId: menuitemId != undefined ? parseInt(menuitemId) : 0,
-                cartsessionId: cartsessionId != undefined ? cartsessionId : "",
-                cartId: cartId != undefined && cartId != 0 ? parseInt(cartId) : 0
-            }
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            return responseclass.result;
-        }
-        else {
-            return [];
-        }
+  static async getMenuItemList({
+    restaurantId,
+    locationId,
+    customerId,
+    menuitemId,
+    cartsessionId,
+    cartId,
+  }: GetMenuItemListArgsTypes): Promise<any[]> {
+    responseclass = new ResponseModel();
+    const methodName = "getMenuItemList";
+    const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
+    const data = {
+      itemDetail: {
+        restaurantId: restaurantId != undefined ? restaurantId : 0,
+        locationId: locationId != undefined ? locationId : 0,
+        customerId: customerId != undefined ? customerId : 0,
+        menuitemId: menuitemId != undefined ? parseInt(menuitemId) : 0,
+        cartsessionId: cartsessionId != undefined ? cartsessionId : "",
+        cartId: cartId != undefined && cartId != 0 ? parseInt(cartId) : 0,
+      },
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      return responseclass.result;
+    } else {
+      return [];
     }
+  }
 
-    static async addfavorite(customerId: string | number, restaurantId: any, menuItemId: string | number): Promise<any[]> {
-        responseclass = new ResponseModel();
-        const methodName = "addfavorite";
-        const location = ENDPOINTS.ADD_FAVORITE;
-        const data = {
-            customerId: customerId?.toString(),
-            restaurantId: parseInt(restaurantId),
-            menuItemId: menuItemId.toString()
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            handleNotify("Item is add into your favorite list", ToasterPositions.TopRight, ToasterTypes.Success);
-            return responseclass.result;
-        } else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
-            handleNotify(responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN, ToasterPositions.TopRight, ToasterTypes.Error);
-        } else if (responseclass.status === API_RESPONSE_STATUS.ERROR) {
-            handleNotify(responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN, ToasterPositions.TopRight, ToasterTypes.Error);
-        }
-        else {
-            handleNotify('Item is add into your favorite list', ToasterPositions.TopRight, ToasterTypes.Warning);
-            return [];
-        }
-        return [];
+  static async addfavorite({
+    customerId,
+    restaurantId,
+    menuItemId,
+  }: AddfavoriteArgsTypes): Promise<any[]> {
+    responseclass = new ResponseModel();
+    const methodName = "addfavorite";
+    const location = ENDPOINTS.ADD_FAVORITE;
+    const data = {
+      customerId: customerId?.toString(),
+      restaurantId: parseInt(restaurantId),
+      menuItemId: menuItemId.toString(),
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      handleNotify(
+        "Item is add into your favorite list",
+        ToasterPositions.TopRight,
+        ToasterTypes.Success
+      );
+      return responseclass.result;
+    } else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
+      handleNotify(
+        responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+    } else if (responseclass.status === API_RESPONSE_STATUS.ERROR) {
+      handleNotify(
+        responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+    } else {
+      handleNotify(
+        "Item is add into your favorite list",
+        ToasterPositions.TopRight,
+        ToasterTypes.Warning
+      );
+      return [];
     }
+    return [];
+  }
 
-    static async deletefavorite(customerId: string, restaurantId: any, menuItemId: string): Promise<any[]> {
-        responseclass = new ResponseModel();
-        const methodName = "deletefavorite";
-        const location = ENDPOINTS.DELETE_FAVORITE;
-        const data = {
-            customerId: parseInt(customerId),
-            restaurantId: parseInt(restaurantId),
-            menuitemId: parseInt(menuItemId)
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            handleNotify('Item is remove from your favorite list', ToasterPositions.TopRight, ToasterTypes.Success);
-            return responseclass.result;
-        }
-        else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
-            handleNotify(responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN, ToasterPositions.TopRight, ToasterTypes.Error);
-        }
-        else if (responseclass.status === API_RESPONSE_STATUS.ERROR) {
-            handleNotify(responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN, ToasterPositions.TopRight, ToasterTypes.Error);
-        }
-        else {
-            handleNotify('Item is remove from your favorite list', ToasterPositions.TopRight, ToasterTypes.Warning);
-            return [];
-        }
-        return [];
+  static async deletefavorite({
+    customerId,
+    restaurantId,
+    menuItemId,
+  }: DeleteFavoriteArgsTypes): Promise<any[]> {
+    responseclass = new ResponseModel();
+    const methodName = "deletefavorite";
+    const location = ENDPOINTS.DELETE_FAVORITE;
+    const data = {
+      customerId: parseInt(customerId),
+      restaurantId: parseInt(restaurantId),
+      menuitemId: parseInt(menuItemId),
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      handleNotify(
+        "Item is remove from your favorite list",
+        ToasterPositions.TopRight,
+        ToasterTypes.Success
+      );
+      return responseclass.result;
+    } else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
+      handleNotify(
+        responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+    } else if (responseclass.status === API_RESPONSE_STATUS.ERROR) {
+      handleNotify(
+        responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+    } else {
+      handleNotify(
+        "Item is remove from your favorite list",
+        ToasterPositions.TopRight,
+        ToasterTypes.Warning
+      );
+      return [];
     }
+    return [];
+  }
 
-    static async addItemToCart(orderobj: any, restaurantId: number): Promise<any | null> {
-        responseclass = new ResponseModel();
-        const methodName = "addItemToCart";
-        const location = ENDPOINTS.ADD_ITEM_TO_CART;
-        const data = {
-            cartInfo: orderobj
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            handleNotify("Item added succesfully", ToasterPositions.TopRight, ToasterTypes.Success);
-            return responseclass.result;
-        }
-        handleNotify(responseclass?.message || ERRORMESSAGE.TRYAGAIN, ToasterPositions.TopRight, ToasterTypes.Error);
-        return null;
+  static async addItemToCart({
+    orderobj,
+    restaurantId,
+  }: AddItemToCartArgsTypes): Promise<any | null> {
+    responseclass = new ResponseModel();
+    const methodName = "addItemToCart";
+    const location = ENDPOINTS.ADD_ITEM_TO_CART;
+    const data = {
+      cartInfo: orderobj,
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      handleNotify(
+        "Item added succesfully",
+        ToasterPositions.TopRight,
+        ToasterTypes.Success
+      );
+      return responseclass.result;
     }
+    handleNotify(
+      responseclass?.message || ERRORMESSAGE.TRYAGAIN,
+      ToasterPositions.TopRight,
+      ToasterTypes.Error
+    );
+    return null;
+  }
 
-    static async updateCartOrdersItem(orderobj: any, restaurantId: number): Promise<any | null> {
-        responseclass = new ResponseModel();
-        const methodName = "updateCartOrdersItem";
-        const location = ENDPOINTS.UPDATE_CART_ORDER_ITEMS;
-        const data = {
-            cartInfo: orderobj
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            return responseclass.result;
-        }
-        else {
-            return null;
-        }
+  static async updateCartOrdersItem({
+    orderobj,
+    restaurantId,
+  }: UpdateCartOrdersItemArgsTypes): Promise<any | null> {
+    responseclass = new ResponseModel();
+    const methodName = "updateCartOrdersItem";
+    const location = ENDPOINTS.UPDATE_CART_ORDER_ITEMS;
+    const data = {
+      cartInfo: orderobj,
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      return responseclass.result;
+    } else {
+      return null;
     }
+  }
 
-    static async getSerachResult(locationId: number, restaurantId: number, customerId: number, serchQuery: string): Promise<any> {
-        responseclass = new ResponseModel();
-        const methodName = "getSerachResult";
-        const location = ENDPOINTS.GET_SEARCH_RESULT;
-        const data = {
-            searchMenuItemRequest: {
-                locationId: locationId,
-                restaurantId: restaurantId,
-                customerId: customerId,
-                input: serchQuery
-            }
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS && responseclass?.message === "") {
-            return responseclass.result;
-        }
-        else {
-            return {};
-        }
+  static async getSerachResult({
+    locationId,
+    restaurantId,
+    customerId,
+    serchQuery,
+  }: GetSerachResultArgsTypes): Promise<any> {
+    responseclass = new ResponseModel();
+    const methodName = "getSerachResult";
+    const location = ENDPOINTS.GET_SEARCH_RESULT;
+    const data = {
+      searchMenuItemRequest: {
+        locationId: locationId,
+        restaurantId: restaurantId,
+        customerId: customerId,
+        input: serchQuery,
+      },
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS &&
+      responseclass?.message === ""
+    ) {
+      return responseclass.result;
+    } else {
+      return {};
     }
+  }
 
-    static async quickOrderaddToCart(menuItemId: number, cartsessionId: string, restaurantId: number, locationId: number): Promise<any | null> {
-        responseclass = new ResponseModel();
-        const methodName = "quickOrderaddToCart";
-        const quickOrderUrl = ENDPOINTS.QUICK_ORDER_ADD_TO_CART;
-        const data = {
-            cartInfo: {
-                menuItemId: menuItemId,
-                cartsessionId: cartsessionId,
-                restaurantId: restaurantId,
-                locationId: locationId
-            }
-        };
-        responseclass = await handleAxiosPostAsync(data, quickOrderUrl, methodName, true, restaurantId);
-        if (responseclass.result && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            return responseclass.result;
-        }
-        return null;
+  static async quickOrderaddToCart({
+    menuItemId,
+    cartsessionId,
+    restaurantId,
+    locationId,
+  }: QuickOrderaddToCartArgsTypes): Promise<any | null> {
+    responseclass = new ResponseModel();
+    const methodName = "quickOrderaddToCart";
+    const quickOrderUrl = ENDPOINTS.QUICK_ORDER_ADD_TO_CART;
+    const data = {
+      cartInfo: {
+        menuItemId: menuItemId,
+        cartsessionId: cartsessionId,
+        restaurantId: restaurantId,
+        locationId: locationId,
+      },
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      quickOrderUrl,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      return responseclass.result;
     }
+    return null;
+  }
 
-    static async getAllMenuItemsPOS(
-        restaurantId?: number,
-        locationId?: number,
-        customerId?: number,
-        menuitemId?: string,
-        cartsessionId?: string,
-        cartId?: any
-    ): Promise<any[]> {
-        responseclass = new ResponseModel();
-        const methodName = "getMenuItemList";
-        const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
-        const data = {
-            itemDetail: {
-                restaurantId: restaurantId != undefined ? restaurantId : 0,
-                locationId: locationId != undefined ? locationId : 0,
-                customerId: customerId != undefined ? customerId : 0,
-                menuitemId: menuitemId != undefined ? parseInt(menuitemId) : 0,
-                cartsessionId: cartsessionId != undefined ? cartsessionId : "",
-                cartId: cartId != undefined && cartId != 0 ? parseInt(cartId) : 0
-            }
-        };
-        responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        if (responseclass.result && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-            return responseclass.result;
-        }
-        return [];
+  static async getAllMenuItemsPOS({
+    restaurantId,
+    locationId,
+    customerId,
+    menuitemId,
+    cartsessionId,
+    cartId,
+  }: GetAllMenuItemsPOSArgsTypes): Promise<any[]> {
+    responseclass = new ResponseModel();
+    const methodName = "getMenuItemList";
+    const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
+    const data = {
+      itemDetail: {
+        restaurantId: restaurantId != undefined ? restaurantId : 0,
+        locationId: locationId != undefined ? locationId : 0,
+        customerId: customerId != undefined ? customerId : 0,
+        menuitemId: menuitemId != undefined ? parseInt(menuitemId) : 0,
+        cartsessionId: cartsessionId != undefined ? cartsessionId : "",
+        cartId: cartId != undefined && cartId != 0 ? parseInt(cartId) : 0,
+      },
+    };
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      return responseclass.result;
     }
+    return [];
+  }
 }

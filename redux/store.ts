@@ -28,6 +28,7 @@ import orderReducer from "./order/order.slice";
 import locationReducer from "./location/location.slice";
 import cartReducer from "./cart/cart.slice";
 import sessionReducer from "./session/session.slice";
+import metadataReducer from "./metadata/metadata.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -39,6 +40,8 @@ const rootReducer = combineReducers({
   order: orderReducer,
   location: locationReducer,
   main: mainReducer,
+  //main: mainReducer,
+  metadata: metadataReducer,
   cart: cartReducer,
   session: sessionReducer,
 });
