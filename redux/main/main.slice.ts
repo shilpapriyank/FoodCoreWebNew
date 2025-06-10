@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { MainServices } from "./main.services";
 import {
-  getAllCategoryMenuItems,
+  // getAllCategoryMenuItems,
   getCategoryItemList,
   selectedCategory,
 } from "../category/category.slice";
 import { GetThemeDetails } from "@/components/common/utility";
+import { MainTypes } from "./main.type";
 
 // Initial state
 const MAIN_INITIAL_STATE = {
@@ -28,7 +29,7 @@ export const getMenuCategoryList = createAsyncThunk(
 );
 
 export const getSelectedRestaurantTime = createAsyncThunk(
-  "main/getSelectedRestaurantTime",
+  MainTypes.GET_SELECTED_RESTAURANTTIME,
   async ({ restaurantId, locationId }: any, { rejectWithValue }) => {
     try {
       return await MainServices.getSelectedRestaurantWindowTime(

@@ -1,68 +1,154 @@
-// import { useCallback, useState, ChangeEvent } from "react";
-// import { useDispatch } from "react-redux";
-// import { useRouter } from "next/router";
-// import { AppDispatch } from "../../../redux/store";
-// import { useReduxData } from "./useredux-data-hooks";
+import { useCallback, useState } from "react";
+import { GetThemeDetails, ORDERTYPE, ThemeObj } from "../common/utility";
+import { useAppDispatch } from "../../../redux/hooks";
+import { useParams, useRouter } from "next/navigation";
+import {
+  setSearchData,
+  setSearchText,
+} from "../../../redux/menu-item/menu-item.slice";
+import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
+import { selectedCategory } from "../../../redux/category/category.slice";
+import { useReduxData } from "./useredux-data-hooks";
+
+export const useSearchData = (searchtext: any) => {
+  const dispatch = useAppDispatch();
+  const [searchItem, setsearchItem] = useState(searchtext);
+  const { selecteddelivery, restaurantinfo, userinfo, menuitem } =
+    useReduxData();
+  let pickupordelivery = selecteddelivery.pickupordelivery;
+  const searchdata = menuitem?.searchdata;
+  const router = useRouter();
+  const params = useParams();
+  const { dynamic, location } = params;
+  const [errorMessage, seterrorMessage] = useState(
+    searchtext !== "" && Object.keys(searchdata).length === 0
+      ? "Opps! No Items Found"
+      : ""
+  );
+  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  console.log("selected theme from usesearchdatahook", selctedTheme);
+
+  const handleChangeSearch = (e: any) => {
+    let value = e.target.value;
+    setsearchItem(value);
+    if (value.length === 0 && searchtext !== "") {
+      handleClickCancel();
+    }
+  };
+
+  const handleSubmitSearch = useCallback(() => {
+    if (searchItem !== "") {
+      dispatch(setSearchText(searchItem));
+      dispatch(setSearchData({}));
+      MenuItemServices.getSerachResult({
+        locationId: restaurantinfo.defaultLocation.locationId,
+        restaurantId: restaurantinfo.restaurantId,
+        customerId: userinfo?.customerId ?? 0,
+        serchQuery: searchItem.trim(),
+      })
+        .then((res) => {
+          if (Object.keys(res).length > 0) {
+            seterrorMessage("");
+            let orderTypeCat = null;
+            if (pickupordelivery === ORDERTYPE.Pickup) {
+              orderTypeCat = res.categories.filter(
+                (item: any) => item.istakeoutavailable === true
+              );
+            } else if (pickupordelivery === ORDERTYPE.Delivery) {
+              orderTypeCat = res.categories.filter(
+                (item: any) => item.isdeliveryavailable === true
+              );
+            } else {
+              orderTypeCat = res.categories;
+            }
+            let avilableMenuItem = res.menuItems.filter((item: any) => {
+              return orderTypeCat.some((cat: any) => cat.catId === item.catId);
+            });
+            res.categories = orderTypeCat;
+            //chnage for the newtheme category based on theme condition
+            if (selctedTheme.name !== ThemeObj.newtheme) {
+              res.menuItems = avilableMenuItem;
+              dispatch(setSearchData(res));
+              router.push(
+                `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
+              );
+              dispatch(selectedCategory(res.categories[0]));
+            } else {
+              const newCatWithMenuItems = orderTypeCat?.map((cat: any) => {
+                const menuItems = avilableMenuItem?.filter(
+                  (menuItem: any) => menuItem?.catId === cat?.catId
+                );
+                return {
+                  ...cat,
+                  menuitems: menuItems,
+                };
+              });
+              res.menuItems = newCatWithMenuItems;
+              dispatch(setSearchData(res));
+              router.push(
+                `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
+              );
+              dispatch(selectedCategory(res.categories[0]));
+            }
+          } else {
+            seterrorMessage("Opps! No Items Found");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [searchItem, searchtext]);
+
+  function handleClickCancel() {
+    dispatch(setSearchText(""));
+    setsearchItem("");
+    seterrorMessage("");
+    dispatch(setSearchData({}));
+  }
+  return {
+    searchItem,
+    setsearchItem,
+    handleChangeSearch,
+    errorMessage,
+    handleClickCancel,
+    handleSubmitSearch,
+    selctedTheme,
+  };
+};
+
+// import { useCallback, useState } from "react";
+// import { GetThemeDetails, ORDERTYPE, ThemeObj } from "../common/utility";
+// import { useParams, useRouter } from "next/navigation";
 // import {
 //   setSearchData,
 //   setSearchText,
 // } from "../../../redux/menu-item/menu-item.slice";
 // import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
-// import { GetThemeDetails, ORDERTYPE, ThemeObj } from "../common/utility";
 // import { selectedCategory } from "../../../redux/category/category.slice";
-// import {
-//   CategoryType,
-//   MenuItemSearchResponse,
-//   MenuItemType,
-// } from "@/types/customhook-types/usesearchdata-type";
+// import { useReduxData } from "./useredux-data-hooks";
+// import { useAppDispatch } from "../../../redux/hooks";
 
-// type UseSearchDataReturn = {
-//   searchItem: string;
-//   setsearchItem: React.Dispatch<React.SetStateAction<string>>;
-//   handleChangeSearch: (e: ChangeEvent<HTMLInputElement>) => void;
-//   errorMessage: string;
-//   handleClickCancel: () => void;
-//   handleSubmitSearch: () => void;
-// };
-// // types/restaurant.ts
-// interface RestaurantDetail {
-//   themetype?: string;
-//   restaurantId?: number;
-//   defaultLocation?: {
-//     locationId?: number;
-//     defaultordertype?: boolean;
-//     [key: string]: any;
-//   };
-//   [key: string]: any;
-// }
-
-// export const useSearchData = (searchtext: string): UseSearchDataReturn => {
-//   const dispatch = useDispatch<AppDispatch>();
-//   const [searchItem, setsearchItem] = useState<string>(searchtext);
-
+// export const useSearchData = (searchtext: string) => {
+//   const dispatch = useAppDispatch();
+//   const [searchItem, setsearchItem] = useState(searchtext);
 //   const { selecteddelivery, restaurantinfo, userinfo, menuitem } =
 //     useReduxData();
-//   const pickupordelivery = selecteddelivery?.pickupordelivery;
-//   const searchdata = menuitem?.searchdata ?? {};
-
+//   let pickupordelivery = selecteddelivery.pickupordelivery;
+//   const searchdata = menuitem?.searchdata;
 //   const router = useRouter();
-//   const { dynamic, location } = router.query as {
-//     dynamic: string;
-//     location: string;
-//   };
-
-//   const [errorMessage, seterrorMessage] = useState<string>(
+//   const params = useParams();
+//   const { dynamic, location } = params;
+//   const [errorMessage, seterrorMessage] = useState(
 //     searchtext !== "" && Object.keys(searchdata).length === 0
 //       ? "Opps! No Items Found"
 //       : ""
 //   );
+//   const selctedTheme = GetThemeDetails(restaurantinfo.themetype);
 
-//   // const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
-
-//   const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
-//     const value = e.target.value;
+//   const handleChangeSearch = (e: any) => {
+//     let value = e.target.value;
 //     setsearchItem(value);
-
 //     if (value.length === 0 && searchtext !== "") {
 //       handleClickCancel();
 //     }
@@ -72,55 +158,53 @@
 //     if (searchItem !== "") {
 //       dispatch(setSearchText(searchItem));
 //       dispatch(setSearchData({}));
-
-//       MenuItemServices.getSerachResult(
-//         restaurantinfo?.defaultLocation?.locationId,
-//         restaurantinfo?.restaurantId,
-//         userinfo?.customerId ?? 0,
-//         searchItem.trim()
-//       )
-//         .then((res: MenuItemSearchResponse) => {
+//       MenuItemServices.getSerachResult({
+//         locationId: restaurantinfo.defaultLocation.locationId,
+//         restaurantId: restaurantinfo.restaurantId,
+//         customerId: userinfo?.customerId ?? 0,
+//         serchQuery: searchItem.trim(),
+//       })
+//         .then((res) => {
 //           if (Object.keys(res).length > 0) {
 //             seterrorMessage("");
-
-//             let orderTypeCat: CategoryType[] = [];
-
+//             let orderTypeCat = null;
 //             if (pickupordelivery === ORDERTYPE.Pickup) {
 //               orderTypeCat = res.categories.filter(
-//                 (cat) => cat.istakeoutavailable
+//                 (item: any) => item.istakeoutavailable === true
 //               );
 //             } else if (pickupordelivery === ORDERTYPE.Delivery) {
 //               orderTypeCat = res.categories.filter(
-//                 (cat) => cat.isdeliveryavailable
+//                 (item: any) => item.isdeliveryavailable === true
 //               );
 //             } else {
 //               orderTypeCat = res.categories;
 //             }
-
-//             const avilableMenuItem: MenuItemType[] = res.menuItems.filter(
-//               (item) => orderTypeCat.some((cat) => cat.catId === item.catId)
-//             );
-
+//             let avilableMenuItem = res.menuItems.filter((item: any) => {
+//               return orderTypeCat.some((cat: any) => cat.catId === item.catId);
+//             });
 //             res.categories = orderTypeCat;
-
+//             //chnage for the newtheme category based on theme condition
 //             if (selctedTheme.name !== ThemeObj.newtheme) {
 //               res.menuItems = avilableMenuItem;
 //               dispatch(setSearchData(res));
 //               router.push(
-//                 `/${selctedTheme.url}/${dynamic}/${location}/${res.categories[0]?.categoryslug}`
+//                 `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
 //               );
 //               dispatch(selectedCategory(res.categories[0]));
 //             } else {
-//               const newCatWithMenuItems = orderTypeCat.map((cat) => ({
-//                 ...cat,
-//                 menuitems: avilableMenuItem.filter(
-//                   (item) => item.catId === cat.catId
-//                 ),
-//               }));
+//               const newCatWithMenuItems = orderTypeCat?.map((cat: any) => {
+//                 const menuItems = avilableMenuItem?.filter(
+//                   (menuItem: any) => menuItem?.catId === cat?.catId
+//                 );
+//                 return {
+//                   ...cat,
+//                   menuitems: menuItems,
+//                 };
+//               });
 //               res.menuItems = newCatWithMenuItems;
 //               dispatch(setSearchData(res));
 //               router.push(
-//                 `/${selctedTheme.url}/${dynamic}/${location}/${res.categories[0]?.categoryslug}`
+//                 `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
 //               );
 //               dispatch(selectedCategory(res.categories[0]));
 //             }
@@ -129,18 +213,17 @@
 //           }
 //         })
 //         .catch((err) => {
-//           console.error("Search error:", err);
+//           console.log(err);
 //         });
 //     }
-//   }, []);
+//   }, [searchItem, searchtext]);
 
-//   const handleClickCancel = () => {
+//   function handleClickCancel() {
 //     dispatch(setSearchText(""));
 //     setsearchItem("");
 //     seterrorMessage("");
 //     dispatch(setSearchData({}));
-//   };
-
+//   }
 //   return {
 //     searchItem,
 //     setsearchItem,
