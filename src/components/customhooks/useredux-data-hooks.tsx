@@ -19,7 +19,7 @@ export const useReduxData = () => {
   );
   // const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
   const selecteddelivery = useSelector(
-    (state: RootState) => state.deliveryaddress,
+    (state: RootState) => state.selecteddelivery,
     shallowEqual
   );
 
@@ -36,7 +36,7 @@ export const useReduxData = () => {
     (state: RootState) => state.category,
     shallowEqual
   );
-  const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
+  const deliveryaddress = useSelector((state: RootState) => state.selecteddelivery, shallowEqual);
   const main = useSelector((state: RootState) => state.main, shallowEqual);
   // const metadata = useSelector((state: RootState) => state.metadata, shallowEqual);
 

@@ -8,7 +8,8 @@ export function ThemeStyles({ themeType }: ThemeStylesProps) {
     <>
       {themeType === "default" && (
         <>
-          <link rel="stylesheet" href="/defaulttheme/css/bootstrap.min.css" />
+          <link rel="stylesheet" href="/defaulttheme/css/bootstrap.min.css"
+            crossOrigin="anonymous"></link>
           <link
             href="/defaulttheme/css/jquery.bxslider.css"
             rel="stylesheet"

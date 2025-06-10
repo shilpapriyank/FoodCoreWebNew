@@ -19,6 +19,8 @@ import { setRewardPoint } from '../../../../../redux/cart/cart.slice';
 import useFutureOrder from '@/components/customhooks/usefuture-order-hook';
 import { useWindowDimensions } from '@/components/customhooks/usewindowdimension-hook';
 import CartCounter from '../../common/cart-counter.component';
+import OrderTypeSelect from '../../ordertype/ordertype-select.component';
+import AddAddress from '../../common/add-address.component';
 
 interface HeaderProps {
     handleChangeAddress?: () => void;
@@ -29,26 +31,24 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const { restaurantinfo, selecteddelivery, order, userinfo } = useReduxData();
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const pathname = usePathname();
-    const params = useParams();
-    const [openAdressModal, setopenAdressModal] = useState(false);
-    const [openLoginModal, setOpenLoginModal] = useState(false);
-    const [isOpenOrderTypeModal, setisOpenOrderTypeModal] = useState(false);
-    const [openAccountConfirmModal, setopenAccountConfirmModal] = useState(false);
-    const logoUrl = restaurantinfo?.logo ?? 'https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png';
+    const pathname: string = usePathname();
+    const params: Record<string, string> = useParams();
+    const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
+    const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+    const [isOpenOrderTypeModal, setisOpenOrderTypeModal] = useState<boolean>(false);
+    const [openAccountConfirmModal, setopenAccountConfirmModal] = useState<boolean>(false);
+    const logoUrl: string = restaurantinfo?.logo ?? 'https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png';
     const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
-    const isHomePage = page === 'location';
-    const themeUrl = selectedTheme?.url;
-    const restaurantUrl = restaurantinfo?.restaurantURL;
-    const locationSlug = restaurantinfo?.defaultLocation?.locationURL;
-    const b2b = restaurantinfo?.defaultLocation?.b2btype ?? false;
-    const isSchoolProgramEnabled = restaurantinfo?.defaultLocation?.schoolprogramenabled ?? false;
-    const orderTypeName = selecteddelivery?.pickupordelivery;
-    const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder()
+    const isHomePage: boolean = page === 'location';
+    const themeUrl: string | undefined = selectedTheme?.url;
+    const restaurantUrl: string | undefined = restaurantinfo?.restaurantURL; const locationSlug = restaurantinfo?.defaultLocation?.locationURL;
+    const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype ?? false;
+    const isSchoolProgramEnabled: boolean = restaurantinfo?.defaultLocation?.schoolprogramenabled ?? false;
+    const orderTypeName: string | undefined = selecteddelivery?.pickupordelivery;
+    const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
     const { width } = useWindowDimensions()
-    const isMobile = width < 768;
-
-    const locationFullLink = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
+    const isMobile: boolean = width < 768;
+    const locationFullLink: string = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
 
     useEffect(() => {
         if (b2b && userinfo === null && openLoginModal === false) {
@@ -110,7 +110,6 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     //     setOpenLoginModal(true, 'openUserExistModal')
     // }
 
-
     return (
         <>
             <section className="header">
@@ -133,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                             <CartCounter />
                         </div>}
                         <div className="col-lg-8 col-md-8 col-12">
-                            {!(pathname.includes(PAGES.PAYMENT) || pathname.includes(PAGES.CREATE_NEW_PASS)) && (
+                            {!(pathname.includes(PAGES.PAYMENT) || pathname.includes(PAGES.CREATE_NEW_PASS)) &&
                                 <form>
                                     <div className="align-form">
                                         <div className='d-flex justify-content-center mb-2 mb-md-0' >
@@ -162,12 +161,12 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                                         }
                                     </div>
                                 </form>
-                            )}
+                            }
                         </div>
                         <div className="col-lg-2 col-md-12 text-md-end col-12 d-none d-md-block">
                             <UserDropdown handleLogOutclick={handleLogOutclick} handleOpenLoginModal={handleOpenLoginModal} />
                         </div>
-                        <div className="d-block d-md-none user-drop">
+                        <div className=" d-block d-md-none user-drop">
                             <UserDropdown isWelcome={false} handleLogOutclick={handleLogOutclick} handleOpenLoginModal={handleOpenLoginModal} />
                         </div>
                     </div>

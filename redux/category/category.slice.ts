@@ -115,7 +115,8 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getCategoryItemList.fulfilled, (state, action) => {
       //state.categoryitemlist = action.payload;
-      state.categorylist = action.payload;
+      //state.categorylist = action.payload;
+      state.categoryitemlist = action.payload;
     });
     // builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
     //   state.categoryitemlist = action.payload;

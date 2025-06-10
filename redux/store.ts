@@ -20,7 +20,7 @@ import restaurantsReducer from "./restaurants/restaurants.slice";
 // import orderReducer from "./order/order.slice";
 // import locationReducer from "./location/location.slice";
 import mainReducer from "./main/main.slice";
-import deliveryaddressReducer from "./delivery-address/delivery-address.slice";
+import selecteddeliveryReducer from "./delivery-address/delivery-address.slice";
 import menuItemReducer from "./menu-item/menu-item.slice";
 import categoryReducer from "./category/category.slice";
 import loginReducer from "./login/login.slice";
@@ -34,7 +34,7 @@ import { thunk } from "redux-thunk";
 // Combine reducers
 const rootReducer = combineReducers({
   restaurant: restaurantsReducer,
-  deliveryaddress: deliveryaddressReducer,
+  selecteddelivery: selecteddeliveryReducer,
   menuitem: menuItemReducer,
   category: categoryReducer,
   userdetail: loginReducer,
