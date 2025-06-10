@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import '../../styles/globals.css';
+//import '../styles/globals.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import type { ReactNode } from "react";
 import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
@@ -60,13 +61,16 @@ export default async function RootLayout({
 
         {/* Load theme-specific CSS */}
         <ThemeStyles themeType={themeType} />
+
       </head>
       <body>
+
         {/* Pass only serializable data to client components */}
         <ClientWrapper>{children}</ClientWrapper>
 
         {/* Load theme-specific scripts */}
         <ThemeScripts themeType={themeType} />
+
       </body>
     </html>
   );

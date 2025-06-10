@@ -13,42 +13,36 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
     handleToggleOrderTypeModal,
     b2b = false,
 }) => {
-    const { selecteddelivery, restaurantinfo } = useReduxData();
-
-    const orderTypeName = selecteddelivery?.pickupordelivery;
+    const { selecteddelivery, restaurantinfo, deliveryaddress } = useReduxData();
     const defaultLocation = restaurantinfo?.defaultLocation;
+    const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+    const orderTypeName = selecteddelivery?.pickupordelivery;
+    const address = orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : ""
+    const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
+    let myDeliveryAddress = selecteddeliveryaddress ?? tempDeliveryAddress;
 
-    // For DELIVERY, use tempDeliveryAddress from selecteddelivery (RTK state)
-    const myDeliveryAddress = selecteddelivery?.tempDeliveryAddress;
 
-    const displaySelectedAddress = () => {
-        if (orderTypeName === ORDER_TYPE.DELIVERY.text && myDeliveryAddress) {
-            return (
-                <>
-                    {
-                        orderTypeName === ORDER_TYPE.DELIVERY.text ? <> {myDeliveryAddress && `${myDeliveryAddress?.address1 && myDeliveryAddress?.address1},  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode}`}</> : <>  {`${restaurantinfo && restaurantinfo?.defaultLocation?.address1},  ${restaurantinfo && restaurantinfo?.defaultLocation?.cityname}, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}</>
-                    }
-                </>
-            );
-        }
-
+    const DisplayselectedPickup = () => {
         return (
             <>
-                {defaultLocation?.address1}, {defaultLocation?.cityname}, {defaultLocation?.zipcode}
+                {
+                    orderTypeName === ORDER_TYPE.DELIVERY.text ? <> {myDeliveryAddress && `${myDeliveryAddress?.address1 && myDeliveryAddress?.address1},  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode}`}</> : <>  {`${restaurantinfo && restaurantinfo?.defaultLocation?.address1},  ${restaurantinfo && restaurantinfo?.defaultLocation?.cityname}, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}</>
+                }
+
             </>
-        );
-    };
+        )
+    }
 
     return (
-        <a className="takeout" id="time-mdl" onClick={() => handleToggleOrderTypeModal(true)}>
+        <a className="takeout" id='time-mdl' onClick={() => handleToggleOrderTypeModal(true)}>
             <i className="fa arrow fa-angle-right" />
             {!b2b && <>  {orderTypeName === ORDER_TYPE.PICKUP.text ? <i className="fa icon fa-shopping-bag" /> : <i className="fa icon fa-car"></i>}</>}
             <div className=''>
                 <h4 >{!b2b && <>{!restaurantinfo?.isSchoolProgramEnabled ? selecteddelivery?.pickupordelivery : restaurantinfo?.defaultLocation?.locationName
-                }<br /></>} <span>{displaySelectedAddress()}</span></h4>
+                }<br /></>} <span>{<DisplayselectedPickup />}</span></h4>
             </div>
         </a>
-    );
+    )
 };
 
 export default SelectedAddressHeader;

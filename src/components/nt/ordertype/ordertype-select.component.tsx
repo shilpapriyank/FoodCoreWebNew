@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 
 // import React, { useState } from 'react';
 // import { useDispatch } from 'react-redux';
@@ -23,147 +23,153 @@
 // import { createSessionId } from '../../../../redux/session/session.slice';
 // import { ChangeUrl, restaurantsdetail } from '../../../../redux/restaurants/restaurants.slice';
 
-// interface OrderTypeSelectProps {
-//   isOpenModal: boolean;
-//   handleToggleOrderTypeModal: (val: boolean) => void;
-//   handleToggleTimingModal?: (val: boolean) => void;
-//   handleChangeAddress?: () => void;
-//   handleToggleAddAddressModal: (val: boolean) => void;
-// }
+interface OrderTypeSelectProps {
+    isOpenModal: boolean;
+    handleToggleOrderTypeModal: (val: boolean) => void;
+    handleToggleTimingModal?: (val: boolean) => void;
+    handleChangeAddress?: () => void;
+    handleToggleAddAddressModal: (val: boolean) => void;
+}
 
-// const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
-//   isOpenModal,
-//   handleToggleOrderTypeModal,
-//   handleToggleTimingModal,
-//   handleChangeAddress,
-//   handleToggleAddAddressModal,
-// }) => {
-//   const dispatch = useDispatch();
-//   const router = useRouter();
-//   const {
-//     selecteddelivery,
-//     restaurantinfo,
-//     rewardpoints,
-//     deliveryaddress,
-//     userinfo,
-//     sessionid,
-//   } = useReduxData();
+const OrderTypeSelect: React.FC<OrderTypeSelectProps> = () => {
+    // ({
+    //   isOpenModal,
+    //   handleToggleOrderTypeModal,
+    //   handleToggleTimingModal,
+    //   handleChangeAddress,
+    //   handleToggleAddAddressModal,
+    //}) => {
+    //   const dispatch = useDispatch();
+    //   const router = useRouter();
+    //   const {
+    //     selecteddelivery,
+    //     restaurantinfo,
+    //     rewardpoints,
+    //     deliveryaddress,
+    //     userinfo,
+    //     sessionid,
+    //   } = useReduxData();
 
-//   const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
-//   const customerId = userinfo?.customerId || 0;
-//   const rewardvalue = rewardpoints?.rewardvalue;
-//   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
-//   const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}`;
-//   const defaultLocation = restaurantinfo?.defaultLocation;
-//   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
-//   const orderTypeName = selecteddelivery?.pickupordelivery;
-//   const address = orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : '';
-//   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
-//   const myDeliveryAddress = tempDeliveryAddress;
+    //   const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
+    //   const customerId = userinfo?.customerId || 0;
+    //   const rewardvalue = rewardpoints?.rewardvalue;
+    //   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    //   const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}`;
+    //   const defaultLocation = restaurantinfo?.defaultLocation;
+    //   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+    //   const orderTypeName = selecteddelivery?.pickupordelivery;
+    //   const address = orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : '';
+    //   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
+    //   const myDeliveryAddress = tempDeliveryAddress;
 
-//   const handleChangeOrderType = (orderType: string) => {
-//     dispatch(setpickupordelivery(orderType));
-//     if (ORDER_TYPE.DELIVERY.text === orderType && userinfo === null) {
-//       handleToggleOrderTypeModal(false);
-//       handleToggleAddAddressModal(true);
-//     }
-//   };
+    //   const handleChangeOrderType = (orderType: string) => {
+    //     dispatch(setpickupordelivery(orderType));
+    //     if (ORDER_TYPE.DELIVERY.text === orderType && userinfo === null) {
+    //       handleToggleOrderTypeModal(false);
+    //       handleToggleAddAddressModal(true);
+    //     }
+    //   };
 
-//   const handleChangeLocation = (id: number) => {
-//     setSelectedLocationId(id);
-//   };
+    //   const handleChangeLocation = (id: number) => {
+    //     setSelectedLocationId(id);
+    //   };
 
-//   const handleClickConfirmChangeLocation = async (lid: number) => {
-//     handleChangeAddress?.();
-//     dispatch(ChangeUrl(true));
-//     const res = await LocationServices.changeRestaurantLocation(
-//       restaurantinfo.restaurantId,
-//       lid
-//     );
+    //   const handleClickConfirmChangeLocation = async (lid: number) => {
+    //     handleChangeAddress?.();
+    //     dispatch(ChangeUrl(true));
+    //     const res = await LocationServices.changeRestaurantLocation(
+    //       restaurantinfo.restaurantId,
+    //       lid
+    //     );
 
-//     if (res) {
-//       Object.assign(restaurantinfo.defaultLocation, res);
-//       restaurantinfo.defaultlocationId = res.locationId;
+    //     if (res) {
+    //       Object.assign(restaurantinfo.defaultLocation, res);
+    //       restaurantinfo.defaultlocationId = res.locationId;
 
-//       dispatch(restaurantsdetail(null));
-//       router.push(`${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`);
-//       dispatch(restaurantsdetail(restaurantinfo));
+    //       dispatch(restaurantsdetail(null));
+    //       router.push(`${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`);
+    //       dispatch(restaurantsdetail(restaurantinfo));
 
-//       const oldLocationId = getLocationIdFromStorage();
-//       if (oldLocationId !== restaurantinfo.defaultlocationId) {
-//         dispatch(clearRedux(true));
-//        // const id = uuidv4();
-//       //  dispatch(createSessionId(id));
-//       }
+    //       const oldLocationId = getLocationIdFromStorage();
+    //       if (oldLocationId !== restaurantinfo.defaultlocationId) {
+    //         dispatch(clearRedux(true));
+    //        // const id = uuidv4();
+    //       //  dispatch(createSessionId(id));
+    //       }
 
-//       if (userinfo?.customerId) {
-//         const rewardRes = await CustomerServices.checkCustomerRewardPointsLocationBase(
-//           restaurantinfo.restaurantId,
-//           userinfo.customerId,
-//           0,
-//           0,
-//           restaurantinfo?.defaultLocation.locationId
-//         );
-//         if (rewardRes.status === 1) {
-//           dispatch(
-//             setrewardpoint({
-//               rewardvalue,
-//               rewardamount: parseFloat(
-//                 ((rewardRes?.result?.totalrewardpoints || 0) / rewardvalue).toFixed(2)
-//               ),
-//               rewardPoint: rewardRes?.result?.totalrewardpoints,
-//               totalRewardPoints: rewardRes?.result?.totalrewardpoints,
-//               redeemPoint: 0,
-//             })
-//           );
-//         }
-//       }
+    //       if (userinfo?.customerId) {
+    //         const rewardRes = await CustomerServices.checkCustomerRewardPointsLocationBase(
+    //           restaurantinfo.restaurantId,
+    //           userinfo.customerId,
+    //           0,
+    //           0,
+    //           restaurantinfo?.defaultLocation.locationId
+    //         );
+    //         if (rewardRes.status === 1) {
+    //           dispatch(
+    //             setrewardpoint({
+    //               rewardvalue,
+    //               rewardamount: parseFloat(
+    //                 ((rewardRes?.result?.totalrewardpoints || 0) / rewardvalue).toFixed(2)
+    //               ),
+    //               rewardPoint: rewardRes?.result?.totalrewardpoints,
+    //               totalRewardPoints: rewardRes?.result?.totalrewardpoints,
+    //               redeemPoint: 0,
+    //             })
+    //           );
+    //         }
+    //       }
 
-//       setLocationIdInStorage(restaurantinfo.defaultlocationId);
-//       dispatch(refreshCategoryList(restaurantinfo, customerId));
-//       dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, lid));
+    //       setLocationIdInStorage(restaurantinfo.defaultlocationId);
+    //       dispatch(refreshCategoryList(restaurantinfo, customerId));
+    //       dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, lid));
 
-//       if (userinfo?.customerId) {
-//         deleteCartItemFromSessionId(
-//           sessionid,
-//           restaurantinfo.restaurantId,
-//           restaurantinfo.defaultLocation.locationId
-//         );
-//         dispatch(emptycart());
-//       }
+    //       if (userinfo?.customerId) {
+    //         deleteCartItemFromSessionId(
+    //           sessionid,
+    //           restaurantinfo.restaurantId,
+    //           restaurantinfo.defaultLocation.locationId
+    //         );
+    //         dispatch(emptycart());
+    //       }
 
-//       handleToggleOrderTypeModal(false);
-//       dispatch(
-//         setpickupordelivery(
-//           restaurantinfo?.defaultLocation?.defaultordertype
-//             ? ORDER_TYPE.DELIVERY.text
-//             : ORDER_TYPE.PICKUP.text
-//         )
-//       );
-//       handleToggleTimingModal?.(true);
-//       dispatch(clearDeliveryRequestId());
-//     }
-//   };
+    //       handleToggleOrderTypeModal(false);
+    //       dispatch(
+    //         setpickupordelivery(
+    //           restaurantinfo?.defaultLocation?.defaultordertype
+    //             ? ORDER_TYPE.DELIVERY.text
+    //             : ORDER_TYPE.PICKUP.text
+    //         )
+    //       );
+    //       handleToggleTimingModal?.(true);
+    //       dispatch(clearDeliveryRequestId());
+    //     }
+    //   };
 
-//   const handleClickConfirm = () => {
-//     if (
-//       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
-//       selectedLocationId > 0 &&
-//       selectedLocationId !== restaurantinfo?.defaultlocationId
-//     ) {
-//       handleClickConfirmChangeLocation(selectedLocationId);
-//     } else {
-//       handleToggleOrderTypeModal(false);
-//     }
-//   };
+    //   const handleClickConfirm = () => {
+    //     if (
+    //       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
+    //       selectedLocationId > 0 &&
+    //       selectedLocationId !== restaurantinfo?.defaultlocationId
+    //     ) {
+    //       handleClickConfirmChangeLocation(selectedLocationId);
+    //     } else {
+    //       handleToggleOrderTypeModal(false);
+    //     }
+    //   };
 
-//   const handleClickAddNewAddress = () => {
-//     handleToggleOrderTypeModal(false);
-//     handleToggleAddAddressModal(true);
-//   };
+    //   const handleClickAddNewAddress = () => {
+    //     handleToggleOrderTypeModal(false);
+    //     handleToggleAddAddressModal(true);
+    // };
 
-//   return (
-//     <>
+    return (
+        <>
+            <h1>from order type</h1>
+        </>
+    )
+}
+//   <>
 //       <div
 //         className={`modal fade modal-your-order ${isOpenModal ? 'show d-block' : ''}`}
 //         tabIndex={-1}
@@ -218,7 +224,7 @@
 //                       <h2 className="fs-16">Enter your address</h2>
 //                     </div>
 //                     <div className="col-12 mb-4 mt-4">
-//                       {myDeliveryAddress && <AddressPill isChecked={true} address={myDeliveryAddress}  id={myDeliveryAddress} />}
+//                       {myDeliveryAddress && <AddressPill isChecked={true} address={myDeliveryAddress} id={myDeliveryAddress} />}
 //                       {userinfo && <DeliveryaddresspillComponent />}
 //                       <div className="text-center">
 //                         <a className="address-nfound" onClick={handleClickAddNewAddress}>
@@ -235,7 +241,7 @@
 //                 </a>
 //               </div>
 //             </form>
-//           </div>
+//           </div >
 //         </div>
 //       </div>
 //       <div className="modal-backdrop fade show"></div>
@@ -243,4 +249,4 @@
 //   );
 // };
 
-// export default OrderTypeSelect;
+export default OrderTypeSelect;

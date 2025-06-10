@@ -33,11 +33,12 @@ export interface GetAddressResponse {
 }
 
 export interface DeliveryAddressState {
-    deliveryaddressdata: DeliveryAddressInput[] | null
-    updatedAddress: boolean | { isAddressUpdated: boolean } | undefined
-    choosetime: Record<string, any>
-    registeraddress: DeliveryAddressInput | null
-    addressId: DeliveryAddressInput | null
-    tempDeliveryAddress: DeliveryAddressInput | null
-    pickupordelivery: string; 
+  deliveryaddressdata: DeliveryAddressInput[] | null;
+  updatedAddress: boolean;
+  choosetime: Record<string, any>;
+  registeraddress: DeliveryAddressInput;
+  addressId: DeliveryAddressInput;
+  tempDeliveryAddress: DeliveryAddressInput | null;
+  pickupordelivery: string;
+  selecteddeliveryaddress: DeliveryAddressInput | null;
 }

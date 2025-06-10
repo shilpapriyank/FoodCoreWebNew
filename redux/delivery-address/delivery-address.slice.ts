@@ -1,109 +1,56 @@
-// redux/deliveryAddress/deliveryAddressSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { DeliveryAddressServices } from './delivery-address.services'
-import { DeliveryAddressInput, DeliveryAddressState, GetAddressResponse } from './delivery-address.types'
+// selectedDeliverySlice.ts
 
-const initialState: DeliveryAddressState = {
-    deliveryaddressdata: null,
-    updatedAddress: false,
-    choosetime: {},
-    registeraddress: {} as DeliveryAddressInput,
-    addressId: {} as DeliveryAddressInput,
-    tempDeliveryAddress: null,
-    pickupordelivery: 'delivery'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SelectedDeliveryTypes } from '../selected-delivery-data/selecteddelivery.types';
+
+interface ChooseTime {
+    [key: string]: any;
 }
 
-//Thunks (Async)
-export const getAddress = createAsyncThunk(
-    'deliveryAddress/getAddress',
-    async ({
-        customerId,
-        restaurantId,
-        locationId,
-    }: {
-        customerId: string;
-        restaurantId: string;
-        locationId: string;
-    }) => {
-        const response = await DeliveryAddressServices.getDeliveryAddress(
-            customerId,
-            restaurantId,
-            locationId
-        );
+interface DeliveryState {
+    choosetime: ChooseTime;
+    pickupordelivery: string;
+    selecteddeliveryaddress: Record<string, any> | null;
+    tempDeliveryAddress?: Record<string, any> | null;
+}
 
-        if (
-            response &&
-            typeof response === 'object' &&
-            'AddressLists' in response &&
-            Array.isArray((response as any).AddressLists)
-        ) {
-            return (response as GetAddressResponse).AddressLists;
-        } else {
-            console.warn('Unexpected address response:', response);
-            return [];
-        }
-    }
-);
+const initialState: DeliveryState = {
+    choosetime: {},
+    pickupordelivery: '',
+    selecteddeliveryaddress: {},
+};
 
-
-export const deleteAddress = createAsyncThunk(
-    'deliveryAddress/deleteAddress',
-    async ({ deliveryaddressId, restaurantId }: { deliveryaddressId: string; restaurantId: string }) => {
-        const response = await DeliveryAddressServices.deleteDeliveryAddress(deliveryaddressId, restaurantId)
-        return response as DeliveryAddressInput
-    }
-)
-
-export const addAddress = createAsyncThunk(
-    'deliveryAddress/addAddress',
-    async ({ obj, restaurantId, locationId }: { obj: DeliveryAddressInput; restaurantId: string; locationId: string }) => {
-        const response = await DeliveryAddressServices.addDeliveryAddress(obj, restaurantId, locationId)
-        return response as DeliveryAddressInput
-    }
-)
-
-// Slice
-const deliveryAddressSlice = createSlice({
-    name: 'deliveryAddress',
+const selectedDeliverySlice = createSlice({
+    name: 'selectedDelivery',
     initialState,
     reducers: {
-        updateAddressCheck: (state, action: PayloadAction<boolean>) => {
-            state.updatedAddress = { isAddressUpdated: action.payload }
+        [SelectedDeliveryTypes.SAVE_CHOOSE_TIME]: (state, action: PayloadAction<ChooseTime>) => {
+            state.choosetime = action.payload;
         },
-        registerAddress: (state, action: PayloadAction<DeliveryAddressInput>) => {
-            state.tempDeliveryAddress = null
-            state.registeraddress = action.payload
+        [SelectedDeliveryTypes.SET_PICKUP_OR_DELIVERY]: (state, action: PayloadAction<string>) => {
+            state.pickupordelivery = action.payload;
         },
-        insertAddressId: (state, action: PayloadAction<DeliveryAddressInput>) => {
-            state.addressId = action.payload
+        [SelectedDeliveryTypes.SELECTED_DELIVERY_ADDRESS]: (state, action: PayloadAction<Record<string, any> | null>) => {
+            state.selecteddeliveryaddress = action.payload;
         },
-        addTempDeliveryAddress: (state, action: PayloadAction<DeliveryAddressInput>) => {
-            state.tempDeliveryAddress = action.payload
+        [SelectedDeliveryTypes.CLEAR_DELIVERY_ADDRESS]: (state) => {
+            state.choosetime = {};
+            state.pickupordelivery = '';
+            state.selecteddeliveryaddress = {};
         },
-        deleteTempDeliveryAddress: (state) => {
-            state.tempDeliveryAddress = null
+        [SelectedDeliveryTypes.RESET_SELECTDELIVERY]: (state) => {
+            state.pickupordelivery = '';
+            state.selecteddeliveryaddress = null;
         },
-        resetDeliveryAddress: () => initialState,
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(getAddress.fulfilled, (state, action) => {
-                state.deliveryaddressdata = action.payload
-            })
-            .addCase(addAddress.fulfilled, (state, action) => {
-                state.addressId = action.payload
-            })
-    },
-})
+});
 
-// Exports
 export const {
-    updateAddressCheck,
-    registerAddress,
-    insertAddressId,
-    addTempDeliveryAddress,
-    deleteTempDeliveryAddress,
-    resetDeliveryAddress,
-} = deliveryAddressSlice.actions
+    SAVE_CHOOSE_TIME,
+    SET_PICKUP_OR_DELIVERY,
+    SELECTED_DELIVERY_ADDRESS,
+    CLEAR_DELIVERY_ADDRESS,
+    RESET_SELECTDELIVERY
+} = selectedDeliverySlice.actions;
 
-export default deliveryAddressSlice.reducer
+export default selectedDeliverySlice.reducer;
