@@ -124,3 +124,12 @@ export interface RestaurantColorModelApiTypes {
   FieldName: string;
   Color: string;
 }
+
+export type FutureOrderDay = {
+  fullDay: string;
+  // ... other fields
+};
+
+export type FutureOrder = {
+  futureOrderDay: FutureOrderDay | string;
+};

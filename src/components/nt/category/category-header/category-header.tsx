@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-//import useLoadCatData from "../../../customhooks/useloadcatdata-hook";
 import Link from "next/link";
 import { GetThemeDetails } from "../../../common/utility";
-import { useRouter } from "next/router";
+import { useParams, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { fixedLengthString, getImagePath } from "../../common/utility";
 import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hook";
@@ -19,11 +18,11 @@ const CategoryHeader = ({ selectedCatId }: any) => {
     menuitem,
     selecteddelivery,
   } = useReduxData();
-  // const {categorylist } =useLoadCatData();
+  //const {categorylist } =useLoadCatData();
   const router = useRouter();
-  const {
-    query: { dynamic, location, id, category, index },
-  } = router;
+  const params = useParams();
+  //const { query: { dynamic, location, id, category, index }, } = router;
+  const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const dispatch = useDispatch();
 
@@ -47,6 +46,8 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   };
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
+
+  // debugger;
 
   useEffect(() => {
     // Scroll the active element into view when the component renders or the active class changes
