@@ -11,7 +11,8 @@ export interface RestaurantState {
   restaurantslocationlist: any[];
   restaurantslocationlistwithtime: {
     addressList: any[];
-  }; restaurantstiminglist: any[];
+  };
+  restaurantstiminglist: any[];
   ischangeurl: boolean;
   bannerDetails: any[];
   appversion: string;
@@ -30,7 +31,6 @@ const initialState: RestaurantState = {
   bannerDetails: [],
   appversion: "",
 };
-
 
 // Async actions
 export const getRestaurantsList = createAsyncThunk(

@@ -9,15 +9,10 @@ export const useReduxData = () => {
   //   (state: RootState) => state.userdetail?.loggedinuser,
   //   shallowEqual
   // );
-  // const menuitem = useSelector(
-  //   (state: RootState) => state.menuItem,
-  //   shallowEqual
-  // );
   const restaurantinfo = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
   );
-  // const restaurantinfo = useSelector((state: RootState) => state.restaurant?.restaurantdetail, shallowEqual);
   const selecteddelivery = useSelector(
     (state: RootState) => state.selecteddelivery,
     shallowEqual
@@ -36,12 +31,11 @@ export const useReduxData = () => {
     (state: RootState) => state.category,
     shallowEqual
   );
-  const deliveryaddress = useSelector((state: RootState) => state.selecteddelivery, shallowEqual);
+  const deliveryaddress = useSelector(
+    (state: RootState) => state.selecteddelivery,
+    shallowEqual
+  );
   const main = useSelector((state: RootState) => state.main, shallowEqual);
-  // const metadata = useSelector((state: RootState) => state.metadata, shallowEqual);
-
-  // const deliveryaddress = useSelector((state: RootState) => state.deliveryaddress, shallowEqual);
-  //const main = useSelector((state: RootState) => state.main, shallowEqual);
   const metadata = useSelector(
     (state: RootState) => state.metadata,
     shallowEqual
@@ -52,9 +46,14 @@ export const useReduxData = () => {
     shallowEqual
   );
   //const rewardpoints = useSelector((state: RootState) => state.rewardpoints, shallowEqual);
-  // const session = useSelector((state: RootState) => state.session, shallowEqual);
+  const session = useSelector(
+    (state: RootState) => state.session,
+    shallowEqual
+  );
   // const studentdata = useSelector((state: RootState) => state.studentname, shallowEqual);
-  // const restaurantWindowTime = useSelector((state: RootState) => state.main.restaurantWindowTime);
+  const restaurantWindowTime = useSelector(
+    (state: RootState) => state.main.restaurantWindowTime
+  );
   const restauranttiming = useSelector(
     (state: RootState) => state.restaurant.restaurantstiminglist
   );
@@ -66,19 +65,13 @@ export const useReduxData = () => {
   const defaultLocation = useSelector(
     (state: RootState) => state.restaurant.restaurantdetail?.defaultLocation
   );
-
-  // const defaultLocation = useSelector((state: RootState) => state.restaurant.restaurantdetail?.defaultLocation);
   // const tableorder = useSelector((state: RootState) => state.tableorder, shallowEqual);
   const categoryItemsList = useSelector(
     (state: RootState) => state.category?.categoryitemlist,
     shallowEqual
   );
-  // const maincategoryList = useSelector(
-  //   (state: RootState) => state.main?.maincategoryList,
-  //   shallowEqual
-  // );
   const maincategoryList = useSelector(
-    ({ main }: any) => main?.maincategoryList,
+    (state: RootState) => state.main?.maincategoryList,
     shallowEqual
   );
   const selectedcategory = useSelector(
@@ -93,8 +86,10 @@ export const useReduxData = () => {
   // order.isasap
   // );
 
-  // const orderTimeType =
-  //   order?.isasap === true ? ORDER_TIME_TYPE.ASAP.value : ORDER_TIME_TYPE.LATERON.value;
+  const orderTimeType =
+    order?.isasap === true
+      ? ORDER_TIME_TYPE.ASAP.value
+      : ORDER_TIME_TYPE.LATERON.value;
 
   // const cartItemsAmountTotal =
   //   cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
@@ -117,7 +112,6 @@ export const useReduxData = () => {
     category,
     deliveryaddress,
     main,
-    // metadata,
     metadata,
     order,
     restaurant,
@@ -126,17 +120,15 @@ export const useReduxData = () => {
     maincategoryList,
     categoryItemsList,
     selectedcategory,
+    orderTimeType,
+    sessionid,
+    restaurantWindowTime,
+    session,
+    restauranttiming,
     // cart,
-    // deliveryaddress,
     // main,
     //rewardpoints,
-    // session,
     // studentdata,
-    // restaurantWindowTime,
-
-    restauranttiming,
-    sessionid,
-
     // sessionid,
     // addressList,
     // recievingTime,

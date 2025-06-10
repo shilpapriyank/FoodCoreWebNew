@@ -8,7 +8,7 @@ import Logo from './logo.component';
 import SelectedAddressHeader from './selected-address-header.component';
 import UserDropdown from './user-dropdown.component';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
-import { GetThemeDetails } from '@/components/common/utility';
+import { GetCurrency, GetThemeDetails } from '@/components/common/utility';
 import { PAGES } from '../../common/pages';
 import { AppDispatch } from '../../../../../redux/store';
 import { ToasterPositions } from '@/components/default/helpers/toaster/toaster-positions';
@@ -29,6 +29,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const { restaurantinfo, selecteddelivery, order, userinfo } = useReduxData();
+    const currencySymbol = GetCurrency();
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const pathname: string = usePathname();
