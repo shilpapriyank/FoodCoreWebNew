@@ -1,4 +1,5 @@
 // 'use client'
+import CategoryMenuItems from "@/components/nt/category/category-menuitems/category-menuItems.component";
 import { Metadata } from "next";
 import React, { ReactNode } from "react";
 interface LayoutProps {
@@ -42,7 +43,9 @@ const Layout: React.FC<LayoutProps> = ({
   handleChangeAddress,
   page,
 }) => {
-  return <div>{children}</div>;
+  return <div>
+    <CategoryMenuItems />
+    {children}</div>;
 };
 
 export default Layout;

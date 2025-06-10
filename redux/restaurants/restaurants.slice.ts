@@ -9,8 +9,9 @@ export interface RestaurantState {
   restaurantdetail: any | null;
   leftmenutoggle: boolean;
   restaurantslocationlist: any[];
-  restaurantslocationlistwithtime: any[];
-  restaurantstiminglist: any[];
+  restaurantslocationlistwithtime: {
+    addressList: any[];
+  }; restaurantstiminglist: any[];
   ischangeurl: boolean;
   bannerDetails: any[];
   appversion: string;
@@ -21,12 +22,15 @@ const initialState: RestaurantState = {
   restaurantdetail: null,
   leftmenutoggle: false,
   restaurantslocationlist: [],
-  restaurantslocationlistwithtime: [],
+  restaurantslocationlistwithtime: {
+    addressList: [],
+  },
   restaurantstiminglist: [],
   ischangeurl: false,
   bannerDetails: [],
   appversion: "",
 };
+
 
 // Async actions
 export const getRestaurantsList = createAsyncThunk(
@@ -181,7 +185,9 @@ const restaurantSlice = createSlice({
     builder.addCase(
       restaurantAllLocation.fulfilled,
       (state, action: PayloadAction<any[]>) => {
-        state.restaurantslocationlistwithtime = action.payload;
+        state.restaurantslocationlistwithtime = {
+          addressList: action.payload,
+        };
       }
     );
     builder.addCase(

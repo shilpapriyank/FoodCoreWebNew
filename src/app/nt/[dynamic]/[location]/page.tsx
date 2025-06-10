@@ -123,29 +123,40 @@
 
 // export default Page;
 
-// // // "use client";
+"use client";
 
-// // // import { useEffect } from "react";
-// // // import { useRouter, useParams } from "next/navigation";
-// // // import Footer from "@/components/nt/layout/footer/footer.component";
+import { useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Footer from "@/components/nt/layout/footer/footer.component";
+import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
+import { useSearchData } from "@/components/customhooks/usersearchdata-hook";
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 
-// // // export default function LocationPage() {
-// // //   const router = useRouter();
-// // //   const params = useParams();
+export default function LocationPage() {
+  const { selecteddelivery, restaurantinfo, menuitem, categoryItemsList, userinfo, order } = useReduxData();
+  const router = useRouter();
+  const params = useParams();
+  const searchtext = menuitem?.searchtext
+  const { searchItem, handleChangeSearch, errorMessage, handleClickCancel, handleSubmitSearch } = useSearchData(searchtext)
 
-// // //   useEffect(() => {
-// // //     const theme = params?.dynamic;
-// // //     const location = params?.location;
+  useEffect(() => {
+    const theme = params?.dynamic;
+    const location = params?.location;
 
-// // //     if (theme && location) {
-// // //       router.push(`/nt/${theme}/${location}`);
-// // //     }
-// // //   }, []);
+    if (theme && location) {
+      router.push(`/nt/${theme}/${location}`);
+    }
+  }, []);
 
-// // //   return (
-// // //     <div className="text-dark">
-// // //       this is nt/fc/location page...
-// // //       {/* <Footer /> */}
-// // //     </div>
-// // //   );
-// // // }
+  return (
+    <section className="right-sticky">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-9 col-md-9 col-12">
+            <SearchBarComponent searchItem={searchItem} handleChangeSearch={handleChangeSearch} errorMessage={errorMessage} handleSubmitSearch={handleSubmitSearch} handleClickCancel={handleClickCancel} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

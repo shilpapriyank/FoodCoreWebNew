@@ -116,9 +116,9 @@ const categorySlice = createSlice({
     builder.addCase(getCategoryItemList.fulfilled, (state, action) => {
       state.categoryitemlist = action.payload;
     });
-    builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
-      state.categoryitemlist = action.payload;
-    });
+    // builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
+    //   state.categoryitemlist = action.payload;
+    // });
     // builder.addCase(getAllCategoryMenuItems.fulfilled, (state, action) => {
     //   state.categoryitemlist = action.payload;
     // });

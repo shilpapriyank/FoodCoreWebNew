@@ -40,12 +40,13 @@ function NewThemeScripts() {
   return (
     <>
       <Script src="/nt/js/jquery.min.js" strategy="beforeInteractive" />
-      <Script src="/dominos/js/moment-2.10.3.js" strategy="beforeInteractive" />
+      <Script src="/nt/js/custom.js" strategy="afterInteractive" />
       <Script
         src="/nt/js/bootstrap.bundle.min.js"
         strategy="afterInteractive"
       />
-      <Script src="/nt/js/custom.js" strategy="afterInteractive" />
+      <Script src="/nt/js/custom.js"></Script>
+      <Script src="/dominos/js/moment-2.10.3.js" strategy="beforeInteractive" />
     </>
   );
 }
