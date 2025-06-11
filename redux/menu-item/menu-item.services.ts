@@ -48,6 +48,7 @@ export class MenuItemServices {
       true,
       restaurantId
     );
+    console.log('category menu item', responseclass)
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

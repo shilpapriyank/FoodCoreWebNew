@@ -1,5 +1,5 @@
 'use client';
-
+ 
 import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname, useParams, useRouter } from 'next/navigation';
@@ -19,14 +19,14 @@ import { setRewardPoint } from '../../../../../redux/cart/cart.slice';
 import useFutureOrder from '@/components/customhooks/usefuture-order-hook';
 import { useWindowDimensions } from '@/components/customhooks/usewindowdimension-hook';
 import CartCounter from '../../common/cart-counter.component';
-import OrderTypeSelect from '../../ordertype/ordertype-select.component';
+//import OrderTypeSelect from '../../ordertype/ordertype-select.component';
 import AddAddress from '../../common/add-address.component';
-
+ 
 interface HeaderProps {
     handleChangeAddress?: () => void;
     page?: string;
 }
-
+ 
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const { restaurantinfo, selecteddelivery, order, userinfo } = useReduxData();
     const dispatch = useDispatch<AppDispatch>();
@@ -49,13 +49,13 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const { width } = useWindowDimensions()
     const isMobile: boolean = width < 768;
     const locationFullLink: string = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
-
+ 
     useEffect(() => {
         if (b2b && userinfo === null && openLoginModal === false) {
             setOpenLoginModal(true)
         }
     }, [userinfo])
-
+ 
     const [modalState, setModalState] = useState({
         openRegisterModal: false,
         openRewardModal: false,
@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         openSendEmailConfirm: false,
         isAddressModalOnBcChemical: false
     })
-
+ 
     const handleToggleOrderTypeModal = (value: boolean) => {
         setisOpenOrderTypeModal(value);
     };
@@ -76,15 +76,15 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const handleToggleTimingModal = (value: boolean) => {
         // You can implement this modal logic accordingly
     };
-
+ 
     const handleOpenLoginModal = (value: boolean) => {
         setOpenLoginModal(value);
     };
-
+ 
     const handleToggleAccountConfirm = (value: boolean) => {
         setopenAccountConfirmModal(value)
     }
-
+ 
     const handleToggle = (value: boolean, key: string) => {
         setModalState((pre) => (
             {
@@ -93,23 +93,23 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             }
         ))
     }
-
+ 
     const handleLogOutclick = useCallback(() => {
         if (userinfo !== undefined && userinfo !== null) {
             handleNotify('Logout successfully!', ToasterPositions.TopRight, ToasterTypes.Success);
-
+ 
             const routepath = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}/${restaurantinfo?.defaultLocation?.locationURL}`;
             router.push(routepath);
         } else {
             handleNotify('Please login first before logout!', ToasterPositions.TopRight, ToasterTypes.Info);
         }
     }, [userinfo]);
-
+ 
     // const handleClickUserExist = () => {
     //     handleToggle(false, 'openUserExistModal')
     //     setOpenLoginModal(true, 'openUserExistModal')
     // }
-
+ 
     return (
         <>
             <section className="header">
@@ -119,7 +119,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                             {isHomePage ?
                                 <>
                                     <a className={`logo d-md-block ${userinfo === null ? 'd-none' : ''}`}><span className="head-arrow"><i className="fa fa-angle-left" /></span><Link href={locationFullLink}><img src={logoUrl} alt="Logo" /></Link></a>
-
+ 
                                     {userinfo === null && <a className="logo d-block d-md-none login-btn" onClick={() => handleOpenLoginModal(true)}><span className="head-arrow"><i className="fa fa-user color-green" /></span><img src={logoUrl} /></a>}
                                 </>
                                 :
@@ -145,7 +145,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                                                 <a className="cursor_pointer app-icon px-1" href={restaurantinfo?.androidlink} target="_blank" rel="noreferrer"><img src="/nt/img/android.png" /></a>
                                             }
                                         </div>
-
+ 
                                         <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
                                         {(!b2b && !isSchoolProgramEnabled) && <>    {orderTypeName !== "" && <label className='d-none d-md-block text-capitalize'>{orderTypeName} time</label>}
                                             <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '>
@@ -193,14 +193,14 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                     <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{userinfo.totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6>
                     <h6>You can use these points at checkout to save</h6>
                 </CommonModal>
-
+ 
             }
             {modalState.openRegisterModal && <Register handleOpenLoginModal={handleOpenLoginModal} handleToggleAccountConfirm={handleToggleAccountConfirm} isOpenModal={true} handleToggle={handleToggle} openAdressModal={openAdressModal} handleToggleAddAddressModal={handleToggleAddAddressModal} />}
-
+ 
             {
                 modalState.openUserExistModal && <UserExist isOpenModal={modalState.openUserExistModal} handleToggle={handleToggle} handleClickBtn1={handleClickUserExist} />
             }
-
+ 
             {
                 modalState.openVerifyPhone && <VerifyPhoneComponent isOpenModal={modalState.openVerifyPhone} handleToggle={handleToggle} />
             }
@@ -210,5 +210,19 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         </>
     );
 };
-
+ 
 export default Header;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

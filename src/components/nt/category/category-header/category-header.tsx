@@ -8,6 +8,7 @@ import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hoo
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useUtility from "@/components/customhooks/utility-hook";
 import { selectedCategory } from "../../../../../redux/category/category.slice";
+import { useAppDispatch } from "../../../../../redux/hooks";
 
 const CategoryHeader = ({ selectedCatId }: any) => {
   const {
@@ -24,13 +25,14 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   //const { query: { dynamic, location, id, category, index }, } = router;
   const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     selectedcategory && selectedcategory?.catId
   );
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
+  debugger;
   const categoryListItems =
     searchtext !== "" ? searchdata?.categories : maincategoryList;
   let pickupordelivery = selecteddelivery.pickupordelivery;
@@ -119,7 +121,7 @@ const CategoryHeader = ({ selectedCatId }: any) => {
 
   return (
     <>
-      {!(b2b && userinfo === null) && catWithSearch?.length > 0 && (
+      {/* {!(b2b && userinfo === null) && catWithSearch?.length > 0 && ( */}
         <section className="sub-menu">
           <div className="container-fluid">
             <div className="row">
@@ -198,7 +200,7 @@ const CategoryHeader = ({ selectedCatId }: any) => {
             </div>
           </div>
         </section>
-      )}
+      {/* )} */}
     </>
   );
 };
