@@ -29,7 +29,8 @@ import locationReducer from "./location/location.slice";
 import cartReducer from "./cart/cart.slice";
 import sessionReducer from "./session/session.slice";
 import metadataReducer from "./metadata/metadata.slice";
-import { thunk } from "redux-thunk";
+import tableOrderReducer from "./tableorder/tableorder.slice"
+import rewardpointReducer from "./rewardpoint/rewardpoint.slice"
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -44,6 +45,9 @@ const rootReducer = combineReducers({
   metadata: metadataReducer,
   cart: cartReducer,
   session: sessionReducer,
+  tableorder: tableOrderReducer,
+   rewardpoints: rewardpointReducer,
+
 });
 
 // Persist configuration

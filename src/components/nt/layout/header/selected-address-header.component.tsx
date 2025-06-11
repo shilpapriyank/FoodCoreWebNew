@@ -37,8 +37,8 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
         <a className="takeout" id='time-mdl' onClick={() => handleToggleOrderTypeModal(true)}>
             <i className="fa arrow fa-angle-right" />
             {!b2b && <>  {orderTypeName === ORDER_TYPE.PICKUP.text ? <i className="fa icon fa-shopping-bag" /> : <i className="fa icon fa-car"></i>}</>}
-            <div className=''>
-                <h4 >{!b2b && <>{!restaurantinfo?.isSchoolProgramEnabled ? selecteddelivery?.pickupordelivery : restaurantinfo?.defaultLocation?.locationName
+            <div className='text-capitalize'>
+                <h4>{!b2b && <>{!restaurantinfo?.isSchoolProgramEnabled ? selecteddelivery?.pickupordelivery : restaurantinfo?.defaultLocation?.locationName
                 }<br /></>} <span>{<DisplayselectedPickup />}</span></h4>
             </div>
         </a>

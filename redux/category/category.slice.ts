@@ -48,6 +48,15 @@ export const getCategoryItemListPOS = createAsyncThunk(
   }
 );
 
+// export const selectedCategory = (item) => {   
+//     return async (dispatch) => {                                                     
+//         dispatch({
+//             type: CategoryTypes.SELECTED_CATEGORY_DATA,
+//             payload: item                    
+//         })                
+//     }                            
+// }
+
 // export const getAllCategoryMenuItems = createAsyncThunk(
 //   CategoryTypes.CATEGORY_ITEM_LIST,
 //   async (args: GetAllCategoryMenuItemsArgsTypes) => {

@@ -147,10 +147,10 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                                         </div>
 
                                         <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
-                                        {(!b2b && !isSchoolProgramEnabled) && <>    {orderTypeName !== "" && <label className='d-none d-md-block'>{orderTypeName} time</label>}
+                                        {(!b2b && !isSchoolProgramEnabled) && <>    {orderTypeName !== "" && <label className='d-none d-md-block text-capitalize'>{orderTypeName} time</label>}
                                             <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '>
                                                 {orderTypeName !== "" && <span className='d-md-none text-dark me-1'>{orderTypeName} time</span>}
-                                                {/* {isFutureOrder && <span className='btn-default '>{futureDay?.futureDay}</span>}&nbsp; */}
+                                                {isFutureOrder && <span className='btn-default '>{(futureDay as any)?.futureDay}</span>}&nbsp;
                                                 <span className='text btn-default  ' onClick={() => handleToggleTimingModal(true)}>{order.isasap ? "Asap" : "Later"}  </span>&nbsp;
                                                 {order.checktime !== "" && <span className='btn-default' onClick={() => handleToggleTimingModal(true)}> {order.checktime}</span>}
                                                 {userinfo === null && <span className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1" onClick={() => handleOpenLoginModal(true)}>Login</span>}
