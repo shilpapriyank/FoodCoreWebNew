@@ -81,6 +81,9 @@ const menuItemSlice = createSlice({
   name: "menuItem",
   initialState,
   reducers: {
+    setMenuCategoryData: (state, action) => {
+      state.menuitemdetaillist = action.payload;
+    },
     selectedMenuItem: (state, action: PayloadAction<any>) => {
       state.selectedmenuitemdetail = action.payload;
     },
@@ -142,6 +145,7 @@ export const {
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
+  setMenuCategoryData,
 } = menuItemSlice.actions;
 
 export default menuItemSlice.reducer;

@@ -58,17 +58,21 @@ import {
 } from "../../../redux/order/order.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
 
+debugger
 interface Props {
   children: ReactNode;
   metaDataRestaurant?: any;
   themetype?: string;
 }
 
-const Restaurant = ({ children, metaDataRestaurant, themetype }: Props) => {
+const RestaurantComponent = ({
+  children,
+  metaDataRestaurant,
+  themetype,
+}: Props) => {
   const { restaurant, metadata, category, userinfo, order, sessionid } =
     useReduxData();
   const customerId = userinfo ? userinfo.customerId : 0;
-  //const { loadCatData } = useLoadCatData(customerId);
   // const { query, pathname, asPath, push } = useRouter();
   const router = useRouter();
   const pathname = usePathname();
@@ -93,6 +97,7 @@ const Restaurant = ({ children, metaDataRestaurant, themetype }: Props) => {
     restaurant.restaurantslocationlistwithtime;
   const appVersion = restaurant?.appversion;
   const categoryitemlist = category.categoryitemlist;
+  console.log("categoryItemList from restaurant component", categoryitemlist);
   const dynamic = params.dynamic;
   const location = params.location;
   const metaData = metadata?.metadata;
@@ -272,42 +277,38 @@ const Restaurant = ({ children, metaDataRestaurant, themetype }: Props) => {
     }
   }, [dynamic]);
 
-  const fetchData = async () => {
-    try {
-      setLoadrestaurant(false);
-      let getResponse;
-      if (selectedTheme.name === ThemeObj.default) {
-        getResponse = await restaurantsLocation(
-          restaurantinfo && restaurantinfo.restaurantId
-        );
-        dispatch({
-          type: RestaurantsTypes.RESTAURANT_LOCATION_LIST,
-          payload: getResponse,
-        });
-      } else {
-        getResponse = await restaurantsAllLocation(
-          restaurantinfo && restaurantinfo.restaurantId
-        );
-        dispatch({
-          type: RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
-          payload: getResponse,
-        });
-        dispatch({
-          type: RestaurantsTypes.RESTAURANT_LOCATION_LIST,
-          payload: getResponse,
-        });
-      }
-      dispatch(
-        restaurantstiming(
-          restaurantinfo && restaurantinfo.defaultlocationId,
-          restaurantinfo && restaurantinfo.restaurantId
-        )
-      );
-      setadresslist(true);
-    } catch (error) {
-      console.error("Error fetching restaurant data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     setLoadrestaurant(false);
+  //     let getResponse;
+  //     if (selectedTheme.name === ThemeObj.default) {
+  //       getResponse = await restaurantsLocation(
+  //         restaurantinfo && restaurantinfo.restaurantId
+  //       );
+  //       dispatch({
+  //         type: RestaurantsTypes.RESTAURANT_LOCATION_LIST,
+  //         payload: getResponse,
+  //       });
+  //     } else {
+  //       getResponse = await restaurantsAllLocation(
+  //         restaurantinfo && restaurantinfo.restaurantId
+  //       );
+  //       dispatch({
+  //         type: RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
+  //         payload: getResponse,
+  //       });
+  //     }
+  //     dispatch(
+  //       restaurantstiming(
+  //         restaurantinfo && restaurantinfo.defaultlocationId,
+  //         restaurantinfo && restaurantinfo.restaurantId
+  //       )
+  //     );
+  //     setadresslist(true);
+  //   } catch (error) {
+  //     console.error("Error fetching restaurant data:", error);
+  //   }
+  // };
   // IF ADDRESSLIST IS IS EMPTY AND USER DIRECT PUT THE WRONG LOCATION IN THE URL THEN CHECK THE LOCATION IS EXIST IN THE RESTAURANT
   useEffect(() => {
     if (!pathname.includes(ThemeObj.FD123456)) {
@@ -317,7 +318,7 @@ const Restaurant = ({ children, metaDataRestaurant, themetype }: Props) => {
         restaurantinfo?.defaultLocation !== null &&
         restaurantslocationlist?.length === 0
       ) {
-        fetchData();
+        //fetchData();
       }
 
       // USER LOGOUT IF RESTAURANT IS DIFFERENT \
@@ -402,6 +403,6 @@ const Restaurant = ({ children, metaDataRestaurant, themetype }: Props) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(React.memo(Restaurant)), {
+export default dynamic(() => Promise.resolve(React.memo(RestaurantComponent)), {
   ssr: true,
 });

@@ -174,7 +174,11 @@ export class OrderServices {
     restaurantId,
     locationId,
     ordertype,
-  }: GetOrderTimeArgsTypes) {
+  }: {
+    restaurantId: number;
+    locationId: number;
+    ordertype: string;
+  }) {
     responseclass = new ResponseModel();
     const methodName = "getOrderTime";
     const checktimeurl = ENDPOINTS.GET_ORDER_TIME;

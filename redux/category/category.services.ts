@@ -14,12 +14,13 @@ let responseclass = new ResponseModel();
 // Define request and response types
 
 export class CategoryServices {
-  static async getCategoryItemList({
-    restaurantId,
-    categories,
-    customerId,
-    locationId,
-  }: GetCategoryItemListArgsTypes): Promise<any | null> {
+  static async getCategoryItemList(
+    restaurantId: number,
+    categories: string[],
+    customerId: string,
+    locationId: string
+  ): Promise<any | null> {
+    debugger;
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
@@ -38,6 +39,7 @@ export class CategoryServices {
       true,
       restaurantId
     );
+    console.log("category item list from category service", responseclass);
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
@@ -48,11 +50,11 @@ export class CategoryServices {
     }
   }
 
-  static async getCategoryRelativesItems({
-    sessionId,
-    locationId,
-    restaurantId,
-  }: GetCategoryRelativesItemsArgsTypes): Promise<any | null> {
+  static async getCategoryRelativesItems(
+    sessionId: string,
+    locationId: string,
+    restaurantId: number
+  ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryRelativesItems";
     const location = ENDPOINTS.GET_CATEGORIES_RELATIVE_ITEMS;
@@ -86,7 +88,7 @@ export class CategoryServices {
     categories,
     customerId,
     locationId,
-  }: GetCategoryItemListPOSArgsTypes): Promise<any | null> {
+  }: GetCategoryItemListPOSArgsTypes): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemListPOS";
     const location = ENDPOINTS.GET_CATEGORY_ITEMS_POS;
@@ -120,7 +122,12 @@ export class CategoryServices {
     locationId,
     customerId,
     categories,
-  }: GetAllCategoryMenuItemsArgsTypes): Promise<any | null> {
+  }: {
+    restaurantId: number;
+    locationId: string;
+    customerId: string;
+    categories: string[];
+  }): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getAllMenuCategoryItems";
     const url = ENDPOINTS.GET_ALL_CATEGORY_MENU_ITEMS;

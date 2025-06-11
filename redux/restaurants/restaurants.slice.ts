@@ -34,8 +34,8 @@ const initialState: RestaurantState = {
 
 // Async actions
 export const getRestaurantsList = createAsyncThunk(
-  // "restaurant/getRestaurantsList",
-  RestaurantsTypes.GET_RESTAURANTS_DATA,
+  "restaurant/getRestaurantsList",
+  //RestaurantsTypes.GET_RESTAURANTS_DATA,
   async ({
     restauranturl,
     locationurl,
@@ -56,8 +56,8 @@ export const getRestaurantsList = createAsyncThunk(
 );
 
 export const updaterestaurantsdetail = createAsyncThunk(
-  //"restaurant/updaterestaurantsdetail",
-  RestaurantsTypes.UPDATE_RESTAURANT_DETAIL,
+  "restaurant/updaterestaurantsdetail",
+  //RestaurantsTypes.UPDATE_RESTAURANT_DETAIL,
   async ({
     restauranturl,
     defaultLocationId,
@@ -77,8 +77,8 @@ export const updaterestaurantsdetail = createAsyncThunk(
 );
 
 export const restaurantAllLocation = createAsyncThunk(
-  //"restaurant/restaurantAllLocation",
-  RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
+  "restaurant/restaurantAllLocation",
+  //RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
   async (restaurantId: number) => {
     const response = await LocationServices.getAllLoaction(restaurantId);
     return response;

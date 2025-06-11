@@ -1,4 +1,5 @@
 // 'use client'
+import RestaurantComponent from "@/components/commonRestaurant/restaurant.component";
 import CategoryMenuItems from "@/components/nt/category/category-menuitems/category-menuItems.component";
 import { Metadata } from "next";
 import React, { ReactNode } from "react";
@@ -43,9 +44,12 @@ const Layout: React.FC<LayoutProps> = ({
   handleChangeAddress,
   page,
 }) => {
-  return <div>
-    <CategoryMenuItems />
-    {children}</div>;
+  return (
+    <RestaurantComponent>
+      <CategoryMenuItems />
+      {children}
+    </RestaurantComponent>
+  );
 };
 
 export default Layout;

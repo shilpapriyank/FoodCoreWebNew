@@ -29,13 +29,12 @@ const useLoadCatData = (customerId: number) => {
         GetThemeDetails(newselectedRestaurant.themetype).name
       ) {
         // dispatch(
-        //   getAllCategoryMenuItems(
-        //     newselectedRestaurant.restaurantId,
-        //     locationId,
-        //     customerId,
-        //     "",
-        //     category
-        //   )
+        //   getAllCategoryMenuItems({
+        //     restaurantId: newselectedRestaurant.restaurantId,
+        //     locationId: locationId,
+        //     customerId: customerId.toString(),
+        //     categories: category ? [category.toString()] : [],
+        //   })
         // );
       } else {
         const catresponse = await MainServices.getMenuCategoryList(
@@ -69,7 +68,12 @@ const useLoadCatData = (customerId: number) => {
                 customerId,
                 newselectedRestaurant.defaultlocationId
               );
-            // MainServices.getPromotionCategoryList(newselectedRestaurant.restaurantId, promotionCatId, customerId, newselectedRestaurant.defaultlocationId)
+            MainServices.getPromotionCategoryList(
+              newselectedRestaurant.restaurantId,
+              promotionCatId,
+              customerId,
+              newselectedRestaurant.defaultlocationId
+            );
 
             if (promocatresponse && promocatresponse != null) {
               dispatch({

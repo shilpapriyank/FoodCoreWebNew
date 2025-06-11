@@ -19,7 +19,6 @@ import restaurantsReducer from "./restaurants/restaurants.slice";
 // import loginReducer from "./login/login.slice";
 // import orderReducer from "./order/order.slice";
 // import locationReducer from "./location/location.slice";
-import mainReducer from "./main/main.slice";
 import selecteddeliveryReducer from "./delivery-address/delivery-address.slice";
 import menuItemReducer from "./menu-item/menu-item.slice";
 import categoryReducer from "./category/category.slice";
@@ -29,6 +28,7 @@ import locationReducer from "./location/location.slice";
 import cartReducer from "./cart/cart.slice";
 import sessionReducer from "./session/session.slice";
 import metadataReducer from "./metadata/metadata.slice";
+import mainReducer from "./main/main.slice";
 import { thunk } from "redux-thunk";
 
 // Combine reducers
@@ -40,10 +40,10 @@ const rootReducer = combineReducers({
   userdetail: loginReducer,
   order: orderReducer,
   location: locationReducer,
-  main: mainReducer,
   metadata: metadataReducer,
   cart: cartReducer,
   session: sessionReducer,
+  main: mainReducer,
 });
 
 // Persist configuration
@@ -97,5 +97,6 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 // Types
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+

@@ -2,9 +2,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryServices } from "./category.services";
 import { AppDispatch } from "../store";
-import { MainTypes } from "../main/main.type";
 import { CategoryTypes } from "./category.types";
-import { GetAllCategoryMenuItemsArgsTypes, GetCategoryItemListArgsTypes, GetCategoryItemListPOSArgsTypes } from "@/types/category-types/category.services.type";
+import {
+  GetAllCategoryMenuItemsArgsTypes,
+  GetCategoryItemListArgsTypes,
+  GetCategoryItemListPOSArgsTypes,
+} from "@/types/category-types/category.services.type";
+import { MainTypes } from "../main/main.type";
 
 // Types
 export interface CategoryItem {
@@ -31,9 +35,26 @@ const initialState: CategoryState = {
 
 export const getCategoryItemList = createAsyncThunk(
   CategoryTypes.CATEGORY_ITEM_LIST,
-  async (args: GetCategoryItemListArgsTypes) => {
-    const response = await CategoryServices.getCategoryItemList(args);
+  async ({
+    restaurantId,
+    categories,
+    customerId,
+    locationId,
+  }: {
+    restaurantId: number;
+    categories: string[];
+    customerId: string;
+    locationId: string;
+  }) => {
+    debugger;
+    const response = await CategoryServices.getCategoryItemList(
+      restaurantId,
+      categories,
+      customerId,
+      locationId
+    );
     if (response) {
+      console.log("category item list from category slice", response);
       return response;
     }
     return [];
@@ -41,7 +62,8 @@ export const getCategoryItemList = createAsyncThunk(
 );
 
 export const getCategoryItemListPOS = createAsyncThunk(
-   CategoryTypes.CATEGORY_ITEM_LIST,
+  "category/categoryitemlist",
+  //CategoryTypes.CATEGORY_ITEM_LIST,
   async (args: GetCategoryItemListPOSArgsTypes) => {
     const response = await CategoryServices.getCategoryItemListPOS(args);
     return response ?? [];
@@ -50,8 +72,26 @@ export const getCategoryItemListPOS = createAsyncThunk(
 
 // export const getAllCategoryMenuItems = createAsyncThunk(
 //   CategoryTypes.CATEGORY_ITEM_LIST,
-//   async (args: GetAllCategoryMenuItemsArgsTypes) => {
-//     const response = await CategoryServices.getAllCategoryMenuItems(args);
+//   async (
+//     {
+//       restaurantId,
+//       locationId,
+//       customerId,
+//       categories,
+//     }: {
+//       restaurantId: number;
+//       locationId: string;
+//       customerId: string;
+//       categories: string[];
+//     },
+//     { dispatch }
+//   ) => {
+//     const response = await CategoryServices.getAllCategoryMenuItems({
+//       restaurantId,
+//       locationId,
+//       customerId,
+//       categories,
+//     });
 //     if (response) {
 //       const categoryList: CategoryItem[] = response.map(
 //         ({
@@ -78,19 +118,88 @@ export const getCategoryItemListPOS = createAsyncThunk(
 //         payload: categoryList,
 //       });
 
-//       if (
-//         categoryList.length > 0 &&
-//         (!selectedCategoryUrl ||
-//           !categoryList.some((cat) => cat.categoryslug === selectedCategoryUrl))
-//       ) {
-//         dispatch(selectedCategory(categoryList[0]));
-//       }
+//       // if (
+//       //   categoryList.length > 0 &&
+//       //   (!selectedCategoryUrl ||
+//       //     !categoryList.some((cat) => cat.categoryslug === selectedCategoryUrl))
+//       // ) {
+//       //
+//       // }
+
+//       dispatch(selectedCategory(categoryList[0]));
 
 //       return response;
 //     } else {
-//       dispatch({ type: MainTypes.GET_MENU_CATEGORY_DATA, payload: [] });
+//       //dispatch({ type: MainTypes.GET_MENU_CATEGORY_DATA, payload: [] });
 //       return [];
 //     }
+//   }
+// );
+
+// export const getAllCategoryMenuItems = createAsyncThunk(
+//   "category/getAllCategoryMenuItems",
+//   async (
+//     {
+//       restaurantId,
+//       locationId,
+//       customerId,
+//       categories,
+//       selectedCategoryUrl,
+//     }: {
+//       restaurantId: number;
+//       locationId: string;
+//       customerId: string;
+//       categories: string[];
+//       selectedCategoryUrl?: string;
+//     },
+//     { dispatch }
+//   ) => {
+//     const response = await CategoryServices.getAllCategoryMenuItems({
+//       restaurantId,
+//       locationId,
+//       customerId,
+//       categories,
+//     });
+
+//     const categoryList = response.map(
+//       ({
+//         catId,
+//         catName,
+//         sortorder,
+//         categoryslug,
+//         isdeliveryavailable,
+//         istakeoutavailable,
+//         imgurl,
+//       }: {
+//         catId: number;
+//         catName: string;
+//         sortorder: number;
+//         categoryslug: string;
+//         isdeliveryavailable: boolean;
+//         istakeoutavailable: boolean;
+//         imgurl: string;
+//       }) => ({
+//         catId,
+//         catName,
+//         sortorder,
+//         categoryslug,
+//         isdeliveryavailable,
+//         istakeoutavailable,
+//         imgurl,
+//       })
+//     );
+
+//     // Here you can dispatch other slices if needed
+//     if (categoryList.length > 0) {
+//       if (
+//         !selectedCategory ||
+//         !categoryList.some((cat: any) => cat.categoryslug === selectedCategory)
+//       ) {
+//         dispatch(selectedCategoryUrl(categoryList[0]));
+//       }
+//     }
+
+//     return { response, categoryList };
 //   }
 // );
 
@@ -115,14 +224,15 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getCategoryItemList.fulfilled, (state, action) => {
       //state.categoryitemlist = action.payload;
-      //state.categorylist = action.payload;
+      state.categorylist = action.payload;
+      // state.categoryitemlist = action.payload;
+    });
+    builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
       state.categoryitemlist = action.payload;
     });
-    // builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
-    //   state.categoryitemlist = action.payload;
-    // });
     // builder.addCase(getAllCategoryMenuItems.fulfilled, (state, action) => {
-    //   state.categoryitemlist = action.payload;
+    //   state.categoryitemlist = action.payload.response;
+    //   state.categorylist = action.payload.categoryList;
     // });
   },
 });
