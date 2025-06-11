@@ -14,11 +14,11 @@ interface CartState {
     orderDeliveryInstruction: string;
     paymentIntentId: string;
 }
- interface CartItemCountParams {
-  sessionid: string;
-  locationId: any;
-  restaurantId: number;
-  customerId: any;
+interface CartItemCountParams {
+    sessionid: string;
+    locationId: any;
+    restaurantId: number;
+    customerId: any;
 }
 
 
@@ -61,16 +61,16 @@ export const getCartItem = createAsyncThunk(
 );
 
 export const getCartItemCount = createAsyncThunk<number, CartItemCountParams>(
-  CartTypes.CART_ITEM_COUNT,
-  async (params) => {
-    const response = await CartServices.getCartItemCount(
-      params.sessionid ?? '',
-      params.locationId,
-      params.restaurantId,
-      params.customerId
-    );
-    return response;
-  }
+    CartTypes.CART_ITEM_COUNT,
+    async (params) => {
+        const response = await CartServices.getCartItemCount(
+            params.sessionid ?? '',
+            params.locationId,
+            params.restaurantId,
+            params.customerId
+        );
+        return response;
+    }
 );
 
 
@@ -109,6 +109,22 @@ export const cartcheckout = createAsyncThunk(
         return response;
     }
 );
+
+export const deleteCartItemFromSessionId = (cartsessionId: any, restaurantId: any, locationId: any) => {
+    // return (dispatch) => { 
+    if (cartsessionId) {
+        let response = CartServices.deleteCartItemFromSessionId(cartsessionId, restaurantId, locationId);
+    }
+}
+
+export const emptycart = () => {
+    return (dispatch: any) => {
+        dispatch({
+            type: CartTypes.CART_EMPTY,
+            payload: null
+        })
+    }
+}
 
 const cartSlice = createSlice({
     name: 'cart',

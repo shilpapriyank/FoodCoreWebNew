@@ -1,0 +1,172 @@
+import { ResponseModel } from "@/components/common/commonclass";
+import { API_RESPONSE_STATUS } from "@/components/common/enums";
+import { ENDPOINTS } from "@/components/default/config";
+import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
+import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
+import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
+import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+
+let responseclass = new ResponseModel();
+
+export class TableOrderServices {
+    static async registerUser(restaurantId: any, user: any): Promise<any | null> {
+        responseclass = new ResponseModel();
+        const methodName = "sendVerificationEmail";
+        const sendVerificationEmail = ENDPOINTS.SEND_VERIFICATION_EMAIL;
+        const data = {
+            sendEmailRequest: {
+                restaurantId,
+                ...user,
+            },
+        };
+        responseclass = await handleAxiosPostAsync(data, sendVerificationEmail, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
+    }
+
+    static async verifyOtp(restaurantId: any, user: any): Promise<any | null> {
+        responseclass = new ResponseModel();
+        const methodName = "sendVerificationEmail";
+        const sendVerificationEmail = ENDPOINTS.SEND_VERIFICATION_EMAIL;
+        const data = {
+            sendEmailRequest: {
+                restaurantId,
+                ...user,
+            },
+        };
+        responseclass = await handleAxiosPostAsync(data, sendVerificationEmail, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
+    }
+
+    static async getCustomerByPhone(phone: string, restaurantId: any, isPos: boolean = true): Promise<any | null> {
+        responseclass = new ResponseModel();
+        const methodName = "getCustomerByPhone";
+        const endpoint = ENDPOINTS.GET_CUSTOMER_BY_PHONE;
+        const data = {
+            ispos: isPos,
+            phonenumber: phone,
+            restaurantId,
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
+    }
+
+    static async insertToOtherCustomer(user: any, restaurantId: any): Promise<any | null> {
+        responseclass = new ResponseModel();
+        const methodName = "insertToOtherCustomer";
+        const endpoint = ENDPOINTS.INSERT_TO_OTHER_CUSTOMER;
+        const data = {
+            othercustomer: user,
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
+    }
+
+    static async getPosTableDetails(restaurantId: any, locationId: string, tableno: string): Promise<any | null> {
+        responseclass = new ResponseModel();
+        const methodName = "getPosTableDetails";
+        const endpoint = ENDPOINTS.GET_POS_TABLE_DETAILS;
+        const data = {
+            request: {
+                locationId,
+                restaurantId,
+                tableno,
+            },
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
+    }
+
+    static async getListofPrinterSetting(restaurantId: any, locationId: string): Promise<any | null> {
+        responseclass = new ResponseModel();
+        const methodName = "getListofPrinterSetting";
+        const endpoint = ENDPOINTS.GET_PRINTER_INFORMATION;
+        const data = {
+            locationId,
+            restaurantId,
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
+    }
+
+    static async getPOSSerachResult(locationId: string, restaurantId: any, customerId: string, serchQuery: string): Promise<any> {
+        responseclass = new ResponseModel();
+        const methodName = "getSerachResult";
+        const endpoint = ENDPOINTS.GET_POS_MENUITEM_SEARCH;
+        const data = {
+            searchMenuItemRequest: {
+                locationId,
+                restaurantId,
+                customerId,
+                input: serchQuery,
+            },
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS && responseclass?.message === ""
+            ? responseclass.result
+            : {};
+    }
+
+    static async sendTablePushnotification(
+        locationId: string,
+        restaurantId: any,
+        tableno: string,
+        tableId: string,
+        notificationType: number,
+        driverOrderStatus: number
+    ): Promise<any> {
+        responseclass = new ResponseModel();
+        const methodName = "sendTablePushnotification";
+        const endpoint = ENDPOINTS.SEND_TABLE_PUSH_NOTIFICATION;
+        const data = {
+            request: {
+                LocationId: locationId,
+                RestaurantId: restaurantId,
+                TableNo: tableno,
+                TableId: tableId,
+                NotificationType: notificationType,
+                DriverOrderStatus: driverOrderStatus,
+            },
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS && responseclass?.message === ""
+            ? responseclass
+            : {};
+    }
+
+    static async getSystemCustomer(restaurantId: any): Promise<any> {
+        responseclass = new ResponseModel();
+        const methodName = "getSystemCustomer";
+        const endpoint = ENDPOINTS.GET_SYSTEM_CUSTOMER;
+        const data = { restaurantId };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS && responseclass?.message === ""
+            ? responseclass
+            : {};
+    }
+
+    static async addOrders(
+        OrderInfo: any,
+        restaurantId: any,
+        loyaltynumber: string,
+        appOrderId: string
+    ): Promise<any> {
+        responseclass = new ResponseModel();
+        const methodName = "addOrders";
+        const endpoint = ENDPOINTS.ADD_ORDERS_TABLE;
+        const data = {
+            OrderInfo,
+            restaurantId,
+            loyaltynumber,
+            appOrderId,
+        };
+        responseclass = await handleAxiosPostAsync(data, endpoint, methodName, true, restaurantId);
+        if (responseclass.result !== null && (responseclass.status) === API_RESPONSE_STATUS.SUCCESS) {              //parseInt (responseclass.status)
+            return responseclass.result;
+        } else {
+            if (responseclass.message !== "") {
+                handleNotify(responseclass.message, ToasterPositions.TopRight, ToasterTypes.Error);
+            }
+            return {};
+        }
+    }
+}

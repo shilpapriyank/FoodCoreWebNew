@@ -65,7 +65,9 @@ export const useReduxData = () => {
   const defaultLocation = useSelector(
     (state: RootState) => state.restaurant.restaurantdetail?.defaultLocation
   );
-  // const tableorder = useSelector((state: RootState) => state.tableorder, shallowEqual);
+
+  // const defaultLocation = useSelector((state: RootState) => state.restaurant.restaurantdetail?.defaultLocation);
+  //const tableorder = useSelector((state: RootState) => state.tableorder, shallowEqual);
   const categoryItemsList = useSelector(
     (state: RootState) => state.category?.categoryitemlist,
     shallowEqual
@@ -125,9 +127,11 @@ export const useReduxData = () => {
     restaurantWindowTime,
     session,
     restauranttiming,
+    //tableorder,
     // cart,
     // main,
     //rewardpoints,
+    // session,
     // studentdata,
     // sessionid,
     // addressList,
@@ -135,7 +139,6 @@ export const useReduxData = () => {
     // meredian,
     // recievingDate,
     // orderTimeType,
-    // tableorder,
     // cartItemsAmountTotal,
     // cartItemsQuantity,
   };

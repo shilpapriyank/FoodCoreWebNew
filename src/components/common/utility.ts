@@ -1190,10 +1190,10 @@ export const pushNotificationType = {
 };
 
 export const NotificationSettingTypes = {
-  RESTAURANT: "1",
-  DRIVER: "2",
-  MANAGER: "3",
-  POS: "4",
+  RESTAURANT:1,
+  DRIVER: 2,
+  MANAGER: 3,
+  POS: 4,
 };
 
 export const calculateFinalCount = (
