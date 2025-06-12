@@ -12,12 +12,14 @@ interface DeliveryState {
   pickupordelivery: string;
   selecteddeliveryaddress: Record<string, any> | null;
   tempDeliveryAddress?: Record<string, any> | null;
+  addressId: string | number | any
 }
 
 const initialState: DeliveryState = {
   choosetime: {},
   pickupordelivery: "",
   selecteddeliveryaddress: {},
+  addressId: 0
 };
 
 const selectedDeliverySlice = createSlice({

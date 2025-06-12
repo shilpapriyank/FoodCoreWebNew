@@ -8,6 +8,8 @@ interface AddressItem {
     address1?: string;
     cityName?: string;
     zipcode?: string;
+    [key: string]: any;
+    id: string | number;
 }
 
 // Define props for the component
@@ -16,7 +18,7 @@ interface AddressPillProps {
     handleChangeLocation?: (id: number) => void; // Not used here but can be added if needed
     handleChangeAddress?: (address: AddressItem) => void;
     address: AddressItem;
-    id: number;
+    id: string;
 }
 
 const AddressPill: React.FC<AddressPillProps> = ({

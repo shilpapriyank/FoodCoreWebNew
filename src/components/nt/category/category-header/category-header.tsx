@@ -32,7 +32,6 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   );
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
-  debugger;
   const categoryListItems =
     searchtext !== "" ? searchdata?.categories : maincategoryList;
   let pickupordelivery = selecteddelivery.pickupordelivery;

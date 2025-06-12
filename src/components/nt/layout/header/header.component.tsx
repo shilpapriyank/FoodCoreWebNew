@@ -1,5 +1,5 @@
 'use client';
- 
+
 import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname, useParams, useRouter } from 'next/navigation';
@@ -21,12 +21,13 @@ import { useWindowDimensions } from '@/components/customhooks/usewindowdimension
 import CartCounter from '../../common/cart-counter.component';
 //import OrderTypeSelect from '../../ordertype/ordertype-select.component';
 import AddAddress from '../../common/add-address.component';
- 
+import OrderTypeSelect from '../../ordertype/ordertype-select.component';
+
 interface HeaderProps {
     handleChangeAddress?: () => void;
     page?: string;
 }
- 
+
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const { restaurantinfo, selecteddelivery, order, userinfo } = useReduxData();
     const dispatch = useDispatch<AppDispatch>();
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const params: Record<string, string> = useParams();
     const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
-    const [isOpenOrderTypeModal, setisOpenOrderTypeModal] = useState<boolean>(false);
+    const [isOpenOrderTypeModal, setisOpenOrderTypeModal] = useState<boolean>(false)
     const [openAccountConfirmModal, setopenAccountConfirmModal] = useState<boolean>(false);
     const logoUrl: string = restaurantinfo?.logo ?? 'https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png';
     const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
@@ -49,13 +50,13 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     const { width } = useWindowDimensions()
     const isMobile: boolean = width < 768;
     const locationFullLink: string = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
- 
+
     useEffect(() => {
         if (b2b && userinfo === null && openLoginModal === false) {
             setOpenLoginModal(true)
         }
     }, [userinfo])
- 
+
     const [modalState, setModalState] = useState({
         openRegisterModal: false,
         openRewardModal: false,
@@ -66,25 +67,25 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         openSendEmailConfirm: false,
         isAddressModalOnBcChemical: false
     })
- 
+
     const handleToggleOrderTypeModal = (value: boolean) => {
-        setisOpenOrderTypeModal(value);
-    };
+        setisOpenOrderTypeModal(value)
+    }
     const handleToggleAddAddressModal = (value: boolean) => {
         setopenAdressModal(value)
     }
     const handleToggleTimingModal = (value: boolean) => {
         // You can implement this modal logic accordingly
     };
- 
+
     const handleOpenLoginModal = (value: boolean) => {
         setOpenLoginModal(value);
     };
- 
+
     const handleToggleAccountConfirm = (value: boolean) => {
         setopenAccountConfirmModal(value)
     }
- 
+
     const handleToggle = (value: boolean, key: string) => {
         setModalState((pre) => (
             {
@@ -93,23 +94,23 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             }
         ))
     }
- 
+
     const handleLogOutclick = useCallback(() => {
         if (userinfo !== undefined && userinfo !== null) {
             handleNotify('Logout successfully!', ToasterPositions.TopRight, ToasterTypes.Success);
- 
+
             const routepath = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}/${restaurantinfo?.defaultLocation?.locationURL}`;
             router.push(routepath);
         } else {
             handleNotify('Please login first before logout!', ToasterPositions.TopRight, ToasterTypes.Info);
         }
     }, [userinfo]);
- 
+
     // const handleClickUserExist = () => {
     //     handleToggle(false, 'openUserExistModal')
     //     setOpenLoginModal(true, 'openUserExistModal')
     // }
- 
+
     return (
         <>
             <section className="header">
@@ -119,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                             {isHomePage ?
                                 <>
                                     <a className={`logo d-md-block ${userinfo === null ? 'd-none' : ''}`}><span className="head-arrow"><i className="fa fa-angle-left" /></span><Link href={locationFullLink}><img src={logoUrl} alt="Logo" /></Link></a>
- 
+
                                     {userinfo === null && <a className="logo d-block d-md-none login-btn" onClick={() => handleOpenLoginModal(true)}><span className="head-arrow"><i className="fa fa-user color-green" /></span><img src={logoUrl} /></a>}
                                 </>
                                 :
@@ -145,7 +146,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                                                 <a className="cursor_pointer app-icon px-1" href={restaurantinfo?.androidlink} target="_blank" rel="noreferrer"><img src="/nt/img/android.png" /></a>
                                             }
                                         </div>
- 
+
                                         <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
                                         {(!b2b && !isSchoolProgramEnabled) && <>    {orderTypeName !== "" && <label className='d-none d-md-block text-capitalize'>{orderTypeName} time</label>}
                                             <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '>
@@ -172,6 +173,16 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                     </div>
                 </div>
             </section>
+            {isOpenOrderTypeModal && (
+                <OrderTypeSelect
+                    handleChangeAddress={handleChangeAddress}
+                    handleToggleAddAddressModal={handleToggleAddAddressModal}
+                    handleToggleOrderTypeModal={handleToggleOrderTypeModal}
+                    isOpenModal={isOpenOrderTypeModal}
+                    handleToggleTimingModal={handleToggleTimingModal}
+                />
+            )}
+
             {/* {isOpenOrderTypeModal && <OrderTypeSelect handleChangeAddress={handleChangeAddress} handleToggleAddAddressModal={handleToggleAddAddressModal} handleToggleOrderTypeModal={handleToggleOrderTypeModal} isOpenModal={isOpenOrderTypeModal} handleToggleTimingModal={handleToggleTimingModal} />}
             {openAdressModal && <AddAddress isRegister={modalState.openRegisterModal} handleToggleTimingModal={handleToggleTimingModal} isOpenModal={openAdressModal} handleToggleAddAddressModal={handleToggleAddAddressModal} />}
             {(!enabletimeslot && opentimingModal && !isSchoolProgramEnabled) && <PickupDeliveryTimeSelectPopup handleToggleTimingModal={handleToggleTimingModal} isOpenModal={opentimingModal} locationId={restaurantinfo?.defaultlocationId} />}
@@ -210,7 +221,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         </>
     );
 };
- 
+
 export default Header;
 
 

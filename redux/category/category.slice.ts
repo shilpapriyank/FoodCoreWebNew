@@ -46,7 +46,6 @@ export const getCategoryItemList = createAsyncThunk(
     customerId: string;
     locationId: string;
   }) => {
-    debugger;
     const response = await CategoryServices.getCategoryItemList(
       restaurantId,
       categories,
