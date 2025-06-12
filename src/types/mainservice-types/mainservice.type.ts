@@ -1,12 +1,12 @@
-export interface MenuItemRequest {
-  restaurantId: string;
+export interface MainMenuItemRequest {
+  restaurantId: number;
   categories: string;
   customerId: string;
   locationId: string;
 }
 
 // Types
-export type CategoryItem = {
+export type MenuCategory = {
   catId: string;
   catName: string;
   sortorder: number;
@@ -16,18 +16,7 @@ export type CategoryItem = {
   imgurl: string;
 }
 
-export type CategoryItemType = {
-  catId: string;
-  catName: string;
-  sortorder: number;
-  categoryslug: string;
-  isdeliveryavailable: boolean;
-  istakeoutavailable: boolean;
-  imgurl: string;
-};
-
-
-export interface POSRequest {
+export interface MainPOSRequest {
   restaurantId: string;
   ispos: boolean;
   categories: string;
@@ -35,20 +24,20 @@ export interface POSRequest {
   locationId: string;
 }
 
-export interface RelativeItemRequest {
+export interface MainRelativeItemRequest {
   sessionId: string;
   locationId: string;
-  restaurantId: string;
+  restaurantId: number;
 }
 
-export interface AllCategoryRequest {
-  restaurantId: string;
+export interface MainAllRequest {
+  restaurantId: number;
   locationId: string;
   customerId: string;
   categories: string;
 }
 
-export type CategoryItemListPOSRequest = {
+export type MainItemListPOSRequest = {
   restaurantId: number;
   ispos: boolean;
   categories: string;

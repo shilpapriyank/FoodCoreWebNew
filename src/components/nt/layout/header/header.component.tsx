@@ -24,8 +24,8 @@ import AddAddress from '../../common/add-address.component';
 import OrderTypeSelect from '../../ordertype/ordertype-select.component';
 
 interface HeaderProps {
-    handleChangeAddress?: () => void;
-    page?: string;
+  handleChangeAddress?: () => void;
+  page?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
@@ -218,22 +218,8 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             {
                 modalState.openForgotPassModal && <ForgotPasswordComponent handleOpenLoginModal={handleOpenLoginModal} isOpenModal={modalState.openForgotPassModal} keyName="openForgotPassModal" handleToggle={handleToggle} />
             } */}
-        </>
-    );
+    </>
+  );
 };
 
 export default Header;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

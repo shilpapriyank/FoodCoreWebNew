@@ -67,16 +67,13 @@ export class CartServices {
         responseclass = new ResponseModel();
         const methodName = "getCartItemCount";
         const location = ENDPOINTS.GET_CART_ITEM_COUNT;
-        console.log("location in new", location);
         const data = {
             cartsessionId: cartsessionId,
             locationId: parseInt(locationId),
             restaurantId: parseInt(restaurantId),
             customerId: parseInt(customerId)
         };
-        console.log("Request payload:", data);
         responseclass = await handleAxiosPostAsync(data, location, methodName, true, restaurantId);
-        console.log("Response from getCartItemCount:", responseclass);
 
         if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
             return responseclass.result;

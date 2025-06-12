@@ -30,8 +30,8 @@ import sessionReducer from "./session/session.slice";
 import metadataReducer from "./metadata/metadata.slice";
 import mainReducer from "./main/main.slice";
 import { thunk } from "redux-thunk";
-import tableOrderReducer from "./tableorder/tableorder.slice"
-import rewardpointReducer from "./rewardpoint/rewardpoint.slice"
+import tableOrderReducer from "./tableorder/tableorder.slice";
+import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -103,4 +103,3 @@ export const persistor = persistStore(store);
 // Types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-

@@ -11,7 +11,6 @@ const DynamicPage = () => {
   const router = useRouter();
   const params = useParams();
   const dynamic = params.dynamic as string | undefined;
-  console.log("dynamic route", dynamic);
   const location = params?.location as string;
   const theme = params?.theme as string;
 
@@ -19,7 +18,6 @@ const DynamicPage = () => {
     ({ restaurant }: any) => restaurant?.restaurantdetail,
     shallowEqual
   );
-  console.log("restaurant data in dynami page", restaurantinfo);
 
   useEffect(() => {
     let routepath = "";

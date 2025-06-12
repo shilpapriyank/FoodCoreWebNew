@@ -26,7 +26,6 @@ export const useSearchData = (searchtext: any) => {
       : ""
   );
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
-  console.log("selected theme from usesearchdatahook", selctedTheme);
 
   const handleChangeSearch = (e: any) => {
     let value = e.target.value;
@@ -78,6 +77,7 @@ export const useSearchData = (searchtext: any) => {
                 const menuItems = avilableMenuItem?.filter(
                   (menuItem: any) => menuItem?.catId === cat?.catId
                 );
+                console.log("menu item from usesearchdata-hook", menuItems);
                 return {
                   ...cat,
                   menuitems: menuItems,
