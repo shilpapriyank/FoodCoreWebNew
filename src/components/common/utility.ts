@@ -1190,7 +1190,7 @@ export const pushNotificationType = {
 };
 
 export const NotificationSettingTypes = {
-  RESTAURANT:1,
+  RESTAURANT: 1,
   DRIVER: 2,
   MANAGER: 3,
   POS: 4,
@@ -1435,33 +1435,41 @@ export const PAYMENT_TYPE = {
   },
 };
 
-// export function scrollToElementWithOffset(elementId: any) {
-//     const element = document.getElementById(elementId);
-//     const offset = 120; // Adjust this value as needed
-//     const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-//     const offsetPosition = elementPosition - offset;
+export function scrollToElementWithOffset(elementId: any): void {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    return;
+  }
+  const offset = 120; // Adjust this value as needed
+  const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+  const offsetPosition = elementPosition - offset;
 
-//     window.scrollTo({
-//         top: offsetPosition,
-//         behavior: "smooth"
-//     });
-// }
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: "smooth",
+  });
+}
 
-// export function debounce(func: any, delay: any) {
-//     let timeoutId: any;
+type DebouncedFunction = (...args: unknown[]) => void;
 
-//     return function (...args: any) {
-//         // Clear the existing timeout
-//         if (timeoutId) {
-//             clearTimeout(timeoutId);
-//         }
+export function debounce(
+  func: DebouncedFunction,
+  delay: number
+): DebouncedFunction {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-//         // Set a new timeout
-//         timeoutId = setTimeout(() => {
-//             func.apply(this, args); // Call the function with the correct `this` and arguments
-//         }, delay);
-//     };
-// }
+  return function (this: any, ...args: any): void {
+    // Clear the existing timeout
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    // Set a new timeout
+    timeoutId = setTimeout(() => {
+      func.apply(this, args); // Call the function with the correct `this` and arguments
+    }, delay);
+  };
+}
 
 export const TOOLTIP_MSG = {
   QUICKORDER: "click for quick order",

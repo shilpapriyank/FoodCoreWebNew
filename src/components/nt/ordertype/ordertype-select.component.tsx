@@ -10,7 +10,6 @@ import { closeModal, GetThemeDetails, ORDER_TYPE } from '../../common/utility';
 import { getLocationIdFromStorage, setLocationIdInStorage } from '@/components/common/localstore';
 import { clearRedux } from '../../../../redux/tableorder/tableorder.slice';
 import { getSelectedRestaurantTime, refreshCategoryList } from '../../../../redux/main/main.slice';
-import { deleteCartItemFromSessionId, emptycart } from '../../../../redux/cart/cart.slice';
 import { setintialrewardpoints, setrewardpoint } from "../../../../redux/rewardpoint/rewardpoint.slice"
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import { LocationServices } from '../../../../redux/location/location.services';
@@ -127,8 +126,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
 
                 //  dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid, userinfo?.customerId))
                 if (userinfo && userinfo?.customerId) {
-                    deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId);
-                    dispatch(emptycart() as any);
+                    //deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId);
+                    //dispatch(emptycart() as any);
                     // dispatch(setintialrewardpoints(userinfo));
                 }
                 handleToggleOrderTypeModal(false)

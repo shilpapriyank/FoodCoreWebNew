@@ -9,10 +9,12 @@ import {
 import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
 import { selectedCategory } from "../../../redux/category/category.slice";
 import { useReduxData } from "./useredux-data-hooks";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
 
-export const useSearchData = (searchtext: any) => {
-  const dispatch = useAppDispatch();
-  const [searchItem, setsearchItem] = useState(searchtext);
+export const useSearchData = (searchtext: string) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [searchItem, setsearchItem] = useState<string>(searchtext);
   const { selecteddelivery, restaurantinfo, userinfo, menuitem } =
     useReduxData();
   let pickupordelivery = selecteddelivery.pickupordelivery;
@@ -84,6 +86,10 @@ export const useSearchData = (searchtext: any) => {
                 };
               });
               res.menuItems = newCatWithMenuItems;
+              console.log(
+                "response from usesearchData hooks res.menitems",
+                res.menuItems
+              );
               dispatch(setSearchData(res));
               router.push(
                 `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`

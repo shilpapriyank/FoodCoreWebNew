@@ -153,7 +153,7 @@ const restaurantSlice = createSlice({
     resetBannerDetails: (state) => {
       state.bannerDetails = [];
     },
-    displayViewUpdate: (state, action: PayloadAction<string>) => {
+    displayViewUpdate: (state, action: PayloadAction<boolean>) => {
       if (state.restaurantdetail) {
         state.restaurantdetail = {
           ...state.restaurantdetail,

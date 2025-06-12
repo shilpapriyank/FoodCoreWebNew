@@ -3,7 +3,7 @@
 import React from "react";
 
 interface GridListButtonProps {
-  viewType: "grid" | "list";
+  viewType: "grid" | "list" | string;
   handleClickView: (type: "grid" | "list") => void;
   dynamicColor?: string;
 }

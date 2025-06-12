@@ -18,10 +18,6 @@ import {
 } from "@/components/common/localstore";
 import { createSessionId } from "../../../../redux/session/session.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
-import {
-  deleteCartItemFromSessionId,
-  setRewardPoint,
-} from "../../../../redux/cart/cart.slice";
 import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { clearRedux } from "../../../../redux/tableorder/tableorder.slice";
@@ -176,12 +172,12 @@ const LoadLocationDirectComponent = ({
           ) as any
         );
         if (userinfo && userinfo?.customerId) {
-          deleteCartItemFromSessionId(
-            sessionid,
-            restaurantinfo.restaurantId,
-            restaurantinfo.defaultLocation.locationId
-          );
-          //   dispatch(emptycart());
+          // deleteCartItemFromSessionId(
+          //   sessionid,
+          //   restaurantinfo.restaurantId,
+          //   restaurantinfo.defaultLocation.locationId
+          // );
+          // dispatch(emptycart());
           //   dispatch(setintialrewardpoints(userinfo));
         }
         // if (userinfo && userinfo?.customerId) {

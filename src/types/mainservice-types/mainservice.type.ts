@@ -6,15 +6,25 @@ export interface MainMenuItemRequest {
 }
 
 // Types
-export type MenuCategory = {
-  catId: string;
+export type MainCategory = {
+  catId: number;
   catName: string;
-  sortorder: number;
   categoryslug: string;
+  imgurl: string;
   isdeliveryavailable: boolean;
   istakeoutavailable: boolean;
-  imgurl: string;
+  sortorder: number;
 }
+
+// export type MainCategory = {
+//   catId: string;
+//   catName: string;
+//   sortorder: number;
+//   categoryslug: string;
+//   isdeliveryavailable: boolean;
+//   istakeoutavailable: boolean;
+//   imgurl: string;
+// }
 
 export interface MainPOSRequest {
   restaurantId: string;

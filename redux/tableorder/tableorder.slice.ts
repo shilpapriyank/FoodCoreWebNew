@@ -46,7 +46,7 @@ const tableOrderSlice = createSlice({
     getPrinterDetails(state, action: PayloadAction<any>) {
       state.printerdetails = action.payload;
     },
-    getCartItemCount(state, action: PayloadAction<number>) {
+    getCartItemCount(state, action: PayloadAction<any>) {
       state.cartcount = action.payload;
     },
     addKitchenComment(state, action: PayloadAction<string>) {
