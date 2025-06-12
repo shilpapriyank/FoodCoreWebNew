@@ -7,6 +7,8 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CategorySidebar from "../category-sidebar/category-sidebar.component";
 
 interface CategoryMenuItemsProps {
+  menuItemsWithCat: any[];
+  errorMessage: string;
   children?: any;
 }
 
@@ -34,21 +36,25 @@ const CategoryMenuItems: React.FC<CategoryMenuItemsProps> = ({ children }) => {
 
   return (
     <>
-      <div className="container-fluid">
-        <div className="row">
+      <section className="categories-info">
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-8 col-md-8 col-12">{children}</div>
-            <div className="col-lg-1 col-md-1 col-12 d-flex justify-content-end align-items-center">
-              <GridListButton
-                viewType={viewType}
-                handleClickView={handleClickView}
-                dynamicColor={restaurantinfo.color}
-              />
+            <div className="row">
+              <div className="col-lg-8 col-md-8 col-12">
+                {children && children}
+              </div>
+              <div className="col-lg-1 col-md-1 col-12 d-flex justify-content-end align-items-center">
+                <GridListButton
+                  viewType={viewType}
+                  handleClickView={handleClickView}
+                  dynamicColor={restaurantinfo.color}
+                />
+              </div>
             </div>
+            <CategorySidebar />
           </div>
-          {/* <CategorySidebar /> */}
         </div>
-      </div>
+      </section>
     </>
   );
 };

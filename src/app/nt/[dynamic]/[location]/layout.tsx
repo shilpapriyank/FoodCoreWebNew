@@ -46,7 +46,7 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   return (
     <RestaurantComponent>
-      <CategoryMenuItems />
+      {/* <CategoryMenuItems /> */}
       {children}
     </RestaurantComponent>
   );
