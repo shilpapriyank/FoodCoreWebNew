@@ -1,5 +1,3 @@
-// delivery-address.constants.ts
-
 export const DeliveryAddressTypes = {
   ADD_ADDRESS: "ADD_ADDRESS",
   GET_ADDRESS: "GET_ADDRESS",

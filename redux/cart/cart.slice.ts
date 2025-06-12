@@ -117,11 +117,35 @@ export const deleteCartItemFromSessionId = (cartsessionId: any, restaurantId: an
     }
 }
 
+export const afterPaymentSuccess = (restaurantId : any, orderId: any,source: any) => {
+    // return (dispatch) => { 
+    if (orderId > 0) {
+        CartServices.afterPaymentSuccess(restaurantId, orderId,source);
+    }
+}
+
 export const emptycart = () => {
     return (dispatch: any) => {
         dispatch({
             type: CartTypes.CART_EMPTY,
             payload: null
+        })
+    }
+}
+
+export const orderinstruction = (message: any) => {
+    return (dispatch: any) => {
+        dispatch({
+            type: CartTypes.SET_ORDER_INSTRUCTION,
+            payload: message
+        })
+    }
+}
+export const orderdeliveryinstruction = (message: any) => {
+    return (dispatch: any) => {
+        dispatch({
+            type: CartTypes.SET_ORDER_DELIVERY_INSTRUCTION,
+            payload: message
         })
     }
 }

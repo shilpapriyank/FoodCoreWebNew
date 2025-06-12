@@ -16,7 +16,7 @@ import Layout from "@/components/nt/layout/layout.component";
 import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 import { addmetaData } from "../../../../../../redux/metadata/metadata.slice";
 import { RestaurantsServices } from "../../../../../../redux/restaurants/restaurants.services";
-import { validateQueryString } from "@/components/default/common/dominos/helpers/utility";
+//import { validateQueryString } from "@/components/default/common/dominos/helpers/utility";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../redux/store";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -111,18 +111,15 @@ export default function CategoryPage({
 
       if (itemDetail) {
         const metaData = {
-          title: `${itemDetail?.title ? `${itemDetail?.title} || ` : ""}${
-            itemDetail?.restaurantname
-          } : Online Ordering`,
+          title: `${itemDetail?.title ? `${itemDetail?.title} || ` : ""}${itemDetail?.restaurantname
+            } : Online Ordering`,
           description: itemDetail?.description ?? "",
           image: itemDetail?.imageurl ?? "",
           url: `${getorigin()}${pathname}`,
         };
-
         dispatch(addmetaData(metaData));
       }
     };
-
     loadMeta();
   }, [params]);
 

@@ -1,40 +1,35 @@
 'use client';
 
 import React from 'react';
+import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
+import { useAppDispatch } from '../../../../redux/hooks';
 import { checkDisableWindow, GetThemeDetails, ORDER_TYPE } from '../../common/utility';
 import useFutureOrder from '../../customhooks/usefuture-order-hook';
-import { useAppDispatch } from '../../../../redux/hooks';
-import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 
 type PickupDeliveryButtonProps = {
     handleChangeOrderType: (type: string) => void;
 };
 
 const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({ handleChangeOrderType }) => {
-    const dispatch = useAppDispatch();
     const { restaurantinfo, selecteddelivery, main } = useReduxData();
-    const defaultLocation = restaurantinfo?.defaultLocation;
-
-    const location = defaultLocation?.locationURL ?? '';
-    const selectedTheme = GetThemeDetails(restaurantinfo?.themetype ?? '');
-
-    const locationFullLink = `/${selectedTheme.url}/${restaurantinfo?.restaurantURL}/${location.trim()}/`;
-    const locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
-
+    const dispatch = useAppDispatch();
+    let location = restaurantinfo?.defaultLocation?.locationURL;
     const restaurantWindowTime = main.restaurantWindowTime as any;
-    const pickupWindow = restaurantWindowTime?.pickupTime;
-    const deliveryWindow = restaurantWindowTime?.deliveryTime;
-
+    const pickupWindow = (restaurantWindowTime && restaurantWindowTime.pickupTime) && restaurantWindowTime.pickupTime;
+    const deliveryWindow = (restaurantWindowTime && restaurantWindowTime.deliveryTime) && restaurantWindowTime.deliveryTime;
+    const defaultLocation = restaurantinfo ? restaurantinfo.defaultLocation : null;
     const isTakeOutAsap = defaultLocation?.isTakeOutAsap;
     const isTakeOutPickupTime = defaultLocation?.isTakeOutPickupTime;
-    const isDeliveryPickupTime = defaultLocation?.isDeliveryPickupTime;
-    const isDeliveryAsap = defaultLocation?.isDeliveryAsap;
+    const isDeliveryPickupTime = defaultLocation.isDeliveryPickupTime;
+    const isDeliveryAsap = defaultLocation.isDeliveryAsap;
+    const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    const locationFullLink = `/${selectedTheme.url}/${restaurantinfo?.restaurantURL}/${location.trim()}/`;
+    const locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
+    const { isFutureOrder, futureDay } = useFutureOrder();
+    const isEnableDelivery = checkDisableWindow(deliveryWindow, isFutureOrder, (futureDay as any)?.futureDay);
+    const isEnablePickup = checkDisableWindow(pickupWindow, isFutureOrder, (futureDay as any)?.futureDay);
 
     const b2b = defaultLocation?.b2btype;
-
-    const { isFutureOrder, futureDay } = useFutureOrder();
-    const isEnableDelivery = checkDisableWindow(deliveryWindow, isFutureOrder, futureDay);
-    const isEnablePickup = checkDisableWindow(pickupWindow, isFutureOrder, futureDay);
 
     return (
         <div className="col-lg-12 order-btns text-center col-md-12 col-12">
