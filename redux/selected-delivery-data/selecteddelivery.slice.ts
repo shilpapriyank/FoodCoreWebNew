@@ -1,14 +1,96 @@
-// selecteddelivery.slice.ts
+// import { createSlice } from "@reduxjs/toolkit";
+// import { SelectedDeliveryTypes } from "./selecteddelivery.types";
+
+// // ChooseTime and DeliveryAddress types
+// interface ChooseTime {
+//   [key: string]: any;
+// }
+
+// interface DeliveryAddress {
+//   address1: string;
+//   address2: string;
+//   addresstype: number;
+//   businessname: string;
+//   city: string;
+//   contactname: string;
+//   contactno: string;
+//   country: string | null;
+//   customerId: number;
+//   deliveryaddressId: number;
+//   landmark: string;
+//   latitude: number;
+//   longitude: number;
+//   othercustomerId: number;
+//   state: string | null;
+//   zipcode: string;
+// }
+
+// interface SelectedDeliveryState {
+//   choosetime: ChooseTime;
+//   pickupordelivery: string;
+//   selecteddeliveryaddress: DeliveryAddress | null;
+// }
+
+// const initialState: SelectedDeliveryState = {
+//   choosetime: {},
+//   pickupordelivery: "",
+//   selecteddeliveryaddress: null,
+// };
+
+// const selecteddeliverySlice = createSlice({
+//   name: "selecteddelivery",
+//   initialState,
+//   reducers: {}, // No auto-generated actions
+//   extraReducers: (builder) => {
+//     builder
+//       .addCase(SelectedDeliveryTypes.SAVE_CHOOSE_TIME as any, (state, action: any) => {
+//         state.choosetime = action.payload;
+//       })
+//       .addCase(SelectedDeliveryTypes.SET_PICKUP_OR_DELIVERY as any, (state, action: any) => {
+//         state.pickupordelivery = action.payload;
+//       })
+//       .addCase(SelectedDeliveryTypes.SELECTED_DELIVERY_ADDRESS as any, (state, action: any) => {
+//         state.selecteddeliveryaddress = action.payload;
+//       })
+//       .addCase(SelectedDeliveryTypes.CLEAR_DELIVERY_ADDRESS as any, (state) => {
+//         state.choosetime = {};
+//         state.pickupordelivery = "";
+//         state.selecteddeliveryaddress = null;
+//       })
+//       .addCase(SelectedDeliveryTypes.RESET_SELECTDELIVERY as any, (state) => {
+//         state.pickupordelivery = "";
+//         state.selecteddeliveryaddress = null;
+//       });
+//   },
+// });
+
+// export default selecteddeliverySlice.reducer;
+
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// Types
 interface ChooseTime {
-  // define the shape, e.g.
   [key: string]: any;
 }
 
 interface DeliveryAddress {
-  // define your delivery address shape here
-  [key: string]: any;
+  address1?: string;
+  address2?: string;
+  addresstype?: number;
+  businessname?: string;
+  city?: string;
+  contactname?: string;
+  contactno?: string;
+  country?: string | null;
+  customerId?: number;
+  deliveryaddressId?: number;
+  landmark?: string;
+  latitude?: number;
+  longitude?: number;
+  othercustomerId?: number;
+  state?: string | null;
+  zipcode?: string;
 }
 
 interface SelectedDeliveryState {
@@ -20,9 +102,10 @@ interface SelectedDeliveryState {
 const initialState: SelectedDeliveryState = {
   choosetime: {},
   pickupordelivery: "",
-  selecteddeliveryaddress: null,
+  selecteddeliveryaddress: {},
 };
 
+// Slice
 const selecteddeliverySlice = createSlice({
   name: "selecteddelivery",
   initialState,
@@ -39,16 +122,16 @@ const selecteddeliverySlice = createSlice({
     cleardeliveryaddress(state) {
       state.choosetime = {};
       state.pickupordelivery = "";
-      state.selecteddeliveryaddress = null;
+      state.selecteddeliveryaddress = {};
     },
     resetSelectedDelivery(state) {
       state.pickupordelivery = "";
       state.selecteddeliveryaddress = null;
-      // optionally clear choosetime? depends on your use case
     },
   },
 });
 
+// ✅ Export actions
 export const {
   savechoosetime,
   setpickupordelivery,
@@ -57,65 +140,9 @@ export const {
   resetSelectedDelivery,
 } = selecteddeliverySlice.actions;
 
+// ✅ Export reducer
 export default selecteddeliverySlice.reducer;
 
-// // selecteddelivery.slice.ts
-// import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// interface ChooseTime {
-//     // define the shape, e.g.
-//     [key: string]: any;
-// }
-
-// interface DeliveryAddress {
-//     // define your delivery address shape here
-//     [key: string]: any;
-// }
-
-// interface SelectedDeliveryState {
-//     choosetime: ChooseTime;
-//     pickupordelivery: string;
-//     selecteddeliveryaddress: DeliveryAddress | null;
-// }
-
-// const initialState: SelectedDeliveryState = {
-//     choosetime: {},
-//     pickupordelivery: '',
-//     selecteddeliveryaddress: null,
-// };
-
-// const selecteddeliverySlice = createSlice({
-//     name: 'selecteddelivery',
-//     initialState,
-//     reducers: {
-//         savechoosetime(state, action: PayloadAction<ChooseTime>) {
-//             state.choosetime = action.payload;
-//         },
-//         setpickupordelivery(state, action: PayloadAction<string>) {
-//             state.pickupordelivery = action.payload;
-//         },
-//         selecteddeliveryaddress(state, action: PayloadAction<DeliveryAddress>) {
-//             state.selecteddeliveryaddress = action.payload;
-//         },
-//         cleardeliveryaddress(state) {
-//             state.choosetime = {};
-//             state.pickupordelivery = '';
-//             state.selecteddeliveryaddress = null;
-//         },
-//         resetSelectedDelivery(state) {
-//             state.pickupordelivery = '';
-//             state.selecteddeliveryaddress = null;
-//             // optionally clear choosetime? depends on your use case
-//         },
-//     },
-// });
-
-// export const {
-//     savechoosetime,
-//     setpickupordelivery,
-//     selecteddeliveryaddress,
-//     cleardeliveryaddress,
-//     resetSelectedDelivery,
-// } = selecteddeliverySlice.actions;
-
-// export default selecteddeliverySlice.reducer;
+//deliveryaddressdata(mine)
+//selecteddeliveryaddress

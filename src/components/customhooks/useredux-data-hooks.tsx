@@ -45,7 +45,7 @@ export const useReduxData = () => {
     (state: RootState) => state.restaurant,
     shallowEqual
   );
-  //const rewardpoints = useSelector((state: RootState) => state.rewardpoints, shallowEqual);
+  const rewardpoints = useSelector((state: RootState) => state.rewardpoints, shallowEqual);
   const session = useSelector(
     (state: RootState) => state.session,
     shallowEqual
@@ -57,8 +57,12 @@ export const useReduxData = () => {
   const restauranttiming = useSelector(
     (state: RootState) => state.restaurant.restaurantstiminglist
   );
-  const sessionid = useSelector((state: RootState) => state.session?.sessionid);
-  // const addressList = useSelector((state: RootState) => state.restaurant?.restaurantslocationlist?.addressList);
+  const sessionid = useSelector(
+    (state: RootState) => state.session?.sessionid
+  );
+  // const addressList = useSelector(
+  //   (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
+  // );
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
   );
@@ -133,7 +137,7 @@ export const useReduxData = () => {
     tableorder,
     // cart,
     // main,
-    //rewardpoints,
+    rewardpoints,
     // session,
     // studentdata,
     // sessionid,

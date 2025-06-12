@@ -54,13 +54,12 @@ export default function DynamicPage() {
       Object.keys(selecteddelivery?.pickupordelivery).length === 0 ||
       selecteddelivery?.pickupordelivery === ""
     ) {
-      dispatch(
-        setpickupordelivery(
-          restaurantinfo?.defaultLocation?.defaultordertype
-            ? ORDER_TYPE.DELIVERY.text
-            : ORDER_TYPE.PICKUP.text
-        )
-      );
+      dispatch(setpickupordelivery (
+        restaurantinfo?.defaultLocation?.defaultordertype
+          ? ORDER_TYPE.DELIVERY.text
+          : ORDER_TYPE.PICKUP.text
+      ));
+
     }
   }, []);
 
@@ -68,23 +67,23 @@ export default function DynamicPage() {
     //if b2b restaurant
     if (b2b || isSchoolProgramEnabled) {
       dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
-      // if (order?.checktime === "") {
-      //   OrderServices.getOrderTime(
-      //     restaurantinfo.restaurantId,
-      //     restaurantinfo.locationId
-      //   ).then((response) => {
-      //     dispatch(isasap(true));
-      //     const time = response?.ordertime?.split(":");
-      //     const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;
-      //     if (response) {
-      //       dispatch({
-      //         type: OrderTypes.CHECK_ORDER_TIME,
-      //         payload: timeWithMeridian,
-      //       });
-      //       return;
-      //     }
-      //   });
-      // }
+      if (order?.checktime === "") {
+        OrderServices.getOrderTime({
+          restaurantId: restaurantinfo.restaurantId,
+          locationId: restaurantinfo.locationId
+        } as any).then((response) => {
+          dispatch(isasap(true));
+          const time = response?.ordertime?.split(":");
+          const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;
+          if (response) {
+            dispatch({
+              type: OrderTypes.CHECK_ORDER_TIME,
+              payload: timeWithMeridian,
+            });
+            return;
+          }
+        });
+      }
     }
   }, [userinfo]);
 

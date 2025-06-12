@@ -58,7 +58,7 @@ import {
 } from "../../../redux/order/order.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
 
-debugger;
+//debugger;
 interface Props {
   children: ReactNode;
   metaDataRestaurant?: any;
@@ -233,6 +233,12 @@ const RestaurantComponent = ({
         setLoadrestaurant(true);
       }
     }
+    setLocationIdInStorage(newselectedRestaurant.locationId);
+    setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
+    setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
+    dispatch(restaurantsdetail(newselectedRestaurant));
+    setSelectedRestaurant(newselectedRestaurant);
+    setLoadrestaurant(true);
   };
 
   const handleInvalidRestaurant = (themetype: any) => {

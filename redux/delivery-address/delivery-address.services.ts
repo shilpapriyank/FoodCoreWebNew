@@ -100,7 +100,7 @@ export class DeliveryAddressServices {
     static async verifyDeliveryAddresss(
         obj: VerifyAddressInput,
         restaurantId: number,
-        locationId: number
+        locationId: number,
     ): Promise<ResponseModel | null> {
         responseclass = new ResponseModel();
         const methodName = "validateDeliveryAddress";

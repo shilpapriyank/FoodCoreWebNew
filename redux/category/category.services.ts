@@ -15,7 +15,8 @@ export class CategoryServices {
     customerId: string,
     locationId: string
   ): Promise<CategoryItem[] | null> {
-    debugger;
+    //debugger;
+ // ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
