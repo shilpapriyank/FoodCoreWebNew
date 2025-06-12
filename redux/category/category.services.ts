@@ -15,7 +15,6 @@ export class CategoryServices {
     customerId: string,
     locationId: string
   ): Promise<CategoryItem[] | null> {
-    //debugger;
  // ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";

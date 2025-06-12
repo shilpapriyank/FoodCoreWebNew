@@ -49,7 +49,6 @@ import { ThunkDispatch } from "redux-thunk";
 import SEOComponent from "../common/seo.component";
 import useLoadCatData from "../customhooks/useloadcatdata-hook";
 import { clearRedux } from "../../../redux/clearredux/clearredux.slice";
-import { setRewardPoint } from "../../../redux/cart/cart.slice";
 import { createSessionId } from "../../../redux/session/session.slice";
 import { getSelectedRestaurantTime } from "../../../redux/main/main.slice";
 import {
@@ -58,7 +57,6 @@ import {
 } from "../../../redux/order/order.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
 
-//debugger;
 interface Props {
   children: ReactNode;
   metaDataRestaurant?: any;

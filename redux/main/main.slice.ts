@@ -5,18 +5,17 @@ import {
   getCategoryItemList,
   selectedCategory,
 } from "../category/category.slice"; // Ensure these are converted slices
-import { AppDispatch } from "../store"; // Adjust path to store
 import { MainTypes } from "./main.type";
-import { MenuCategory } from "@/types/mainservice-types/mainservice.type";
 import { RestaurantWindowTime } from "@/components/default/common/dominos/helpers/types/utility-type";
 import { GetThemeDetails } from "@/components/common/utility";
+import { MainCategory } from "@/types/mainservice-types/mainservice.type";
 
 interface MainState {
-  maincategoryList: MenuCategory[];
-  promotioncategoryList: MenuCategory[];
+  maincategoryList: MainCategory[];
+  promotioncategoryList: MainCategory[];
   deliverypickuppopup: boolean;
   ischangelocation: boolean;
-  restaurantWindowTime?: RestaurantWindowTime;
+  restaurantWindowTime?: RestaurantWindowTime[];
 }
 
 const initialState: MainState = {
@@ -37,6 +36,10 @@ export const getMenuCategoryList = createAsyncThunk(
       locationId
     );
     if (response) {
+      dispatch({
+        type: MainTypes.GET_MENU_CATEGORY_DATA,
+        payload: response,
+      });
       return response;
     }
     return [];
@@ -45,18 +48,25 @@ export const getMenuCategoryList = createAsyncThunk(
 
 export const getSelectedRestaurantTime = createAsyncThunk(
   MainTypes.GET_SELECTED_RESTAURANTTIME,
-  async ({
-    restaurantId,
-    locationId,
-  }: {
-    restaurantId: number;
-    locationId: string;
-  }) => {
+  async (
+    {
+      restaurantId,
+      locationId,
+    }: {
+      restaurantId: number;
+      locationId: string;
+    },
+    { dispatch }
+  ) => {
     const response = await MainServices.getSelectedRestaurantWindowTime(
       restaurantId,
       locationId
     );
     if (response) {
+      dispatch({
+        type: MainTypes.GET_SELECTED_RESTAURANTTIME,
+        payload: response,
+      });
       return response;
     }
     return [];
@@ -109,7 +119,7 @@ export const refreshCategoryList = createAsyncThunk(
           dispatch(
             getCategoryItemList({
               restaurantId: newselectedRestaurant.restaurantId,
-              categories: firstCategory.catId,
+              categories: String(firstCategory.catId),
               customerId,
               locationId: newselectedRestaurant.defaultlocationId,
             })
@@ -120,7 +130,7 @@ export const refreshCategoryList = createAsyncThunk(
           );
           let promotionCatId: string = "0";
           if (promotioncategories) {
-            promotionCatId = promotioncategories.catId;
+            promotionCatId = String(promotioncategories.catId);
             MainServices.getPromotionCategoryList(
               newselectedRestaurant.restaurantId,
               promotionCatId,
@@ -135,8 +145,16 @@ export const refreshCategoryList = createAsyncThunk(
             });
           }
         } else {
-          dispatch(mainSlice.actions.updateMenuCategoryData([]));
-          dispatch(mainSlice.actions.updatePromotionCategoryData([]));
+          // dispatch(mainSlice.actions.updateMenuCategoryData([]));
+          // dispatch(mainSlice.actions.updatePromotionCategoryData([]));
+          dispatch({
+            type: MainTypes.UPDATE_MENU_CATEGORY_DATA,
+            payload: [],
+          });
+          dispatch({
+            type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
+            payload: [],
+          });
         }
       });
     }
@@ -158,16 +176,16 @@ export const mainSlice = createSlice({
     changeLocationModal(state, action: PayloadAction<boolean>) {
       state.ischangelocation = action.payload;
     },
-    setMainCategoryList(state, action: PayloadAction<MenuCategory[]>) {
+    setMainCategoryList(state, action: PayloadAction<MainCategory[]>) {
       state.maincategoryList = action.payload;
     },
-    setPromotionCategoryList(state, action: PayloadAction<MenuCategory[]>) {
+    setPromotionCategoryList(state, action: PayloadAction<MainCategory[]>) {
       state.promotioncategoryList = action.payload;
     },
-    updateMenuCategoryData(state, action: PayloadAction<MenuCategory[]>) {
+    updateMenuCategoryData(state, action: PayloadAction<MainCategory[]>) {
       state.maincategoryList = action.payload;
     },
-    updatePromotionCategoryData(state, action: PayloadAction<MenuCategory[]>) {
+    updatePromotionCategoryData(state, action: PayloadAction<MainCategory[]>) {
       state.promotioncategoryList = action.payload;
     },
   },
@@ -176,11 +194,11 @@ export const mainSlice = createSlice({
       state.maincategoryList = action.payload;
     });
 
-    // builder.addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
-    //   if (action.payload) {
-    //     state.restaurantWindowTime = action.payload;
-    //   }
-    // });
+    builder.addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.restaurantWindowTime = action.payload;
+      }
+    });
   },
 });
 

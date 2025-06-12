@@ -23,7 +23,6 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   console.log("maincategory list", maincategoryList);
   //const {categorylist } =useLoadCatData();
   const router = useRouter();
-  debugger;
 
   const params = useParams();
   //const { query: { dynamic, location, id, category, index }, } = router;
@@ -63,6 +62,7 @@ const CategoryHeader = ({ selectedCatId }: any) => {
     }
   }, [selectedCategoryId, selectedcategory, category]);
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
+  console.log("b2b type from category header", b2b);
 
   const handleScrollItem = (id: any) => {
     // setupdateId(id)

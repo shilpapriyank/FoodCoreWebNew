@@ -13,13 +13,13 @@ import Head from "next/head";
 import useUtility from "../../../../../components/customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import Layout from "@/components/nt/layout/layout.component";
-import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 import { addmetaData } from "../../../../../../redux/metadata/metadata.slice";
 import { RestaurantsServices } from "../../../../../../redux/restaurants/restaurants.services";
 import { validateQueryString } from "@/components/default/common/dominos/helpers/utility";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../../redux/store";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 
 export default function CategoryPage({
   params,
@@ -51,7 +51,7 @@ export default function CategoryPage({
     searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
   );
-  // const { dynamic, location, category, menuitemId } = params;
+  const { location, category } = params;
 
   //   useEffect(() => {
   //     //CONDITION FOR THE categoryitemlist REDUX IS EMPTY AND USER DIRECT ENTER THE LINK IN THE BROWSER
@@ -134,8 +134,9 @@ export default function CategoryPage({
       </Head>
       <LoadLocationDirectComponent>
         <Layout>
-          {!errorMessage && <CategoryHeader />}
-          {/* <CategoryMenuItems
+          {/* {!errorMessage && } */}
+          <CategoryHeader />
+          <CategoryMenuItems
             menuItemsWithCat={menuItemsWithCat}
             categoryslug={category}
             errorMessage={errorMessage}
@@ -145,8 +146,9 @@ export default function CategoryPage({
               handleChangeSearch={handleChangeSearch}
               handleSubmitSearch={handleSubmitSearch}
               handleClickCancel={handleClickCancel}
+              errorMessage={errorMessage}
             />
-          </CategoryMenuItems> */}
+          </CategoryMenuItems>
         </Layout>
       </LoadLocationDirectComponent>
     </>

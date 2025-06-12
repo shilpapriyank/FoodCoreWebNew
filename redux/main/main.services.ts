@@ -3,18 +3,18 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { RestaurantWindowTime } from "@/components/default/common/dominos/helpers/types/utility-type";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import { MenuCategory } from "@/types/mainservice-types/mainservice.type";
+import { MainCategory } from "@/types/mainservice-types/mainservice.type";
 import { ChildProcessWithoutNullStreams } from "child_process";
 
 let responseclass = new ResponseModel();
 
 // Define structured request types
-interface MenuCategoryListRequest {
+interface MainCategoryListRequest {
   restaurantId: number;
   locationId: string;
 }
 
-interface MenuCategoryListPOSRequest extends MenuCategoryListRequest {
+interface MainCategoryListPOSRequest extends MainCategoryListRequest {
   isPOS: boolean;
   customerId: string;
   categories: string;
@@ -40,13 +40,13 @@ export class MainServices {
   static async getMenuCategoryList(
     restaurantId: number,
     locationId: string
-  ): Promise<MenuCategory[] | null> {
+  ): Promise<MainCategory[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuCategoryList";
     const location = ENDPOINTS.GET_MENU_CATEGORY;
 
     const data = {
-      menuCategoryRequest: {
+      mainCategoryRequest: {
         restaurantId: restaurantId,
         locationId: locationId,
       },
@@ -75,7 +75,7 @@ export class MainServices {
     locationId: string,
     isPOS: boolean,
     customerId: string
-  ): Promise<MenuCategory[] | ChildProcessWithoutNullStreams | null> {
+  ): Promise<MainCategory[] | ChildProcessWithoutNullStreams | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuCategoryListPOS";
     const location = ENDPOINTS.GET_MENU_CATEGORY_POS;
@@ -113,7 +113,7 @@ export class MainServices {
     categories: string,
     customerId: string,
     locationId: string
-  ): Promise<MenuCategory[]> {
+  ): Promise<MainCategory[]> {
     responseclass = new ResponseModel();
     const methodName = "getPromotionCategoryList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
