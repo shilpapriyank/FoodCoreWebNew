@@ -1,15 +1,12 @@
 import React, { Component, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation"; import { useSelector } from "react-redux";
 import { GetThemeDetails } from "../common/utility";
 
 const RestaurantNotExist = () => {
-  const router = useRouter();
-  const {
-    query: { dynamic },
-  } = router;
-  const locationUrl = router.query.location;
+  const searchParams = useSearchParams();
+  const locationUrl = searchParams.get("location");
+  const dynamic = searchParams.get("dynamic");
   const restaurantinfo = useSelector(
     ({ restaurant }: any) => restaurant.restaurantdetail
   );

@@ -297,7 +297,7 @@
 
 // export default Restaurant;
 
-// components/Restaurant.tsx
+//components/Restaurant.tsx
 import React, { ReactNode } from "react";
 
 interface RestaurantProps {

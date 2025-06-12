@@ -116,9 +116,9 @@ const useLoadCatData = (customerId: number) => {
 
         const firstCategory = catresponse[0];
         firstCategory.catSelected = true;
-        // if (categoryitemlist.length === 0) {
-        //     dispatch(selectedCategory(firstCategory));
-        // }
+        if (categoryitemlist.length === 0) {
+            dispatch(selectedCategory(firstCategory));
+        }
 
         let promotioncategories = catresponse.find(
           (x: any) => x.catName === "PROMOTION"

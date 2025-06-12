@@ -46,8 +46,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   session: sessionReducer,
   main: mainReducer,
-  //tableorder: tableOrderReducer,
-  //rewardpoints: rewardpointReducer,
+  tableorder: tableOrderReducer,
+  rewardpoints: rewardpointReducer,
 });
 
 // Persist configuration

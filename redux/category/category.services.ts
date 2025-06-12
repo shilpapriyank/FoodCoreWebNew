@@ -20,7 +20,6 @@ export class CategoryServices {
     customerId: string,
     locationId: string
   ): Promise<any | null> {
-    debugger;
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
