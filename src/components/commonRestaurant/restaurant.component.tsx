@@ -58,7 +58,7 @@ import {
 } from "../../../redux/order/order.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
 
-debugger
+debugger;
 interface Props {
   children: ReactNode;
   metaDataRestaurant?: any;
@@ -97,7 +97,6 @@ const RestaurantComponent = ({
     restaurant.restaurantslocationlistwithtime;
   const appVersion = restaurant?.appversion;
   const categoryitemlist = category.categoryitemlist;
-  console.log("categoryItemList from restaurant component", categoryitemlist);
   const dynamic = params.dynamic;
   const location = params.location;
   const metaData = metadata?.metadata;
@@ -154,9 +153,9 @@ const RestaurantComponent = ({
     var isSameRestaurant;
     const newselectedRestaurant = response[0];
     if (newselectedRestaurant?.defaultLocation === null) {
-      // const locationId =
-      //   newselectedRestaurant.defaultlocationId ||
-      //   newselectedRestaurant?.defaultLocation?.locationId;
+      const locationId =
+        newselectedRestaurant.defaultlocationId ||
+        newselectedRestaurant?.defaultLocation?.locationId;
       handleSetThemeStyleDynamic(newselectedRestaurant);
       let selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
       setthemeUrl(selectedTheme.url);
@@ -234,12 +233,6 @@ const RestaurantComponent = ({
         setLoadrestaurant(true);
       }
     }
-    // setLocationIdInStorage(newselectedRestaurant.locationId);
-    // setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
-    // setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
-    // dispatch(restaurantsdetail(newselectedRestaurant));
-    // setSelectedRestaurant(newselectedRestaurant);
-    // setLoadrestaurant(true);
   };
 
   const handleInvalidRestaurant = (themetype: any) => {
@@ -247,10 +240,6 @@ const RestaurantComponent = ({
     const selectedTheme = GetThemeDetailsByName(themetype);
     setthemeUrl(selectedTheme.url);
   };
-
-  useEffect(() => {
-    console.log("Redux restaurant state:", restaurant.restaurantdetail);
-  }, [restaurant.restaurantdetail]);
 
   useEffect(() => {
     if (pathname !== "/home" && !pathname.includes(ThemeObj.FD123456)) {
@@ -309,7 +298,9 @@ const RestaurantComponent = ({
   //     console.error("Error fetching restaurant data:", error);
   //   }
   // };
+
   // IF ADDRESSLIST IS IS EMPTY AND USER DIRECT PUT THE WRONG LOCATION IN THE URL THEN CHECK THE LOCATION IS EXIST IN THE RESTAURANT
+
   useEffect(() => {
     if (!pathname.includes(ThemeObj.FD123456)) {
       if (

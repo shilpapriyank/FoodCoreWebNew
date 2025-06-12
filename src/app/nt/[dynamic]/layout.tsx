@@ -14,7 +14,6 @@ const Layout: React.FC<LayoutProps> = ({
   handleChangeAddress,
   page,
 }) => {
-  console.log("dynamic segment:", "test");
   return (
     <>
       <Header handleChangeAddress={handleChangeAddress} page={page} />

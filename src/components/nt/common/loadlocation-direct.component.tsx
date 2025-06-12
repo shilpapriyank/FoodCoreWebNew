@@ -11,16 +11,24 @@ import {
   restaurantsAllLocation,
   restaurantsdetail,
 } from "../../../../redux/restaurants/restaurants.slice";
+import { v4 as uuidv4 } from "uuid";
 import {
   getLocationIdFromStorage,
   setLocationIdInStorage,
 } from "@/components/common/localstore";
-import { clearRedux } from "../../../../redux/clearredux/clearredux.slice";
 import { createSessionId } from "../../../../redux/session/session.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
-import { setRewardPoint } from "../../../../redux/cart/cart.slice";
+import {
+  deleteCartItemFromSessionId,
+  setRewardPoint,
+} from "../../../../redux/cart/cart.slice";
 import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { useAppDispatch } from "../../../../redux/hooks";
+import { clearRedux } from "../../../../redux/tableorder/tableorder.slice";
+import {
+  getAllCategoryMenuItems,
+  selectedCategory,
+} from "../../../../redux/category/category.slice";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
@@ -41,7 +49,7 @@ const LoadLocationDirectComponent = ({
   const params = useParams();
   const { dynamic, location, id, category, index } = params;
   // const rewardvalue=rewardpoints?.rewardvalue
-  // const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
+  const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
   const [isLoad, setisLoad] = useState(
     location !== restaurantinfo?.defaultLocation?.locationURL ? false : true
   );
@@ -64,12 +72,18 @@ const LoadLocationDirectComponent = ({
       );
     }
     //TO DO:CHECK IF LOATION ADDRESLIST IS CURRENT RESTAURANT
-    //let isAddressListSameRestaurant = (addressList && addressList?.length > 0) && addressList?.some((location: any) => location.locationId === restaurantinfo.defaultlocationId)
-    // const isLoadAddressList = !isAddressListSameRestaurant;
-    // isLoadAddressList = addressList?.length !== 0 ? false : isLoadAddressList;
+    let isAddressListSameRestaurant =
+      addressList &&
+      addressList?.length > 0 &&
+      addressList?.some(
+        (location: any) =>
+          location.locationId === restaurantinfo.defaultlocationId
+      );
+    const isLoadAddressList = !isAddressListSameRestaurant;
+    //isLoadAddressList = addressList?.length !== 0 ? false : isLoadAddressList;
     if (
       location !== restaurantinfo.defaultLocation.locationURL ||
-      isLoadAddress
+      isLoadAddressList
     ) {
       //dispatch(restaurantAllLocation(restaurantinfo.restaurantId));
       LocationServices.getAllLoaction(restaurantinfo.restaurantId).then(
@@ -83,39 +97,44 @@ const LoadLocationDirectComponent = ({
           }
         }
       );
-      //dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId));
+      dispatch(
+        getSelectedRestaurantTime(
+          restaurantinfo.restaurantId,
+          restaurantinfo.locationId
+        ) as any
+      );
     } else {
       setisLoadAddress(true);
     }
   }, [
     restaurantinfo?.defaultLocation?.restaurantId,
-    //addressList !== undefined,
+    addressList !== undefined,
   ]);
 
   //SELECT THE LOCATION IF USER PUT THE DIRECT LINK IN THE URL WITH LOCATION OPEN THAT LOCATION
-  //   useEffect(() => {
-  //     if (
-  //       location !== restaurantinfo?.defaultLocation?.locationURL &&
-  //       (!ischangeurl || isLoadAddressChangeUrl) &&
-  //       isLoadAddress
-  //     ) {
-  //       let isLocationExist =
-  //         addressList?.filter((item: any) => item.locationURL === location)
-  //           .length !== 0;
-  //       if (isLocationExist) {
-  //         let urlLocation = addressList?.find(
-  //           (item: any) => item.locationURL === location
-  //         );
-  //         handleClickChangeLocation(urlLocation?.locationId);
-  //       } else {
-  //         router.push(`/${selctedTheme.url}/${dynamic}/error`);
-  //       }
-  //     }
-  //   }, [
-  //     restaurantinfo?.defaultLocation?.locationURL,
-  //     addressList !== undefined,
-  //     isLoadAddress,
-  //   ]);
+  useEffect(() => {
+    if (
+      location !== restaurantinfo?.defaultLocation?.locationURL &&
+      (!ischangeurl || isLoadAddressChangeUrl) &&
+      isLoadAddress
+    ) {
+      let isLocationExist =
+        addressList?.filter((item: any) => item.locationURL === location)
+          .length !== 0;
+      if (isLocationExist) {
+        let urlLocation = addressList?.find(
+          (item: any) => item.locationURL === location
+        );
+        handleClickChangeLocation(urlLocation?.locationId);
+      } else {
+        router.push(`/${selctedTheme.url}/${dynamic}/error`);
+      }
+    }
+  }, [
+    restaurantinfo?.defaultLocation?.locationURL,
+    addressList !== undefined,
+    isLoadAddress,
+  ]);
 
   const handleClickChangeLocation = (lid: any) => {
     setisLoad(false);
@@ -137,8 +156,8 @@ const LoadLocationDirectComponent = ({
         //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
         let oldLocationId = getLocationIdFromStorage();
         if (oldLocationId !== restaurantinfo.defaultlocationId) {
-          //   dispatch(clearRedux());
-          //   let id = uuidv4();
+          dispatch(clearRedux());
+          let id = uuidv4();
           dispatch(createSessionId(id as string));
         }
         setLocationIdInStorage(restaurantinfo.defaultlocationId);
@@ -150,9 +169,18 @@ const LoadLocationDirectComponent = ({
           )
         );
         // dispatch(refreshCategoryList(restaurantinfo, userinfo?.customerId));
-        //dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, lid))
+        dispatch(
+          getSelectedRestaurantTime(
+            restaurantinfo.restaurantId,
+            restaurantinfo.lid
+          ) as any
+        );
         if (userinfo && userinfo?.customerId) {
-          //   deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId);
+          deleteCartItemFromSessionId(
+            sessionid,
+            restaurantinfo.restaurantId,
+            restaurantinfo.defaultLocation.locationId
+          );
           //   dispatch(emptycart());
           //   dispatch(setintialrewardpoints(userinfo));
         }
@@ -170,13 +198,15 @@ const LoadLocationDirectComponent = ({
         //     }
         //   })
         // }
-        // dispatch(clearDeliveryRequestId(""))
+        dispatch(clearDeliveryRequestId());
 
         // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
         setisLoad(true);
 
         // const loadCat = useLoadCatData(restaurantinfo, false, categoryItemsList)
-        //dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid, userinfo?.customerId))
+        dispatch(
+          getAllCategoryMenuItems(restaurantinfo.restaurantId, lid) as any
+        );
 
         //router.push(`/${selctedTheme.url}/${dynamic}/${res?.locationURL}`)
 

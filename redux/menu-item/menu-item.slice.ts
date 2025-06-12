@@ -38,40 +38,112 @@ const initialState: MenuItemState = {
 // Async Thunks
 export const getMenuItemDetailes = createAsyncThunk(
   MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-  async (args: GetMenuItemListArgsTypes) => {
-    const response = await MenuItemServices.getMenuItemList(args);
-    return response;
+  async ({
+    restaurantId,
+    locationId,
+    customerId,
+    menuitemId,
+    cartsessionId,
+    cartId,
+  }: {
+    restaurantId: number;
+    locationId: string;
+    customerId: string;
+    menuitemId: string;
+    cartsessionId: string;
+    cartId: number;
+  }) => {
+    const response = await MenuItemServices.getMenuItemList({
+      restaurantId,
+      locationId,
+      customerId,
+      menuitemId,
+      cartsessionId,
+      cartId,
+    });
+    if (response) {
+      return response;
+    }
+    return [];
   }
 );
 
 export const addFavorite = createAsyncThunk(
   MenuItemTypes.ADD_FAVORITE,
-  async (args: AddfavoriteArgsTypes) => {
-    const response = await MenuItemServices.addfavorite(args);
-    return response;
+  async ({
+    customerId,
+    restaurantId,
+    menuItemId,
+  }: {
+    customerId: string;
+    restaurantId: number;
+    menuItemId: string;
+  }) => {
+    const response = await MenuItemServices.addfavorite({
+      customerId,
+      restaurantId,
+      menuItemId,
+    });
+    if (response) {
+      return response;
+    }
+    return [];
   }
 );
 
 export const deleteFavorite = createAsyncThunk(
   MenuItemTypes.DELETE_FAVORITE,
-  async (args: DeleteFavoriteArgsTypes) => {
-    const response = await MenuItemServices.deletefavorite(args);
-    return response;
+  async ({
+    customerId,
+    restaurantId,
+    menuItemId,
+  }: {
+    customerId: string;
+    restaurantId: number;
+    menuItemId: string;
+  }) => {
+    const response = await MenuItemServices.deletefavorite({
+      customerId,
+      restaurantId,
+      menuItemId,
+    });
+    if (response) {
+      return response;
+    }
+    return [];
   }
 );
 
 export const addItemToCart = createAsyncThunk(
   MenuItemTypes.ADD_ITEM_TO_CART,
-  async (args: AddItemToCartArgsTypes) => {
-    const response = await MenuItemServices.addItemToCart(args);
+  async ({
+    orderobj,
+    restaurantId,
+  }: {
+    orderobj: any;
+    restaurantId: number;
+  }) => {
+    const response = await MenuItemServices.addItemToCart({
+      orderobj,
+      restaurantId,
+    });
     return response;
   }
 );
 
 export const updateItemToCart = createAsyncThunk(
   MenuItemTypes.ADD_ITEM_TO_CART,
-  async (args: UpdateCartOrdersItemArgsTypes) => {
-    const response = await MenuItemServices.updateCartOrdersItem(args);
+  async ({
+    orderobj,
+    restaurantId,
+  }: {
+    orderobj: any;
+    restaurantId: number;
+  }) => {
+    const response = await MenuItemServices.updateCartOrdersItem({
+      orderobj,
+      restaurantId,
+    });
     return response;
   }
 );

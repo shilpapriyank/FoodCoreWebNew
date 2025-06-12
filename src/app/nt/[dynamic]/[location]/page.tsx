@@ -20,7 +20,7 @@ import { useAppDispatch } from "../../../../../redux/hooks";
 
 export default function DynamicPage() {
   const dispatch = useAppDispatch();
-  
+
   const {
     selecteddelivery,
     restaurantinfo,
@@ -280,7 +280,6 @@ export default function DynamicPage() {
 //     </>
 //   );
 // };
-
 
 // export default LocationPage;
 

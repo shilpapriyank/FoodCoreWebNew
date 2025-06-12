@@ -6,7 +6,6 @@ export const StorageVariable = {
 
 export const setLocationIdInStorage = (defaultLocationId: number) => {
   if (typeof window !== "undefined") {
-    console.log("location id ", defaultLocationId);
     localStorage.setItem(
       StorageVariable.LOCATION_ID,
       defaultLocationId > 0 ? defaultLocationId.toString() : "0"

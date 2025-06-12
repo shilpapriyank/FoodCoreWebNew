@@ -43,7 +43,6 @@ export default async function RootLayout({
   try {
     // Fetch restaurant data on the server
     const rawData = await RestaurantsServices.getRestaurantThemeType("fc");
-    console.log(rawData);
     // Serialize the data to ensure it can be passed to client components
     restaurantData = serializeRestaurantData(rawData);
 

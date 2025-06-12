@@ -3,7 +3,6 @@ interface ThemeStylesProps {
 }
 
 export function ThemeStyles({ themeType }: ThemeStylesProps) {
-  console.log(themeType);
   return (
     <>
       {themeType === "default" && (
