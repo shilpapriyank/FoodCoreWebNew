@@ -17,7 +17,6 @@ import { CustomerServices } from '../../../../redux/customer/customer.services';
 import PickupDeliveryButton from './pickup-delivery-btn.component';
 import AddressList from '../common/adresslist.component';
 import { v4 as uuidv4 } from "uuid";
-// import AddressPill from '@/components/common/address-pill.component';
 import { clearDeliveryRequestId } from '../../../../redux/order/order.slice';
 import { createSessionId } from '../../../../redux/session/session.slice';
 import { ChangeUrl, restaurantsdetail } from '../../../../redux/restaurants/restaurants.slice';
@@ -122,9 +121,10 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                 }
                 setLocationIdInStorage(restaurantinfo.defaultlocationId);
                 // setdefaultLoactionId(lid)
-                // dispatch(refreshCategoryList(restaurantinfo, customerId));
-                // dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, lid))
-                // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
+                dispatch(refreshCategoryList(restaurantinfo, customerId) as any);
+                dispatch(refreshCategoryList({ newselectedRestaurant: restaurantinfo, customerId }) as any);
+
+                //  dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid, userinfo?.customerId))
                 if (userinfo && userinfo?.customerId) {
                     //deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId);
                     //dispatch(emptycart() as any);
@@ -227,9 +227,15 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                                             <h2 className="fs-16">Enter your address</h2>
                                         </div>
                                         <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
-                                            {/* {myDeliveryAddress &&
-                                                <AddressPill isChecked={true} address={myDeliveryAddress} />
-                                            } */}
+                                            {myDeliveryAddress &&
+                                                <AddressPill
+                                                    isChecked={true}
+                                                    handleChangeLocation={() => { }}
+                                                    handleChangeAddress={() => { }}
+                                                    address={myDeliveryAddress.id}
+                                                    id={myDeliveryAddress.id}
+                                                />
+                                            }
                                             {userinfo && <DeliveryaddresspillComponent />}
                                             <div className="text-center">
                                                 <a className="address-nfound" onClick={handleClickAddNewAddress}>Add New Address</a>

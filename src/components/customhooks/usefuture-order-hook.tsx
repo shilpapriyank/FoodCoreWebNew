@@ -4,21 +4,21 @@ import { useReduxData } from "./useredux-data-hooks";
 const useFutureOrder = () => {
   const { restaurantinfo, order } = useReduxData();
   const locationinfo = restaurantinfo?.defaultLocation;
-  //const futureDate = locationinfo?.enablefutureordering ? order?.futureOrderDay?.fullDay : "";
+  const futureDate = locationinfo?.enablefutureordering ? (order?.futureOrderDay as any)?.fullDay : "";
   const isFutureOrder = locationinfo?.enablefutureordering;
   const enabletimeslot = locationinfo?.enabletimeslot;
   const timeSlot =
     locationinfo?.enabletimeslot && !order?.isasap ? order?.checktime : "";
-//  const recievingDate = futureDate;
+  const recievingDate = futureDate;
   const futureDay = order?.futureOrderDay;
   const futureDays = locationinfo?.futureOrderingDayDates ?? [];
 
   return {
     locationinfo,
-   // futureDate,
+    futureDate,
     isFutureOrder,
     timeSlot,
-    //recievingDate,
+    recievingDate,
     futureDay,
     enabletimeslot,
     futureDays,

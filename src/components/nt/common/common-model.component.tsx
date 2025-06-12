@@ -1,19 +1,22 @@
 import React, { ReactNode } from 'react';
 
-interface CommonModalProps {
-    title: string;
-    text?: string;
-    keyName?: string;
-    isbtn2?: boolean;
-    isOpenModal: boolean;
-    btn1Name?: string;
-    btn2Name?: string;
-    isDisplayCloseIcon?: boolean;
-    children?: ReactNode;
-    handleToggle?: (value: boolean, keyName?: string) => void;
-    handleClickBtn1?: () => void;
-    handleClickBtn2?: () => void;
+export interface CommonModalProps {
+  title: string;
+  text?: string;
+  keyName?: string;
+  isbtn2?: boolean;
+  isOpenModal: boolean;
+  btn1Name?: string;
+  btn2Name?: string;
+  isDisplayCloseIcon?: boolean;
+  isButton?: boolean; // ✅ newly added
+  isChild?: boolean;  // ✅ newly added
+  children?: ReactNode;
+  handleToggle?: (value: boolean, keyName?: string) => void;
+  handleClickBtn1?: () => void;
+  handleClickBtn2?: () => void;
 }
+
 
 const CommonModal: React.FC<CommonModalProps> = ({
     title,
