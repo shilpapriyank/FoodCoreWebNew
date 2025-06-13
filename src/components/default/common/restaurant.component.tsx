@@ -297,32 +297,39 @@
 
 // export default Restaurant;
 
+
+
+
+
+
+
+
 //components/Restaurant.tsx
-import React, { ReactNode } from "react";
+// import React, { ReactNode } from "react";
 
-interface RestaurantProps {
-  metaDataRestaurant: any | null;
-  themetype: string;
-  children?: ReactNode;
-}
+// interface RestaurantProps {
+//   metaDataRestaurant: any | null;
+//   themetype: string;
+//   children?: ReactNode;
+// }
 
-const Restaurant: React.FC<RestaurantProps> = ({
-  metaDataRestaurant,
-  themetype,
-  children,
-}) => {
-  return (
-    <div>
-      <p>Theme Type: {themetype}</p>
-      <p>
-        MetaData:{" "}
-        {metaDataRestaurant
-          ? JSON.stringify(metaDataRestaurant)
-          : "No metadata provided"}
-      </p>
-      {children && <div>{children}</div>}
-    </div>
-  );
-};
+// const Restaurant: React.FC<RestaurantProps> = ({
+//   metaDataRestaurant,
+//   themetype,
+//   children,
+// }) => {
+//   return (
+//     <div>
+//       <p>Theme Type: {themetype}</p>
+//       <p>
+//         MetaData:{" "}
+//         {metaDataRestaurant
+//           ? JSON.stringify(metaDataRestaurant)
+//           : "No metadata provided"}
+//       </p>
+//       {children && <div>{children}</div>}
+//     </div>
+//   );
+// };
 
-export default Restaurant;
+// export default Restaurant;

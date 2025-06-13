@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
 import DeliveryaddresspillComponent from '../pickup-delivery/deliveryaddresspill.component';
-import { setpickupordelivery } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
+import { setpickupordelivery  } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
 import { closeModal, GetThemeDetails, ORDER_TYPE } from '../../common/utility';
 import { getLocationIdFromStorage, setLocationIdInStorage } from '@/components/common/localstore';
 import { clearRedux } from '../../../../redux/tableorder/tableorder.slice';
@@ -22,6 +22,8 @@ import { createSessionId } from '../../../../redux/session/session.slice';
 import { ChangeUrl, restaurantsdetail } from '../../../../redux/restaurants/restaurants.slice';
 import { AppDispatch } from '../../../../redux/store';
 import AddressPill from '@/components/common/address-pill.component';
+
+type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
 
 interface OrderTypeSelectProps {
     isOpenModal: boolean;

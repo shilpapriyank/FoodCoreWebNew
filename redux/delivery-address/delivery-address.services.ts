@@ -10,12 +10,11 @@ import { DeliveryAddressInput, VerifyAddressInput } from "./delivery-address.typ
 
 let responseclass = new ResponseModel();
 
-
 export class DeliveryAddressServices {
     static async getDeliveryAddress(
         customerId: number | string,
         restaurantId: any,
-        locationId: number | string
+        locationId: string | number
     ): Promise<any[] | null> {
         responseclass = new ResponseModel();
         const methodName = "getDeliveryAddress";

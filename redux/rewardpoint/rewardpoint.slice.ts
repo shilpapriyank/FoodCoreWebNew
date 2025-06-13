@@ -9,6 +9,14 @@ const initialState: RewardPointState = {
     redeemPoint: 0,
 };
 
+// const initialState: RewardPointState = {
+//     rewardvalue: 0,
+//     rewardamount: 0,
+//     rewardPoint: 0,
+//     totalRewardPoints: 0,
+//     redeemPoint: 0,
+// };
+
 const rewardpointSlice = createSlice({
     name: 'rewardpoint',
     initialState,
