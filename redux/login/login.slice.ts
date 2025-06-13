@@ -32,7 +32,7 @@ export const getLoginUserDetails = createAsyncThunk<
 // Thunk: Fetch customer details & reward points
 export const getCustomerDetails = createAsyncThunk<
     void,
-    { restaurantId: any; customerId: any; rewardvalue: number; lid: any },
+    { restaurantId: number; customerId: number; rewardvalue: number; lid: number },
     { dispatch: AppDispatch }
 >('login/getCustomerDetails', async ({ restaurantId, customerId, rewardvalue, lid }, { dispatch }) => {
     const response = await LoginServices.getCustomerDetails(customerId, restaurantId, lid);

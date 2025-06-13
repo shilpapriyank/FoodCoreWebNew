@@ -2,19 +2,18 @@
 //   locationURL: string;
 // };
 
-// export type RestaurantDetail = {
-//   themetype?: string;
-//   defaultLocation?: DefaultLocation;
-//    restaurantId?: number;
-//   IsAddressMandatoryForRegister?: boolean;
-// };
+export type RestaurantDetailPayload = {
+  restaurantURL?: string;
+  locationURL?: string;
+  defaultLocationId?: number;
+};
 
 export interface Root {
   d: string;
 }
 
 export interface RestaurantApiTypes {
-   themetype?: string;
+  themetype?: string;
   restaurantname: string;
   restaurantId: number;
   facebooklink: string;
@@ -46,26 +45,26 @@ export interface RestaurantApiTypes {
 export interface DefaultLocationApiTypes {
   locationId: number;
   restaurantId: number;
-  locationName?: string | null;
-  address1?: string;
-  cityname?: string;
-  statename?: string;
-  phone?: string;
-  zipcode?: string;
-  email?: string;
-  description?: string;
-  latitude?: string;
-  longitude?: string;
-  delivery?: boolean;
-  isdine?: boolean;
-  bookingtimelimit?: number;
-  ordersubmittime?: number;
-  takeawayextratime?: number;
-  islocationactive?: boolean;
-  mindeliverycharge?: number;
-  maxdeliverymiles?: number;
-  isOrderingDisable?: boolean;
-  orderingMessage?: string;
+  locationName: string;
+  address1: string;
+  cityname: string;
+  statename: string;
+  phone: string;
+  zipcode: string;
+  email: string;
+  description: string;
+  latitude: string;
+  longitude: string;
+  delivery: boolean;
+  isdine: boolean;
+  bookingtimelimit: number;
+  ordersubmittime: number;
+  takeawayextratime: number;
+  islocationactive: boolean;
+  mindeliverycharge: number;
+  maxdeliverymiles: number;
+  isOrderingDisable: boolean;
+  orderingMessage: string;
   isdelivery: boolean;
   istakeaway: boolean;
   locationURL: string;
@@ -133,3 +132,55 @@ export type FutureOrderDay = {
 export type FutureOrder = {
   futureOrderDay: FutureOrderDay | string;
 };
+
+export interface RestaurantsLocationListTypes {
+  //addressList: AddressListTypes[];
+  issupplychainenable: boolean;
+  //parameterByColorList: ParameterByColorListType[];
+  //parameterByTextSizeList: ParameterByTextSizeListType[];
+  restaurantId: number;
+}
+
+export interface RestaurantsLocationListWithTime {
+  //addressList:  AddressListTypes[];
+  issupplychainenable: boolean;
+  //parameterByColorList: ParameterByColorListType[];
+  //parameterByTextSizeList: ParameterByTextSizeListType[];
+  restaurantId: number;
+}
+
+export interface TakeoutTime {
+  closingtime: string; // e.g. "08:00"
+  closingtimemeridian: "AM" | "PM";
+  includeextratime: boolean;
+  isactive: boolean;
+  isnextday: boolean;
+  locationId: number;
+  nameday: number; // 0 = Monday, 1 = Tuesday, etc.
+  openingtime: string; // e.g. "02:00"
+  openingtimemeridian: "AM" | "PM";
+  restaurantId: number;
+  takeaway: boolean;
+  takeawayextratime: number;
+  takedeliveryclosingtime: string; // e.g. "08:00 PM"
+  takedeliveryopeningtime: string; // e.g. "02:00 AM"
+  weekname: string;
+}
+
+export interface DeliveryTime {
+  closingtime: string; // "11:00"
+  closingtimemeridian: "AM" | "PM";
+  delivery: boolean;
+  includeextratime: boolean;
+  isactive: boolean;
+  isnextday: boolean;
+  locationId: number;
+  nameday: number; // 0 for Monday, etc.
+  openingtime: string; // "02:00"
+  openingtimemeridian: "AM" | "PM";
+  orddeliveryclosingtime: string; // "11:00 PM"
+  orddeliveryopeningtime: string; // "02:00 AM"
+  ordersubmittime: number; // in minutes?
+  restaurantId: number;
+  weekname: string;
+}

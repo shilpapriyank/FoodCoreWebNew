@@ -16,7 +16,7 @@ export class LoginServices {
   }: {
      username: string;
     password: string;
-    restaurantId: any;
+    restaurantId: number;
     dialCode: string;
     locationid: number;
   }): Promise<ResponseModel | any> {

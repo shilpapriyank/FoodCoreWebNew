@@ -38,7 +38,7 @@ const useLoadCatData = (customerId: number) => {
           getAllCategoryMenuItems({
             restaurantId: newselectedRestaurant.restaurantId,
             locationId: locationId,
-            customerId: customerId.toString(),
+            customerId: customerId,
             categories: "",
             selectedCategoryUrl: "",
           }) as any
@@ -66,11 +66,11 @@ const useLoadCatData = (customerId: number) => {
           );
           let promotionCatId: string = "0";
           if (promotioncategories) {
-            promotionCatId = promotioncategories.catId;
+            promotionCatId = String(promotioncategories.catId);
             MainServices.getPromotionCategoryList(
               newselectedRestaurant.restaurantId,
               promotionCatId,
-              customerId.toString(),
+              customerId,
               newselectedRestaurant.defaultlocationId
             ).then((promocatresponse) => {
               if (promocatresponse && promocatresponse != null) {
@@ -108,7 +108,7 @@ const useLoadCatData = (customerId: number) => {
         newselectedRestaurant.restaurantId,
         locationId,
         true,
-        customerId.toString()
+        customerId
       ).then((catresponsedata) => {
         catresponse = catresponsedata;
         if (catresponse && catresponse !== null && catresponse !== undefined) {
@@ -136,7 +136,7 @@ const useLoadCatData = (customerId: number) => {
             const promocatresponse = MainServices.getPromotionCategoryList(
               newselectedRestaurant.restaurantId,
               promotionCatId.toString(),
-              customerId.toString(),
+              customerId,
               newselectedRestaurant.defaultlocationId
             );
             // MainServices.getPromotionCategoryList(newselectedRestaurant.restaurantId, promotionCatId, customerId, newselectedRestaurant.defaultlocationId)

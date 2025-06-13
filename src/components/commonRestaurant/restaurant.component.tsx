@@ -56,6 +56,8 @@ import {
   setFutureOrderDay,
 } from "../../../redux/order/order.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
+import { RootState } from "../../../redux/store";
+import { Action } from "@reduxjs/toolkit";
 
 interface Props {
   children: ReactNode;
@@ -68,17 +70,15 @@ const RestaurantComponent = ({
   metaDataRestaurant,
   themetype,
 }: Props) => {
-  const { restaurant, metadata, category, userinfo, order, sessionid } =
+  const { restaurant, cart, metadata, category, userinfo, order, sessionid } =
     useReduxData();
   const customerId = userinfo ? userinfo.customerId : 0;
-  // const { query, pathname, asPath, push } = useRouter();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = useParams();
   let sessionId = sessionid;
-  // const dispatch = useDispatch();
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
   const [loadrestaurant, setLoadrestaurant] = useState<boolean>(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<any>(null);
   const [adresslist, setadresslist] = useState<boolean>(false);
@@ -114,7 +114,6 @@ const RestaurantComponent = ({
     description: "Online Ordering",
     image: restaurantlogo,
     url: `${getorigin()}${pathname}`,
-    //url: `${getorigin()}${asPath}`,
   };
   const { enabletimeslot, futureDays, isFutureOrder } = useFutureOrder();
   const isGetSeo =
@@ -150,6 +149,10 @@ const RestaurantComponent = ({
     let restaurantId = getRestaurantIdFromStorage();
     var isSameRestaurant;
     const newselectedRestaurant = response[0];
+    console.log(
+      "new selected restaurant from restaurant component",
+      newselectedRestaurant
+    );
     if (newselectedRestaurant?.defaultLocation === null) {
       const locationId =
         newselectedRestaurant.defaultlocationId ||
@@ -162,7 +165,6 @@ const RestaurantComponent = ({
       setisResturantClose(true);
     } else {
       handleSetThemeStyleDynamic(newselectedRestaurant);
-
       isSameRestaurant = newselectedRestaurant.restaurantId === restaurantId;
       const path = pathname.split("/");
       const tableOrderTheme = GetThemeDetails(201);
@@ -171,7 +173,7 @@ const RestaurantComponent = ({
       if (!isSameRestaurant) {
         dispatch(clearRedux(true));
         // if (newselectedRestaurant.restaurantId > 0 && userinfo) {
-        //     if (userinfo.restaurantId !== newselectedRestaurant.restaurantId) {
+        //   if (userinfo.restaurantId !== newselectedRestaurant.restaurantId) {
         let rewardpoints = {
           rewardvalue: 0,
           rewardamount: 0,
@@ -181,7 +183,7 @@ const RestaurantComponent = ({
         };
         //dispatch(setRewardPoint(rewardpoints));
         //dispatch(logout());
-        //     }
+        // }
         // }
         let id = uuidv4();
         dispatch(createSessionId(id));
@@ -214,29 +216,30 @@ const RestaurantComponent = ({
             newselectedRestaurant.defaultlocationId
           )
         );
+        console.log("selected restaurant", newselectedRestaurant);
         setSelectedRestaurant(newselectedRestaurant);
 
-        // if (
-        //   cart?.cartitemdetail?.cartDetails?.cartItemDetails[0] !== undefined
-        // ) {
-        //   if (
-        //     cart?.cartitemdetail?.cartDetails?.cartItemDetails[0]
-        //       ?.restaurantId !== newselectedRestaurant.restaurantId &&
-        //     cart?.cartitemdetail?.cartDetails?.cartItemDetails[0]
-        //       ?.locationid !== newselectedRestaurant.defaultLocation.locationId
-        //   ) {
-        //     dispatch(emptycart());
-        //   }
-        // }
+        if (
+          cart?.cartitemdetail?.cartDetails?.cartItemDetails[0] !== undefined
+        ) {
+          if (
+            cart?.cartitemdetail?.cartDetails?.cartItemDetails[0]
+              ?.restaurantId !== newselectedRestaurant.restaurantId &&
+            cart?.cartitemdetail?.cartDetails?.cartItemDetails[0]
+              ?.locationid !== newselectedRestaurant.defaultLocation.locationId
+          ) {
+            //dispatch(emptycart());
+          }
+        }
         setLoadrestaurant(true);
       }
     }
-    setLocationIdInStorage(newselectedRestaurant.locationId);
-    setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
-    setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
-    dispatch(restaurantsdetail(newselectedRestaurant));
-    setSelectedRestaurant(newselectedRestaurant);
-    setLoadrestaurant(true);
+    // setLocationIdInStorage(newselectedRestaurant.locationId);
+    // setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
+    // setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
+    // dispatch(restaurantsdetail(newselectedRestaurant));
+    // setSelectedRestaurant(newselectedRestaurant);
+    // setLoadrestaurant(true);
   };
 
   const handleInvalidRestaurant = (themetype: any) => {
@@ -252,6 +255,9 @@ const RestaurantComponent = ({
         const locationurl =
           location?.toString().toLowerCase().replace(/ /g, "-") || "";
         const defaultlocationId = getLocationIdFromStorage();
+        console.log("defaultlocationId", defaultlocationId);
+        console.log("restauranturl", restauranturl);
+        console.log("locationurl", locationurl);
         RestaurantsServices.getRestaurantsList(
           restauranturl,
           locationurl,
@@ -311,7 +317,7 @@ const RestaurantComponent = ({
         location !== undefined &&
         restaurantinfo?.defaultLocation !== undefined &&
         restaurantinfo?.defaultLocation !== null &&
-        restaurantslocationlist?.length === 0
+        restaurantslocationlist?.addressList !== null
       ) {
         //fetchData();
       }
@@ -340,31 +346,32 @@ const RestaurantComponent = ({
   }, [restaurantinfo]);
 
   useEffect(() => {
+    if (adresslist === true && pathname.includes(ThemeObj.FD123456)) {
+      let addressList =
+        selectedTheme.name === ThemeObj.default
+          ? restaurantslocationlist.addressList
+          : restaurantslocationlistwithtime?.addressList;
+      console.log("Address list from restaurant component", addressList);
+      if (restaurantslocationlist.addressList !== undefined) {
+        let linkLoacationurl = formatStringToURLWithBlankSpace(location);
+        addressList.map((locations: any) => {
+          let locationURL = formatStringToURLWithBlankSpace(
+            locations.locationURL
+          );
+          if (linkLoacationurl === locationURL) {
+            setLoadrestaurant(true);
+          }
+        });
+      }
+    }
+  }, [adresslist]);
+
+  useEffect(() => {
     if (appVersion !== getVersion() && !pathname.includes(ThemeObj.FD123456)) {
       clearCache();
       dispatch(setAppVersion(getVersion()));
     }
   }, [appVersion]);
-
-  //   if (adresslist === true && !pathname.includes(ThemeObj.FD123456)) {
-  //     let addressList =
-  //       selectedTheme.name === ThemeObj.default
-  //         ? restaurantslocationlist.addressList
-  //         : restaurantslocationlistwithtime?.addressList;
-  //     console.log("Address list from restaurant component", addressList);
-  //     if (restaurantslocationlist.addressList !== undefined) {
-  //       let linkLoacationurl = formatStringToURLWithBlankSpace(location);
-  //       addressList.map((locations) => {
-  //         let locationURL = formatStringToURLWithBlankSpace(
-  //           locations.locationURL
-  //         );
-  //         if (linkLoacationurl === locationURL) {
-  //           setLoadrestaurant(true);
-  //         }
-  //       });
-  //     }
-  //   }
-  // }, [adresslist]);
 
   return (
     <>

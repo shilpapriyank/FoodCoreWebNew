@@ -25,6 +25,9 @@ import {
   getAllCategoryMenuItems,
   selectedCategory,
 } from "../../../../redux/category/category.slice";
+import { deleteCartItemFromSessionId } from "../../../../redux/cart/cart.slice";
+import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
+import { CategoryItem } from "@/types/category-types/category.services.type";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
@@ -75,13 +78,13 @@ const LoadLocationDirectComponent = ({
         (location: any) =>
           location.locationId === restaurantinfo.defaultlocationId
       );
-    const isLoadAddressList = !isAddressListSameRestaurant;
-    //isLoadAddressList = addressList?.length !== 0 ? false : isLoadAddressList;
+    let isLoadAddressList = !isAddressListSameRestaurant;
+    isLoadAddressList = addressList?.length !== 0 ? false : isLoadAddressList;
     if (
       location !== restaurantinfo.defaultLocation.locationURL ||
       isLoadAddressList
     ) {
-      //dispatch(restaurantAllLocation(restaurantinfo.restaurantId));
+      dispatch(restaurantAllLocation(restaurantinfo.restaurantId) as any);
       LocationServices.getAllLoaction(restaurantinfo.restaurantId).then(
         (response) => {
           if (response) {
@@ -172,13 +175,13 @@ const LoadLocationDirectComponent = ({
           ) as any
         );
         if (userinfo && userinfo?.customerId) {
-          // deleteCartItemFromSessionId(
-          //   sessionid,
-          //   restaurantinfo.restaurantId,
-          //   restaurantinfo.defaultLocation.locationId
-          // );
-          // dispatch(emptycart());
-          //   dispatch(setintialrewardpoints(userinfo));
+          deleteCartItemFromSessionId(
+            sessionid,
+            restaurantinfo.restaurantId,
+            restaurantinfo.defaultLocation.locationId
+          );
+          //dispatch(emptycart());
+          //dispatch(setintialrewardpoints(userinfo));
         }
         // if (userinfo && userinfo?.customerId) {
         //   CustomerServices.checkCustomerRewardPointsLocationBase(restaurantinfo.restaurantId, userinfo.customerId, 0, 0, restaurantinfo?.defaultLocation.locationId).then((res :any) => {
@@ -196,17 +199,22 @@ const LoadLocationDirectComponent = ({
         // }
         dispatch(clearDeliveryRequestId());
 
-        // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
+        // dispatch(
+        //   getAllCategoryMenuItems({
+        //     restaurantId: restaurantinfo.restaurantId,
+        //     locationId: lid,
+        //     customerId: userinfo?.customerId,
+        //     categories: "",
+        //     selectedCategoryUrl: "",
+        //   }) as any
+        // );
         setisLoad(true);
 
-        // const loadCat = useLoadCatData(restaurantinfo, false, categoryItemsList)
+        //const loadCat = useLoadCatData(restaurantinfo, false, categoryItemsList)
         dispatch(
           getAllCategoryMenuItems(restaurantinfo.restaurantId, lid) as any
         );
-
-        //router.push(`/${selctedTheme.url}/${dynamic}/${res?.locationURL}`)
-
-        // const loadCat = useLoadCatData(restaurantinfo, false, categoryItemsList)
+        router.push(`/${selctedTheme.url}/${dynamic}/${res?.locationURL}`);
       }
     });
   };

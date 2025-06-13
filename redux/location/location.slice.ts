@@ -23,20 +23,9 @@ const initialState: LocationState = {
 // Thunk to get locations
 export const getLocations = createAsyncThunk(
   "location/getAll",
-  async (
-    {
-      restaurantId,
-      latitude,
-      longitude,
-    }: { restaurantId: number; latitude: string; longitude: string },
-    { rejectWithValue }
-  ) => {
+  async ({ restaurantId }: { restaurantId: number }, { rejectWithValue }) => {
     try {
-      const response = await LocationServices.getLocationInfo({
-        restaurantId,
-        latitude,
-        longitude,
-      });
+      const response = await LocationServices.getLocationInfo(restaurantId);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -69,4 +58,4 @@ export const { resetLocations } = locationSlice.actions;
 export default locationSlice.reducer;
 
 // Selector (optional, for use in components)
-export const selectLocation = (state: RootState) => state.location.location;
+//export const selectLocation = (state: RootState) => state.location.location;

@@ -6,7 +6,7 @@ import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 let responseclass = new ResponseModel();
 
 export class LocationServices {
-  static async getLocationInfo(restaurantId: any) {
+  static async getLocationInfo(restaurantId: number) {
     responseclass = new ResponseModel();
     const methodName = "getLocationInfo";
     const location = ENDPOINTS.GET_LOCATIONS;
@@ -32,7 +32,7 @@ export class LocationServices {
     }
   }
 
-  static async getAllLocationList(restaurantId: any) {
+  static async getAllLocationList(restaurantId: number) {
     responseclass = new ResponseModel();
     const methodName = "getAllLocationList";
     const location = ENDPOINTS.GET_ALL_LOCATION_List;
@@ -46,6 +46,7 @@ export class LocationServices {
       true,
       restaurantId
     );
+    console.log("getAllLocationList", responseclass);
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
@@ -56,7 +57,7 @@ export class LocationServices {
     }
   }
 
-  static async getAllLoaction(restaurantId: any) {
+  static async getAllLoaction(restaurantId: number) {
     responseclass = new ResponseModel();
     const methodName = "getAllLocationInfoNew";
     const location = ENDPOINTS.GET_ALLLOCATION;
@@ -82,7 +83,10 @@ export class LocationServices {
     }
   }
 
-  static async changeRestaurantLocation(restaurantId: any, locationId: any) {
+  static async changeRestaurantLocation(
+    restaurantId: number,
+    locationId: number
+  ) {
     responseclass = new ResponseModel();
     const methodName = "getLocationInfoById";
     const location = ENDPOINTS.LOCATION_BY_ID;

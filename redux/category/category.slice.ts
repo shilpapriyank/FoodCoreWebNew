@@ -27,8 +27,8 @@ export const getCategoryItemList = createAsyncThunk(
   }: {
     restaurantId: number;
     categories: string;
-    customerId: string;
-    locationId: string;
+    customerId: number;
+    locationId: number;
   }) => {
     const response = await CategoryServices.getCategoryItemList(
       restaurantId,
@@ -54,8 +54,8 @@ export const getCategoryItemListPOS = createAsyncThunk(
   }: {
     restaurantId: number;
     categories: string;
-    customerId: string;
-    locationId: string;
+    customerId: number;
+    locationId: number;
   }) => {
     const response = await CategoryServices.getCategoryItemListPOS(
       restaurantId,
@@ -69,7 +69,9 @@ export const getCategoryItemListPOS = createAsyncThunk(
 );
 
 export const getAllCategoryMenuItems = createAsyncThunk(
-  "category/getAllCategoryMenuItems",
+  //"category/getAllCategoryMenuItems",
+  CategoryTypes.ALL_CATEGORY_ITEM_LIST,
+  //CategoryTypes.ALL_CATEGORY_LIST,
   async (
     {
       restaurantId,
@@ -79,8 +81,8 @@ export const getAllCategoryMenuItems = createAsyncThunk(
       selectedCategoryUrl,
     }: {
       restaurantId: number;
-      locationId: string;
-      customerId: string;
+      locationId: number;
+      customerId: number;
       categories: string;
       selectedCategoryUrl?: string | null;
     },
@@ -147,78 +149,6 @@ export const getAllCategoryMenuItems = createAsyncThunk(
   }
 );
 
-// export const getAllCategoryMenuItems = createAsyncThunk<
-//   {
-//     response: CategoryItem[];
-//     categoryList: CategoryItem[];
-//   }, // Return type
-//   {
-//     restaurantId: number;
-//     locationId: string;
-//     customerId: string;
-//     categories: string[];
-//     selectedCategoryUrl: string | null;
-//   }
-// >("category/getAllCategoryMenuItems", async (args, { dispatch }) => {
-//   const {
-//     restaurantId,
-//     locationId,
-//     customerId,
-//     categories,
-//     selectedCategoryUrl,
-//   } = args;
-
-//   const response = await CategoryServices.getAllCategoryMenuItems(
-//     restaurantId,
-//     locationId,
-//     customerId,
-//     categories
-//   );
-
-//   const categoryList = (response ?? []).map(
-//     ({
-//       catId,
-//       catName,
-//       sortorder,
-//       categoryslug,
-//       isdeliveryavailable,
-//       istakeoutavailable,
-//       imgurl,
-//     }) => ({
-//       catId,
-//       catName,
-//       sortorder,
-//       categoryslug,
-//       isdeliveryavailable,
-//       istakeoutavailable,
-//       imgurl,
-//     })
-//   );
-
-//   dispatch({
-//     type: MainTypes.GET_MENU_CATEGORY_DATA,
-//     payload: categoryList,
-//   });
-
-//   if (
-//     categoryList.length > 0 &&
-//     (!selectedCategoryUrl ||
-//       !categoryList.some(
-//         (cat) => cat.categoryslug === selectedCategoryUrl
-//       ))
-//   ) {
-//     dispatch({
-//       type: CategoryTypes.SELECTED_CATEGORY_DATA,
-//       payload: categoryList[0],
-//     });
-//   }
-
-//   return {
-//     response: response ?? [],
-//     categoryList,
-//   };
-// });
-
 const categorySlice = createSlice({
   name: "category",
   initialState,
@@ -238,23 +168,24 @@ const categorySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getCategoryItemList.fulfilled, (state, action) => {
-      //state.categoryitemlist = action.payload;
-      state.categorylist = action.payload;
-      // state.categoryitemlist = action.payload;
-    });
+    builder.addCase(
+      getCategoryItemList.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        //state.categoryitemlist = action.payload;
+        state.categorylist = action.payload;
+        // state.categoryitemlist = action.payload;
+      }
+    );
     builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
       state.categoryitemlist = action.payload;
     });
-    builder.addCase(getAllCategoryMenuItems.fulfilled, (state, action) => {
-      if (action.payload) {
+    builder.addCase(
+      getAllCategoryMenuItems.fulfilled,
+      (state, action: PayloadAction<any>) => {
         state.categoryitemlist = action.payload;
         state.categorylist = action.payload;
-      } else {
-        state.categoryitemlist = [];
-        state.categorylist = [];
       }
-    });
+    );
   },
 });
 

@@ -3,16 +3,25 @@ import { LocationServices } from "../location/location.services";
 import { RestaurantsServices } from "./restaurants.services";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
 import { RestaurantsTypes } from "./restaurants.types";
+import {
+  DeliveryTime,
+  TakeoutTime,
+} from "@/types/restaurant-types/restaurant.type";
 
 export interface RestaurantState {
-  restaurantsList: any[];
+  restaurantsList: any;
   restaurantdetail: any | null;
   leftmenutoggle: boolean;
-  restaurantslocationlist: any[];
-  restaurantslocationlistwithtime: {
-    addressList: any[];
+  restaurantslocationlist: {
+    addressList: any;
   };
-  restaurantstiminglist: any[];
+  restaurantslocationlistwithtime: {
+    addressList: any;
+  };
+  restaurantstiminglist: {
+    deliveryTime: any;
+    takeoutTime: any;
+  };
   ischangeurl: boolean;
   bannerDetails: any[];
   appversion: string;
@@ -22,16 +31,21 @@ const initialState: RestaurantState = {
   restaurantsList: [],
   restaurantdetail: null,
   leftmenutoggle: false,
-  restaurantslocationlist: [],
+  restaurantslocationlist: {
+    addressList: [],
+  },
   restaurantslocationlistwithtime: {
     addressList: [],
   },
-  restaurantstiminglist: [],
+  restaurantstiminglist: {
+    deliveryTime: [],
+    takeoutTime: [],
+  },
   ischangeurl: false,
   bannerDetails: [],
   appversion: "",
 };
-
+debugger;
 // Async actions
 export const getRestaurantsList = createAsyncThunk(
   "restaurant/getRestaurantsList",
@@ -94,7 +108,7 @@ export const restaurantsAllLocation = async (restaurantId: number) => {
 };
 
 export const restaurantstiming = createAsyncThunk(
-  "restaurant/restaurantstiming",
+  RestaurantsTypes.RESTAURANT_TIMING,
   async ({
     locationId,
     restaurantId,
@@ -147,8 +161,8 @@ const restaurantSlice = createSlice({
       state.restaurantsList = [];
       state.restaurantdetail = null;
       state.leftmenutoggle = false;
-      state.restaurantslocationlist = [];
-      state.restaurantstiminglist = [];
+      state.restaurantslocationlist = { addressList: [] };
+      state.restaurantstiminglist = { deliveryTime: [], takeoutTime: [] };
     },
     resetBannerDetails: (state) => {
       state.bannerDetails = [];
@@ -192,7 +206,10 @@ const restaurantSlice = createSlice({
     builder.addCase(
       restaurantstiming.fulfilled,
       (state, action: PayloadAction<any[]>) => {
-        state.restaurantstiminglist = action.payload;
+        state.restaurantstiminglist = {
+          deliveryTime: action.payload,
+          takeoutTime: action.payload,
+        };
       }
     );
     builder.addCase(

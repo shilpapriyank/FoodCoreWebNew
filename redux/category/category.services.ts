@@ -12,10 +12,10 @@ export class CategoryServices {
   static async getCategoryItemList(
     restaurantId: number,
     categories: string,
-    customerId: string,
-    locationId: string
+    customerId: number,
+    locationId: number
   ): Promise<CategoryItem[] | null> {
- // ): Promise<any | null> {
+    // ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
@@ -46,7 +46,7 @@ export class CategoryServices {
 
   static async getCategoryRelativesItems(
     sessionId: string,
-    locationId: string,
+    locationId: number,
     restaurantId: number
   ): Promise<CategoryItem[] | null> {
     responseclass = new ResponseModel();
@@ -80,8 +80,8 @@ export class CategoryServices {
     restaurantId: number,
     ispos: boolean,
     categories: string,
-    customerId: string,
-    locationId: string
+    customerId: number,
+    locationId: number
   ): Promise<CategoryItem[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemListPOS";
@@ -112,8 +112,8 @@ export class CategoryServices {
 
   static async getAllCategoryMenuItems(
     restaurantId: number,
-    locationId: string,
-    customerId: string,
+    locationId: number,
+    customerId: number,
     categories: string
   ): Promise<CategoryItem[] | null> {
     responseclass = new ResponseModel();

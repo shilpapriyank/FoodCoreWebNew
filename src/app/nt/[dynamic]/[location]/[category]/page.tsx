@@ -111,8 +111,9 @@ export default function CategoryPage({
 
       if (itemDetail) {
         const metaData = {
-          title: `${itemDetail?.title ? `${itemDetail?.title} || ` : ""}${itemDetail?.restaurantname
-            } : Online Ordering`,
+          title: `${itemDetail?.title ? `${itemDetail?.title} || ` : ""}${
+            itemDetail?.restaurantname
+          } : Online Ordering`,
           description: itemDetail?.description ?? "",
           image: itemDetail?.imageurl ?? "",
           url: `${getorigin()}${pathname}`,

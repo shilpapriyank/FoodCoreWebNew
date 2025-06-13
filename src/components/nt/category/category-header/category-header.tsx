@@ -23,17 +23,16 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   console.log("maincategory list", maincategoryList);
   //const {categorylist } =useLoadCatData();
   const router = useRouter();
-
   const params = useParams();
-  //const { query: { dynamic, location, id, category, index }, } = router;
   const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const dispatch = useAppDispatch();
-
+  debugger;
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     selectedcategory && selectedcategory?.catId
   );
   const searchdata = menuitem?.searchdata;
+  console.log("search data from category header", searchdata);
   const searchtext = menuitem?.searchtext;
   const categoryListItems =
     searchtext !== "" ? searchdata?.categories : maincategoryList;
