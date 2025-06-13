@@ -1,6 +1,9 @@
-import { ChooseTime, DeliveryAddress, SelectedDeliveryState } from "@/types/selectdelivery-types/selectdelivery.types";
+import {
+  ChooseTime,
+  DeliveryAddress,
+  SelectedDeliveryState,
+} from "@/types/selectdelivery-types/selectdelivery.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 
 const initialState: SelectedDeliveryState = {
   choosetime: {},
@@ -26,7 +29,6 @@ const selecteddeliverySlice = createSlice({
       state.choosetime = {};
       state.pickupordelivery = "";
       state.selecteddeliveryaddress = {};
-      
     },
     resetSelectedDelivery(state) {
       state.pickupordelivery = "";
@@ -48,15 +50,15 @@ export default selecteddeliverySlice.reducer;
 
 export const SelectedDeliveryTypes = {
   SAVE_CHOOSE_TIME: selecteddeliverySlice.actions.savechoosetime.type,
-  SET_PICKUP_OR_DELIVERY: selecteddeliverySlice.actions.setpickupordelivery.type,
-  SELECTED_DELIVERY_ADDRESS: selecteddeliverySlice.actions.selecteddeliveryaddress.type,
-  CLEAR_DELIVERY_ADDRESS: selecteddeliverySlice.actions.cleardeliveryaddress.type,
-  RESET_SELECTDELIVERY: selecteddeliverySlice.actions.resetSelectedDelivery.type,
+  SET_PICKUP_OR_DELIVERY:
+    selecteddeliverySlice.actions.setpickupordelivery.type,
+  SELECTED_DELIVERY_ADDRESS:
+    selecteddeliverySlice.actions.selecteddeliveryaddress.type,
+  CLEAR_DELIVERY_ADDRESS:
+    selecteddeliverySlice.actions.cleardeliveryaddress.type,
+  RESET_SELECTDELIVERY:
+    selecteddeliverySlice.actions.resetSelectedDelivery.type,
 };
-
-
-
-
 
 // import { createSlice } from "@reduxjs/toolkit";
 // import { SelectedDeliveryTypes } from "./selecteddelivery.types";

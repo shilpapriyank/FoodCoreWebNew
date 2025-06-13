@@ -50,8 +50,8 @@ export class FavouritesServices {
     }
 
     static async deletefavorite(
-        customerId: string,
-        restaurantId: any,
+        customerId: number,
+        restaurantId: number,
         menuItemId: string
     ): Promise<FavouriteItem[] | null> {
         responseclass = new ResponseModel();
@@ -59,9 +59,9 @@ export class FavouritesServices {
         const location = ENDPOINTS.DELETE_FAVORITE;
 
         const data = {
-            customerId: parseInt(customerId),
-            restaurantId: parseInt(restaurantId),
-            menuitemId: parseInt(menuItemId)
+            customerId: customerId,
+            restaurantId: restaurantId,
+            menuitemId: menuItemId
         };
 
         responseclass = await handleAxiosPostAsync(

@@ -10,12 +10,13 @@ import { resetCategory } from "../category/category.slice";
 import { resetMenuitem } from "../menu-item/menu-item.slice";
 import { resetBannerDetails } from "../restaurants/restaurants.slice";
 import { resetSelectedDelivery } from "../selected-delivery-data/selecteddelivery.slice";
+import { AppDispatch } from "../store";
 //import { resetSessionId } from "../session/session.slice";
 //import { resetStudent } from "../student/student.slice";
 
 // Redux Toolkit Thunk style function
 export const clearRedux = (resetAllOrder: boolean, isNewTheme = false) => {
-  return (dispatch: any) => {
+  return async (dispatch: any) => {
     // dispatch(resetCart());
     // dispatch(changeLocationModal(false));
     // dispatch(setDeliveryPickupPopup(true));

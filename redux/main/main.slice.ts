@@ -28,7 +28,7 @@ const initialState: MainState = {
 export const getMenuCategoryList = createAsyncThunk(
   MainTypes.GET_MENU_CATEGORY_DATA,
   async (
-    { restaurantId, locationId }: { restaurantId: number; locationId: string },
+    { restaurantId, locationId }: { restaurantId: number; locationId: number },
     { dispatch }
   ) => {
     const response = await MainServices.getMenuCategoryList(
@@ -54,7 +54,7 @@ export const getSelectedRestaurantTime = createAsyncThunk(
       locationId,
     }: {
       restaurantId: number;
-      locationId: string;
+      locationId: number;
     },
     { dispatch }
   ) => {
@@ -79,7 +79,7 @@ export const refreshCategoryList = createAsyncThunk(
     {
       newselectedRestaurant,
       customerId,
-    }: { newselectedRestaurant: any; customerId: string },
+    }: { newselectedRestaurant: any; customerId: number },
     { dispatch }
   ) => {
     const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
@@ -111,7 +111,7 @@ export const refreshCategoryList = createAsyncThunk(
             type: MainTypes.GET_MENU_CATEGORY_DATA,
             payload: categoryresponse,
           });
-          // dispatch(mainSlice.actions.setMainCategoryList(catresponse));
+          dispatch(mainSlice.actions.setMainCategoryList(catresponse));
 
           const firstCategory = { ...catresponse[0], catSelected: true };
           console.log("first category ", firstCategory.catId);

@@ -238,7 +238,6 @@ const CategoryMenuItems = ({
   //     setIsShowSkeleton(true);
   //   }
   // }, [menuItemsWithCat, menuitemId]);
-  // const handleClickItem = (e,item) => {
 
   const handleClickItem = (e: any, item: any) => {
     dispatch({
@@ -438,11 +437,18 @@ const CategoryMenuItems = ({
     setisStudentPopUp(value);
   };
 
+  useEffect(() => {
+    console.log(
+      "category menuitem from category menuitem component: ",
+      menuItemsWithCat
+    );
+  }, [menuItemsWithCat]);
+
   return (
     <>
       {/* {!(b2b && userinfo === null) && ( */}
       <section className="categories-info">
-        <p>category menuitems component</p>
+        {/* <p>category menuitems component</p> */}
         <div className="container-fluid">
           <div className="row">
             <div className="row">
@@ -462,9 +468,9 @@ const CategoryMenuItems = ({
 
             <div className="col-lg-9 col-md-8 col-12 order-2 order-lg-1 order-md-1">
               {menuItemsWithCat?.length > 0 &&
-                menuItemsWithCat?.map((category: any) => {
+                menuItemsWithCat?.map((category: any, index: any) => {
                   return (
-                    <div>
+                    <div key={index}>
                       <div
                         className="row"
                         id={category.categoryslug}
@@ -485,12 +491,12 @@ const CategoryMenuItems = ({
                       </div>
                       {viewType === "list" && (
                         <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
-                          {category?.menuitems?.map((menu: any) => {
+                          {category?.menuitems?.map((menu: any, index: any) => {
                             let shareUrl = `${window.location.origin}/${selectedTheme.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
                             const isRegular =
                               menu?.typeid === 0 && menu?.isdefaultprice === 1;
                             return (
-                              <div className="cols menu-item">
+                              <div className="cols menu-item" key={index}>
                                 {/* <PopOver description="Popover on top" /> */}
                                 {/* <button type="button" className="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
   Popover on top

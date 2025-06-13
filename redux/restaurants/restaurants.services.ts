@@ -13,6 +13,7 @@ export class RestaurantsServices {
     defaultLocationId: number
   ): Promise<RestaurantApiTypes[]> {
     responseclass = new ResponseModel();
+    debugger;
     const methodName = "getRestaurantsList";
     const location = ENDPOINTS.GET_RESTAURANTS;
     const data = {
@@ -28,6 +29,10 @@ export class RestaurantsServices {
       methodName,
       false,
       0
+    );
+    console.log(
+      "getRestaurantlist from restaurant service response",
+      responseclass.result
     );
     if (
       responseclass.result != null &&

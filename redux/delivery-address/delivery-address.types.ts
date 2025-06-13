@@ -1,6 +1,6 @@
 export interface DeliveryAddressInput {
     deliveryaddressId: string;
-    customerId: string;
+    customerId: number;
     othercustomerId?: string;
     address1: string;
     address2?: string;

@@ -1,8 +1,8 @@
 export interface MainMenuItemRequest {
   restaurantId: number;
   categories: string;
-  customerId: string;
-  locationId: string;
+  customerId: number;
+  locationId: number;
 }
 
 // Types
@@ -14,7 +14,7 @@ export type MainCategory = {
   isdeliveryavailable: boolean;
   istakeoutavailable: boolean;
   sortorder: number;
-}
+};
 
 // export type MainCategory = {
 //   catId: string;
@@ -30,20 +30,20 @@ export interface MainPOSRequest {
   restaurantId: string;
   ispos: boolean;
   categories: string;
-  customerId: string;
-  locationId: string;
+  customerId: number;
+  locationId: number;
 }
 
 export interface MainRelativeItemRequest {
   sessionId: string;
-  locationId: string;
+  locationId: number;
   restaurantId: number;
 }
 
 export interface MainAllRequest {
   restaurantId: number;
-  locationId: string;
-  customerId: string;
+  locationId: number;
+  customerId: number;
   categories: string;
 }
 
@@ -51,6 +51,6 @@ export type MainItemListPOSRequest = {
   restaurantId: number;
   ispos: boolean;
   categories: string;
-  customerId: string;
-  locationId: string;
+  customerId: number;
+  locationId: number;
 };

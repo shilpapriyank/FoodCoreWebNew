@@ -118,7 +118,7 @@ export const formatURL = (value: string): string => {
   return formattedString;
 };
 
-export const formatStringToURLWithBlankSpace = (value: string): string => {
+export const formatStringToURLWithBlankSpace = (value: any): any => {
   let formattedString = value
     .toLowerCase()
     .toString()

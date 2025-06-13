@@ -56,7 +56,7 @@ export const getAddress = createAsyncThunk(
   }: {
     customerId: number;
     restaurantId: number;
-    locationId: number
+    locationId: number;
   }) => {
     const response = await DeliveryAddressServices.getDeliveryAddress(
       customerId,
@@ -77,7 +77,7 @@ export const deleteAddress = createAsyncThunk(
     restaurantId
   }: {
     deliveryaddressId: number;
-    restaurantId: number
+    restaurantId: number;
   }) => {
     const response = await DeliveryAddressServices.deleteDeliveryAddress(
       deliveryaddressId,
@@ -99,7 +99,7 @@ export const addAddress = createAsyncThunk(
   }: {
     obj: any;
     restaurantId: number;
-    locationId: string
+    locationId: number;
   }) => {
     const response = await DeliveryAddressServices.addDeliveryAddress(
       obj,
