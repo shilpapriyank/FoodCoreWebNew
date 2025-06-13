@@ -32,7 +32,7 @@ export const useReduxData = () => {
     shallowEqual
   );
   const deliveryaddress = useSelector(
-    (state: RootState) => state.selecteddelivery,
+    (state: RootState) => state.deliveryaddress,
     shallowEqual
   );
   const main = useSelector((state: RootState) => state.main, shallowEqual);

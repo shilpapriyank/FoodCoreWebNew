@@ -44,10 +44,8 @@ export default function DynamicPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  let menuItemsWithCat = filterCategory(
-    searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
-    pickupordelivery
-  );
+  let menuItemsWithCat = filterCategory(searchtext !== "" ? searchdata?.menuItems : categoryItemsList, pickupordelivery);
+
 
   useEffect(() => {
     if (
@@ -62,6 +60,7 @@ export default function DynamicPage() {
             : ORDER_TYPE.PICKUP.text
         )
       );
+
     }
   }, []);
 
@@ -69,6 +68,7 @@ export default function DynamicPage() {
     //if b2b restaurant
     if (b2b || isSchoolProgramEnabled) {
       dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
+      console.log("Logs from selecteddelivery:-", setpickupordelivery);
       if (order?.checktime === "") {
         OrderServices.getOrderTime({
           restaurantId: restaurantinfo.restaurantId,
@@ -103,39 +103,14 @@ export default function DynamicPage() {
   return (
     <>
       <Layout handleChangeAddress={handleChangeAddress} page={"location"}>
-        {/* {!errorMessage && } */}
-        <CategoryHeader />
-        <LoadLocationDirectComponent
-          isLoadAddressChangeUrl={isloadAdress}
-        ></LoadLocationDirectComponent>
-        <CategoryMenuItems
-          menuItemsWithCat={menuItemsWithCat}
-          errorMessage={errorMessage}
-        >
-          <SearchBarComponent
-            searchItem={searchItem}
-            handleChangeSearch={handleChangeSearch}
-            errorMessage={errorMessage}
-            handleSubmitSearch={handleSubmitSearch}
-            handleClickCancel={handleClickCancel}
-          />
+        <LoadLocationDirectComponent isLoadAddressChangeUrl={isloadAdress} >
+          {!errorMessage && <CategoryHeader />}
+        </LoadLocationDirectComponent>
+        <CategoryMenuItems menuItemsWithCat={menuItemsWithCat} errorMessage={errorMessage}>
+          <SearchBarComponent searchItem={searchItem} handleChangeSearch={handleChangeSearch} errorMessage={errorMessage} handleSubmitSearch={handleSubmitSearch} handleClickCancel={handleClickCancel} />
         </CategoryMenuItems>
+        {/* {menuItemsWithCat?.length === 0 &&<h1></h1>} */}
       </Layout>
-      {/* <section className="right-sticky">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 col-md-8 col-12">
-              <SearchBarComponent
-                searchItem={searchItem}
-                handleChangeSearch={handleChangeSearch}
-                errorMessage={errorMessage}
-                handleSubmitSearch={handleSubmitSearch}
-                handleClickCancel={handleClickCancel}
-              />
-            </div>
-          </div>
-        </div>
-      </section> */}
     </>
   );
 }

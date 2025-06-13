@@ -26,7 +26,7 @@ import mainReducer from "./main/main.slice";
 import { thunk } from "redux-thunk";
 import tableOrderReducer from "./tableorder/tableorder.slice";
 import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
-
+import deliveryaddressReducer from "./delivery-address/delivery-address.slice"
 // Combine reducers
 const rootReducer = combineReducers({
   restaurant: restaurantsReducer,
@@ -42,28 +42,16 @@ const rootReducer = combineReducers({
   main: mainReducer,
   tableorder: tableOrderReducer,
   rewardpoints: rewardpointReducer,
+  deliveryaddress: deliveryaddressReducer,
 });
 
 // Persist configuration
 const persistConfig = {
   key: "root",
   storage,
-  // whitelist: [
-  //   "userdetail",
-  //   "selecteddelivery",
-  //   "cart",
-  //   "order",
-  //   "menuitem",
-  //   "main",
-  //   "restaurantWindowTime",
-  //   "deliveryaddress",
-  //   "session",
-  //   "studentname",
-  //   "rewardpoints",
-  //   "restaurant",
-  //   "tableorder",
-  // ],
-};
+  whitelist: ['userdetail', 'selecteddelivery', 'cart', 'order', 'menuitem', 'main', 'restaurantWindowTime',
+    'deliveryaddress', 'session', 'studentname', 'rewardpoints', 'restaurant', 'tableorder'],
+}
 
 // Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);

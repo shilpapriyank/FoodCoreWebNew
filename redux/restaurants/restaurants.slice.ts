@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { LocationServices } from "../location/location.services";
 import { RestaurantsServices } from "./restaurants.services";
 import { RestaurantHoursServices } from "../restaurant-hour/restauranthour.services";
-import { RestaurantsTypes } from "./restaurants.types";
 
 export interface RestaurantState {
   restaurantsList: any[];

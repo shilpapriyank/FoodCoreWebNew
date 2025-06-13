@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import CommonModal from '../../common/common-model.component';
 import { AppDispatch } from '../../../../../redux/store';
-import { selecteddeliveryaddress } from '../../../../../redux/selected-delivery-data/selecteddelivery.slice';
+import { selecteddeliveryaddress, SelectedDeliveryTypes } from '../../../../../redux/selected-delivery-data/selecteddelivery.slice';
 
 
 // Address item interface
@@ -64,7 +64,12 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
                                         payload: response.AddressLists
                                     })
                                     if (selecteddeliveryaddres === null || id === selecteddeliveryaddres?.deliveryaddressId || id === 0) {
-                                        dispatch(selecteddeliveryaddress(response.AddressLists[0]));
+                                        // dispatch(selecteddeliveryaddress(response.AddressLists[0]));
+                                        dispatch({
+                                            type: SelectedDeliveryTypes.SET_PICKUP_OR_DELIVERY,
+                                            payload: response.AddressLists[0],
+                                        });
+
                                     }
 
                                     setaddressList(response.AddressLists)
