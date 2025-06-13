@@ -505,7 +505,7 @@ const CategoryMenuItems = ({
                                 <div className="card itembox" id="itembox">
                                   <div className="text">
                                     {menu &&
-                                    (menu?.isregular === true || isRegular) ? (
+                                      (menu?.isregular === true || isRegular) ? (
                                       <>
                                         <div className="d-flex flex-row">
                                           <div className="menu-info w-80">
@@ -639,11 +639,10 @@ const CategoryMenuItems = ({
                                           !menu.isFavoriteMenu
                                         );
                                       }}
-                                      className={`fa wishlist fa-heart-o ${
-                                        menu?.isFavoriteMenu == true
+                                      className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
                                           ? "active"
                                           : ""
-                                      }`}
+                                        }`}
                                     />
                                   </div>
                                 </div>
