@@ -90,11 +90,10 @@ export const useReduxData = () => {
   );
 
   // const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
-  // order?.checktime,
-  // restaurantinfo,
-  // order?.futureOrderDay?.futureDate,
-  // order.isasap
-  // );
+  //   order?.checktime,
+  //   restaurantinfo,
+  //   order?.futureOrderDay?.futureDate, order.isasap
+  // )
 
   const orderTimeType =
     order?.isasap === true
