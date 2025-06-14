@@ -16,9 +16,9 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   return (
     <>
-      <Header handleChangeAddress={handleChangeAddress} page={page} />
+      {/* <Header handleChangeAddress={handleChangeAddress} page={page} /> */}
       {children}
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

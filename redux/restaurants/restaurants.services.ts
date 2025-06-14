@@ -13,7 +13,6 @@ export class RestaurantsServices {
     defaultLocationId: number
   ): Promise<RestaurantApiTypes[]> {
     responseclass = new ResponseModel();
-    debugger;
     const methodName = "getRestaurantsList";
     const location = ENDPOINTS.GET_RESTAURANTS;
     const data = {

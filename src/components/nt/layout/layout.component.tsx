@@ -6,10 +6,10 @@ import CategoryHeader from "../category/category-header/category-header";
 const Layout = ({ children, handleChangeAddress, page }: any) => {
   return (
     <>
-      {/* <Header handleChangeAddress={handleChangeAddress} page={page} /> */}
+      <Header handleChangeAddress={handleChangeAddress} page={page} />
       {/* <CategoryHeader /> */}
       {children}
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
