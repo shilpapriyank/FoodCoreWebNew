@@ -505,7 +505,7 @@ export const checkCategoryExist = (categoryList: any, url: string): boolean => {
 //   let enableDisableState: any = {};
 export const getAsapLaterOnState = (
   defaultLocation: DefaultLocation,
-  pickupordelivery: 'Pickup' | 'Delivery',
+  pickupordelivery: "Pickup" | "Delivery",
   restaurantWindowTime: any
 ): AsapLaterOnState => {
   const pickupWindow = restaurantWindowTime?.pickupTime;
@@ -518,49 +518,49 @@ export const getAsapLaterOnState = (
     isDeliveryAsap,
     isTakeoutOrderingDisable,
     isDeliveryOrderingDisable,
-  // } = defaultLocation;
-  // //ASINGN DEFAULT STATE IS PICKUP
-  // let orderSate = {
-  //   timeWindow: pickupWindow,
-  //   isAsap: isTakeOutAsap,
-  //   isLaterOn: isTakeOutPickupTime,
-  //   isOrderTypeDisable: isTakeoutOrderingDisable,
-  // };
-  // if (pickupordelivery === "Delivery") {
-  //   (orderSate.timeWindow = deliveryWindow),
-  //     (orderSate.isAsap = isDeliveryAsap),
-  //     (orderSate.isLaterOn = isDeliveryPickupTime),
-  //     (orderSate.isOrderTypeDisable = isDeliveryOrderingDisable);
-  // }
-  // //LET CHECK THE IS DISPLAY THE ASAP OR LATERON sss
-  // if (orderSate.isAsap || orderSate.isLaterOn) {
-  //   enableDisableState.isdisplay = true;
-  // } else {
-  //   enableDisableState.isdisplay = false;
-  // }
-  // if (
-  //   defaultLocation.isOrderingDisable === false &&
-  //   orderSate.isOrderTypeDisable === false &&
-  //   orderSate.timeWindow &&
-  //   orderSate?.timeWindow?.length > 0
-  // ) {
-  //   enableDisableState.isDisableAsapLateron = false;
-  // } else {
-  //   enableDisableState.isDisableAsapLateron = true;
-  // }
-  // enableDisableState.isAsap = orderSate.isAsap;
-  // enableDisableState.isLateron = orderSate.isLaterOn;
-    isOrderingDisable
+    // } = defaultLocation;
+    // //ASINGN DEFAULT STATE IS PICKUP
+    // let orderSate = {
+    //   timeWindow: pickupWindow,
+    //   isAsap: isTakeOutAsap,
+    //   isLaterOn: isTakeOutPickupTime,
+    //   isOrderTypeDisable: isTakeoutOrderingDisable,
+    // };
+    // if (pickupordelivery === "Delivery") {
+    //   (orderSate.timeWindow = deliveryWindow),
+    //     (orderSate.isAsap = isDeliveryAsap),
+    //     (orderSate.isLaterOn = isDeliveryPickupTime),
+    //     (orderSate.isOrderTypeDisable = isDeliveryOrderingDisable);
+    // }
+    // //LET CHECK THE IS DISPLAY THE ASAP OR LATERON sss
+    // if (orderSate.isAsap || orderSate.isLaterOn) {
+    //   enableDisableState.isdisplay = true;
+    // } else {
+    //   enableDisableState.isdisplay = false;
+    // }
+    // if (
+    //   defaultLocation.isOrderingDisable === false &&
+    //   orderSate.isOrderTypeDisable === false &&
+    //   orderSate.timeWindow &&
+    //   orderSate?.timeWindow?.length > 0
+    // ) {
+    //   enableDisableState.isDisableAsapLateron = false;
+    // } else {
+    //   enableDisableState.isDisableAsapLateron = true;
+    // }
+    // enableDisableState.isAsap = orderSate.isAsap;
+    // enableDisableState.isLateron = orderSate.isLaterOn;
+    isOrderingDisable,
   } = defaultLocation;
 
   const orderState = {
     timeWindow: pickupWindow,
     isAsap: isTakeOutAsap,
     isLaterOn: isTakeOutPickupTime,
-    isOrderTypeDisable: isTakeoutOrderingDisable
+    isOrderTypeDisable: isTakeoutOrderingDisable,
   };
 
-  if (pickupordelivery === 'Delivery') {
+  if (pickupordelivery === "Delivery") {
     orderState.timeWindow = deliveryWindow;
     orderState.isAsap = isDeliveryAsap;
     orderState.isLaterOn = isDeliveryPickupTime;
@@ -575,7 +575,7 @@ export const getAsapLaterOnState = (
       isOrderingDisable ||
       orderState.isOrderTypeDisable,
     isAsap: orderState.isAsap,
-    isLateron: orderState.isLaterOn
+    isLateron: orderState.isLaterOn,
   };
 
   return enableDisableState;
@@ -899,7 +899,7 @@ export const getCheckTimeArr = (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
       restaurantinfo?.defaultLocation?.deliveryService ===
-      DELIVERYSERVICES.UBEREATS) &&
+        DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
@@ -1336,12 +1336,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1366,12 +1366,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1399,11 +1399,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-          ? 1
-          : parseInt(tc.halfpizzaprice) / 100)
+          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+            ? 1
+            : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1415,8 +1415,9 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1428,8 +1429,9 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1658,7 +1660,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-          data.subOptionToppingQuantity;
+            data.subOptionToppingQuantity;
       } else {
       }
     });
