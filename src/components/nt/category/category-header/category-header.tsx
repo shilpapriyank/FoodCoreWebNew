@@ -25,7 +25,6 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const dispatch = useAppDispatch();
-  debugger;
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     selectedcategory && selectedcategory?.catId
   );
