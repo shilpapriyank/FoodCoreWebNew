@@ -4,11 +4,13 @@ import { CategoryServices } from "./category.services";
 import { CategoryTypes } from "./category.types";
 import { MainTypes } from "../main/main.type";
 import { CategoryItem } from "@/types/category-types/category.services.type";
+import { setMainCategoryList } from "../main/main.slice";
+import { MainCategory } from "@/types/mainservice-types/mainservice.type";
 
 export interface CategoryState {
   selectedcategorydetail: Record<string, any>;
   categoryitemlist: CategoryItem[];
-  categorylist: CategoryItem[];
+  categorylist: any[];
 }
 
 const initialState: CategoryState = {
@@ -121,10 +123,11 @@ export const getAllCategoryMenuItems = createAsyncThunk(
         })
       );
 
-      dispatch({
-        type: MainTypes.GET_MENU_CATEGORY_DATA,
-        payload: categoryList,
-      });
+      // dispatch({
+      //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+      //   payload: categoryList,
+      // });
+      dispatch(setMainCategoryList(categoryList as MainCategory[]));
 
       if (
         categoryList.length > 0 &&
@@ -139,10 +142,11 @@ export const getAllCategoryMenuItems = createAsyncThunk(
         });
       }
     } else {
-      dispatch({
-        type: MainTypes.GET_MENU_CATEGORY_DATA,
-        payload: [],
-      });
+      // dispatch({
+      //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+      //   payload: [],
+      // });
+      dispatch(setMainCategoryList([] as MainCategory[]));
     }
 
     return response;

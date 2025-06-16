@@ -18,8 +18,6 @@ const AddressList: React.FC<AddressListProps> = ({ handleChangeLocation, selecte
     const { restaurant, restaurantinfo } = useReduxData();
     const addressList: Address[] = restaurant?.restaurantslocationlistwithtime?.addressList || [];
 
-    console.log('address list from addresslist component', addressList);
-
     return (
         <>
             {

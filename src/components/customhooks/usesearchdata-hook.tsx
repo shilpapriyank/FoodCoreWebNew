@@ -79,17 +79,12 @@ export const useSearchData = (searchtext: string) => {
                 const menuItems = avilableMenuItem?.filter(
                   (menuItem: any) => menuItem?.catId === cat?.catId
                 );
-                console.log("menu item from usesearchdata-hook", menuItems);
                 return {
                   ...cat,
                   menuitems: menuItems,
                 };
               });
               res.menuItems = newCatWithMenuItems;
-              console.log(
-                "response from usesearchData hooks res.menitems",
-                res.menuItems
-              );
               dispatch(setSearchData(res));
               router.push(
                 `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`

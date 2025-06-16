@@ -21,20 +21,18 @@ import { AppDispatch } from "../../../../../../redux/store";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 
-export default function CategoryPage({
-  params,
-}: {
-  params: {
-    restaurant: string;
-    location: string;
-    category: string;
-    title: string;
-  };
-}) {
+type ParamType = {
+  restaurant: string;
+  location: string;
+  category: string;
+};
+
+export default function CategoryPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
   const pathname = usePathname();
-  //const params = useParams();
+  const rawParams = useParams();
+  const router = useRouter();
+  const [params, setParams] = useState<ParamType | null>(null);
   const { menuitem, categoryItemsList, selecteddelivery } = useReduxData();
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
@@ -51,7 +49,6 @@ export default function CategoryPage({
     searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
   );
-  const { location, category } = params;
 
   //   useEffect(() => {
   //     //CONDITION FOR THE categoryitemlist REDUX IS EMPTY AND USER DIRECT ENTER THE LINK IN THE BROWSER
@@ -80,10 +77,19 @@ export default function CategoryPage({
   //     } else {
   //         setload(load + 1)
   //     }
-  // }, [])
+  // }, []);
+
+  useEffect(() => {
+    if (rawParams) {
+      // Cast only if sure about the structure
+      const { restaurant, location, category } = rawParams as ParamType;
+      setParams({ restaurant, location, category });
+    }
+  }, [rawParams]);
 
   useEffect(() => {
     const loadMeta = async () => {
+      if (!params) return;
       const { restaurant, location, category } = params;
 
       const isMenuItemId = category.includes("menuitemId");
@@ -127,16 +133,16 @@ export default function CategoryPage({
   return (
     <>
       <Head>
-        <title>{params.title}</title>
+        {/* <title>{title}</title> */}
         <meta name="description" content="Online description" />
       </Head>
       <LoadLocationDirectComponent>
         <Layout>
-          {/* {!errorMessage && } */}
-          <CategoryHeader />
+          {!errorMessage && <CategoryHeader />}
+          {/* <CategoryHeader /> */}
           <CategoryMenuItems
             menuItemsWithCat={menuItemsWithCat}
-            categoryslug={category}
+            categoryslug={params?.category}
             errorMessage={errorMessage}
           >
             <SearchBarComponent

@@ -29,10 +29,7 @@ export class RestaurantsServices {
       false,
       0
     );
-    console.log(
-      "getRestaurantlist from restaurant service response",
-      responseclass.result
-    );
+
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

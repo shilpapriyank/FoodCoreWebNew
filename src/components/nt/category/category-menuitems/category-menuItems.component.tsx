@@ -177,7 +177,7 @@ const CategoryMenuItems = ({
         restaurantId: restaurantinfo?.restaurantId as number,
         locationId: restaurantinfo.defaultlocationId,
         customerId: customerId,
-        menuitemId: String(dependentId),
+        menuitemId: dependentId,
         cartsessionId: String(sessionid),
         cartId: 0,
       }).then((response) => {
@@ -437,172 +437,174 @@ const CategoryMenuItems = ({
     setisStudentPopUp(value);
   };
 
-  useEffect(() => {
-    console.log(
-      "category menuitem from category menuitem component: ",
-      menuItemsWithCat
-    );
-  }, [menuItemsWithCat]);
-
   return (
     <>
-      {/* {!(b2b && userinfo === null) && ( */}
-      <section className="categories-info">
-        {/* <p>category menuitems component</p> */}
-        <div className="container-fluid">
-          <div className="row">
+      {!(b2b && userinfo === null) && (
+        <section className="categories-info">
+          {/* <p>category menuitems component</p> */}
+          <div className="container-fluid">
             <div className="row">
-              <div className="col-lg-8 col-md-8 col-12">
-                {children && children}
+              <div className="row">
+                <div className="col-lg-8 col-md-8 col-12">
+                  {children && children}
+                </div>
+                <div className="col-lg-1 col-md-1 col-12 d-flex justify-content-end align-items-center">
+                  <GridListButton
+                    viewType={viewType}
+                    handleClickView={handleClickView}
+                    dynamicColor={restaurantinfo.color}
+                  />
+                </div>
               </div>
-              <div className="col-lg-1 col-md-1 col-12 d-flex justify-content-end align-items-center">
-                <GridListButton
-                  viewType={viewType}
-                  handleClickView={handleClickView}
-                  dynamicColor={restaurantinfo.color}
-                />
-              </div>
-            </div>
 
-            {/* <MenuCarouselDemo menuItems={menuItems} /> */}
+              {/* <MenuCarouselDemo menuItems={menuItems} /> */}
 
-            <div className="col-lg-9 col-md-8 col-12 order-2 order-lg-1 order-md-1">
-              {menuItemsWithCat?.length > 0 &&
-                menuItemsWithCat?.map((category: any, index: any) => {
-                  return (
-                    <div key={index}>
-                      <div
-                        className="row"
-                        id={category.categoryslug}
-                        data-section={category.categoryslug}
-                      >
-                        <div className="col-lg-12 col-md-12 col-12 d-flex justify-content-between">
-                          {/* <h4 className={`${viewType === 'list' ? 'small-heading' : 'small-heading fs-20'}`}>{category.catName}</h4> */}
-                          <span className="small-heading text-start w-75  mb-2 fs-22">
-                            {category.catName}
-                          </span>
-                          <a
-                            className="small-heading text-end text-underline d-block d-md-none"
-                            onClick={() => handleClickSeaAll(category)}
-                          >
-                            See All
-                          </a>
+              <div className="col-lg-9 col-md-8 col-12 order-2 order-lg-1 order-md-1">
+                {menuItemsWithCat?.length > 0 &&
+                  menuItemsWithCat?.map((category: any, index: any) => {
+                    return (
+                      <div key={index}>
+                        <div
+                          className="row"
+                          id={category.categoryslug}
+                          data-section={category.categoryslug}
+                        >
+                          <div className="col-lg-12 col-md-12 col-12 d-flex justify-content-between">
+                            {/* <h4 className={`${viewType === 'list' ? 'small-heading' : 'small-heading fs-20'}`}>{category.catName}</h4> */}
+                            <span className="small-heading text-start w-75  mb-2 fs-22">
+                              {category.catName}
+                            </span>
+                            <a
+                              className="small-heading text-end text-underline d-block d-md-none"
+                              onClick={() => handleClickSeaAll(category)}
+                            >
+                              See All
+                            </a>
+                          </div>
                         </div>
-                      </div>
-                      {viewType === "list" && (
-                        <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
-                          {category?.menuitems?.map((menu: any, index: any) => {
-                            let shareUrl = `${window.location.origin}/${selectedTheme.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
-                            const isRegular =
-                              menu?.typeid === 0 && menu?.isdefaultprice === 1;
-                            return (
-                              <div className="cols menu-item" key={index}>
-                                {/* <PopOver description="Popover on top" /> */}
-                                {/* <button type="button" className="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
+                        {viewType === "list" && (
+                          <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
+                            {category?.menuitems?.map(
+                              (menu: any, index: any) => {
+                                let shareUrl = `${window.location.origin}/${selectedTheme.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
+                                const isRegular =
+                                  menu?.typeid === 0 &&
+                                  menu?.isdefaultprice === 1;
+                                return (
+                                  <div className="cols menu-item" key={index}>
+                                    {/* <PopOver description="Popover on top" /> */}
+                                    {/* <button type="button" className="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
   Popover on top
 </button> */}
 
-                                <div className="card itembox" id="itembox">
-                                  <div className="text">
-                                    {menu &&
-                                      (menu?.isregular === true || isRegular) ? (
-                                      <>
-                                        <div className="d-flex flex-row">
-                                          <div className="menu-info w-80">
-                                            <a
-                                              className=""
-                                              data-menuitemid={menu.menuitemId}
-                                            >
-                                              <h3 className="menuitem-name">
-                                                {" "}
-                                                {menu.menuItemName}{" "}
-                                              </h3>
-                                            </a>
-                                            {menu.description.length < 100 ? (
-                                              <p>
-                                                {fixedLengthString(
-                                                  menu.description
+                                    <div className="card itembox" id="itembox">
+                                      <div className="text">
+                                        {menu &&
+                                        (menu?.isregular === true ||
+                                          isRegular) ? (
+                                          <>
+                                            <div className="d-flex flex-row">
+                                              <div className="menu-info w-80">
+                                                <a
+                                                  className=""
+                                                  data-menuitemid={
+                                                    menu.menuitemId
+                                                  }
+                                                >
+                                                  <h3 className="menuitem-name">
+                                                    {" "}
+                                                    {menu.menuItemName}{" "}
+                                                  </h3>
+                                                </a>
+                                                {menu.description.length <
+                                                100 ? (
+                                                  <p>
+                                                    {fixedLengthString(
+                                                      menu.description
+                                                    )}
+                                                  </p>
+                                                ) : (
+                                                  // <PopOver
+                                                  //   description={menu.description}
+                                                  // ></PopOver>
+                                                  ""
                                                 )}
-                                              </p>
-                                            ) : (
-                                              // <PopOver
-                                              //   description={menu.description}
-                                              // ></PopOver>
-                                              ""
-                                            )}
-                                          </div>
-                                          <div className="plus-icon w-20 text-end">
-                                            {isDisplayPrice && (
-                                              <span className="mt-10 d-inline-block fw-bold color-green">
-                                                {menu.currency}
-                                                {menu?.price}
-                                              </span>
-                                            )}
-                                          </div>
-                                        </div>
-                                        <div>
-                                          {/* <MenuItemAddToCart
+                                              </div>
+                                              <div className="plus-icon w-20 text-end">
+                                                {isDisplayPrice && (
+                                                  <span className="mt-10 d-inline-block fw-bold color-green">
+                                                    {menu.currency}
+                                                    {menu?.price}
+                                                  </span>
+                                                )}
+                                              </div>
+                                            </div>
+                                            <div>
+                                              {/* <MenuItemAddToCart
                                               shareUrl={shareUrl}
                                               item={menu}
                                               handleToggleDependnt={
                                                 handleToggleDependnt
                                               }
                                             /> */}
-                                        </div>
-                                        {/* {menu.isregular && <ShareitemComponent size={25} title={menu.menuItemName} url={shareUrl} description={menu.description} linkClass="fs-5 pt-1" />} */}
-                                      </>
-                                    ) : (
-                                      <>
-                                        <div className="d-flex flex-row">
-                                          <div className="menu-info w-80">
-                                            <p>this is static item</p>
-                                            <a
-                                              className=""
-                                              data-menuitemid={menu.menuitemId}
-                                              onClick={(e) =>
-                                                handleClickItem(e, menu)
-                                              }
-                                            >
-                                              {" "}
-                                              <h3>
-                                                {" "}
-                                                {menu.menuItemName}{" "}
-                                              </h3>{" "}
-                                            </a>
-                                            {/* <p>{fixedLengthString(menu.description)}</p> */}
-                                            {menu.description.length < 180 ? (
-                                              <p>
-                                                {fixedLengthString(
-                                                  menu.description
+                                            </div>
+                                            {/* {menu.isregular && <ShareitemComponent size={25} title={menu.menuItemName} url={shareUrl} description={menu.description} linkClass="fs-5 pt-1" />} */}
+                                          </>
+                                        ) : (
+                                          <>
+                                            <div className="d-flex flex-row">
+                                              <div className="menu-info w-80">
+                                                <p>this is static item</p>
+                                                <a
+                                                  className=""
+                                                  data-menuitemid={
+                                                    menu.menuitemId
+                                                  }
+                                                  onClick={(e) =>
+                                                    handleClickItem(e, menu)
+                                                  }
+                                                >
+                                                  {" "}
+                                                  <h3>
+                                                    {" "}
+                                                    {menu.menuItemName}{" "}
+                                                  </h3>{" "}
+                                                </a>
+                                                {/* <p>{fixedLengthString(menu.description)}</p> */}
+                                                {menu.description.length <
+                                                180 ? (
+                                                  <p>
+                                                    {fixedLengthString(
+                                                      menu.description
+                                                    )}
+                                                  </p>
+                                                ) : (
+                                                  // <PopOver
+                                                  //   description={menu.description}
+                                                  // ></PopOver>
+                                                  ""
                                                 )}
-                                              </p>
-                                            ) : (
-                                              // <PopOver
-                                              //   description={menu.description}
-                                              // ></PopOver>
-                                              ""
-                                            )}
-                                          </div>
-                                          <div className="plus-icon w-20 text-end">
-                                            {isDisplayPrice && (
-                                              <span className="mt-10 d-inline-block fw-bold color-green">
-                                                {menu.currency}
-                                                {menu?.price}
-                                              </span>
-                                            )}
-                                            <br />
-                                            <a
-                                              className="fa plusbutton fa-plus icon-plus-list-view mt-1"
-                                              data-toggle="tooltip"
-                                              data-placement="left"
-                                              title="Open item"
-                                              onClick={(e) =>
-                                                handleClickItem(e, menu)
-                                              }
-                                            ></a>
-                                          </div>
-                                        </div>
-                                        {/* <div>
+                                              </div>
+                                              <div className="plus-icon w-20 text-end">
+                                                {isDisplayPrice && (
+                                                  <span className="mt-10 d-inline-block fw-bold color-green">
+                                                    {menu.currency}
+                                                    {menu?.price}
+                                                  </span>
+                                                )}
+                                                <br />
+                                                <a
+                                                  className="fa plusbutton fa-plus icon-plus-list-view mt-1"
+                                                  data-toggle="tooltip"
+                                                  data-placement="left"
+                                                  title="Open item"
+                                                  onClick={(e) =>
+                                                    handleClickItem(e, menu)
+                                                  }
+                                                ></a>
+                                              </div>
+                                            </div>
+                                            {/* <div>
                                             {menu?.quickorderallow && (
                                               <MenuItemQuickOrder
                                                 quickOrderClick={
@@ -612,11 +614,11 @@ const CategoryMenuItems = ({
                                               />
                                             )}
                                           </div> */}
-                                      </>
-                                    )}
-                                  </div>
-                                  <div className="img">
-                                    {/* <LazyLoadImage
+                                          </>
+                                        )}
+                                      </div>
+                                      <div className="img">
+                                        {/* <LazyLoadImage
                                         src={getImagePath(
                                           menu.imgurl,
                                           defaultLocation?.defaultmenuitemimage
@@ -628,38 +630,40 @@ const CategoryMenuItems = ({
                                         }}
                                         alt={menu.menuItemName}
                                       /> */}
-                                    {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt style={{ maxHeight: "136px" }} /> */}
-                                    <a
-                                      data-toggle="tooltip"
-                                      data-placement="left"
-                                      title={TOOLTIP_MSG.ADD_TO_FAV}
-                                      onClick={() => {
-                                        selectedFavoriteClick(
-                                          menu,
-                                          !menu.isFavoriteMenu
-                                        );
-                                      }}
-                                      className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
-                                          ? "active"
-                                          : ""
-                                        }`}
-                                    />
+                                        {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt style={{ maxHeight: "136px" }} /> */}
+                                        <a
+                                          data-toggle="tooltip"
+                                          data-placement="left"
+                                          title={TOOLTIP_MSG.ADD_TO_FAV}
+                                          onClick={() => {
+                                            selectedFavoriteClick(
+                                              menu,
+                                              !menu.isFavoriteMenu
+                                            );
+                                          }}
+                                          className={`fa wishlist fa-heart-o ${
+                                            menu?.isFavoriteMenu == true
+                                              ? "active"
+                                              : ""
+                                          }`}
+                                        />
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
+                                );
+                              }
+                            )}
+                          </div>
+                        )}
 
-                      {viewType === "grid" && (
-                        <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
-                          {category?.menuitems?.map((menu: any) => {
-                            return (
-                              <div className="cols menu-item">
-                                <div className="card features itembox">
-                                  <div className="img position-relative">
-                                    {/* <LazyLoadImage
+                        {viewType === "grid" && (
+                          <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
+                            {category?.menuitems?.map((menu: any) => {
+                              return (
+                                <div className="cols menu-item">
+                                  <div className="card features itembox">
+                                    <div className="img position-relative">
+                                      {/* <LazyLoadImage
                                         src={getImagePath(
                                           menu.imgurl,
                                           defaultLocation?.defaultmenuitemimage
@@ -672,26 +676,28 @@ const CategoryMenuItems = ({
                                         }}
                                         alt={menu.menuItemName}
                                       /> */}
-                                    {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt={menu.menuItemName} className="img-fluid" /> */}
-                                    <a
-                                      className="fa plusbutton fa-plus"
-                                      data-toggle="tooltip"
-                                      data-placement="left"
-                                      title="Open item"
-                                      onClick={(e) => handleClickItem(e, menu)}
-                                    ></a>
-                                  </div>
-                                  <div className="text">
-                                    <h3 className="menuitem-name">
-                                      {menu.menuItemName}
-                                      {isDisplayPrice && (
-                                        <span className="color-green fs-16 price">
-                                          {menu.currency}
-                                          {menu?.price}
-                                        </span>
-                                      )}
-                                    </h3>
-                                    {/* {menu?.quickorderallow && (
+                                      {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt={menu.menuItemName} className="img-fluid" /> */}
+                                      <a
+                                        className="fa plusbutton fa-plus"
+                                        data-toggle="tooltip"
+                                        data-placement="left"
+                                        title="Open item"
+                                        onClick={(e) =>
+                                          handleClickItem(e, menu)
+                                        }
+                                      ></a>
+                                    </div>
+                                    <div className="text">
+                                      <h3 className="menuitem-name">
+                                        {menu.menuItemName}
+                                        {isDisplayPrice && (
+                                          <span className="color-green fs-16 price">
+                                            {menu.currency}
+                                            {menu?.price}
+                                          </span>
+                                        )}
+                                      </h3>
+                                      {/* {menu?.quickorderallow && (
                                         <div className="d-flex justify-content-center mt-2">
                                           <MenuItemQuickOrder
                                             quickOrderClick={quickOrderClick}
@@ -699,34 +705,34 @@ const CategoryMenuItems = ({
                                           />
                                         </div>
                                       )} */}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              {/* {((isShowSkeleton&&menuItemsWithCat?.length===0)|| (Object.keys(searchdata).length === 0 && errorMessage == "" && searchtext !== "")) && <FavouriteSkeleton />} */}
-              {/* {Object.keys(searchdata).length === 0 &&
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                {/* {((isShowSkeleton&&menuItemsWithCat?.length===0)|| (Object.keys(searchdata).length === 0 && errorMessage == "" && searchtext !== "")) && <FavouriteSkeleton />} */}
+                {/* {Object.keys(searchdata).length === 0 &&
                   errorMessage == "" &&
                   searchtext !== "" && <FavouriteSkeleton />} */}
-              {errorMessage && (
-                <h4 className="red-text text-center mt-5">{errorMessage}</h4>
-              )}
-              {menuItemsWithCat?.length === 0 && loadError && (
-                <h4 className="red-text text-center mt-5">
-                  Opps! No Items Found
-                </h4>
-              )}
+                {errorMessage && (
+                  <h4 className="red-text text-center mt-5">{errorMessage}</h4>
+                )}
+                {menuItemsWithCat?.length === 0 && loadError && (
+                  <h4 className="red-text text-center mt-5">
+                    Opps! No Items Found
+                  </h4>
+                )}
+              </div>
+              <CategorySidebar />
             </div>
-            <CategorySidebar />
           </div>
-        </div>
-      </section>
-      {/* )} */}
+        </section>
+      )}
       {/* <ScrollToTop /> */}
       {/* <MenuItemDetail /> */}
       {/* {openMenuItemModal && (

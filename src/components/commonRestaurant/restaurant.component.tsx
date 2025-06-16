@@ -255,9 +255,6 @@ const RestaurantComponent = ({
         const locationurl =
           location?.toString().toLowerCase().replace(/ /g, "-") || "";
         const defaultlocationId = getLocationIdFromStorage();
-        console.log("defaultlocationId", defaultlocationId);
-        console.log("restauranturl", restauranturl);
-        console.log("locationurl", locationurl);
         RestaurantsServices.getRestaurantsList(
           restauranturl,
           locationurl,
@@ -351,7 +348,6 @@ const RestaurantComponent = ({
         selectedTheme.name === ThemeObj.default
           ? restaurantslocationlist.addressList
           : restaurantslocationlistwithtime?.addressList;
-      console.log("Address list from restaurant component", addressList);
       if (restaurantslocationlist.addressList !== undefined) {
         let linkLoacationurl = formatStringToURLWithBlankSpace(location);
         addressList.map((locations: any) => {

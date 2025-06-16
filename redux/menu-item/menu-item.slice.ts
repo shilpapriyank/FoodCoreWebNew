@@ -2,13 +2,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { MenuItemServices } from "./menu-item.services";
 import { MenuItemTypes } from "./menuitem.type";
-import {
-  AddfavoriteArgsTypes,
-  AddItemToCartArgsTypes,
-  DeleteFavoriteArgsTypes,
-  GetMenuItemListArgsTypes,
-  UpdateCartOrdersItemArgsTypes,
-} from "@/types/menuitem-types/menuitem.type";
 
 // Types
 export interface MenuItemState {
@@ -47,9 +40,9 @@ export const getMenuItemDetailes = createAsyncThunk(
     cartId,
   }: {
     restaurantId: number;
-    locationId: string;
-    customerId: string;
-    menuitemId: string;
+    locationId: number;
+    customerId: number;
+    menuitemId: number;
     cartsessionId: string;
     cartId: number;
   }) => {
@@ -75,9 +68,9 @@ export const addFavorite = createAsyncThunk(
     restaurantId,
     menuItemId,
   }: {
-    customerId: string;
+    customerId: number;
     restaurantId: number;
-    menuItemId: string;
+    menuItemId: number;
   }) => {
     const response = await MenuItemServices.addfavorite({
       customerId,
@@ -98,9 +91,9 @@ export const deleteFavorite = createAsyncThunk(
     restaurantId,
     menuItemId,
   }: {
-    customerId: string;
+    customerId: number;
     restaurantId: number;
-    menuItemId: string;
+    menuItemId: number;
   }) => {
     const response = await MenuItemServices.deletefavorite({
       customerId,
@@ -147,7 +140,6 @@ export const updateItemToCart = createAsyncThunk(
     return response;
   }
 );
-
 
 // Slice
 const menuItemSlice = createSlice({
