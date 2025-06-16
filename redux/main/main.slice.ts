@@ -36,10 +36,12 @@ export const getMenuCategoryList = createAsyncThunk(
       locationId
     );
     if (response) {
-      dispatch({
-        type: MainTypes.GET_MENU_CATEGORY_DATA,
-        payload: response,
-      });
+      // dispatch({
+      //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+      //   payload: response,
+      // });
+      dispatch(setMainCategoryList(response as MainCategory[]));
+
       return response;
     }
     return [];
@@ -63,10 +65,7 @@ export const getSelectedRestaurantTime = createAsyncThunk(
       locationId
     );
     if (response) {
-      dispatch({
-        type: MainTypes.GET_SELECTED_RESTAURANTTIME,
-        payload: response,
-      });
+      dispatch(getSelectedRestaurantTime(response as any));
       return response;
     }
     return [];
@@ -107,14 +106,13 @@ export const refreshCategoryList = createAsyncThunk(
           catresponse.length > 0
         ) {
           let categoryresponse = catresponse;
-          dispatch({
-            type: MainTypes.GET_MENU_CATEGORY_DATA,
-            payload: categoryresponse,
-          });
-          dispatch(mainSlice.actions.setMainCategoryList(catresponse));
+          // dispatch({
+          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+          //   payload: categoryresponse,
+          // });
+          dispatch(mainSlice.actions.setMainCategoryList(categoryresponse));
 
           const firstCategory = { ...catresponse[0], catSelected: true };
-          console.log("first category ", firstCategory.catId);
           dispatch(selectedCategory(firstCategory));
           dispatch(
             getCategoryItemList({
@@ -145,16 +143,16 @@ export const refreshCategoryList = createAsyncThunk(
             });
           }
         } else {
-          // dispatch(mainSlice.actions.updateMenuCategoryData([]));
-          // dispatch(mainSlice.actions.updatePromotionCategoryData([]));
-          dispatch({
-            type: MainTypes.UPDATE_MENU_CATEGORY_DATA,
-            payload: [],
-          });
-          dispatch({
-            type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
-            payload: [],
-          });
+          dispatch(mainSlice.actions.updateMenuCategoryData([]));
+          dispatch(mainSlice.actions.updatePromotionCategoryData([]));
+          // dispatch({
+          //   type: MainTypes.UPDATE_MENU_CATEGORY_DATA,
+          //   payload: [],
+          // });
+          // dispatch({
+          //   type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
+          //   payload: [],
+          // });
         }
       });
     }
@@ -177,9 +175,13 @@ export const mainSlice = createSlice({
       state.ischangelocation = action.payload;
     },
     setMainCategoryList(state, action: PayloadAction<MainCategory[]>) {
+      debugger;
       state.maincategoryList = action.payload;
     },
     setPromotionCategoryList(state, action: PayloadAction<MainCategory[]>) {
+      state.promotioncategoryList = action.payload;
+    },
+    getPromotionCategoryData(state, action: PayloadAction<any[]>) {
       state.promotioncategoryList = action.payload;
     },
     updateMenuCategoryData(state, action: PayloadAction<MainCategory[]>) {
@@ -210,6 +212,7 @@ export const {
   setPromotionCategoryList,
   updateMenuCategoryData,
   updatePromotionCategoryData,
+  getPromotionCategoryData,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

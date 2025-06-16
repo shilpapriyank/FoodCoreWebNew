@@ -12,7 +12,12 @@ import {
 
 import { useParams, useRouter } from "next/navigation";
 import { AppDispatch } from "../../../redux/store";
-import { mainSlice } from "../../../redux/main/main.slice";
+import {
+  mainSlice,
+  setMainCategoryList,
+  updatePromotionCategoryData,
+} from "../../../redux/main/main.slice";
+import { MainCategory } from "@/types/mainservice-types/mainservice.type";
 
 const useLoadCatData = (customerId: number) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,18 +54,19 @@ const useLoadCatData = (customerId: number) => {
           locationId
         );
         if (catresponse && catresponse.length > 0) {
+          debugger;
           categoryresponse = catresponse;
-          dispatch({
-            type: MainTypes.GET_MENU_CATEGORY_DATA,
-            payload: categoryresponse,
-          });
+          // dispatch({
+          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+          //   payload: categoryresponse,
+          // });
+          dispatch(setMainCategoryList(categoryresponse as MainCategory[]));
 
           //const firstCategory = catresponse[0];
           const firstCategory = { ...catresponse[0], catSelected: true };
           if (categoryitemlist.length === 0) {
             dispatch(selectedCategory(firstCategory));
           }
-
           let promotioncategories = catresponse.find(
             (x: any) => x.catName === "PROMOTION"
           );
@@ -84,16 +90,15 @@ const useLoadCatData = (customerId: number) => {
               }
             });
           } else {
-            dispatch({
-              type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
-              payload: null,
-            });
+            // dispatch({
+            //   type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
+            //   payload: null,
+            // });
+            dispatch(mainSlice.actions.updatePromotionCategoryData([]));
           }
         } else {
-          dispatch({
-            type: MainTypes.GET_MENU_CATEGORY_DATA,
-            payload: catresponse,
-          });
+          debugger;
+          dispatch(setMainCategoryList(catresponse as MainCategory[]));
         }
       }
       return new Promise((resolve, rejects) => {
@@ -110,22 +115,25 @@ const useLoadCatData = (customerId: number) => {
         true,
         customerId
       ).then((catresponsedata) => {
+        debugger;
         catresponse = catresponsedata;
         if (catresponse && catresponse !== null && catresponse !== undefined) {
+          debugger;
           let categoryresponse = catresponse;
-          dispatch({
-            type: MainTypes.GET_MENU_CATEGORY_DATA,
-            payload: categoryresponse,
-          });
+          // dispatch({
+          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+          //   payload: categoryresponse,
+          // });
+          dispatch(setMainCategoryList(categoryresponse as MainCategory[]));
 
           const firstCategory = { ...catresponse[0], catSelected: true };
           firstCategory.catSelected = true;
           dispatch(selectedCategory(firstCategory));
-        // const firstCategory = catresponse[0];
-        // firstCategory.catSelected = true;
-        // if (categoryitemlist.length === 0) {
-        //     dispatch(selectedCategory(firstCategory));
-        // }
+          // const firstCategory = catresponse[0];
+          // firstCategory.catSelected = true;
+          // if (categoryitemlist.length === 0) {
+          //     dispatch(selectedCategory(firstCategory));
+          // }
 
           let promotioncategories = catresponse.find(
             (x: any) => x.catName === "PROMOTION"
@@ -142,22 +150,29 @@ const useLoadCatData = (customerId: number) => {
             // MainServices.getPromotionCategoryList(newselectedRestaurant.restaurantId, promotionCatId, customerId, newselectedRestaurant.defaultlocationId)
 
             if (promocatresponse && promocatresponse != null) {
-              dispatch({
-                type: MainTypes.GET_PROMOTION_CATEGORY_DATA,
-                payload: promocatresponse,
-              });
+              // dispatch({
+              //   type: MainTypes.GET_PROMOTION_CATEGORY_DATA,
+              //   payload: promocatresponse,
+              // });
+              dispatch(
+                mainSlice.actions.getPromotionCategoryData(
+                  promocatresponse as any
+                )
+              );
             }
           } else {
-            dispatch({
-              type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
-              payload: null,
-            });
+            // dispatch({
+            //   type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
+            //   payload: null,
+            // });
+            dispatch(mainSlice.actions.updatePromotionCategoryData([]));
           }
         } else {
-          dispatch({
-            type: MainTypes.GET_MENU_CATEGORY_DATA,
-            payload: catresponse,
-          });
+          // dispatch({
+          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
+          //   payload: catresponse,
+          // });
+          dispatch(setMainCategoryList(catresponse as MainCategory[]));
         }
         return new Promise((resolve, rejects) => {
           resolve(true);

@@ -46,7 +46,6 @@ export class LocationServices {
       true,
       restaurantId
     );
-    console.log("getAllLocationList", responseclass);
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

@@ -15,7 +15,7 @@ import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-p
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
-import { setrewardpoint } from '../../../../../redux/rewardpoint/rewardpoint.slice'
+import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.slice";
 import useFutureOrder from "@/components/customhooks/usefuture-order-hook";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
 import CartCounter from "../../common/cart-counter.component";
@@ -53,7 +53,11 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     restaurantinfo?.defaultLocation?.schoolprogramenabled ?? false;
   const orderTypeName: string = selecteddelivery?.pickupordelivery;
   const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
-  const openTimeModelDefault = (pathname.includes(PAGES.CHECKOUT) && order?.checktime === "" && !b2b && !isSchoolProgramEnabled)
+  const openTimeModelDefault =
+    pathname.includes(PAGES.CHECKOUT) &&
+    order?.checktime === "" &&
+    !b2b &&
+    !isSchoolProgramEnabled;
   const [opentimingModal, setopentimingModal] = useState(openTimeModelDefault);
 
   const { width } = useWindowDimensions();
@@ -84,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     setopenAdressModal(value);
   };
   const handleToggleTimingModal = (value: boolean) => {
-    setopentimingModal(value)
+    setopentimingModal(value);
   };
 
   const handleOpenLoginModal = (value: boolean) => {
@@ -111,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         totalRewardPoints: 0,
         redeemPoint: 0,
       };
-      dispatch(setrewardpoint(rewardpoints))
+      dispatch(setrewardpoint(rewardpoints));
       handleNotify(
         "Logout successfully!",
         ToasterPositions.TopRight,
@@ -143,8 +147,9 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
               {isHomePage ? (
                 <>
                   <a
-                    className={`logo d-md-block ${userinfo === null ? "d-none" : ""
-                      }`}
+                    className={`logo d-md-block ${
+                      userinfo === null ? "d-none" : ""
+                    }`}
                   >
                     <span className="head-arrow">
                       <i className="fa fa-angle-left" />
@@ -182,95 +187,96 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                 pathname.includes(PAGES.PAYMENT) ||
                 pathname.includes(PAGES.CREATE_NEW_PASS)
               ) && (
-                  <form>
-                    <div className="align-form">
-                      <div className="d-flex justify-content-center mb-2 mb-md-0">
-                        {restaurantinfo?.ioslink && (
-                          <a
-                            className="cursor_pointer app-icon px-1"
-                            href={restaurantinfo?.ioslink}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <img src="/nt/img/app_store.png" />
-                          </a>
-                        )}
-                        {restaurantinfo?.androidlink && (
-                          <a
-                            className="cursor_pointer app-icon px-1"
-                            href={restaurantinfo?.androidlink}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <img src="/nt/img/android.png" />
-                          </a>
-                        )}
-                      </div>
-
-                      <SelectedAddressHeader
-                        b2b={b2b}
-                        handleToggleOrderTypeModal={handleToggleOrderTypeModal}
-                      />
-                      {!b2b && !isSchoolProgramEnabled && (
-                        <>
-                          {" "}
-                          {orderTypeName !== "" && (
-                            <label className="d-none d-md-block text-capitalize">
-                              {orderTypeName} time
-                            </label>
-                          )}
-                          <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
-                            {orderTypeName !== "" && (
-                              <span className="d-md-none text-dark me-1">
-                                {orderTypeName} time
-                              </span>
-                            )}
-                            {isFutureOrder && (
-                              <span className="btn-default ">
-                                {(futureDay as any)?.futureDay}
-                              </span>
-                            )}
-                            &nbsp;
-                            <span
-                              className="text btn-default  "
-                              onClick={() => handleToggleTimingModal(true)}
-                            >
-                              {order.isasap ? "Asap" : "Later"}{" "}
-                            </span>
-                            &nbsp;
-                            {order.checktime !== "" && (
-                              <span
-                                className="btn-default"
-                                onClick={() => handleToggleTimingModal(true)}
-                              >
-                                {" "}
-                                {order.checktime}
-                              </span>
-                            )}
-                            {userinfo === null && (
-                              <span
-                                className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
-                                onClick={() => handleOpenLoginModal(true)}
-                              >
-                                Login
-                              </span>
-                            )}
-                          </h6>
-                        </>
+                <form>
+                  <div className="align-form">
+                    <div className="d-flex justify-content-center mb-2 mb-md-0">
+                      {restaurantinfo?.ioslink && (
+                        <a
+                          className="cursor_pointer app-icon px-1"
+                          href={restaurantinfo?.ioslink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src="/nt/img/app_store.png" />
+                        </a>
                       )}
-                      {isSchoolProgramEnabled && userinfo === null && (
-                        <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
-                          <span
-                            className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
-                            onClick={() => handleOpenLoginModal(true)}
-                          >
-                            Login
-                          </span>
-                        </h6>
+                      {restaurantinfo?.androidlink && (
+                        <a
+                          className="cursor_pointer app-icon px-1"
+                          href={restaurantinfo?.androidlink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src="/nt/img/android.png" />
+                        </a>
                       )}
                     </div>
-                  </form>
-                )}
+
+                    {/* <SelectedAddressHeader
+                      b2b={b2b}
+                      handleToggleOrderTypeModal={handleToggleOrderTypeModal}
+                    /> */}
+
+                    {/* {!b2b && !isSchoolProgramEnabled && (
+                      <>
+                        {" "}
+                        {orderTypeName !== "" && (
+                          <label className="d-none d-md-block text-capitalize">
+                            {orderTypeName} time
+                          </label>
+                        )}
+                        <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
+                          {orderTypeName !== "" && (
+                            <span className="d-md-none text-dark me-1">
+                              {orderTypeName} time
+                            </span>
+                          )}
+                          {isFutureOrder && (
+                            <span className="btn-default ">
+                              {(futureDay as any)?.futureDay}
+                            </span>
+                          )}
+                          &nbsp;
+                          <span
+                            className="text btn-default  "
+                            onClick={() => handleToggleTimingModal(true)}
+                          >
+                            {order.isasap ? "Asap" : "Later"}{" "}
+                          </span>
+                          &nbsp;
+                          {order.checktime !== "" && (
+                            <span
+                              className="btn-default"
+                              onClick={() => handleToggleTimingModal(true)}
+                            >
+                              {" "}
+                              {order.checktime}
+                            </span>
+                          )}
+                          {userinfo === null && (
+                            <span
+                              className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
+                              onClick={() => handleOpenLoginModal(true)}
+                            >
+                              Login
+                            </span>
+                          )}
+                        </h6>
+                      </>
+                    )} */}
+                    {isSchoolProgramEnabled && userinfo === null && (
+                      <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
+                        <span
+                          className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
+                          onClick={() => handleOpenLoginModal(true)}
+                        >
+                          Login
+                        </span>
+                      </h6>
+                    )}
+                  </div>
+                </form>
+              )}
             </div>
             <div className="col-lg-2 col-md-12 text-md-end col-12 d-none d-md-block">
               <UserDropdown

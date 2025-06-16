@@ -19,9 +19,9 @@ export class MenuItemServices {
     cartId,
   }: {
     restaurantId: number;
-    locationId: string;
-    customerId: string;
-    menuitemId: string;
+    locationId: number;
+    customerId: number;
+    menuitemId: number;
     cartsessionId: string;
     cartId: number;
   }): Promise<any[] | null> {
@@ -33,7 +33,7 @@ export class MenuItemServices {
         restaurantId: restaurantId != undefined ? restaurantId : 0,
         locationId: locationId != undefined ? locationId : 0,
         customerId: customerId != undefined ? customerId : 0,
-        menuitemId: menuitemId != undefined ? parseInt(menuitemId) : 0,
+        menuitemId: menuitemId,
         cartsessionId: cartsessionId != undefined ? cartsessionId : "",
         cartId: cartId != undefined && cartId != 0 ? cartId : "",
       },
@@ -45,7 +45,6 @@ export class MenuItemServices {
       true,
       restaurantId
     );
-    console.log("category menu item", responseclass);
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
@@ -61,17 +60,17 @@ export class MenuItemServices {
     restaurantId,
     menuItemId,
   }: {
-    customerId: string;
+    customerId: number;
     restaurantId: number;
-    menuItemId: string;
+    menuItemId: number;
   }): Promise<any[] | null> {
     responseclass = new ResponseModel();
     const methodName = "addfavorite";
     const location = ENDPOINTS.ADD_FAVORITE;
     const data = {
-      customerId: customerId?.toString(),
+      customerId: customerId,
       restaurantId: restaurantId,
-      menuItemId: menuItemId.toString(),
+      menuItemId: menuItemId,
     };
     responseclass = await handleAxiosPostAsync(
       data,
@@ -118,17 +117,17 @@ export class MenuItemServices {
     restaurantId,
     menuItemId,
   }: {
-    customerId: string;
+    customerId: number;
     restaurantId: number;
-    menuItemId: string;
+    menuItemId: number;
   }): Promise<any[] | null> {
     responseclass = new ResponseModel();
     const methodName = "deletefavorite";
     const location = ENDPOINTS.DELETE_FAVORITE;
     const data = {
-      customerId: parseInt(customerId),
+      customerId: customerId,
       restaurantId: restaurantId,
-      menuitemId: parseInt(menuItemId),
+      menuitemId: menuItemId,
     };
     responseclass = await handleAxiosPostAsync(
       data,
@@ -245,9 +244,9 @@ export class MenuItemServices {
     customerId,
     serchQuery,
   }: {
-    locationId: string;
+    locationId: number;
     restaurantId: number;
-    customerId: string;
+    customerId: number;
     serchQuery: string;
   }): Promise<any> {
     responseclass = new ResponseModel();
@@ -285,10 +284,10 @@ export class MenuItemServices {
     restaurantId,
     locationId,
   }: {
-    menuItemId: string;
+    menuItemId: number;
     cartsessionId: string;
     restaurantId: number;
-    locationId: string;
+    locationId: number;
   }): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "quickOrderaddToCart";
@@ -326,9 +325,9 @@ export class MenuItemServices {
     cartId,
   }: {
     restaurantId: number;
-    locationId: string;
-    customerId: string;
-    menuitemId: string;
+    locationId: number;
+    customerId: number;
+    menuitemId: number;
     cartsessionId: string;
     cartId: number;
   }): Promise<any[]> {
@@ -340,7 +339,7 @@ export class MenuItemServices {
         restaurantId: restaurantId != undefined ? restaurantId : 0,
         locationId: locationId != undefined ? locationId : 0,
         customerId: customerId != undefined ? customerId : 0,
-        menuitemId: menuitemId != undefined ? parseInt(menuitemId) : 0,
+        menuitemId: menuitemId,
         cartsessionId: cartsessionId != undefined ? cartsessionId : "",
         cartId: cartId != undefined && cartId != 0 ? cartId : 0,
       },

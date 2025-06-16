@@ -1,6 +1,3 @@
-// import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
-// import { getTableDetails } from "../../redux/tableorder/tableorder.action";
-// import { leftRightArray } from "../default/helpers/utility";
 import {
   AllRegex,
   ColorStyleType,
@@ -13,6 +10,7 @@ import {
 } from "@/types/common-types/common.types";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -78,10 +76,6 @@ export const PromotionType: PromotionTypes = {
   Percentage: 1,
   Fixed: 2,
 };
-
-// export const GetThemeDetails = (value: number): ThemeType => {
-//   return ThemeTypeObj.find((x) => x.value === value)!;
-// };
 
 // FORMATE THE NUMBER INTO THE (XXX) XXX-XXXX
 export const formatePhoneNumber = (number: string): string => {
@@ -314,7 +308,7 @@ export const checkMenuItemAvailability = (
   categoryList: any,
   catId: any,
   pickupordelivery: any
-): boolean => {
+) => {
   if (catId === undefined || pickupordelivery === "") {
     return true;
   }
@@ -402,16 +396,27 @@ export const getNameFromURL = (url: string): string => {
     .replace(/ /g, "-");
 };
 
-// export const openCloseOption = (selectedoption: any, selectedToppingList: any) => {
-//     document.getElementById(`itembutton${selectedoption?.optionId}`).click()
-//     let compulsoryList = selectedToppingList.filter((item: any) => item.isCompulsory)
-//     let nonSelectedOptionList = compulsoryList.filter((option: any) => option.type.every((suboption: any) => suboption.subOptionselected === false))
-//     let optionbtn = document.getElementById(`itembutton${nonSelectedOptionList[0]?.optionId}`)
-//     if (optionbtn?.classList?.contains("collapsed")) {
-//         optionbtn?.click()
-//     }
-
-// }
+export const openCloseOption = (
+  selectedoption: any,
+  selectedToppingList: any
+) => {
+  const selectedButton = document.getElementById(
+    `itembutton${selectedoption?.optionId}`
+  ) as HTMLButtonElement;
+  const optionClick = selectedButton.click();
+  let compulsoryList = selectedToppingList.filter(
+    (item: any) => item.isCompulsory
+  );
+  let nonSelectedOptionList = compulsoryList.filter((option: any) =>
+    option.type.every((suboption: any) => suboption.subOptionselected === false)
+  );
+  let optionbtn = document.getElementById(
+    `itembutton${nonSelectedOptionList[0]?.optionId}`
+  );
+  if (optionbtn?.classList?.contains("collapsed")) {
+    optionbtn?.click();
+  }
+};
 
 export const orderDisable = (
   restaurantinfo: any,
@@ -488,68 +493,88 @@ export const checkCategoryExist = (categoryList: any, url: string): boolean => {
 };
 
 //GET ASAP LATEORON CHECK FOR THE DELIVERY AND PICKUP BASE
-// export const getAsapLaterOnState = (defaultLocation: any, pickupordelivery: any, restaurantWindowTime: any) => {
-//     const pickupWindow = restaurantWindowTime?.pickupTime;
-//     const deliveryWindow = restaurantWindowTime?.deliveryTime;
-//     let enableDisableState = {}
-//     const { isTakeOutAsap, isTakeOutPickupTime, isDeliveryPickupTime, isDeliveryAsap,
-//         isTakeoutOrderingDisable, isDeliveryOrderingDisable } = defaultLocation
-//     //ASINGN DEFAULT STATE IS PICKUP
-//     let orderSate = {
-//         timeWindow: pickupWindow,
-//         isAsap: isTakeOutAsap,
-//         isLaterOn: isTakeOutPickupTime,
-//         isOrderTypeDisable: isTakeoutOrderingDisable
-//     }
-//     if (pickupordelivery === "Delivery") {
-//         orderSate.timeWindow = deliveryWindow,
-//             orderSate.isAsap = isDeliveryAsap,
-//             orderSate.isLaterOn = isDeliveryPickupTime,
-//             orderSate.isOrderTypeDisable = isDeliveryOrderingDisable
-//     }
-//     //LET CHECK THE IS DISPLAY THE ASAP OR LATERON sss
-//     if (orderSate.isAsap || orderSate.isLaterOn) {
-//         enableDisableState.isdisplay = true
-//     } else {
-//         enableDisableState.isdisplay = false
-//     }
-//     if (defaultLocation.isOrderingDisable === false && orderSate.isOrderTypeDisable === false
-//         && (orderSate.timeWindow && orderSate?.timeWindow?.length > 0)) {
-//         enableDisableState.isDisableAsapLateron = false
-//     } else {
-//         enableDisableState.isDisableAsapLateron = true
-//     }
-//     enableDisableState.isAsap = orderSate.isAsap
-//     enableDisableState.isLateron = orderSate.isLaterOn
-//     return enableDisableState;
-// }
+export const getAsapLaterOnState = (
+  defaultLocation: any,
+  pickupordelivery: any,
+  restaurantWindowTime: any
+) => {
+  const pickupWindow = restaurantWindowTime?.pickupTime;
+  const deliveryWindow = restaurantWindowTime?.deliveryTime;
+  let enableDisableState: any = {};
+  const {
+    isTakeOutAsap,
+    isTakeOutPickupTime,
+    isDeliveryPickupTime,
+    isDeliveryAsap,
+    isTakeoutOrderingDisable,
+    isDeliveryOrderingDisable,
+  } = defaultLocation;
+  //ASINGN DEFAULT STATE IS PICKUP
+  let orderSate = {
+    timeWindow: pickupWindow,
+    isAsap: isTakeOutAsap,
+    isLaterOn: isTakeOutPickupTime,
+    isOrderTypeDisable: isTakeoutOrderingDisable,
+  };
+  if (pickupordelivery === "Delivery") {
+    (orderSate.timeWindow = deliveryWindow),
+      (orderSate.isAsap = isDeliveryAsap),
+      (orderSate.isLaterOn = isDeliveryPickupTime),
+      (orderSate.isOrderTypeDisable = isDeliveryOrderingDisable);
+  }
+  //LET CHECK THE IS DISPLAY THE ASAP OR LATERON sss
+  if (orderSate.isAsap || orderSate.isLaterOn) {
+    enableDisableState.isdisplay = true;
+  } else {
+    enableDisableState.isdisplay = false;
+  }
+  if (
+    defaultLocation.isOrderingDisable === false &&
+    orderSate.isOrderTypeDisable === false &&
+    orderSate.timeWindow &&
+    orderSate?.timeWindow?.length > 0
+  ) {
+    enableDisableState.isDisableAsapLateron = false;
+  } else {
+    enableDisableState.isDisableAsapLateron = true;
+  }
+  enableDisableState.isAsap = orderSate.isAsap;
+  enableDisableState.isLateron = orderSate.isLaterOn;
+  return enableDisableState;
+};
 
 export const getorigin = () => {
   return process.env.NEXT_PUBLIC_WEB_URL;
 };
 
-// export async function getSEODetails(RestaurantURL = "", LocationURL = "", CategoryURL = "", MenuItemURL = "", MenuItemId = 0, CategoryId = 0) {
+export async function getSEODetails(
+  RestaurantURL = "",
+  LocationURL = "",
+  CategoryURL = "",
+  MenuItemURL = "",
+  MenuItemId = 0,
+  CategoryId = 0
+) {
+  let restauranturl = RestaurantURL?.toLowerCase().toString().replace(" ", "");
+  let obj = {
+    // restaurantURL: restauranturl,
+    restaurantURL: restauranturl,
+    locationURL: LocationURL,
+    categoryURL: CategoryURL,
+    menuitemURL: MenuItemURL,
+    menuitemId: MenuItemId,
+    categoryId: CategoryId,
+  };
+  // var data = await RestaurantsServices.getRestaurantThemeType(restauranturl);
+  let result = await RestaurantsServices.getMetadataDetails(obj);
+  let data = result?.seodetails;
 
-//     let restauranturl = RestaurantURL?.toLowerCase().toString().replace(" ", "");
-//     let obj = {
-//         // restaurantURL: restauranturl,
-//         restaurantURL: restauranturl,
-//         locationURL: LocationURL,
-//         categoryURL: CategoryURL,
-//         menuitemURL: MenuItemURL,
-//         menuitemId: MenuItemId,
-//         categoryId: CategoryId
-//     };
-//     // var data = await RestaurantsServices.getRestaurantThemeType(restauranturl);
-//     let result = await RestaurantsServices.getMetadataDetails(obj);
-//     let data = result?.seodetails
-
-//     const seodetails = {
-//         restaurantname: data?.restaurantname,
-//         imageurl: data?.imageurl
-//     }
-//     return seodetails;
-// }
+  const seodetails = {
+    restaurantname: data?.restaurantname,
+    imageurl: data?.imageurl,
+  };
+  return seodetails;
+}
 
 export const ORDERTYPE = {
   Pickup: "Pickup",
@@ -714,37 +739,78 @@ export const handleSetDeliveryTypeError = (
   return errorMessage;
 };
 
-// export const bindPlaceOrderObject = (rewardpoints, cart, ordertype, sessionid, userinfo, deliveryaddressId, order, isAsap, paymentType, restaurantinfo, promotionData, studentname, distance, pickupordelivery, isFutureOrder = false, timeSlot = "", futureDate) => {
-//     let placeOrder = {
-//         // redeemPoints: cart.rewardpoints?.redeemPoint > 0 ? cart.rewardpoints?.redeemPoint : 0,
-//         redeemPoints: rewardpoints?.redeemPoint > 0 ? rewardpoints?.redeemPoint : 0,
-//         orderInstruction: cart.orderinstruction || cart.orderinstruction !== undefined ? cart.orderinstruction : "",
-//         deliveryNote: cart?.orderdeliveryinstruction || cart?.orderdeliveryinstruction !== undefined ? cart.orderdeliveryinstruction : "",
-//         preDiscountSubTotal: cart.carttotal?.subTotal > 0 ? parseFloat(cart.carttotal?.subTotal) : 0,
-//         tip: cart.carttotal.tipAmount > 0 ? parseFloat(cart.carttotal?.tipAmount) : 0,
-//         hstTax: cart.carttotal.hstTotal > 0 ? parseFloat(cart.carttotal.hstTotal) : 0,
-//         discountTotal: cart.carttotal.discountAmount > 0 ? parseFloat(cart.carttotal.discountAmount) : 0,
-//         deliveryCharges: cart.carttotal.deliveryAmount > 0 && pickupordelivery === ORDERTYPE.Delivery ? parseFloat(cart.carttotal.deliveryAmount) : 0,
-//         orderTotal: cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
-//         ordertype: ordertype,
-//         cartsessionId: sessionid, //getSessionKey(restaurantinfo.restaurantId, userinfo.customerId),
-//         customerId: parseInt(userinfo?.customerId ?? 0),
-//         addressId: deliveryaddressId,
-//         selectedTime: timeSlot === "" ? order && order.checktime && order.checktime !== "" ? order.checktime : "" : "",
-//         isAsap: isAsap, //true  false
-//         paymentType: paymentType,  //1 for cash payment    2 for card payment
-//         locationId: restaurantinfo.defaultlocationId,
-//         restaurantId: restaurantinfo.restaurantId,
-//         promotionData: promotionData,
-//         studentname: studentname,
-//         distance: distance && pickupordelivery === ORDERTYPE.Delivery ? distance : 0,
-//         isFutureOrder: isFutureOrder,
-//         timeSlot: timeSlot,
-//         futureDate: futureDate
-
-//     };
-//     return placeOrder;
-// }
+export const bindPlaceOrderObject = (
+  rewardpoints: any,
+  cart: any,
+  ordertype: any,
+  sessionid: any,
+  userinfo: any,
+  deliveryaddressId: any,
+  order: any,
+  isAsap: boolean,
+  paymentType: any,
+  restaurantinfo: any,
+  promotionData: any,
+  studentname: any,
+  distance: any,
+  pickupordelivery: any,
+  isFutureOrder: boolean,
+  timeSlot: string,
+  futureDate: any
+) => {
+  let placeOrder = {
+    // redeemPoints: cart.rewardpoints?.redeemPoint > 0 ? cart.rewardpoints?.redeemPoint : 0,
+    redeemPoints: rewardpoints?.redeemPoint > 0 ? rewardpoints?.redeemPoint : 0,
+    orderInstruction:
+      cart.orderinstruction || cart.orderinstruction !== undefined
+        ? cart.orderinstruction
+        : "",
+    deliveryNote:
+      cart?.orderdeliveryinstruction ||
+      cart?.orderdeliveryinstruction !== undefined
+        ? cart.orderdeliveryinstruction
+        : "",
+    preDiscountSubTotal:
+      cart.carttotal?.subTotal > 0 ? parseFloat(cart.carttotal?.subTotal) : 0,
+    tip:
+      cart.carttotal.tipAmount > 0 ? parseFloat(cart.carttotal?.tipAmount) : 0,
+    hstTax:
+      cart.carttotal.hstTotal > 0 ? parseFloat(cart.carttotal.hstTotal) : 0,
+    discountTotal:
+      cart.carttotal.discountAmount > 0
+        ? parseFloat(cart.carttotal.discountAmount)
+        : 0,
+    deliveryCharges:
+      cart.carttotal.deliveryAmount > 0 &&
+      pickupordelivery === ORDERTYPE.Delivery
+        ? parseFloat(cart.carttotal.deliveryAmount)
+        : 0,
+    orderTotal:
+      cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
+    ordertype: ordertype,
+    cartsessionId: sessionid, //getSessionKey(restaurantinfo.restaurantId, userinfo.customerId),
+    customerId: parseInt(userinfo?.customerId ?? 0),
+    addressId: deliveryaddressId,
+    selectedTime:
+      timeSlot === ""
+        ? order && order.checktime && order.checktime !== ""
+          ? order.checktime
+          : ""
+        : "",
+    isAsap: isAsap, //true  false
+    paymentType: paymentType, //1 for cash payment    2 for card payment
+    locationId: restaurantinfo.defaultlocationId,
+    restaurantId: restaurantinfo.restaurantId,
+    promotionData: promotionData,
+    studentname: studentname,
+    distance:
+      distance && pickupordelivery === ORDERTYPE.Delivery ? distance : 0,
+    isFutureOrder: isFutureOrder,
+    timeSlot: timeSlot,
+    futureDate: futureDate,
+  };
+  return placeOrder;
+};
 
 export const clearCache = () => {
   let isRefresh = false;
@@ -788,7 +854,7 @@ export const getCheckTimeArr = (
   orderTime: any,
   restaurantinfo: any,
   orderDate: any = "",
-  isasap: any
+  isasap: boolean
 ) => {
   let Time = [];
   if (
@@ -921,19 +987,40 @@ export const convert24HourTo12Hour = (time: any) => {
   return [hour, minute, meridian];
 };
 
-// export const checkWindowTimeExpires = (windowEndTime: any, currentTime: any, isLastOrder: any = false) => {
-//     let [time, windowMeridian] = getCheckTimeArr(windowEndTime);
-//     const [windowHour, windowMinute] = time.split(":");
-//     const [currentHour, currentMinute, meridian] = convert24HourTo12Hour(currentTime);
-//     //check window expiry time
-//     var beginningTime = moment(`${currentHour}:${currentMinute}${meridian}`, 'hh:mma');
-//     var endTime = moment(`${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`, 'hh:mma');
-//     let WindowTimeIsAvailable = beginningTime.isBefore(endTime)
-//     if (meridian.trim().toLowerCase() === "pm" && isLastOrder && windowMeridian.trim().toLowerCase() === "am") {
-//         WindowTimeIsAvailable = true;
-//     }
-//     return WindowTimeIsAvailable;
-// }
+export const checkWindowTimeExpires = (
+  windowEndTime: any,
+  currentTime: any,
+  isLastOrder: any = false,
+  isasap: any
+) => {
+  let [time, windowMeridian] = getCheckTimeArr(
+    currentTime,
+    isLastOrder,
+    windowEndTime,
+    isasap
+  );
+  const [windowHour, windowMinute] = time.split(":");
+  const [currentHour, currentMinute, meridian] =
+    convert24HourTo12Hour(currentTime);
+  //check window expiry time
+  var beginningTime = moment(
+    `${currentHour}:${currentMinute}${meridian}`,
+    "hh:mma"
+  );
+  var endTime = moment(
+    `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
+    "hh:mma"
+  );
+  let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
+  if (
+    meridian.trim().toLowerCase() === "pm" &&
+    isLastOrder &&
+    windowMeridian.trim().toLowerCase() === "am"
+  ) {
+    WindowTimeIsAvailable = true;
+  }
+  return WindowTimeIsAvailable;
+};
 
 export const tipWarningMessage =
   "Please note drivers may decline or cancel a delivery if the tip amount is less than 15%";
@@ -1179,9 +1266,9 @@ export function getTableOrderDetailObj(tableDetail: any, serverId: any = 0) {
   return obj;
 }
 
-// export const getEditItemKey = (cartData :any, menuItemId :any) => {
-//     const ItemKey = cartData && Object.values(cartData).findIndex()
-// }
+export const getEditItemKey = (cartData: any, menuItemId: any) => {
+  const ItemKey = cartData && Object.values(cartData).findIndex(menuItemId);
+};
 
 export const pushNotificationType = {
   TABLE_SEND_TO_KITCHEN: "tblsendtokitchenstation",

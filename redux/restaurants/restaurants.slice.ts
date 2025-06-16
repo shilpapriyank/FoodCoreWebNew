@@ -45,7 +45,6 @@ const initialState: RestaurantState = {
   bannerDetails: [],
   appversion: "",
 };
-debugger;
 // Async actions
 export const getRestaurantsList = createAsyncThunk(
   "restaurant/getRestaurantsList",
