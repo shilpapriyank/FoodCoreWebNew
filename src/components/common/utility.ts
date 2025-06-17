@@ -97,6 +97,7 @@ export const unFormatePhoneNumber = (number: string): string => {
 };
 export const allRegex: AllRegex = {
   phoneRegex1: /(\(?\d{1,2})/,
+  phoneRegex2: /(\(?\d{1,2})/,
   validwithFormatephoneRegex: /^(\(?\d{1,})\)?(\d{1,}?)(\-?\d{1,})$/,
   phoneRegex3: /^\($/,
   validdigit: /^\d{1,}$/,
@@ -934,7 +935,7 @@ export const countryData = {
     countryCode: "+1",
     title: "United States",
   },
-};
+} as const;
 
 export const getCountryList = () => {
   let data = Object.values(countryData);
