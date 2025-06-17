@@ -54,7 +54,6 @@ const useLoadCatData = (customerId: number) => {
           locationId
         );
         if (catresponse && catresponse.length > 0) {
-          debugger;
           categoryresponse = catresponse;
           // dispatch({
           //   type: MainTypes.GET_MENU_CATEGORY_DATA,
@@ -97,7 +96,6 @@ const useLoadCatData = (customerId: number) => {
             dispatch(mainSlice.actions.updatePromotionCategoryData([]));
           }
         } else {
-          debugger;
           dispatch(setMainCategoryList(catresponse as MainCategory[]));
         }
       }
@@ -115,10 +113,8 @@ const useLoadCatData = (customerId: number) => {
         true,
         customerId
       ).then((catresponsedata) => {
-        debugger;
         catresponse = catresponsedata;
         if (catresponse && catresponse !== null && catresponse !== undefined) {
-          debugger;
           let categoryresponse = catresponse;
           // dispatch({
           //   type: MainTypes.GET_MENU_CATEGORY_DATA,

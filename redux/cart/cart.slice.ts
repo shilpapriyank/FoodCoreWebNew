@@ -102,7 +102,7 @@ export const getCartItem = createAsyncThunk(
   ) => {
     const tippercent = tipPercentage && tipPercentage > 0 ? tipPercentage : 0;
     const tip = tipAmount ?? 0;
-    const response = await CartServices.getCartItemList(
+    const response = await CartServices.getCartItemList({
       cartsessionId,
       locationId,
       restaurantId,
@@ -111,12 +111,13 @@ export const getCartItem = createAsyncThunk(
       rewardpoints,
       redeemamount,
       deliveryaddressId,
-      tippercent,
-      tip,
+     // tippercent,
+      tipAmount,
+      tipPercentage,
       ordertype,
       selectedTime,
       requestId
-    );
+  });
     return response;
   }
 );

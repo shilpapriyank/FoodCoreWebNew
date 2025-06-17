@@ -5,10 +5,12 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
 import { RestaurantsTypes } from "../../../../redux/restaurants/restaurants.types";
-import { getSelectedRestaurantTime } from "../../../../redux/main/main.slice";
+import {
+  getSelectedRestaurantTime,
+  refreshCategoryList,
+} from "../../../../redux/main/main.slice";
 import {
   restaurantAllLocation,
-  restaurantsAllLocation,
   restaurantsdetail,
 } from "../../../../redux/restaurants/restaurants.slice";
 import { v4 as uuidv4 } from "uuid";
@@ -19,15 +21,19 @@ import {
 import { createSessionId } from "../../../../redux/session/session.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
-import { useAppDispatch } from "../../../../redux/hooks";
 import { clearRedux } from "../../../../redux/tableorder/tableorder.slice";
 import {
   getAllCategoryMenuItems,
   selectedCategory,
 } from "../../../../redux/category/category.slice";
 import { deleteCartItemFromSessionId } from "../../../../redux/cart/cart.slice";
-import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
+import {
+  setintialrewardpoints,
+  setrewardpoint,
+} from "../../../../redux/rewardpoint/rewardpoint.slice";
 import { CategoryItem } from "@/types/category-types/category.services.type";
+import { AppDispatch } from "../../../../redux/store";
+import { useDispatch } from "react-redux";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
@@ -40,20 +46,21 @@ const LoadLocationDirectComponent = ({
     sessionid,
     restaurant,
     userinfo,
+    rewardpoints,
     selecteddelivery,
     categoryItemsList,
   } = useReduxData();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const params = useParams();
   const { dynamic, location, id, category, index } = params;
-  // const rewardvalue=rewardpoints?.rewardvalue
+  const rewardvalue = rewardpoints?.rewardvalue;
   const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
-  const [isLoad, setisLoad] = useState(
+  const [isLoad, setisLoad] = useState<boolean>(
     location !== restaurantinfo?.defaultLocation?.locationURL ? false : true
   );
   let ischangeurl = restaurant?.ischangeurl;
-  const [isLoadAddress, setisLoadAddress] = useState(false);
+  const [isLoadAddress, setisLoadAddress] = useState<boolean>(false);
 
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
   useEffect(() => {
@@ -167,7 +174,12 @@ const LoadLocationDirectComponent = ({
               : ORDER_TYPE.PICKUP.text
           )
         );
-        // dispatch(refreshCategoryList(restaurantinfo, userinfo?.customerId));
+        dispatch(
+          refreshCategoryList({
+            newselectedRestaurant: restaurantinfo.restaurantId,
+            customerId: userinfo?.customerId,
+          }) as any
+        );
         dispatch(
           getSelectedRestaurantTime(
             restaurantinfo.restaurantId,
@@ -183,37 +195,45 @@ const LoadLocationDirectComponent = ({
           //dispatch(emptycart());
           //dispatch(setintialrewardpoints(userinfo));
         }
-        // if (userinfo && userinfo?.customerId) {
-        //   CustomerServices.checkCustomerRewardPointsLocationBase(restaurantinfo.restaurantId, userinfo.customerId, 0, 0, restaurantinfo?.defaultLocation.locationId).then((res :any) => {
-        //     if (res.status == 1) {
-        //       let rewards = {
-        //         rewardvalue: rewardvalue,
-        //         rewardamount: parseFloat(((res?.result?.totalrewardpoints) / rewardvalue - 0).toFixed(2)),
-        //         rewardPoint: res?.result?.totalrewardpoints,
-        //         totalRewardPoints: res?.result?.totalrewardpoints,
-        //         redeemPoint: 0,
-        //       }
-        //       dispatch(setRewardPoint(rewards));
-        //     }
-        //   })
-        // }
+        if (userinfo && userinfo?.customerId) {
+          CustomerServices.checkCustomerRewardPointsLocationBase(
+            restaurantinfo.restaurantId,
+            userinfo.customerId,
+            0,
+            "0",
+            restaurantinfo?.defaultLocation.locationId
+          ).then((res: any) => {
+            if (res.status == 1) {
+              let rewards = {
+                rewardvalue: rewardvalue,
+                rewardamount: parseFloat(
+                  (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
+                ),
+                rewardPoint: res?.result?.totalrewardpoints,
+                totalRewardPoints: res?.result?.totalrewardpoints,
+                redeemPoint: 0,
+              };
+              dispatch(setrewardpoint(rewards));
+            }
+          });
+        }
         dispatch(clearDeliveryRequestId());
 
-        // dispatch(
-        //   getAllCategoryMenuItems({
-        //     restaurantId: restaurantinfo.restaurantId,
-        //     locationId: lid,
-        //     customerId: userinfo?.customerId,
-        //     categories: "",
-        //     selectedCategoryUrl: "",
-        //   }) as any
-        // );
+        dispatch(
+          getAllCategoryMenuItems({
+            restaurantId: restaurantinfo.restaurantId,
+            locationId: lid,
+            customerId: userinfo?.customerId,
+            categories: "",
+            selectedCategoryUrl: "",
+          }) as any
+        );
         setisLoad(true);
 
         //const loadCat = useLoadCatData(restaurantinfo, false, categoryItemsList)
-        dispatch(
-          getAllCategoryMenuItems(restaurantinfo.restaurantId, lid) as any
-        );
+        // dispatch(
+        //   getAllCategoryMenuItems(restaurantinfo.restaurantId, lid) as any
+        // );
         router.push(`/${selctedTheme.url}/${dynamic}/${res?.locationURL}`);
       }
     });

@@ -36,7 +36,7 @@ export interface OrderState {
   calculatedTotal: number;
   cardShowMessage: string;
   deliveryRequestId: string;
-  futureOrderDay: string;
+  futureOrderDay: any;
 }
 
 export type CheckOrderTimeArgsTypes = {

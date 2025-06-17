@@ -175,7 +175,6 @@ export const mainSlice = createSlice({
       state.ischangelocation = action.payload;
     },
     setMainCategoryList(state, action: PayloadAction<MainCategory[]>) {
-      debugger;
       state.maincategoryList = action.payload;
     },
     setPromotionCategoryList(state, action: PayloadAction<MainCategory[]>) {
