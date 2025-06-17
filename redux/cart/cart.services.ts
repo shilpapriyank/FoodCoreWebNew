@@ -12,21 +12,35 @@ import { ParseArgsConfig } from "util";
 let responseclass = new ResponseModel();
 
 export class CartServices {
-  static async getCartItemList(
-    cartsessionId: string,
-    locationId: number,
-    restaurantId: number,
-    cartId: number,
-    customerId: number,
-    rewardpoints?: number,
-    redeemamount?: number,
-    deliveryaddressId?: number,
-    tipPercentage?: number,
-    tipAmount?: number,
-    ordertype?: string,
-    selectedTime: string = "",
-    requestId: string = ""
-  ): Promise<any | null> {
+  static async getCartItemList({
+    cartsessionId,
+    locationId,
+    restaurantId,
+    cartId,
+    customerId,
+    rewardpoints,
+    redeemamount,
+    deliveryaddressId,
+    tipPercentage,
+    tipAmount,
+    ordertype,
+    selectedTime,
+    requestId,
+  }: {
+    cartsessionId: string;
+    locationId: number;
+    restaurantId: number;
+    cartId: number;
+    customerId: number;
+    rewardpoints?: number;
+    redeemamount?: number;
+    deliveryaddressId?: number;
+    tipPercentage?: number;
+    tipAmount?: number;
+    ordertype?: string;
+    selectedTime: string;
+    requestId: string;
+  }): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getCartItemList";
     const location = ENDPOINTS.GET_CART_ITEM;
@@ -49,7 +63,7 @@ export class CartServices {
         ordertype,
         requestId,
         selectedTime,
-        recievingDate: getDate(),
+        // recievingDate: getDate(),
       },
     };
 

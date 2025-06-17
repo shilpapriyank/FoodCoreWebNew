@@ -41,6 +41,11 @@ import { displayViewUpdate } from "../../../../../redux/restaurants/restaurants.
 import { getCartItemCount } from "../../../../../redux/tableorder/tableorder.slice";
 import { CartServices } from "../../../../../redux/cart/cart.services";
 import { CartTypes } from "../../../../../redux/cart/cart.type";
+import { PopOver } from "../../common/popover.component";
+import MenuItemAddToCart from "../../menuitem/menuitem-add-to-cart.component";
+import ShareitemComponent from "../../common/shareitem.component";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -524,10 +529,11 @@ const CategoryMenuItems = ({
                                                     )}
                                                   </p>
                                                 ) : (
-                                                  // <PopOver
-                                                  //   description={menu.description}
-                                                  // ></PopOver>
-                                                  ""
+                                                  <PopOver
+                                                    description={
+                                                      menu.description
+                                                    }
+                                                  ></PopOver>
                                                 )}
                                               </div>
                                               <div className="plus-icon w-20 text-end">
@@ -540,13 +546,13 @@ const CategoryMenuItems = ({
                                               </div>
                                             </div>
                                             <div>
-                                              {/* <MenuItemAddToCart
-                                              shareUrl={shareUrl}
-                                              item={menu}
-                                              handleToggleDependnt={
-                                                handleToggleDependnt
-                                              }
-                                            /> */}
+                                              <MenuItemAddToCart
+                                                shareUrl={shareUrl}
+                                                item={menu}
+                                                handleToggleDependnt={
+                                                  handleToggleDependnt
+                                                }
+                                              />
                                             </div>
                                             {/* {menu.isregular && <ShareitemComponent size={25} title={menu.menuItemName} url={shareUrl} description={menu.description} linkClass="fs-5 pt-1" />} */}
                                           </>
@@ -579,10 +585,11 @@ const CategoryMenuItems = ({
                                                     )}
                                                   </p>
                                                 ) : (
-                                                  // <PopOver
-                                                  //   description={menu.description}
-                                                  // ></PopOver>
-                                                  ""
+                                                  <PopOver
+                                                    description={
+                                                      menu.description
+                                                    }
+                                                  ></PopOver>
                                                 )}
                                               </div>
                                               <div className="plus-icon w-20 text-end">
@@ -618,18 +625,18 @@ const CategoryMenuItems = ({
                                         )}
                                       </div>
                                       <div className="img">
-                                        {/* <LazyLoadImage
-                                        src={getImagePath(
-                                          menu.imgurl,
-                                          defaultLocation?.defaultmenuitemimage
-                                        )}
-                                        style={{ maxHeight: "136px" }}
-                                        effect="blur"
-                                        wrapperProps={{
-                                          style: { transitionDelay: "1s" },
-                                        }}
-                                        alt={menu.menuItemName}
-                                      /> */}
+                                        <LazyLoadImage
+                                          src={getImagePath(
+                                            menu.imgurl,
+                                            defaultLocation?.defaultmenuitemimage
+                                          )}
+                                          style={{ maxHeight: "136px" }}
+                                          effect="blur"
+                                          wrapperProps={{
+                                            style: { transitionDelay: "1s" },
+                                          }}
+                                          alt={menu.menuItemName}
+                                        />
                                         {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt style={{ maxHeight: "136px" }} /> */}
                                         <a
                                           data-toggle="tooltip"

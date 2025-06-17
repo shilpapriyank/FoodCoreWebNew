@@ -89,8 +89,8 @@ export const updaterestaurantsdetail = createAsyncThunk(
 );
 
 export const restaurantAllLocation = createAsyncThunk(
-  "restaurant/restaurantAllLocation",
-  //RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
+  //"restaurant/restaurantAllLocation",
+  RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
   async (restaurantId: number) => {
     const response = await LocationServices.getAllLoaction(restaurantId);
     return response;
@@ -196,7 +196,7 @@ const restaurantSlice = createSlice({
     );
     builder.addCase(
       restaurantAllLocation.fulfilled,
-      (state, action: PayloadAction<any[]>) => {
+      (state, action: PayloadAction<any>) => {
         state.restaurantslocationlistwithtime = {
           addressList: action.payload,
         };

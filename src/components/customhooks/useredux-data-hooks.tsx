@@ -64,6 +64,12 @@ export const useReduxData = () => {
   // const addressList = useSelector(
   //   (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
   // );
+  const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
+    order?.checktime,
+    restaurantinfo,
+    order?.futureOrderDay?.futureDate,
+    order.isasap
+  );
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
   );
@@ -135,16 +141,16 @@ export const useReduxData = () => {
     session,
     restauranttiming,
     tableorder,
+    recievingTime,
+    meredian,
+    recievingDate,
+    rewardpoints,
     // cart,
     // main,
-    rewardpoints,
     // session,
     // studentdata,
     // sessionid,
     // addressList,
-    // recievingTime,
-    // meredian,
-    // recievingDate,
     // orderTimeType,
     // cartItemsAmountTotal,
     // cartItemsQuantity,
