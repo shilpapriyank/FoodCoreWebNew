@@ -22,6 +22,8 @@ export interface OrderDisableData {
 export interface AsapLaterOnState {
     isAsap: boolean;
     isDisableAsapLateron: boolean;
+    isdisplay: boolean;
+    isLateron: boolean;
 }
 
 export interface TimeSlotPopupComponentProps {

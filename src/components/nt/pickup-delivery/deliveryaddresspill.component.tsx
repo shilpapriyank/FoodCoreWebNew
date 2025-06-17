@@ -6,9 +6,9 @@ import AddressPill from '@/components/common/address-pill.component';
 import { AddressItem } from '@/types/address-types/address.type';
 
 interface DeliveryAddressPillProps {
-    address: AddressItem;
+    address: any;
     isChecked: boolean;
-    id: number;
+    id: string;
     handleChangeAddress: (address: AddressItem) => void;
     handleDeleteAddress?: (id: number) => void;
 }
