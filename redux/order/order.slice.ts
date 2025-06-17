@@ -69,7 +69,7 @@ const orderSlice = createSlice({
     addCardShowMessage: (state, action: PayloadAction<string>) => {
       state.cardShowMessage = action.payload;
     },
-    resetOrder: (state) => {
+    resetOrders: (state) => {
       state.checktime = "";
       state.isasap = false;
       state.isRedirectToCheckout = false;
@@ -113,7 +113,7 @@ export const {
   emptyordertime,
   addCalculatedTotal,
   addCardShowMessage,
-  resetOrder,
+  resetOrders,
   resetOrdersData,
   setDeliveryRequestId,
   clearDeliveryRequestId,

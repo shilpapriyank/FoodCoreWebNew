@@ -131,7 +131,7 @@ const deliveryAddressSlice = createSlice({
     addTempDeliveryAddress(state, action: PayloadAction<any>) {
       state.tempDeliveryAddress = action.payload;
     },
-    deleteTempDeliveryAddress(state) {
+    DeleteTempDeliveryAddress(state) {
       state.tempDeliveryAddress = null;
     },
     resetDeliveryAddress() {
@@ -162,7 +162,7 @@ export const {
   registerAddress,
   insertAddressId,
   addTempDeliveryAddress,
-  deleteTempDeliveryAddress,
+  DeleteTempDeliveryAddress,
   resetDeliveryAddress,
 } = deliveryAddressSlice.actions;
 

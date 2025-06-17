@@ -26,7 +26,9 @@ import mainReducer from "./main/main.slice";
 import { thunk } from "redux-thunk";
 import tableOrderReducer from "./tableorder/tableorder.slice";
 import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
-import deliveryaddressReducer from "./delivery-address/delivery-address.slice"
+import deliveryaddressReducer from "./delivery-address/delivery-address.slice";
+import studentReducer from '../redux/student/student.slice';
+
 // Combine reducers
 const rootReducer = combineReducers({
   restaurant: restaurantsReducer,
@@ -43,6 +45,7 @@ const rootReducer = combineReducers({
   tableorder: tableOrderReducer,
   rewardpoints: rewardpointReducer,
   deliveryaddress: deliveryaddressReducer,
+   student: studentReducer
 });
 
 // Persist configuration
@@ -56,7 +59,6 @@ const persistConfig = {
 // Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Middleware setup with logger only in development
 const middleware = (
   getDefaultMiddleware: typeof configureStore.prototype.middleware
 ) => {
@@ -78,10 +80,6 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware,
 });
-
-// Persistor
 export const persistor = persistStore(store);
-
-// Types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
