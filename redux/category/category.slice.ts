@@ -87,7 +87,7 @@ export const getAllCategoryMenuItems = createAsyncThunk(
     }: {
       restaurantId: number;
       locationId: number;
-      customerId: number;
+      customerId: any;
       categories: string;
       selectedCategoryUrl?: string | null;
     },

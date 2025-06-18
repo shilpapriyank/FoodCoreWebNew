@@ -412,7 +412,16 @@ const PickupDeliveryTimeSelectPopup: React.FC<PickupDeliveryTimeSelectPopupProps
                             </a>
                             <div className="modal-body">
                                 <a> <p>{DELIVERYPAGEMESSAGE.PICK_A_DATE_MESSAGE}</p> </a>
-                                <a> <p>{DELIVERYPAGEMESSAGE.PREP_TIME}&nbsp;<b>{pickupordelivery === ORDER_TYPE.DELIVERY.text ? defaultLocation?.ordersubmittime : defaultLocation.takeawayextratime} minute</b></p> </a>
+                                <a>
+                                    <p>
+                                        {DELIVERYPAGEMESSAGE.PREP_TIME}&nbsp;
+                                        <b>
+                                            {pickupordelivery === ORDER_TYPE.DELIVERY.text
+                                                ? (defaultLocation?.ordersubmittime ?? 0)
+                                                : (defaultLocation?.takeawayextratime ?? 0)
+                                            } minute
+                                        </b>
+                                    </p>                                </a>
                                 <AsapLateronButtonComponent handleAsapClick={handleAsapClick} handleLaterOnClick={handleLaterOnClick}
                                     isTakeOutPickupTime={isTakeOutPickupTime} pickupWindow={pickupWindow} deliveryWindow={pickupWindow}
                                     isTakeOutAsap={isTakeOutAsap} defaultLocation={defaultLocation} activeButtonClass={activeButtonClass} isDeliveryWindowAvailable={isDeliveryWindowAvailable} isPickupWindowAvailable={isPickupWindowAvailable} />

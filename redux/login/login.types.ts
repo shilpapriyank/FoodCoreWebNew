@@ -15,6 +15,10 @@ export interface LoginParams {
 
 export interface LoggedInUser {
   [key: string]: any;
+  customerId: number;
+  emailId: string;
+  totalRewardPoints: number;
+  isVerified: boolean;
 }
 
 export interface LoginState {

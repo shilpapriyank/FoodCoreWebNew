@@ -10,6 +10,7 @@ export interface PromotionTypes {
 }
 export interface AllRegex {
   phoneRegex1: RegExp;
+  phoneRegex2:RegExp;
   validwithFormatephoneRegex: RegExp;
   phoneRegex3: RegExp;
   validdigit: RegExp;
