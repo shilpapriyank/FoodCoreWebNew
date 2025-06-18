@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useEffect, useCallback, useTransition, useMemo } from "react";
-import { fixedLengthString, getImagePath } from "../../common/utility";
+import {
+  fixedLengthString,
+  getImagePath,
+  ViewTypeEnum,
+} from "../../common/utility";
 import CategorySidebar from "../category-sidebar/category-sidebar.component";
 // import MenuItemDetail from "../../menuitem/menuitem.component";
 import { useState } from "react";
@@ -46,6 +50,10 @@ import MenuItemAddToCart from "../../menuitem/menuitem-add-to-cart.component";
 import ShareitemComponent from "../../common/shareitem.component";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { CategoryItem } from "@/types/category-types/category.services.type";
+import MenuItemQuickOrder from "../../menuitem/menuitem-quick-order.component";
+import FavouriteSkeleton from "../../skeleton/favourite-skeleton";
+import ScrollToTop from "@/components/common/scroll-to-top";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -78,8 +86,10 @@ const CategoryMenuItems = ({
   const dispatch = useAppDispatch();
   const [openLoginModal, setopenLoginModal] = useState<boolean>(false);
   const [updateView, setUpdateView] = useState<boolean>(true);
-  const [viewType, setViewType] = useState<string>(
-    restaurantinfo?.defaultLocation?.displaylistview ? "list" : "grid"
+  const [viewType, setViewType] = useState<ViewTypeEnum>(
+    restaurantinfo?.defaultLocation?.displaylistview
+      ? ViewTypeEnum.LIST
+      : ViewTypeEnum.GRID
   );
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
   const searchtext = menuitem?.searchtext;
@@ -99,9 +109,8 @@ const CategoryMenuItems = ({
     index,
     menuitemId,
   } = params;
-  const normalizedMenuItemId =
-    typeof menuitemId === "string" ? menuitemId : menuitemId?.[0] ?? "";
-
+  //const normalizedMenuItemId = typeof menuitemId === "string" ? menuitemId : menuitemId?.[0] ?? "";
+  const normalizedMenuItemId = menuitemId;
   const [isBottomSlide, setisBottomSlide] = useState(false);
   const ordertype =
     selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -168,18 +177,10 @@ const CategoryMenuItems = ({
     if (dependentId > 0) {
       // console.log(dependentId)
       setopenMenuItemModal(true);
-      dispatch(
-        selectedMenuItem({
-          menuitemId: dependentId,
-          qty: 1,
-          dependedItemId:
-            selectedMenuItemDetail?.dependedItemId ??
-            selectedMenuItemDetail?.menuitemId,
-        })
-      );
+      //dispatch(selectedMenuItem())
 
       MenuItemServices.getMenuItemList({
-        restaurantId: restaurantinfo?.restaurantId as number,
+        restaurantId: restaurantinfo?.restaurantId,
         locationId: restaurantinfo.defaultlocationId,
         customerId: customerId,
         menuitemId: dependentId,
@@ -315,7 +316,7 @@ const CategoryMenuItems = ({
     }
   };
 
-  const handleClickView = (type: any) => {
+  const handleClickView = (type: ViewTypeEnum) => {
     setViewType(type);
     // Object.entries(restaurantinfo.defaultLocation).map(([key,value])=>{
     //   if(key=='displaylistview')
@@ -323,7 +324,7 @@ const CategoryMenuItems = ({
     //     restaurantinfo.defaultLocation.displaylistview=true
     //   }
     // })
-    if (type === "list") dispatch(displayViewUpdate(true));
+    if (type === ViewTypeEnum.LIST) dispatch(displayViewUpdate(true));
     else dispatch(displayViewUpdate(false));
   };
 
@@ -487,7 +488,7 @@ const CategoryMenuItems = ({
                             </a>
                           </div>
                         </div>
-                        {viewType === "list" && (
+                        {viewType === ViewTypeEnum.LIST && (
                           <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
                             {category?.menuitems?.map(
                               (menu: any, index: any) => {
@@ -663,14 +664,14 @@ const CategoryMenuItems = ({
                           </div>
                         )}
 
-                        {viewType === "grid" && (
+                        {viewType === ViewTypeEnum.GRID && (
                           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
                             {category?.menuitems?.map((menu: any) => {
                               return (
                                 <div className="cols menu-item">
                                   <div className="card features itembox">
                                     <div className="img position-relative">
-                                      {/* <LazyLoadImage
+                                      <LazyLoadImage
                                         src={getImagePath(
                                           menu.imgurl,
                                           defaultLocation?.defaultmenuitemimage
@@ -682,7 +683,7 @@ const CategoryMenuItems = ({
                                           style: { transitionDelay: "1s" },
                                         }}
                                         alt={menu.menuItemName}
-                                      /> */}
+                                      />
                                       {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt={menu.menuItemName} className="img-fluid" /> */}
                                       <a
                                         className="fa plusbutton fa-plus"
@@ -704,14 +705,14 @@ const CategoryMenuItems = ({
                                           </span>
                                         )}
                                       </h3>
-                                      {/* {menu?.quickorderallow && (
+                                      {menu?.quickorderallow && (
                                         <div className="d-flex justify-content-center mt-2">
                                           <MenuItemQuickOrder
                                             quickOrderClick={quickOrderClick}
                                             item={menu}
                                           />
                                         </div>
-                                      )} */}
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -723,9 +724,9 @@ const CategoryMenuItems = ({
                     );
                   })}
                 {/* {((isShowSkeleton&&menuItemsWithCat?.length===0)|| (Object.keys(searchdata).length === 0 && errorMessage == "" && searchtext !== "")) && <FavouriteSkeleton />} */}
-                {/* {Object.keys(searchdata).length === 0 &&
+                {Object.keys(searchdata).length === 0 &&
                   errorMessage == "" &&
-                  searchtext !== "" && <FavouriteSkeleton />} */}
+                  searchtext !== "" && <FavouriteSkeleton />}
                 {errorMessage && (
                   <h4 className="red-text text-center mt-5">{errorMessage}</h4>
                 )}
@@ -740,7 +741,7 @@ const CategoryMenuItems = ({
           </div>
         </section>
       )}
-      {/* <ScrollToTop /> */}
+      <ScrollToTop />
       {/* <MenuItemDetail /> */}
       {/* {openMenuItemModal && (
         <MenuItemModal

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 export interface CommonModalProps {
     title: string;
@@ -17,20 +17,19 @@ export interface CommonModalProps {
     handleClickBtn2?: () => void;
 }
 
-
 const CommonModal: React.FC<CommonModalProps> = ({
-    title,
-    isbtn2,
-    text,
-    keyName,
-    handleToggle,
-    children,
-    handleClickBtn1,
-    handleClickBtn2,
-    isOpenModal,
-    btn1Name = 'OK',
-    btn2Name = 'Cancel',
-    isDisplayCloseIcon = true,
+  title,
+  isbtn2,
+  text,
+  keyName,
+  handleToggle,
+  children,
+  handleClickBtn1,
+  handleClickBtn2,
+  isOpenModal,
+  btn1Name = "OK",
+  btn2Name = "Cancel",
+  isDisplayCloseIcon = true,
 }) => {
     return (
          <>

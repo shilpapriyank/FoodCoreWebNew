@@ -17,7 +17,7 @@ import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.sli
 import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import UserExist from "../../login-register/user-exist.component";
 import { PAGES } from "../../common/pages";
@@ -26,7 +26,7 @@ import { AppDispatch } from "../../../../../redux/store";
 import CartCounter from "../../common/cart-counter.component";
 import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
-import VerifyPhoneComponent from "../../login-register/verifyphone.component";
+//import VerifyPhoneComponent from "../../login-register/verifyphone.component";
 import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.component";
 import Login from "../../login-register/login.component";
 import AccountConfirmation from "../../login-register/accountconfirmation.component";
@@ -189,7 +189,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                         <a className="cursor_pointer app-icon px-1" href={restaurantinfo?.androidlink} target="_blank" rel="noreferrer"><img src="/nt/img/android.png" /></a>
                       }
                     </div>
-                    <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
+                    {/* <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
                     {(!b2b && !isSchoolProgramEnabled) && <>    {orderTypeName !== "" && <label className='d-none d-md-block'>{orderTypeName} time</label>}
                       <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '>
                         {orderTypeName !== "" && <span className='d-md-none text-dark me-1'>{orderTypeName} time</span>}
@@ -198,7 +198,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                         {order.checktime !== "" && <span className='btn-default' onClick={() => handleToggleTimingModal(true)}> {order.checktime}</span>}
                         {userinfo === null && <span className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1" onClick={() => handleOpenLoginModal(true)}>Login</span>}
                       </h6>
-                    </>}
+                    </>} */}
                     {
                       (isSchoolProgramEnabled && userinfo === null) && <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '><span className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1" onClick={() => handleOpenLoginModal(true)}>Login</span></h6>
                     }
@@ -224,9 +224,10 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           handleToggleTimingModal={handleToggleTimingModal}
         />
       )}
-      <CommonModal title={`Welcome ${userinfo?.firstname} !`}
-        btn1Name='Close'
-        keyName='openRewardModal'
+      <CommonModal
+        title={`Welcome ${userinfo?.firstname} !`}
+        btn1Name="Close"
+        keyName="openRewardModal"
         isbtn2={false}
         handleClickBtn1={() => handleToggle(false, 'openRewardModal')}
         handleToggle={handleToggle as (value: boolean, keyName?: string) => void}
@@ -283,13 +284,13 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         modalState.openUserExistModal && <UserExist isOpenModal={modalState.openUserExistModal} handleToggle={handleToggle} handleClickBtn1={handleClickUserExist} />
       }
 
-      {
+      {/* {
         modalState.openVerifyPhone &&
         <VerifyPhoneComponent
           isOpenModal={modalState.openVerifyPhone}
           handleToggle={handleToggle}
         />
-      }
+      } */}
       {
         modalState.openForgotPassModal &&
         <ForgotPasswordComponent
