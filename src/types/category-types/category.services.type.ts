@@ -6,7 +6,7 @@ export interface MenuItemRequest {
 }
 
 // Types
-export type CategoryItem = {
+export interface CategoryItem {
   catId: number;
   catName: string;
   sortorder: number;
@@ -14,9 +14,27 @@ export type CategoryItem = {
   isdeliveryavailable: boolean;
   istakeoutavailable: boolean;
   imgurl: string;
-};
+}
 
-export type CategoryItemType = {
+export interface MenuItemType {
+  menuitemId: number;
+  catId: number;
+  menuItemName: string;
+  menuitemslug: string;
+  description: string;
+  imgurl: string;
+  price: string; // Stored as string like "20.00"
+  originalPrice: number;
+  currency: string;
+  sortorder: number;
+  isregular: boolean;
+  quickorderallow: boolean;
+  isFavoriteMenu: boolean;
+  isMenuCategoryDiscountApplied: boolean;
+  menuitemstatus: any[]; // Update with a specific type if you know the shape
+}
+
+export interface CategoryItemType {
   catId: number;
   catName: string;
   sortorder: number;
@@ -24,7 +42,8 @@ export type CategoryItemType = {
   isdeliveryavailable: boolean;
   istakeoutavailable: boolean;
   imgurl: string;
-};
+  menuitems?: MenuItemType[];
+}
 
 export interface POSRequest {
   restaurantId: number;

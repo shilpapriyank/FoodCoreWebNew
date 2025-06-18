@@ -22,7 +22,7 @@ import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.sli
 import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 // import Register from '../../login-register/register.component';
 import UserExist from "../../login-register/user-exist.component";
@@ -35,8 +35,7 @@ import { AppDispatch } from "../../../../../redux/store";
 import CartCounter from "../../common/cart-counter.component";
 import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
-import VerifyPhoneComponent from "../../login-register/verifyphone.component";
-
+// import VerifyPhoneComponent from "../../login-register/verifyphone.component";
 
 interface HeaderProps {
   handleChangeAddress?: () => void;
@@ -162,8 +161,9 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
               {isHomePage ? (
                 <>
                   <a
-                    className={`logo d-md-block ${userinfo === null ? "d-none" : ""
-                      }`}
+                    className={`logo d-md-block ${
+                      userinfo === null ? "d-none" : ""
+                    }`}
                   >
                     <span className="head-arrow">
                       <i className="fa fa-angle-left" />
@@ -201,37 +201,37 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                 pathname.includes(PAGES.PAYMENT) ||
                 pathname.includes(PAGES.CREATE_NEW_PASS)
               ) && (
-                  <form>
-                    <div className="align-form">
-                      <div className="d-flex justify-content-center mb-2 mb-md-0">
-                        {restaurantinfo?.ioslink && (
-                          <a
-                            className="cursor_pointer app-icon px-1"
-                            href={restaurantinfo?.ioslink}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <img src="/nt/img/app_store.png" />
-                          </a>
-                        )}
-                        {restaurantinfo?.androidlink && (
-                          <a
-                            className="cursor_pointer app-icon px-1"
-                            href={restaurantinfo?.androidlink}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <img src="/nt/img/android.png" />
-                          </a>
-                        )}
-                      </div>
+                <form>
+                  <div className="align-form">
+                    <div className="d-flex justify-content-center mb-2 mb-md-0">
+                      {restaurantinfo?.ioslink && (
+                        <a
+                          className="cursor_pointer app-icon px-1"
+                          href={restaurantinfo?.ioslink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src="/nt/img/app_store.png" />
+                        </a>
+                      )}
+                      {restaurantinfo?.androidlink && (
+                        <a
+                          className="cursor_pointer app-icon px-1"
+                          href={restaurantinfo?.androidlink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src="/nt/img/android.png" />
+                        </a>
+                      )}
+                    </div>
 
-                      <SelectedAddressHeader
+                    {/* <SelectedAddressHeader
                         b2b={b2b}
                         handleToggleOrderTypeModal={handleToggleOrderTypeModal}
-                      />
+                      /> */}
 
-                      {!b2b && !isSchoolProgramEnabled && (
+                    {/* {!b2b && !isSchoolProgramEnabled && (
                         <>
                           {" "}
                           {orderTypeName !== "" && (
@@ -277,20 +277,20 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                             )}
                           </h6>
                         </>
-                      )}
-                      {isSchoolProgramEnabled && userinfo === null && (
-                        <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
-                          <span
-                            className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
-                            onClick={() => handleOpenLoginModal(true)}
-                          >
-                            Login
-                          </span>
-                        </h6>
-                      )}
-                    </div>
-                  </form>
-                )}
+                      )} */}
+                    {isSchoolProgramEnabled && userinfo === null && (
+                      <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
+                        <span
+                          className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
+                          onClick={() => handleOpenLoginModal(true)}
+                        >
+                          Login
+                        </span>
+                      </h6>
+                    )}
+                  </div>
+                </form>
+              )}
             </div>
             <div className="col-lg-2 col-md-12 text-md-end col-12 d-none d-md-block">
               <UserDropdown
@@ -317,13 +317,15 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           handleToggleTimingModal={handleToggleTimingModal}
         />
       )}
-      <CommonModal title={`Welcome ${userinfo?.firstname} !`}
-        btn1Name='Close'
-        keyName='openRewardModal'
+      <CommonModal
+        title={`Welcome ${userinfo?.firstname} !`}
+        btn1Name="Close"
+        keyName="openRewardModal"
         isbtn2={false}
-        handleClickBtn1={() => handleToggle(false, 'openRewardModal')}
+        handleClickBtn1={() => handleToggle(false, "openRewardModal")}
         //  handleToggle={handleToggle}
-        isOpenModal={modalState.openRewardModal} >
+        isOpenModal={modalState.openRewardModal}
+      >
         {/* <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{userinfo.totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6> */}
         <h6>You can use these points at checkout to save</h6>
       </CommonModal>

@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { CUSTOMER_TYPE, ORDERTYPE } from "../common/utility";
 import { useReduxData } from "./useredux-data-hooks";
 import { CategoryType } from "@/types/customhook-types/usesearchdata-type";
+import { CategoryItemType } from "@/types/category-types/category.services.type";
 
 const useUtility = () => {
   const { userinfo, restaurantinfo } = useReduxData();
@@ -37,9 +38,9 @@ const useUtility = () => {
 
   // ✅ Filter categories based on pickup/delivery type
   const filterCategory = (
-    allCat: CategoryType[],
+    allCat: CategoryItemType[],
     pickupordelivery?: string
-  ): CategoryType[] => {
+  ): CategoryItemType[] => {
     if (!pickupordelivery || allCat?.length === 0) return allCat;
 
     if (pickupordelivery === ORDERTYPE.Pickup) {

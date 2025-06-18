@@ -3,18 +3,21 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryServices } from "./category.services";
 import { CategoryTypes } from "./category.types";
 import { MainTypes } from "../main/main.type";
-import { CategoryItem } from "@/types/category-types/category.services.type";
+import {
+  CategoryItem,
+  CategoryItemType,
+} from "@/types/category-types/category.services.type";
 import { setMainCategoryList } from "../main/main.slice";
 import { MainCategory } from "@/types/mainservice-types/mainservice.type";
 
 export interface CategoryState {
-  selectedcategorydetail: Record<string, any>;
-  categoryitemlist: CategoryItem[];
-  categorylist: any[];
+  selectedcategorydetail: any[];
+  categoryitemlist: CategoryItemType[];
+  categorylist: CategoryItem[];
 }
 
 const initialState: CategoryState = {
-  selectedcategorydetail: {},
+  selectedcategorydetail: [],
   categoryitemlist: [],
   categorylist: [],
 };
@@ -163,26 +166,29 @@ const categorySlice = createSlice({
     removeCategoryList: (state) => {
       state.categoryitemlist = [];
     },
-    setCategoryList: (state, action: PayloadAction<any[]>) => {
+    setCategoryList: (state, action: PayloadAction<CategoryItemType[]>) => {
       state.categoryitemlist = action.payload;
     },
     resetCategory: (state) => {
-      state.selectedcategorydetail = {};
+      state.selectedcategorydetail = [];
       state.categoryitemlist = [];
     },
   },
   extraReducers: (builder) => {
     builder.addCase(
       getCategoryItemList.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<CategoryItemType[]>) => {
         //state.categoryitemlist = action.payload;
         state.categorylist = action.payload;
         // state.categoryitemlist = action.payload;
       }
     );
-    builder.addCase(getCategoryItemListPOS.fulfilled, (state, action) => {
-      state.categoryitemlist = action.payload;
-    });
+    builder.addCase(
+      getCategoryItemListPOS.fulfilled,
+      (state, action: PayloadAction<CategoryItemType[]>) => {
+        state.categoryitemlist = action.payload;
+      }
+    );
     builder.addCase(
       getAllCategoryMenuItems.fulfilled,
       (state, action: PayloadAction<any>) => {

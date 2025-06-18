@@ -1,3 +1,8 @@
+export enum ViewTypeEnum {
+  GRID = "grid",
+  LIST = "list",
+}
+
 export const getImagePath = (
   itemImage: string | null | undefined,
   defaultImage: string | null | undefined
@@ -16,6 +21,7 @@ export const getImagePath = (
     }
   }
 };
+
 function decodeHTMLEntities(text: string): string {
   const parser = new DOMParser();
   const parsed = parser.parseFromString(text, "text/html").body.textContent;
@@ -49,8 +55,19 @@ export const getDesc = (text: string): string => {
 };
 
 export const MonthList = (mname: number): string => {
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   return monthNames[mname];
 };

@@ -8,10 +8,13 @@ import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hoo
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useUtility from "@/components/customhooks/utility-hook";
 import { selectedCategory } from "../../../../../redux/category/category.slice";
-import { useAppDispatch } from "../../../../../redux/hooks";
-import { refreshCategoryList } from "../../../../../redux/main/main.slice";
+import { AppDispatch } from "../../../../../redux/store";
+import {
+  CategoryItem,
+  CategoryItemType,
+} from "@/types/category-types/category.services.type";
 
-const CategoryHeader = ({ selectedCatId }: any) => {
+const CategoryHeader = ({ selectedCatId }: { selectedCatId: string }) => {
   const {
     restaurantinfo,
     maincategoryList,
@@ -24,21 +27,22 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   const params = useParams();
   const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
-  const dispatch = useAppDispatch();
-  const [selectedCategoryId, setSelectedCategoryId] = useState(
-    selectedcategory && selectedcategory?.catId
+  const dispatch = useDispatch<AppDispatch>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(
+    selectedcategory && selectedcategory?.[0]?.catId
   );
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
-  //const categoryListItems = maincategoryList;
-  const categoryListItems =
+  const categoryListItems: CategoryItemType[] =
     searchtext !== "" ? searchdata?.categories : maincategoryList;
   let pickupordelivery = selecteddelivery.pickupordelivery;
   const { filterCategory } = useUtility();
   const catWithSearch = filterCategory(categoryListItems, pickupordelivery);
+  console.log("category with search", catWithSearch);
   const activeItemRef = useRef<HTMLLIElement | null>(null);
   const [activeSection, setActiveSection] = useState<string>("");
-  const handleClick = (slug: any, catId: any) => {
+
+  const handleClick = (slug: string, catId: number) => {
     const selected = catWithSearch.filter((x) => x.catId === catId);
     setSelectedCategoryId(catId);
     dispatch(selectedCategory(selected));
@@ -56,10 +60,10 @@ const CategoryHeader = ({ selectedCatId }: any) => {
         inline: "center", // Align horizontally
       });
     }
-  }, [selectedCategoryId, selectedcategory, category]);
+  }, []);
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
 
-  const handleScrollItem = (id: any) => {
+  const handleScrollItem = (id: string) => {
     const item = document.getElementById(`scroll-${id}`);
     if (item) {
       const parent = item.parentNode as HTMLElement | null;
@@ -115,10 +119,10 @@ const CategoryHeader = ({ selectedCatId }: any) => {
               <div className="col-12">
                 <ul className="categories-scroll">
                   {catWithSearch &&
-                    catWithSearch?.map((c: any) => {
+                    catWithSearch?.map((c: CategoryItemType) => {
                       const isActive =
                         selectedCategoryId === c.catId ||
-                        selectedcategory?.catId === c.catId ||
+                        selectedcategory[0]?.catId === c.catId ||
                         category === c.categoryslug;
                       let menuImage = getImagePath(
                         c.imgurl,

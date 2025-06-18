@@ -2,23 +2,27 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { MenuItemServices } from "./menu-item.services";
 import { MenuItemTypes } from "./menuitem.type";
+import {
+  MenuItemDetailList,
+  SelectedMenuItemDetail,
+} from "@/types/menuitem-types/menuitem.type";
 
 // Types
 export interface MenuItemState {
-  selectedmenuitemdetail: Record<string, any>;
-  menuitemdetaillist: Record<string, any>;
+  selectedmenuitemdetail: SelectedMenuItemDetail[];
+  menuitemdetaillist: MenuItemDetailList[];
   selecteditemquantity: number;
   updateitemoptionincart: number;
   searchtext: string;
   searchdata: Record<string, any>;
   dependentid: number;
-  dependentitemids: any[];
+  dependentitemids: number[];
   dependentqty: number;
 }
 
 const initialState: MenuItemState = {
-  selectedmenuitemdetail: {},
-  menuitemdetaillist: {},
+  selectedmenuitemdetail: [],
+  menuitemdetaillist: [],
   selecteditemquantity: 0,
   updateitemoptionincart: 0,
   searchtext: "",
@@ -30,7 +34,8 @@ const initialState: MenuItemState = {
 
 // Async Thunks
 export const getMenuItemDetailes = createAsyncThunk(
-  MenuItemTypes.MENU_ITEM_DETAIL_LIST,
+  "menuitem/getMenuItemDetailes",
+  //MenuItemTypes.MENU_ITEM_DETAIL_LIST,
   async ({
     restaurantId,
     locationId,
@@ -143,26 +148,26 @@ export const updateItemToCart = createAsyncThunk(
 
 // Slice
 const menuItemSlice = createSlice({
-  name: "menuItem",
+  name: "menuitem",
   initialState,
   reducers: {
     setMenuCategoryData: (state, action) => {
       state.menuitemdetaillist = action.payload;
     },
-    selectedMenuItem: (state, action: PayloadAction<any>) => {
-      state.selectedmenuitemdetail = action.payload;
+    selectedMenuItem: (state, action: PayloadAction<MenuItemDetailList[]>) => {
+      state.menuitemdetaillist = action.payload;
     },
     removeMenuItemForFavorite: (state) => {
-      state.selectedmenuitemdetail = {};
+      state.selectedmenuitemdetail = [];
     },
-    selectedItemSize: (state, action: PayloadAction<any>) => {
+    selectedItemSize: (state, action: PayloadAction<MenuItemDetailList[]>) => {
       state.menuitemdetaillist = action.payload;
     },
     removeMenuItem: (state) => {
-      state.menuitemdetaillist = {};
+      state.menuitemdetaillist = [];
     },
     removeMenuItemSelectedData: (state) => {
-      state.selectedmenuitemdetail = {};
+      state.selectedmenuitemdetail = [];
     },
     selecteditemquantity: (state, action: PayloadAction<number>) => {
       state.selecteditemquantity = action.payload;
@@ -189,9 +194,7 @@ const menuItemSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getMenuItemDetailes.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.menuitemdetaillist = action.payload;
-      }
+      state.menuitemdetaillist = action.payload;
     });
   },
 });

@@ -34,10 +34,7 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 import { RestaurantsTypes } from "../../../redux/restaurants/restaurants.types";
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
-  restaurantsAllLocation,
   restaurantsdetail,
-  restaurantsLocation,
-  restaurantstiming,
   setAppVersion,
 } from "../../../redux/restaurants/restaurants.slice";
 import { PAGES } from "../nt/common/pages";
@@ -51,13 +48,10 @@ import useLoadCatData from "../customhooks/useloadcatdata-hook";
 import { clearRedux } from "../../../redux/clearredux/clearredux.slice";
 import { createSessionId } from "../../../redux/session/session.slice";
 import { getSelectedRestaurantTime } from "../../../redux/main/main.slice";
-import {
-  emptyordertime,
-  setFutureOrderDay,
-} from "../../../redux/order/order.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
 import { RootState } from "../../../redux/store";
 import { Action } from "@reduxjs/toolkit";
+import { DefaultLocationApiTypes } from "@/types/restaurant-types/restaurant.type";
 
 interface Props {
   children: ReactNode;
@@ -72,10 +66,9 @@ const RestaurantComponent = ({
 }: Props) => {
   const { restaurant, cart, metadata, category, userinfo, order, sessionid } =
     useReduxData();
-  const customerId = userinfo ? userinfo.customerId : 0;
+  const customerId: number = userinfo ? userinfo.customerId : 0;
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const params = useParams();
   let sessionId = sessionid;
   const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
@@ -350,7 +343,7 @@ const RestaurantComponent = ({
           : restaurantslocationlistwithtime?.addressList;
       if (restaurantslocationlist.addressList !== undefined) {
         let linkLoacationurl = formatStringToURLWithBlankSpace(location);
-        addressList.map((locations: any) => {
+        addressList.map((locations: DefaultLocationApiTypes) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL
           );

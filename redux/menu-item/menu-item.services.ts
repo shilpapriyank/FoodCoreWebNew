@@ -6,6 +6,10 @@ import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+import {
+  MenuItemDetailList,
+  SelectedMenuItemDetail,
+} from "@/types/menuitem-types/menuitem.type";
 
 let responseclass = new ResponseModel();
 
@@ -24,7 +28,7 @@ export class MenuItemServices {
     menuitemId: number;
     cartsessionId: string;
     cartId: number;
-  }): Promise<any[] | null> {
+  }): Promise<MenuItemDetailList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuItemList";
     const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
@@ -175,7 +179,7 @@ export class MenuItemServices {
   }: {
     orderobj: any;
     restaurantId: number;
-  }): Promise<any | null> {
+  }): Promise<SelectedMenuItemDetail[] | null> {
     responseclass = new ResponseModel();
     const methodName = "addItemToCart";
     const location = ENDPOINTS.ADD_ITEM_TO_CART;

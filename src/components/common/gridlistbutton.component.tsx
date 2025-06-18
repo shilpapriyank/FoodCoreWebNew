@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
+import { ViewTypeEnum } from "../nt/common/utility";
 
 interface GridListButtonProps {
-  viewType: "grid" | "list" | string;
-  handleClickView: (type: "grid" | "list") => void;
+  viewType: ViewTypeEnum;
+  handleClickView: (type: ViewTypeEnum) => void;
   dynamicColor?: string;
 }
 
@@ -15,22 +16,36 @@ const GridListButton: React.FC<GridListButtonProps> = ({
 }) => {
   return (
     <span className="icon-group">
-      <span className="cursor_pointer" onClick={() => handleClickView("list")}>
+      <span
+        className="cursor_pointer"
+        onClick={() => handleClickView(ViewTypeEnum.LIST)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height={25}
           width={25}
           viewBox="0 0 512 512"
-          fill={viewType !== "grid" ? dynamicColor ?? "#FF7332" : "#000000"}
+          fill={
+            viewType !== ViewTypeEnum.GRID
+              ? dynamicColor ?? "#FF7332"
+              : "#000000"
+          }
         >
           <path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z" />
         </svg>
       </span>
       &nbsp; &nbsp;
-      <span onClick={() => handleClickView("grid")} className="cursor_pointer">
+      <span
+        onClick={() => handleClickView(ViewTypeEnum.GRID)}
+        className="cursor_pointer"
+      >
         {" "}
         <svg
-          fill={viewType === "grid" ? dynamicColor ?? "#FF7332" : "#000000"}
+          fill={
+            viewType === ViewTypeEnum.GRID
+              ? dynamicColor ?? "#FF7332"
+              : "#000000"
+          }
           width={25}
           height={25}
           viewBox="0 0 52 52"
