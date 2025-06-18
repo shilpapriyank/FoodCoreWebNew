@@ -1,68 +1,281 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import handleNotify from '../../default/helpers/toaster/toaster-notify';
+import { ToasterPositions } from '../../default/helpers/toaster/toaster-positions';
+import { ToasterTypes } from '../../default/helpers/toaster/toaster-types';
+import { selecteddeliveryaddress } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
+import { setDeliveryRequestId } from '../../../../redux/order/order.slice';
+import { DeliveryAddressTypes } from '../../../../redux/delivery-address/delivery-address.type';
+import { addTempDeliveryAddress, registerAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
-import React from 'react';
+import { DeliveryAddressServices } from '../../../../redux/delivery-address/delivery-address.services';
+import { GoogleAutoComplete } from '@/components/dominos/Address/autocomplete.component';
 
-interface Address {
-    locationId: number;
-    locationName: string;
+
+interface AddAddressProps {
+    isOpenModal: boolean;
+    handleToggleAddAddressModal: (value: boolean) => void;
+    isRegister?: boolean;
+    handleToggleTimingModal?: (value: boolean) => void;
+}
+
+interface AddressField {
+    businessname: string;
     address1: string;
-    cityName: string;
-    zipcode: string;
+    address2: string;
+    city: string;
+    state: string;
+    postalcode: string;
+    country: string;
+    apartment: string;
+    latitude: string;
+    longitude: string;
 }
 
-interface AddressListProps {
-    handleChangeLocation: (locationId: number) => void;
-    selectedLocationId: number;
-}
+const AddAddress: React.FC<AddAddressProps> = ({
+    isOpenModal,
+    handleToggleAddAddressModal,
+    isRegister = false,
+    handleToggleTimingModal,
+}) => {
+    const { userinfo, restaurantinfo, deliveryaddress } = useReduxData();
+    const dispatch = useDispatch();
+    const [query, setQuery] = useState<string>('');
+    const [isResetQuery, setIsResetQuery] = useState<boolean>(false);
 
-const AddressList: React.FC<AddressListProps> = ({ handleChangeLocation, selectedLocationId }) => {
-    const { restaurant, restaurantinfo } = useReduxData();
-    const addressList: Address[] = restaurant?.restaurantslocationlistwithtime?.addressList || [];
+    const [addressField, setAddressField] = useState<AddressField>({
+        businessname: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        postalcode: '',
+        country: '',
+        apartment: '',
+        latitude: '',
+        longitude: '',
+    });
+
+    const customerId = userinfo?.customerId || 0;
+    const restaurantId = restaurantinfo.restaurantId;
+    const locationId = restaurantinfo.defaultLocation?.locationId;
+    const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+
+    const sendToParent = (index: any) => {
+        setAddressField((prev) => ({
+            ...prev,
+            address1: index.address1,
+            city: index.city,
+            state: index.state,
+            postalcode: index.zip,
+            country: index.country,
+            latitude: index.lat,
+            longitude: index.lng,
+        }));
+    };
+
+    useEffect(() => {
+        setQuery('');
+        setAddressField({
+            businessname: '',
+            address1: '',
+            address2: '',
+            city: '',
+            state: '',
+            postalcode: '',
+            country: '',
+            apartment: '',
+            latitude: '',
+            longitude: '',
+        });
+    }, []);
+
+    const handleClickSaveAddress = () => {
+        dispatch(setDeliveryRequestId(''));
+
+        const {
+            address1,
+            address2,
+            city,
+            state,
+            postalcode,
+            country,
+            apartment,
+            latitude,
+            longitude,
+            businessname,
+        } = addressField;
+
+        if (address1 && city && state && postalcode) {
+            const obj: any = {
+                customerId,
+                othercustomerId: 0,
+                deliveryaddressId: 0,
+                address1,
+                address2,
+                landmark: apartment,
+                city,
+                zipcode: postalcode,
+                contactno: '',
+                contactname: '',
+                latitude,
+                longitude,
+                state,
+                country,
+                addresstype: 0,
+                businessname: businessname || '',
+            };
+
+            DeliveryAddressServices.verifyDeliveryAddresss(obj, restaurantId, locationId).then((result: any) => {
+                if (result) {
+                    if (userinfo) {
+                        DeliveryAddressServices.addDeliveryAddress(obj, restaurantId, locationId).then((response: any) => {
+                            if (response) {
+                                dispatch({ type: DeliveryAddressTypes.ADD_ADDRESS, payload: response });
+                                dispatch({
+                                    type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
+                                    payload: { customerAddressId: response?.deliveryaddressId },
+                                });
+                                obj.deliveryaddressId = response?.customerAddressId;
+                                dispatch(selecteddeliveryaddress({ ...response, ...obj }));
+                                handleToggleTimingModal?.(true);
+                            }
+                        });
+                    } else {
+                        if (!isRegister) {
+                            if (tempDeliveryAddress) {
+                                dispatch(addTempDeliveryAddress(null));
+                            }
+                            handleToggleTimingModal?.(true);
+                            handleNotify('Address added successfully!', ToasterPositions.TopRight, ToasterTypes.Success);
+                            dispatch(addTempDeliveryAddress(obj));
+                        } else {
+                            dispatch(registerAddress(obj));
+                            handleNotify('Address added successfully!', ToasterPositions.TopRight, ToasterTypes.Success);
+                        }
+                    }
+                    handleToggleAddAddressModal(false);
+                }
+            });
+
+            setQuery('');
+            setAddressField({
+                businessname: '',
+                address1: '',
+                address2: '',
+                city: '',
+                state: '',
+                postalcode: '',
+                country: '',
+                apartment: '',
+                latitude: '',
+                longitude: '',
+            });
+        }
+        setIsResetQuery(!isResetQuery);
+    };
 
     return (
         <>
-            {
-                addressList
-                    .sort((a, b) => a.locationName.localeCompare(b.locationName))
-                    .map((address, index) => {
-                        const isChecked = selectedLocationId > 0 ? selectedLocationId === address?.locationId : restaurantinfo?.defaultLocation?.locationId === address?.locationId
-                        return <label className="radio-box" key={index}>
-                            <input type="radio" checked={isChecked} onClick={() => handleChangeLocation(address?.locationId)} />
-                            {address?.locationName}<br /><span>
-                                {address?.address1}, {address?.cityName}, {address?.zipcode}
-                                {/* 737 Golf Links Road Unit #F2A, Hamilton, Ontario, L9K 1L5 */}
-                            </span>
-                        </label>
-                    })
-            }
-
+            <div className={`modal fade modal-your-order address-modal ${isOpenModal ? 'show d-block' : ''}`} aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <h5 className="modal-title fs-5" id="staticBackdropLabel">Add New Address</h5>
+                        <button type="button" className="btn-close" onClick={() => handleToggleAddAddressModal(false)} />
+                        <form>
+                            <div className="modal-body">
+                                <div className="row mt-3">
+                                    <div className="col-lg-12 mb-4 col-md-12 col-12">
+                                        <div className="row">
+                                            <div className="col-lg-12 col-md-12 col-12">
+                                                <label>Find your address</label>
+                                                <GoogleAutoComplete
+                                                    className="form-control"
+                                                    sendToParent={sendToParent}
+                                                    isResetQuery={isResetQuery}
+                                                />
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-12">
+                                                <label>Address 1</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Address 1"
+                                                    value={addressField.address1}
+                                                    onChange={(e) => setAddressField({ ...addressField, address1: e.target.value })}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-12">
+                                                <label>Address 2</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Address 2"
+                                                    value={addressField.address2}
+                                                    onChange={(e) => setAddressField({ ...addressField, address2: e.target.value })}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-12">
+                                                <label>Enter Apt. Buzzer...</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Enter Apt, Buzzer,…"
+                                                    value={addressField.apartment}
+                                                    onChange={(e) => setAddressField({ ...addressField, apartment: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-12">
+                                                <label>City</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="City"
+                                                    value={addressField.city}
+                                                    onChange={(e) => setAddressField({ ...addressField, city: e.target.value })}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-12">
+                                                <label>Province/State</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Province/State"
+                                                    value={addressField.state}
+                                                    onChange={(e) => setAddressField({ ...addressField, state: e.target.value })}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-12">
+                                                <label>Postal Code</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Postal Code"
+                                                    value={addressField.postalcode}
+                                                    onChange={(e) => setAddressField({ ...addressField, postalcode: e.target.value })}
+                                                    disabled
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <a className="btn-default w-100" onClick={handleClickSaveAddress}>
+                                    Save Address
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div className="modal-backdrop fade show"></div>
         </>
     );
 };
 
-export default AddressList;
-
-
-
-
-// 'use client';
-// import { useState } from "react";
-// const AddAddress = () => {
-//     const [addressField, setaddressField] = useState({
-//         businessname: "",
-//         address1: "",
-//         address2: "",
-//         city: "",
-//         state: "",
-//         postalcode: "",
-//         country: "",
-//         apartment: "",
-//         latitude: "",
-//         longitude: ""
-//     })
-//     return (
-//         <>
-//             <h1>From Add Address</h1>
-//         </>
-//     )
-// }
-// export default AddAddress;
+export default AddAddress;

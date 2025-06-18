@@ -1,3 +1,5 @@
+'use client';
+
 import { useParams, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { GetThemeDetails, ORDER_TYPE } from "../../common/utility";
@@ -34,6 +36,7 @@ import {
 import { CategoryItem } from "@/types/category-types/category.services.type";
 import { AppDispatch } from "../../../../redux/store";
 import { useDispatch } from "react-redux";
+import useLoadCatData from "@/components/customhooks/useloadcatdata-hook";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
@@ -53,7 +56,7 @@ const LoadLocationDirectComponent = ({
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const params = useParams();
-  const { dynamic, location, id, category, index } = params;
+  const { dynamic, location } = params;
   const rewardvalue = rewardpoints?.rewardvalue;
   const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
   const [isLoad, setisLoad] = useState<boolean>(
@@ -174,12 +177,12 @@ const LoadLocationDirectComponent = ({
               : ORDER_TYPE.PICKUP.text
           )
         );
-        dispatch(
-          refreshCategoryList({
-            newselectedRestaurant: restaurantinfo.restaurantId,
-            customerId: userinfo?.customerId,
-          }) as any
-        );
+        // dispatch(
+        //   refreshCategoryList({
+        //     newselectedRestaurant: restaurantinfo.restaurantId,
+        //     customerId: userinfo?.customerId,
+        //   }) as any
+        // );
         dispatch(
           getSelectedRestaurantTime(
             restaurantinfo.restaurantId,
@@ -192,8 +195,8 @@ const LoadLocationDirectComponent = ({
             restaurantinfo.restaurantId,
             restaurantinfo.defaultLocation.locationId
           );
-          //dispatch(emptycart());
-          //dispatch(setintialrewardpoints(userinfo));
+         // dispatch(emptycart());
+          dispatch(setintialrewardpoints(userinfo as any));
         }
         if (userinfo && userinfo?.customerId) {
           CustomerServices.checkCustomerRewardPointsLocationBase(
@@ -230,10 +233,10 @@ const LoadLocationDirectComponent = ({
         );
         setisLoad(true);
 
-        //const loadCat = useLoadCatData(restaurantinfo, false, categoryItemsList)
-        // dispatch(
-        //   getAllCategoryMenuItems(restaurantinfo.restaurantId, lid) as any
-        // );
+        const loadCat = useLoadCatData(restaurantinfo)
+        dispatch(
+          getAllCategoryMenuItems(restaurantinfo.restaurantId, lid) as any
+        );
         router.push(`/${selctedTheme.url}/${dynamic}/${res?.locationURL}`);
       }
     });

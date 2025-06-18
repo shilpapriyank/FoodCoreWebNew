@@ -1,20 +1,20 @@
 import React, { ReactNode } from 'react';
 
 export interface CommonModalProps {
-  title: string;
-  text?: string;
-  keyName?: string;
-  isbtn2?: boolean;
-  isOpenModal: boolean;
-  btn1Name?: string;
-  btn2Name?: string;
-  isDisplayCloseIcon?: boolean;
-  isButton?: boolean; // ✅ newly added
-  isChild?: boolean;  // ✅ newly added
-  children?: ReactNode;
-  handleToggle?: (value: boolean, keyName?: string) => void;
-  handleClickBtn1?: () => void;
-  handleClickBtn2?: () => void;
+    title: string;
+    text?: string;
+    keyName?: string;
+    isbtn2?: boolean;
+    isOpenModal: boolean;
+    btn1Name?: string;
+    btn2Name?: string;
+    isDisplayCloseIcon?: boolean;
+    isButton?: boolean;
+    isChild?: boolean;
+    children?: ReactNode;
+    handleToggle?: (value: boolean, keyName?: string) => void;
+    handleClickBtn1?: () => void;
+    handleClickBtn2?: () => void;
 }
 
 
@@ -33,18 +33,18 @@ const CommonModal: React.FC<CommonModalProps> = ({
     isDisplayCloseIcon = true,
 }) => {
     return (
-        <>
+         <>
             <div className={`modal modal-your-order choose-order fade ${isOpenModal ? 'show d-block' : ''}`} id="exampleModal-time_modified" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">{title}</h5>
-                        {isDisplayCloseIcon && <button type="button" className="btn-close" onClick={() => handleToggle?.(false, keyName)} />}
+                        {isDisplayCloseIcon && <button type="button" className="btn-close" onClick={() => handleToggle?.(false,keyName)} /> }
                         <form>
                             <div className="modal-body">
                                 <div className="row">
-                                    <div className="col-lg-12 text-center col-md-12 col-12">
-                                        {text && <h2>{text}</h2>}
-                                        {children && children}
+                                   <div className="col-lg-12 text-center col-md-12 col-12">
+                                   {text&&   <h2>{text}</h2>}
+                                   {children&&children}
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
                     </div>
                 </div>
             </div>
-            <div className="modal-backdrop fade show"></div>
+            {/* <div className="modal-backdrop fade show"></div> */}
         </>
     );
 };

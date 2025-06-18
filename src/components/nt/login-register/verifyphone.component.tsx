@@ -20,7 +20,7 @@ import useFireBaseAuth from '@/components/customhooks/userfirebaseauth-hook';
 
 interface VerifyPhoneComponentProps {
     isOpenModal: boolean;
-    handleToggle: () => void;
+    handleToggle: (value: boolean, keyName?: string) => void;
 }
 type CountryKey = keyof typeof countryData;
 
