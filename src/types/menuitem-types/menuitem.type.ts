@@ -7,14 +7,14 @@ export interface DependantMenuItem {
 
 export interface MenuItemDetailList {
   MenuStausList: any[];
-  dependantMenuList: DependantMenuItem[];
+  dependantMenuList: any[];
   description: string;
   image: string | null;
   isFavourite: boolean;
   itemName: string;
   menuItemId: number;
-  size: MenuItemSize[];
-  topping: MenuItemTopping[];
+  size: any[];
+  topping: any[];
 }
 
 export interface MenuItemSize {

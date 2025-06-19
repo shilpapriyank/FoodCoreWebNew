@@ -29,6 +29,7 @@ import {
 import {
   addFavorite,
   deleteFavorite,
+  getMenuItemDetailes,
   selectedMenuItem,
   setDipendentId,
   setDipendentIds,
@@ -54,6 +55,11 @@ import { CategoryItem } from "@/types/category-types/category.services.type";
 import MenuItemQuickOrder from "../../menuitem/menuitem-quick-order.component";
 import FavouriteSkeleton from "../../skeleton/favourite-skeleton";
 import ScrollToTop from "@/components/common/scroll-to-top";
+import Login from "../../login-register/login.component";
+import BottomBash from "../../common/bottom-bash.component";
+import CommonModal from "../../common/common-model.component";
+import DependentItemListComponent from "./dependentitems-list.component";
+import { SelectedMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -188,10 +194,12 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          dispatch({
-            type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-            payload: response,
-          });
+          console.log("response", response);
+          // dispatch({
+          //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
+          //   payload: response,
+          // });
+          dispatch(selectedMenuItem(response as any));
         }
       });
     }
@@ -756,14 +764,14 @@ const CategoryMenuItems = ({
           handleOpenLoginModal={handleOpenLoginModal}
         />
       )} */}
-      {/* {isBottomSlide && (
+      {isBottomSlide && (
         <BottomBash
           handleClickItem={handleClickItemSlider}
           catMenuItem={selectedCatItem}
           handleToggle={handleToggleBottomSlide}
         />
-      )} */}
-      {/* {openDependentList && (
+      )}
+      {openDependentList && (
         <CommonModal
           title={"Would you like to add additional items? "}
           btn1Name="No Thanks"
@@ -774,16 +782,16 @@ const CategoryMenuItems = ({
           handleClickBtn1={handleClickOnNoThanks}
           isbtn2={true}
         >
-          <DependentItemListComponent
+          {/* <DependentItemListComponent
             selectedDependentItems={selectedDependentItems}
             handleOnCheck={handleOnCheck}
             dependantMenuList={
-              menuItemDetail?.dependantMenuList ??
-              selectedMenuItemDetail?.dependantMenuList
+              menuItemDetail[0]?.dependantMenuList ??
+              selectedMenuItemDetail?.[0]?.dependantMenuList
             }
-          />
+          /> */}
         </CommonModal>
-      )} */}
+      )}
       {/* {isStudentPopUp && (
         <StudentComponent
           handleToggleMenuItem={handleToggleMenuItem}

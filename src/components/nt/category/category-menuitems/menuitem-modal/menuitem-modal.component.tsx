@@ -23,9 +23,16 @@
 //   selecteditemquantity,
 //   selectedItemSize,
 //   selectedMenuItem,
+//   setDipendentId,
+//   setDipendentIds,
+//   setDipendentItemQty,
 // } from "../../../../../../redux/menu-item/menu-item.slice";
-// import { getImagePath } from "@/components/nt/common/utility";
+// import { getDesc, getImagePath } from "@/components/nt/common/utility";
 // import { MenuItemServices } from "../../../../../../redux/menu-item/menu-item.services";
+// import MenuItemFooter from "./menuitem-footer.component";
+// import MenuItemSize from "./menuitem-size.component";
+// import MenuItemInfo from "./menuiteminfo.component";
+// import { MenuItemTypes } from "../../../../../../redux/menu-item/menuitem.type";
 
 // const MenuItemModal = ({
 //   isOpenModal,

@@ -13,6 +13,12 @@ export const useReduxData = () => {
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
   );
+
+  const menuitemdetaillist = useSelector(
+    (state: RootState) => menuitem.menuitemdetaillist,
+    shallowEqual
+  );
+
   const selecteddelivery = useSelector(
     (state: RootState) => state.selecteddelivery,
     shallowEqual
@@ -61,9 +67,9 @@ export const useReduxData = () => {
     (state: RootState) => state.restaurant.restaurantstiminglist
   );
   const sessionid = useSelector((state: RootState) => state.session?.sessionid);
-  // const addressList = useSelector(
-  //   (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
-  // );
+  const addressList = useSelector(
+    (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
+  );
   const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
     order?.checktime,
     restaurantinfo,
@@ -145,13 +151,14 @@ export const useReduxData = () => {
     meredian,
     recievingDate,
     rewardpoints,
+    addressList,
+    menuitemdetaillist,
     // cart,
     // main,
     // session,
     // studentdata,
     // sessionid,
-    // addressList,
-    // orderTimeType,
+    //orderTimeType,
     // cartItemsAmountTotal,
     // cartItemsQuantity,
   };
