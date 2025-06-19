@@ -7,7 +7,7 @@ import { AddressModel, RegisterModel } from "@/types/register-types/register.typ
 let responseclass = new ResponseModel();
 
 export class RegisterServices {
-  static async registerUser(
+  static async registerUserWithAddress(
     registerModel: RegisterModel,
     address: AddressModel | null,
     locationId?: number,
@@ -132,7 +132,7 @@ export class RegisterServices {
     restaurantId: number,
     enableotpauthentication: boolean,
     smsapigateway: number,
-    code: string,
+    code: number,
     mobilenumber: string
   ): Promise<any> {
     responseclass = new ResponseModel();

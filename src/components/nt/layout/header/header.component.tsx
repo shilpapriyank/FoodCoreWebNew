@@ -35,6 +35,7 @@ import { logout } from "../../../../../redux/login/login.slice";
 import { clearSessionId, createSessionId } from "../../../../../redux/session/session.slice";
 import Register from "../../login-register/register.component";
 import { UserInfo } from "@/types/rewardpoint-types/rewardpoint.type";
+import VerifyPhoneComponent from "../../login-register/verifyphone.component";
 interface HeaderProps {
   handleChangeAddress?: () => void;
   page?: string;
@@ -189,7 +190,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                         <a className="cursor_pointer app-icon px-1" href={restaurantinfo?.androidlink} target="_blank" rel="noreferrer"><img src="/nt/img/android.png" /></a>
                       }
                     </div>
-                    {/* <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
+                    <SelectedAddressHeader b2b={b2b} handleToggleOrderTypeModal={handleToggleOrderTypeModal} />
                     {(!b2b && !isSchoolProgramEnabled) && <>    {orderTypeName !== "" && <label className='d-none d-md-block'>{orderTypeName} time</label>}
                       <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '>
                         {orderTypeName !== "" && <span className='d-md-none text-dark me-1'>{orderTypeName} time</span>}
@@ -198,7 +199,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                         {order.checktime !== "" && <span className='btn-default' onClick={() => handleToggleTimingModal(true)}> {order.checktime}</span>}
                         {userinfo === null && <span className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1" onClick={() => handleOpenLoginModal(true)}>Login</span>}
                       </h6>
-                    </>} */}
+                    </>}
                     {
                       (isSchoolProgramEnabled && userinfo === null) && <h6 className='align-center mt-2 color-dynamic  cursor-pointer pointer-cursor '><span className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1" onClick={() => handleOpenLoginModal(true)}>Login</span></h6>
                     }
@@ -284,13 +285,13 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         modalState.openUserExistModal && <UserExist isOpenModal={modalState.openUserExistModal} handleToggle={handleToggle} handleClickBtn1={handleClickUserExist} />
       }
 
-      {/* {
+      {
         modalState.openVerifyPhone &&
         <VerifyPhoneComponent
           isOpenModal={modalState.openVerifyPhone}
           handleToggle={handleToggle}
         />
-      } */}
+      }
       {
         modalState.openForgotPassModal &&
         <ForgotPasswordComponent
