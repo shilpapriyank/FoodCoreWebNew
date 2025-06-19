@@ -1,5 +1,10 @@
 // redux/menuItem/menuItemSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  Action,
+} from "@reduxjs/toolkit";
 import { MenuItemServices } from "./menu-item.services";
 import { MenuItemTypes } from "./menuitem.type";
 import {
@@ -151,7 +156,10 @@ const menuItemSlice = createSlice({
   name: "menuitem",
   initialState,
   reducers: {
-    setMenuCategoryData: (state, action) => {
+    setMenuCategoryData: (
+      state,
+      action: PayloadAction<MenuItemDetailList[]>
+    ) => {
       state.menuitemdetaillist = action.payload;
     },
     selectedMenuItem: (state, action: PayloadAction<MenuItemDetailList[]>) => {
@@ -193,9 +201,12 @@ const menuItemSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getMenuItemDetailes.fulfilled, (state, action) => {
-      state.menuitemdetaillist = action.payload;
-    });
+    builder.addCase(
+      getMenuItemDetailes.fulfilled,
+      (state, action: PayloadAction<MenuItemDetailList[]>) => {
+        state.menuitemdetaillist = action.payload;
+      }
+    );
   },
 });
 

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { ORDER_TYPE } from "../../../../components/common/utility";
 import LoadLocationDirectComponent from "../../../../components/nt/common/loadlocation-direct.component";
 import CategoryMenuItems from "../../../../components/nt/category/category-menuitems/category-menuItems.component";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSearchData } from "../../../../components/customhooks/usesearchdata-hook";
 import SearchBarComponent from "../../../../components/nt/category/category-menuitems/search-bar.component";
 import useUtility from "../../../../components/customhooks/utility-hook";
@@ -13,14 +13,17 @@ import Layout from "@/components/nt/layout/layout.component";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { OrderServices } from "../../../../../redux/order/order.services";
-import { isasap } from "../../../../../redux/order/order.slice";
+import {
+  getordertime,
+  isasap,
+  setordertime,
+} from "../../../../../redux/order/order.slice";
 import { OrderTypes } from "../../../../../redux/order/order.type";
-import { useAppDispatch } from "../../../../../redux/hooks";
 import CategoryHeader from "@/components/nt/category/category-header/category-header";
+import { AppDispatch } from "../../../../../redux/store";
 
 export default function LocationPage() {
-  const dispatch = useAppDispatch();
-
+  const dispatch = useDispatch<AppDispatch>();
   const {
     selecteddelivery,
     restaurantinfo,
@@ -29,9 +32,17 @@ export default function LocationPage() {
     userinfo,
     order,
   } = useReduxData();
-  const [isloadAdress, setisloadAdress] = useState(true);
-  const b2b = restaurantinfo?.defaultLocation?.b2btype;
-  const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
+  console.log(
+    "defaultLocation from location page",
+    restaurantinfo.defaultLocation
+  );
+  const params = useParams();
+  const { location } = params;
+  console.log("location from lacation page", location);
+  const [isloadAdress, setisloadAdress] = useState<boolean>(true);
+  const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype;
+  const isSchoolProgramEnabled: boolean =
+    restaurantinfo?.isSchoolProgramEnabled;
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
   const {
@@ -43,6 +54,7 @@ export default function LocationPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
+  console.log("pickupordelivery", pickupordelivery);
   let menuItemsWithCat = filterCategory(
     searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
@@ -77,10 +89,11 @@ export default function LocationPage() {
           const time = response?.ordertime?.split(":");
           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;
           if (response) {
-            dispatch({
-              type: OrderTypes.CHECK_ORDER_TIME,
-              payload: timeWithMeridian,
-            });
+            // dispatch({
+            //   type: OrderTypes.CHECK_ORDER_TIME,
+            //   payload: timeWithMeridian,
+            // });
+            dispatch(setordertime(timeWithMeridian));
             return;
           }
         });

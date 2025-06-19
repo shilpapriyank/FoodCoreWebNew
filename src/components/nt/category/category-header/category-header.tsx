@@ -14,7 +14,7 @@ import {
   CategoryItemType,
 } from "@/types/category-types/category.services.type";
 
-const CategoryHeader = ({ selectedCatId }: { selectedCatId: string }) => {
+const CategoryHeader = ({ selectedCatId }: any) => {
   const {
     restaurantinfo,
     maincategoryList,
