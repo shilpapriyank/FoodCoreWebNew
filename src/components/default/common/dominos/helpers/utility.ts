@@ -277,9 +277,7 @@ export const unFormatePhoneNumber = (number: string): string => {
   return unFormatedNumber;
 };
 
-export const convertSecondToMinute = (
-  second: number
-): { minute: number; second: number } => {
+export const convertSecondToMinute = (second: number): { minute: number; second: number } => {
   const totalSeconds = second;
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;

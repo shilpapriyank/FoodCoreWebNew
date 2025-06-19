@@ -510,12 +510,11 @@ const CategoryMenuItems = ({
                                     {/* <button type="button" className="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
   Popover on top
 </button> */}
-
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
-                                        (menu?.isregular === true ||
-                                          isRegular) ? (
+                                          (menu?.isregular === true ||
+                                            isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -531,7 +530,7 @@ const CategoryMenuItems = ({
                                                   </h3>
                                                 </a>
                                                 {menu.description.length <
-                                                100 ? (
+                                                  100 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -587,7 +586,7 @@ const CategoryMenuItems = ({
                                                 </a>
                                                 {/* <p>{fixedLengthString(menu.description)}</p> */}
                                                 {menu.description.length <
-                                                180 ? (
+                                                  180 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -657,11 +656,10 @@ const CategoryMenuItems = ({
                                               !menu.isFavoriteMenu
                                             );
                                           }}
-                                          className={`fa wishlist fa-heart-o ${
-                                            menu?.isFavoriteMenu == true
-                                              ? "active"
-                                              : ""
-                                          }`}
+                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
+                                            ? "active"
+                                            : ""
+                                            }`}
                                         />
                                       </div>
                                     </div>
