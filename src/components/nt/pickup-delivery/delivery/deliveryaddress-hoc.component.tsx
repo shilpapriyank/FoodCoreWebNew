@@ -8,6 +8,7 @@ import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import CommonModal from '../../common/common-model.component';
 import { AppDispatch } from '../../../../../redux/store';
 import { selecteddeliveryaddress, SelectedDeliveryTypes } from '../../../../../redux/selected-delivery-data/selecteddelivery.slice';
+import { LoggedInUser } from '../../../../../redux/login/login.types';
 
 
 // Address item interface
@@ -41,8 +42,6 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
         const [openDelete, setopenDelete] = useState<boolean>(false);
         const dispatch = useDispatch<AppDispatch>();
 
-
-
         useEffect(() => {
             getDeliveryAddress()
         }, [userinfo?.customerId,
@@ -50,10 +49,13 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
         selecteddeliveryaddres?.deliveryaddressId
         ]);
 
+        // if (!userinfo) {
+        //     throw new Error("User is not logged in");
+        // }
         const getDeliveryAddress = (id: number = 0) => {
             if (customerId > 0) {
                 DeliveryAddressServices.getDeliveryAddress(
-                    userinfo?.customerId,
+                    (userinfo as LoggedInUser).customerId,
                     restaurantinfo.restaurantId,
                     restaurantinfo.defaultLocation.locationId).then(
                         (response: any) => {

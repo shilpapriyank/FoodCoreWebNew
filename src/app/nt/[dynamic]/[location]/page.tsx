@@ -54,7 +54,7 @@ export default function LocationPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  console.log("pickupordelivery", pickupordelivery);
+  console.log("pickupordelivery from location page", pickupordelivery);
   let menuItemsWithCat = filterCategory(
     searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery

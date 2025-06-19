@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
 import DeliveryaddresspillComponent from '../pickup-delivery/deliveryaddresspill.component';
-import { setpickupordelivery  } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
+import { setpickupordelivery } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
 import { closeModal, GetThemeDetails, ORDER_TYPE } from '../../common/utility';
 import { getLocationIdFromStorage, setLocationIdInStorage } from '@/components/common/localstore';
 import { clearRedux } from '../../../../redux/tableorder/tableorder.slice';
@@ -22,6 +22,7 @@ import { createSessionId } from '../../../../redux/session/session.slice';
 import { ChangeUrl, restaurantsdetail } from '../../../../redux/restaurants/restaurants.slice';
 import { AppDispatch } from '../../../../redux/store';
 import AddressPill from '@/components/common/address-pill.component';
+import { deleteCartItemFromSessionId, emptycart } from '../../../../redux/cart/cart.slice';
 
 type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
 
@@ -64,6 +65,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     const myDeliveryAddress = tempDeliveryAddress;
 
     const handleChangeOrderType = (orderType: string) => {
+        //debugger
         dispatch(setpickupordelivery(orderType))
         if (ORDER_TYPE.DELIVERY.text === orderType) {
 
@@ -122,15 +124,12 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                     })
                 }
                 setLocationIdInStorage(restaurantinfo.defaultlocationId);
-                // setdefaultLoactionId(lid)
-                dispatch(refreshCategoryList(restaurantinfo, customerId) as any);
+               // dispatch(refreshCategoryList(restaurantinfo, customerId) as any);
                 dispatch(refreshCategoryList({ newselectedRestaurant: restaurantinfo, customerId }) as any);
 
-                //  dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid, userinfo?.customerId))
                 if (userinfo && userinfo?.customerId) {
-                    //deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId);
-                    //dispatch(emptycart() as any);
-                    // dispatch(setintialrewardpoints(userinfo));
+                    deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId);
+                    dispatch(emptycart() as any);
                 }
                 handleToggleOrderTypeModal(false)
                 dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
@@ -162,7 +161,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
             <div className={`modal fade modal-your-order ${isOpenModal ? 'show d-block' : ''}`} tabIndex={-1} style={{ display: 'block' }} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
-                        <h5 className="modal-title fs-5" id="staticBackdropLabel">YOUR ORDER</h5>
+                        <h5 className="modal-title fs-5" id="staticBackdropLabel">YOUR ORDER 123</h5>
                         <button type="button" className="btn-close" onClick={() => handleToggleOrderTypeModal(false)} />
                         <form>
                             <div className="modal-body">
@@ -174,7 +173,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
 
                                     <div id="takeout" className="row">
                                         <div className="col-lg-12 text-center col-md-12 col-12">
-                                            <h2>Choose a Location</h2>
+                                            <h2>Choose a Location 123</h2>
                                         </div>
                                         <div className="col-lg-12 mb-4 col-md-12 col-12">
                                             <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -229,15 +228,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                                             <h2 className="fs-16">Enter your address</h2>
                                         </div>
                                         <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
-                                            {myDeliveryAddress &&
-                                                <AddressPill
-                                                    isChecked={true}
-                                                    handleChangeLocation={() => { }}
-                                                    handleChangeAddress={() => { }}
-                                                    address={myDeliveryAddress.id}
-                                                    id={myDeliveryAddress.id}
-                                                />
-                                            }
+                                            {myDeliveryAddress && <AddressPill isChecked={true} address={myDeliveryAddress} id={myDeliveryAddress.id} />}
                                             {userinfo && <DeliveryaddresspillComponent />}
                                             <div className="text-center">
                                                 <a className="address-nfound" onClick={handleClickAddNewAddress}>Add New Address</a>

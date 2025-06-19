@@ -26,7 +26,6 @@ import { AppDispatch } from "../../../../../redux/store";
 import CartCounter from "../../common/cart-counter.component";
 import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
-//import VerifyPhoneComponent from "../../login-register/verifyphone.component";
 import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.component";
 import Login from "../../login-register/login.component";
 import AccountConfirmation from "../../login-register/accountconfirmation.component";
@@ -101,6 +100,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     openSendEmailConfirm: false,
     isAddressModalOnBcChemical: false,
   });
+
   const handleToggleOrderTypeModal = (value: boolean) => {
     setisOpenOrderTypeModal(value);
   };
@@ -290,7 +290,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         }
         isOpenModal={modalState.openRewardModal}
       >
-        {/* <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{userinfo.totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6> */}
+        {/* <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{(userinfo as any).totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6> */}
         <h6>You can use these points at checkout to save</h6>
       </CommonModal>
 
@@ -371,7 +371,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             handleToggle={handleToggle}
             isOpenModal={modalState.openRewardModal}
           >
-            {/* <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{(userinfo).totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6> */}
+            <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{(userinfo as any).totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6>
             <h6>You can use these points at checkout to save</h6>
           </CommonModal>
         )}
@@ -383,6 +383,8 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           handleToggle={handleToggle}
           openAdressModal={openAdressModal}
           handleToggleAddAddressModal={handleToggleAddAddressModal}
+          isNotValidateOtp={false} 
+          isRegiStaration={true}
         />
       )}
 
@@ -393,7 +395,6 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           handleClickBtn1={handleClickUserExist}
         />
       )}
-
       {
         modalState.openVerifyPhone &&
         <VerifyPhoneComponent
