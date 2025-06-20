@@ -45,7 +45,9 @@ interface OtpValues {
     phone: string;
     isVerifiedPhone: string;
 }
-
+ // confirmationResult={window.confirmationResult}
+                    // isotpVerification={isotpVerification}
+                    // modalType={modelType}
 const OtpVerificationComponent: React.FC<Props> = ({
     handleToggleAccountConfirm,
     isOpenModal,

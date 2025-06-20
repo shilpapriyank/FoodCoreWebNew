@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
-import { addTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
+import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 
 // Define constants
 const apiKey = 'AIzaSyC6hNIP3xs2wN0tRG3Ue5Vg8seHGZTYnn4';
@@ -161,7 +161,7 @@ export const GoogleAutoComplete: React.FC<GoogleAutoCompleteProps> = ({
             handleClearAddressField();
         }
         if (tempDeliveryAddress !== null) {
-            dispatch(addTempDeliveryAddress(null));
+            dispatch(AddTempDeliveryAddress(null));
         }
     };
 

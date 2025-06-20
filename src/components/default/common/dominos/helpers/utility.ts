@@ -194,12 +194,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     const calculatedtopvalue =
       selectedOption.isHalfPizza &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
+        (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-            ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+          ? 1
+          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     finalcount += tc.subOptionToppingQuantity * calculatedtopvalue;
@@ -287,7 +287,7 @@ export const convertSecondToMinute = (second: number): { minute: number; second:
   }
   return {
     minute: parseInt(padTo2Digits(minutes)),
-    second: parseInt(padTo2Digits(seconds)),
+    second: parseInt(padTo2Digits(seconds))
   };
 };
 
