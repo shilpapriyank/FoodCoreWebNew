@@ -60,6 +60,8 @@ import BottomBash from "../../common/bottom-bash.component";
 import CommonModal from "../../common/common-model.component";
 import DependentItemListComponent from "./dependentitems-list.component";
 import { SelectedMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
+import { setCartItem } from "../../../../../redux/cart/cart.slice";
+//import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -140,6 +142,7 @@ const CategoryMenuItems = ({
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
   const [isShowSkeleton, setIsShowSkeleton] = useState<boolean>(true);
   const [loadError, setloadError] = useState<boolean>(false);
+  const [accountPopupOpen, setAccountPopupOpen] = useState<boolean>(false);
   // const selectedCategoryItems={menuItems}
   let rpoint = 0;
   const { deliveryRequestId } = order;
@@ -205,53 +208,54 @@ const CategoryMenuItems = ({
     }
   }, [dependentId]);
 
-  // useEffect(() => {
-  //   let selectedCat = {};
-  //   if (categoryUrl) {
-  //     selectedCat = menuItemsWithCat?.find(
-  //       (cat: any) => cat.categoryslug === categoryUrl
-  //     );
-  //   }
-  //   // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
-  //   if (
-  //     menuitemId !== undefined &&
-  //     parseInt(menuitemId) > 0 &&
-  //     selectedCat?.menuitems?.length > 0
-  //   ) {
-  //     var menuitemObj = selectedCat?.menuitems?.find(
-  //       (item: any, index: any) => {
-  //         if (item.menuitemId === parseInt(menuitemId)) {
-  //           return item;
-  //         }
-  //       }
-  //     );
-  //     if (menuitemObj) {
-  //       dispatch(selectedMenuItem(menuitemObj));
+  useEffect(() => {
+    //let selectedCat = {};
+    let selectedCat = [];
+    if (categoryUrl) {
+      selectedCat = menuItemsWithCat?.find(
+        (cat: any) => cat.categoryslug === categoryUrl
+      );
+    }
+    // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
+    if (
+      menuitemId !== undefined &&
+      Number(menuitemId) > 0 &&
+      selectedCat?.menuitems?.length > 0
+    ) {
+      var menuitemObj = selectedCat?.menuitems?.find(
+        (item: any, index: any) => {
+          if (item.menuitemId === menuitemId) {
+            return item;
+          }
+        }
+      );
+      if (menuitemObj) {
+        dispatch(selectedMenuItem(menuitemObj));
 
-  //       if (
-  //         menuitemObj.quickorderallow === true &&
-  //         isOrderingDisable === false
-  //       ) {
-  //         quickOrderClick(menuitemObj);
-  //       } else {
-  //         if (!openMenuItemModal) {
-  //           setopenMenuItemModal(true);
-  //           // let menuitempopup = document.getElementById('modal-open-custom');
-  //           // if (menuitempopup !== null)
-  //           //   menuitempopup.click();
-  //         }
-  //       }
-  //     }
-  //   }
-  //   if (menuItemsWithCat?.length === 0) {
-  //     setIsShowSkeleton(true);
-  //     setTimeout(() => {
-  //       setIsShowSkeleton(false);
-  //     }, 1000);
-  //   } else {
-  //     setIsShowSkeleton(true);
-  //   }
-  // }, [menuItemsWithCat, menuitemId]);
+        if (
+          menuitemObj.quickorderallow === true &&
+          isOrderingDisable === false
+        ) {
+          quickOrderClick(menuitemObj);
+        } else {
+          if (!openMenuItemModal) {
+            setopenMenuItemModal(true);
+            // let menuitempopup = document.getElementById('modal-open-custom');
+            // if (menuitempopup !== null)
+            //   menuitempopup.click();
+          }
+        }
+      }
+    }
+    if (menuItemsWithCat?.length === 0) {
+      setIsShowSkeleton(true);
+      setTimeout(() => {
+        setIsShowSkeleton(false);
+      }, 1000);
+    } else {
+      setIsShowSkeleton(true);
+    }
+  }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: any, item: any) => {
     dispatch({
@@ -364,32 +368,33 @@ const CategoryMenuItems = ({
               customerId: userinfo ? userinfo?.customerId : 0,
             }) as any
           );
-          // modalPopUpCloseClick();
-          // CartServices.getCartItemList({
-          //   cartsessionId: sessionid,
-          //   locationId: restaurantinfo.locationId,
-          //   restaurantId: restaurantinfo.restaurantId,
-          //   cartId: 0,
-          //   customerId: userinfo ? userinfo?.customerId : 0,
-          //   rewardpoints: rpoint,
-          //   redeemamount: ramount,
-          //   deliveryaddressId: 0,
-          //   tipPercentage: 0,
-          //   tipAmount: 0,
-          //   ordertype: ordertype,
-          //   selectedTime: selecetdtime,
-          //   requestId: deliveryRequestId,
-          // }).then((response) => {
-          //   if (response) {
-          //     if (response?.cartDetails && response?.cartDetails?.cartTotal) {
-          //       dispatch({
-          //         type: CartTypes.CART_DATA,
-          //         payload: response,
-          //       });
-          //       // handlUpdateQty()
-          //     }
-          //   }
-          // });
+          //modalPopUpCloseClick();
+          CartServices.getCartItemList({
+            cartsessionId: sessionid as string,
+            locationId: restaurantinfo.locationId,
+            restaurantId: restaurantinfo.restaurantId,
+            cartId: 0,
+            customerId: userinfo ? userinfo?.customerId : 0,
+            rewardpoints: rpoint,
+            redeemamount: ramount,
+            deliveryaddressId: 0,
+            tipPercentage: 0,
+            tipAmount: 0,
+            ordertype: String(ordertype),
+            selectedTime: selecetdtime,
+            requestId: deliveryRequestId,
+          }).then((response) => {
+            if (response) {
+              if (response?.cartDetails && response?.cartDetails?.cartTotal) {
+                // dispatch({
+                //   type: CartTypes.CART_DATA,
+                //   payload: response,
+                // });
+                // handlUpdateQty()
+                dispatch(setCartItem(response?.cartDetails));
+              }
+            }
+          });
         }
       });
     } else {
@@ -437,7 +442,8 @@ const CategoryMenuItems = ({
       type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
       payload: {},
     });
-    //dispatch(setDipendentId(first.DependantMenuItemId));
+    // dispatch(setDipendentId(first?.DependantMenuItemId));
+    dispatch(setDipendentId(Number(first)));
     dispatch(setDipendentIds(remainingList));
     setselectedDependentItems([]);
     setopenDependentList(false);
@@ -449,6 +455,18 @@ const CategoryMenuItems = ({
 
   const handleToggleStudentModal = (value: any) => {
     setisStudentPopUp(value);
+  };
+
+  const handleToggle = (value: boolean, keyName: string) => {
+    setopenLoginModal(true);
+  };
+
+  const handleToggleAccountConfirm = (value: boolean) => {
+    setAccountPopupOpen(true);
+  };
+
+  const handleOpenLoginModal = (value: boolean) => {
+    setopenLoginModal(value);
   };
 
   return (
@@ -513,8 +531,8 @@ const CategoryMenuItems = ({
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
-                                          (menu?.isregular === true ||
-                                            isRegular) ? (
+                                        (menu?.isregular === true ||
+                                          isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -530,7 +548,7 @@ const CategoryMenuItems = ({
                                                   </h3>
                                                 </a>
                                                 {menu.description.length <
-                                                  100 ? (
+                                                100 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -586,7 +604,7 @@ const CategoryMenuItems = ({
                                                 </a>
                                                 {/* <p>{fixedLengthString(menu.description)}</p> */}
                                                 {menu.description.length <
-                                                  180 ? (
+                                                180 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -619,16 +637,16 @@ const CategoryMenuItems = ({
                                                 ></a>
                                               </div>
                                             </div>
-                                            {/* <div>
-                                            {menu?.quickorderallow && (
-                                              <MenuItemQuickOrder
-                                                quickOrderClick={
-                                                  quickOrderClick
-                                                }
-                                                item={menu}
-                                              />
-                                            )}
-                                          </div> */}
+                                            <div>
+                                              {menu?.quickorderallow && (
+                                                <MenuItemQuickOrder
+                                                  quickOrderClick={
+                                                    quickOrderClick
+                                                  }
+                                                  item={menu}
+                                                />
+                                              )}
+                                            </div>
                                           </>
                                         )}
                                       </div>
@@ -656,10 +674,11 @@ const CategoryMenuItems = ({
                                               !menu.isFavoriteMenu
                                             );
                                           }}
-                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
-                                            ? "active"
-                                            : ""
-                                            }`}
+                                          className={`fa wishlist fa-heart-o ${
+                                            menu?.isFavoriteMenu == true
+                                              ? "active"
+                                              : ""
+                                          }`}
                                         />
                                       </div>
                                     </div>
@@ -674,7 +693,7 @@ const CategoryMenuItems = ({
                           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
                             {category?.menuitems?.map((menu: any) => {
                               return (
-                                <div className="cols menu-item">
+                                <div className="cols menu-item" key={index}>
                                   <div className="card features itembox">
                                     <div className="img position-relative">
                                       <LazyLoadImage
@@ -759,7 +778,7 @@ const CategoryMenuItems = ({
       {/* {openLoginModal && (
         <Login
           handleToggle={handleToggle}
-          handleToggleAccountConfirm={handleToggleAccountConfirm}
+          handleToggleAccountConfirm={() => handleToggleAccountConfirm(true)}
           isOpenModal={openLoginModal}
           handleOpenLoginModal={handleOpenLoginModal}
         />
@@ -782,14 +801,13 @@ const CategoryMenuItems = ({
           handleClickBtn1={handleClickOnNoThanks}
           isbtn2={true}
         >
-          {/* <DependentItemListComponent
+          <DependentItemListComponent
             selectedDependentItems={selectedDependentItems}
             handleOnCheck={handleOnCheck}
             dependantMenuList={
-              menuItemDetail[0]?.dependantMenuList ??
-              selectedMenuItemDetail?.[0]?.dependantMenuList
+              menuItemDetail[0]?.dependantMenuList ?? menuItemDetail[0]?.dependantMenuList
             }
-          /> */}
+          />
         </CommonModal>
       )}
       {/* {isStudentPopUp && (

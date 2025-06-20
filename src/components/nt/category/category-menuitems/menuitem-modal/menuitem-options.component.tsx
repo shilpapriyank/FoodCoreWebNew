@@ -106,7 +106,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
     //TODO:REMOVE FROM ISEXTRA
     let finalcount = calculateFinalCount(lstdefault, selectedoption[0]);
     var isMaxSelectZero =
-      parseInt(selectedoption[0].freeToppingsCount) == 0 ? true : false;
+      parseInt(selectedoption[0]?.freeToppingsCount) == 0 ? true : false;
     var checkCount =
       isMaxSelectZero == false
         ? finalcount <= parseInt(selectedoption[0].freeToppingsCount)
