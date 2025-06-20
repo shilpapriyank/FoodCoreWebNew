@@ -165,6 +165,18 @@ const menuItemSlice = createSlice({
     selectedMenuItem: (state, action: PayloadAction<MenuItemDetailList[]>) => {
       state.menuitemdetaillist = action.payload;
     },
+    setMenuItemDetailList: (
+      state,
+      action: PayloadAction<MenuItemDetailList[]>
+    ) => {
+      state.menuitemdetaillist = action.payload;
+    },
+    setSelectedMenuItemDetailList: (
+      state,
+      action: PayloadAction<SelectedMenuItemDetail[]>
+    ) => {
+      state.selectedmenuitemdetail = action.payload;
+    },
     removeMenuItemForFavorite: (state) => {
       state.selectedmenuitemdetail = [];
     },
@@ -225,6 +237,8 @@ export const {
   setDipendentIds,
   setDipendentItemQty,
   setMenuCategoryData,
+  setMenuItemDetailList,
+  setSelectedMenuItemDetailList
 } = menuItemSlice.actions;
 
 export default menuItemSlice.reducer;

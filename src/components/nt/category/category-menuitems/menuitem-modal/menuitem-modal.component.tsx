@@ -18,14 +18,18 @@
 // } from "@/types/menuitem-types/menuitem.type";
 // import { useParams, useRouter } from "next/navigation";
 // import {
+//   addFavorite,
+//   deleteFavorite,
 //   getMenuItemDetailes,
 //   removeMenuItem,
+//   removeMenuItemForFavorite,
 //   selecteditemquantity,
 //   selectedItemSize,
 //   selectedMenuItem,
 //   setDipendentId,
 //   setDipendentIds,
 //   setDipendentItemQty,
+//   setMenuCategoryData,
 // } from "../../../../../../redux/menu-item/menu-item.slice";
 // import { getDesc, getImagePath } from "@/components/nt/common/utility";
 // import { MenuItemServices } from "../../../../../../redux/menu-item/menu-item.services";
@@ -33,6 +37,17 @@
 // import MenuItemSize from "./menuitem-size.component";
 // import MenuItemInfo from "./menuiteminfo.component";
 // import { MenuItemTypes } from "../../../../../../redux/menu-item/menuitem.type";
+// import { FormatOrderObject } from "@/components/nt/common/format-order-object";
+// import {
+//   getCartItem,
+//   setCartItem,
+// } from "../../../../../../redux/cart/cart.slice";
+// import { CartDetails } from "@/types/cart-types/cartservice.type";
+// import { getCartItemCount } from "../../../../../../redux/tableorder/tableorder.slice";
+// import MenuItemOptions from "./menuitem-options.component";
+// import MenuItemAddCartBtn from "./menuitem-addtocart.component";
+// import MenuItemQty from "./menuitem-qty.component";
+// import MenuItemSkeletonComponent from "@/components/nt/skeleton/menuitem-skeleton.component";
 
 // const MenuItemModal = ({
 //   isOpenModal,
@@ -56,7 +71,7 @@
 //   const dispatch = useDispatch();
 //   let selectedmenuitemdetail = menuitem.selectedmenuitemdetail;
 //   const [minQty, setminQty] = useState<number>(1);
-//   //   const [currentQty, setcurrentQty] = useState(
+//   //   const [currentQty, setcurrentQty] = useState<number>(
 //   //     selectedmenuitemdetail.qty !== undefined ? selectedmenuitemdetail.qty : 1
 //   //   );
 //   const [currentQty, setcurrentQty] = useState<number>(
@@ -74,21 +89,19 @@
 //   const params = useParams();
 //   const { dynamic, location, category } = params;
 //   const selctedTheme = GetThemeDetails(restaurantinfo.themetype);
-//   const customerId = userinfo ? userinfo.customerId : 0;
-//   const { restaurantId, defaultlocationId, defaultLocation } = restaurantinfo;
+//   const customerId = userinfo?.customerId;
+//   const { restaurantId, defaultlocationId } = restaurantinfo;
 //   const sessionId = sessionid;
 //   const dependentId = menuitem?.dependentid ?? 0;
 //   const dependentIds = menuitem?.dependentitemids;
-//   let menuItemDetail = (menuitem.menuitemdetaillist as MenuItemDetailList[])[0];
+//   let menuItemDetail = menuitem.menuitemdetaillist[0];
 //   const deliveryaddressinfo = selecteddelivery;
-//   const selectedsize = menuItemDetail.size.find(
+//   const selectedsize = menuItemDetail?.size.find(
 //     (x: any) => x.sizeselected === true
 //   );
-//   const selectedtopping = selectedsize
-//     ? menuItemDetail.topping.find(
-//         (x) => x.subparameterId === selectedsize.subparameterId
-//       )
-//     : undefined;
+//   const selectedtopping = menuItemDetail?.topping.filter(
+//     (x) => x.subparameterId === selectedsize?.subparameterId
+//   );
 //   //   let selectedsize =
 //   //     menuItemDetail != undefined &&
 //   //     menuItemDetail.size != undefined &&
@@ -99,11 +112,11 @@
 //   //     menuItemDetail.topping.filter(
 //   //       (x) => x.subparameterId == selectedsize?.subparameterId
 //   //     );
-//   let updateitemoptionincart = menuitem.updateitemoptionincart;
+//   let updateitemoptionincart = menuitem?.updateitemoptionincart;
 //   let selectedtoppings =
 //     menuItemDetail != undefined &&
-//     menuItemDetail.topping != undefined &&
-//     menuItemDetail.topping.length > 0 &&
+//     menuItemDetail?.topping != undefined &&
+//     menuItemDetail?.topping.length > 0 &&
 //     menuItemDetail?.topping.find(
 //       (x) => x.subparameterId == selectedsize?.subparameterId
 //     );
@@ -118,17 +131,17 @@
 //   //     selectedmenuitemdetail !== undefined && selectedmenuitemdetail.description
 //   //       ? selectedmenuitemdetail?.description
 //   //       : menuitem?.menuitemdetaillist?.description;
-//   const selectedItemDescription = menuItemDetail.description;
+//   const selectedItemDescription = menuItemDetail?.description;
 //   const selectedItemName =
 //     menuItemDetail?.itemName !== undefined && menuItemDetail?.itemName;
 //   let itemImage = getImagePath(
-//     menuItemDetail.image,
+//     menuItemDetail?.image,
 //     restaurantinfo?.defaultLocation?.defaultmenuitemimage
 //   );
 //   var selecetdtime = recievingTime + " " + (meredian ?? "");
 //   const menuItemId =
-//     selectedmenuitemdetail[0].menuitemId ??
-//     selectedmenuitemdetail[0].menuitemId;
+//     selectedmenuitemdetail[0]?.menuitemId ??
+//     selectedmenuitemdetail[0]?.menuitemId;
 //   const catSlug = maincategoryList?.find(
 //     (cat) => cat?.catId === selectedmenuitemdetail?.[0]?.catId
 //   )?.categoryslug;
@@ -156,8 +169,8 @@
 //     //   selectedmenuitemdetail.qty !== undefined ? selectedmenuitemdetail.qty : 1
 //     // );
 //     setcurrentQty(
-//       menuitem.selecteditemquantity !== undefined
-//         ? menuitem.selecteditemquantity
+//       menuitem?.selecteditemquantity !== undefined
+//         ? menuitem?.selecteditemquantity
 //         : 1
 //     );
 
@@ -170,7 +183,7 @@
 //       MenuItemServices.getMenuItemList({
 //         restaurantId,
 //         locationId: defaultlocationId,
-//         customerId,
+//         customerId: customerId as number,
 //         menuitemId: menuItemId,
 //         cartsessionId: sessionId as string,
 //         cartId: 0,
@@ -181,10 +194,12 @@
 //           //     payload: response,
 //           //   });
 //           dispatch(getMenuItemDetailes(response as any) as any);
+//           //dispatch(setMenuCategoryData(response));
 //           setisLoad(true);
 //         }
 //       });
 //     }
+//     selectedItemDescription;
 //     if (dependentId > 0) {
 //       setisLoad(true);
 //     }
@@ -194,16 +209,17 @@
 //     dispatch(selecteditemquantity(currentQty));
 //     //dispatch(getCartItemCount(sessionId, restaurantinfo.defaultlocationId, restaurantinfo.restaurantId, customerId));
 //   }, [currentQty]);
+
 //   useEffect(() => {
-//     let selectedTopping = menuItemDetail.topping;
-//     let selectedToppingLength = selectedTopping?.[0]?.list?.filter(
+//     //let selectedTopping = menuItemDetail.topping;
+//     let selectedToppingLength = selectedtoppings?.[0]?.list?.filter(
 //       (item: any) => item.optionselected === true
 //     ).length;
 //     let lstcarttoppingNew = [];
 //     if (selectedtoppings && selectedtoppings?.list) {
-//       selectedtoppings.list != undefined &&
-//         selectedtoppings.list.length > 0 &&
-//         selectedtoppings.list.map((lsttop) => {
+//       selectedtoppings?.list != undefined &&
+//         selectedtoppings?.list.length > 0 &&
+//         selectedtoppings?.list.map((lsttop: any) => {
 //           lsttop.type != undefined &&
 //             lsttop.type.length > 0 &&
 //             lsttop.type.map((type: any) => {
@@ -215,9 +231,9 @@
 //         });
 //     }
 
-//     if (Array.isArray(selectedToppingLength)) {
-//       let selectedtop = selectedToppingLength.find(
-//         (item) => item.optionselected === true
+//     if (Array.isArray(selectedToppingLength > 0)) {
+//       let selectedtop = selectedtoppings.list.find(
+//         (item: any) => item.optionselected === true
 //       );
 //       let selectedToppintypeLength = selectedtop.type.filter(
 //         (item: any) => item.subOptionselected === true
@@ -281,7 +297,7 @@
 
 //   const addToCart = () => {
 //     if (dependentId > 0) {
-//       selectedmenuitemdetail.menuItemName = menuItemDetail.itemName;
+//       selectedmenuitemdetail[0].menuItemName = menuItemDetail.itemName;
 //     }
 //     if (
 //       dependentId === 0 &&
@@ -299,8 +315,8 @@
 //     //if (deliveryaddressinfo.pickupordelivery === "Pickup" || (deliveryaddressinfo.pickupordelivery === "Delivery")) {
 //     let selectedoption =
 //       selectedtopping.length > 0 &&
-//       selectedtopping[0].list.filter((x) => x.isCompulsory == true);
-//     if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
+//       selectedtopping[0].list.filter((x: any) => x.isCompulsory == true);
+//     if (selectedmenuitemdetail && selectedmenuitemdetail.cartid > 0) {
 //       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
 //       var isValidateItem = true;
 //       //test
@@ -314,8 +330,9 @@
 //           if (
 //             selectedoption[i].type != undefined &&
 //             selectedoption[i].type.length > 0 &&
-//             selectedoption[i].type.filter((x) => x.subOptionselected === true)
-//               .length === 0
+//             selectedoption[i].type.filter(
+//               (x: any) => x.subOptionselected === true
+//             ).length === 0
 //           ) {
 //             handleNotify(
 //               "Please select atleast one item in " + selectedoption[i].name,
@@ -331,7 +348,7 @@
 
 //       //THIS CONDITION WILL EXECUTE WHEN ITEM UPDATE FROM CART PAGE
 //       if (isValidateItem) {
-//         let itemobj = FormatOrderObject(
+//         let itemobj = FormatOrderObject({
 //           restaurantinfo,
 //           selectedmenuitemdetail,
 //           menuItemDetail,
@@ -341,54 +358,55 @@
 //           sessionId,
 //           ordertype,
 //           selecetdtime,
-//           studentname
-//         );
+//           //studentname
+//         });
 //         if (itemobj != undefined) {
-//           MenuItemServices.updateCartOrdersItem(itemobj, restaurantId).then(
-//             (response) => {
-//               if (response) {
-//                 dispatch(
-//                   getCartItem(
-//                     sessionid,
-//                     restaurantinfo.defaultlocationId,
-//                     restaurantinfo.restaurantId,
-//                     0,
-//                     userinfo ? userinfo?.customerId : 0,
-//                     rpoint,
-//                     ramount,
-//                     0,
-//                     0,
-//                     0,
-//                     ordertype,
-//                     order?.checktime,
-//                     order?.deliveryRequestId
-//                   )
-//                 );
-//                 dispatch(
-//                   getCartItemCount(
-//                     sessionId,
-//                     defaultlocationId,
-//                     restaurantId,
-//                     customerId
-//                   )
-//                 );
-//                 handleToggleMenuItem(false);
-//                 //TODO:
-//                 // setTimeout(() => {
-//                 //     var randomval = Math.floor(1000 + Math.random() * 9000);
+//           MenuItemServices.updateCartOrdersItem({
+//             orderobj: itemobj,
+//             restaurantId: restaurantId,
+//           }).then((response) => {
+//             if (response) {
+//               dispatch(
+//                 getCartItem({
+//                   cartsessionId: sessionid as string,
+//                   locationId: restaurantinfo.defaultlocationId,
+//                   restaurantId: restaurantinfo.restaurantId,
+//                   cartId: 0,
+//                   customerId: userinfo ? userinfo?.customerId : 0,
+//                   rewardpoints: rpoint,
+//                   redeemamount: ramount,
+//                   deliveryaddressId: 0,
+//                   tipPercentage: 0,
+//                   tipAmount: 0,
+//                   ordertype: String(ordertype),
+//                   selectedTime: order?.checktime,
+//                   requestId: order?.deliveryRequestId,
+//                 }) as any
+//               );
+//               dispatch(
+//                 getCartItemCount({
+//                   sessionId,
+//                   defaultlocationId,
+//                   restaurantId,
+//                   customerId,
+//                 })
+//               );
+//               handleToggleMenuItem(false);
+//               //TODO:
+//               // setTimeout(() => {
+//               //     var randomval = Math.floor(1000 + Math.random() * 9000);
 
-//                 //     router.push(`/${selectedTheme.url}/${dynamic}/${location}/cart?update=${randomval}`);
-//                 // }, 1000);
-//               }
+//               //     router.push(`/${selectedTheme.url}/${dynamic}/${location}/cart?update=${randomval}`);
+//               // }, 1000);
 //             }
-//           );
+//           });
 //         }
 //       }
 //     } else if (
 //       menuItemDetail.topping != undefined &&
 //       menuItemDetail.topping.length === 0
 //     ) {
-//       let itemobj = FormatOrderObject(
+//       let itemobj = FormatOrderObject({
 //         restaurantinfo,
 //         selectedmenuitemdetail,
 //         menuItemDetail,
@@ -398,54 +416,56 @@
 //         sessionId,
 //         ordertype,
 //         selecetdtime,
-//         studentname
-//       );
+//         //studentname
+//       });
 //       if (itemobj != undefined) {
-//         MenuItemServices.addItemToCart(itemobj, restaurantId).then(
-//           (response) => {
-//             if (response) {
-//               dispatch({
-//                 type: MenuItemTypes.ADD_ITEM_TO_CART,
-//                 payload: response,
-//               });
-//               dispatch(
-//                 getCartItemCount(
-//                   sessionId,
-//                   defaultlocationId,
-//                   restaurantId,
-//                   customerId
-//                 )
-//               );
-//               dispatch(
-//                 getCartItem(
-//                   sessionid,
-//                   restaurantinfo.defaultlocationId,
-//                   restaurantinfo.restaurantId,
-//                   0,
-//                   userinfo ? userinfo?.customerId : 0,
-//                   rpoint,
-//                   ramount,
-//                   0,
-//                   0,
-//                   0,
-//                   ordertype,
-//                   order?.checktime,
-//                   order?.deliveryRequestId
-//                 )
-//               );
+//         MenuItemServices.addItemToCart({
+//           orderobj: itemobj,
+//           restaurantId: restaurantId,
+//         }).then((response) => {
+//           if (response) {
+//             //   dispatch({
+//             //     type: MenuItemTypes.ADD_ITEM_TO_CART,
+//             //     payload: response,
+//             //   });
+//             dispatch(setCartItem(response));
+//             dispatch(
+//               getCartItemCount({
+//                 sessionId,
+//                 defaultlocationId,
+//                 restaurantId,
+//                 customerId,
+//               })
+//             );
+//             dispatch(
+//               getCartItem({
+//                 cartsessionId: sessionid as string,
+//                 locationId: restaurantinfo.defaultlocationId,
+//                 restaurantId: restaurantinfo.restaurantId,
+//                 cartId: 0,
+//                 customerId: userinfo ? userinfo?.customerId : 0,
+//                 rewardpoints: rpoint,
+//                 redeemamount: ramount,
+//                 deliveryaddressId: 0,
+//                 tipPercentage: 0,
+//                 tipAmount: 0,
+//                 ordertype: String(ordertype),
+//                 selectedTime: order?.checktime,
+//                 requestId: order?.deliveryRequestId,
+//               }) as any
+//             );
 
-//               handleToggleMenuItem(false);
-//             }
+//             handleToggleMenuItem(false);
 //           }
-//         );
+//         });
 //         // dispatch(updateCartItemCount());
 //         dispatch(
-//           getCartItemCount(
+//           getCartItemCount({
 //             sessionId,
-//             restaurantinfo.defaultlocationId,
-//             restaurantinfo.restaurantId,
-//             customerId
-//           )
+//             defaultlocationId,
+//             restaurantId,
+//             customerId,
+//           })
 //         );
 //       }
 //     } else if (
@@ -458,8 +478,9 @@
 //         if (
 //           selectedoption[i].type != undefined &&
 //           selectedoption[i].type.length > 0 &&
-//           selectedoption[i].type.filter((x) => x.subOptionselected === true)
-//             .length === 0
+//           selectedoption[i].type.filter(
+//             (x: any) => x.subOptionselected === true
+//           ).length === 0
 //         ) {
 //           handleNotify(
 //             "Please select atleast one item in " + selectedoption[i].name,
@@ -476,7 +497,7 @@
 //         result.length > 0 &&
 //         result.filter((x) => x.text == false).length === 0
 //       ) {
-//         let itemobj = FormatOrderObject(
+//         let itemobj = FormatOrderObject({
 //           restaurantinfo,
 //           selectedmenuitemdetail,
 //           menuItemDetail,
@@ -486,137 +507,50 @@
 //           sessionId,
 //           ordertype,
 //           selecetdtime,
-//           studentname
-//         );
+//           //studentname,
+//         });
 //         if (itemobj != undefined) {
-//           MenuItemServices.addItemToCart(itemobj, restaurantId).then(
-//             (response) => {
-//               if (response) {
-//                 dispatch({
-//                   type: MenuItemTypes.ADD_ITEM_TO_CART,
-//                   payload: response,
-//                 });
-//                 dispatch(
-//                   getCartItemCount(
-//                     sessionId,
-//                     defaultlocationId,
-//                     restaurantId,
-//                     customerId
-//                   )
-//                 );
-//                 dispatch(
-//                   getCartItem(
-//                     sessionid,
-//                     restaurantinfo.defaultlocationId,
-//                     restaurantinfo.restaurantId,
-//                     0,
-//                     userinfo ? userinfo?.customerId : 0,
-//                     rpoint,
-//                     ramount,
-//                     0,
-//                     0,
-//                     0,
-//                     ordertype,
-//                     order?.checktime,
-//                     order?.deliveryRequestId
-//                   )
-//                 );
-
-//                 // dispatch(updateCartItemCount());
-
-//                 //TO DO:HANDLE THE DEPENDET ITEM POPUP
-//                 handleToggleMenuItem(false);
-//                 // console.log(menuItemDetail?.dependantMenuList.length)
-//                 if (
-//                   menuItemDetail?.dependantMenuList?.length > 0 &&
-//                   ((dependentIds === undefined && dependentId === 0) ||
-//                     (dependentIds?.length === 0 && dependentId === 0))
-//                 ) {
-//                   //TODO:
-//                   setTimeout(() => {
-//                     handleToggleDependnt?.(true);
-//                   }, 500);
-//                 } else {
-//                   if (
-//                     (menuItemDetail?.dependantMenuList?.length > 0 &&
-//                       menuItemDetail?.dependantMenuList !== null) ||
-//                     dependentIds?.length > 0
-//                   ) {
-//                     let dependentItemList =
-//                       dependentIds?.length > 0
-//                         ? dependentIds
-//                         : menuItemDetail?.dependantMenuList?.map(
-//                             (item) => item?.DependantMenuItemId
-//                           );
-//                     let removefirst = dependentItemList?.shift();
-//                     let remainingList = dependentItemList;
-//                     dispatch(setDipendentId(removefirst?.DependantMenuItemId));
-//                     dispatch(setDipendentIds(remainingList));
-//                   } else {
-//                     dispatch(setDipendentId(0));
-//                     dispatch(setDipendentItemQty(0));
-//                   }
-//                 }
-//               }
-//             }
-//           );
-//         }
-//       }
-//     } else if (
-//       menuItemDetail.topping != undefined &&
-//       menuItemDetail.topping.length > 0 &&
-//       selectedoption.length === 0
-//     ) {
-//       let itemobj = FormatOrderObject(
-//         restaurantinfo,
-//         selectedmenuitemdetail,
-//         menuItemDetail,
-//         customerId,
-//         total,
-//         currentQty,
-//         sessionId,
-//         ordertype,
-//         selecetdtime,
-//         studentname
-//       );
-//       if (itemobj != undefined) {
-//         MenuItemServices.addItemToCart(itemobj, restaurantId).then(
-//           (response) => {
+//           MenuItemServices.addItemToCart({
+//             orderobj: itemobj,
+//             restaurantId: restaurantId,
+//           }).then((response) => {
 //             if (response) {
-//               dispatch({
-//                 type: MenuItemTypes.ADD_ITEM_TO_CART,
-//                 payload: response,
-//               });
+//               //   dispatch({
+//               //     type: MenuItemTypes.ADD_ITEM_TO_CART,
+//               //     payload: response,
+//               //   });
+//               dispatch(setCartItem(response));
 //               dispatch(
-//                 getCartItemCount(
+//                 getCartItemCount({
 //                   sessionId,
 //                   defaultlocationId,
 //                   restaurantId,
-//                   customerId
-//                 )
+//                   customerId,
+//                 })
 //               );
-//               handleToggleMenuItem(false);
 //               dispatch(
-//                 getCartItem(
-//                   sessionid,
-//                   restaurantinfo.defaultlocationId,
-//                   restaurantinfo.restaurantId,
-//                   0,
-//                   userinfo ? userinfo?.customerId : 0,
-//                   rpoint,
-//                   ramount,
-//                   0,
-//                   0,
-//                   0,
-//                   ordertype,
-//                   order?.checktime,
-//                   order?.deliveryRequestId
-//                 )
+//                 getCartItem({
+//                   cartsessionId: sessionid as string,
+//                   locationId: restaurantinfo.defaultlocationId,
+//                   restaurantId: restaurantinfo.restaurantId,
+//                   cartId: 0,
+//                   customerId: userinfo ? userinfo?.customerId : 0,
+//                   rewardpoints: rpoint,
+//                   redeemamount: ramount,
+//                   deliveryaddressId: 0,
+//                   tipPercentage: 0,
+//                   tipAmount: 0,
+//                   ordertype: String(ordertype),
+//                   selectedTime: order?.checktime,
+//                   requestId: order?.deliveryRequestId,
+//                 }) as any
 //               );
 
 //               // dispatch(updateCartItemCount());
-//               // dispatch(getCartItemCount(sessionId, restaurantinfo.defaultlocationId, restaurantinfo.restaurantId, customerId));
 
+//               //TO DO:HANDLE THE DEPENDET ITEM POPUP
+//               handleToggleMenuItem(false);
+//               // console.log(menuItemDetail?.dependantMenuList.length)
 //               if (
 //                 menuItemDetail?.dependantMenuList?.length > 0 &&
 //                 ((dependentIds === undefined && dependentId === 0) ||
@@ -642,17 +576,108 @@
 //                   let remainingList = dependentItemList;
 //                   dispatch(setDipendentId(removefirst?.DependantMenuItemId));
 //                   dispatch(setDipendentIds(remainingList));
-//                   // if (remainingList.length === 0 && removefirst?.DependantMenuItemId > 0) {
-
-//                   // }
 //                 } else {
 //                   dispatch(setDipendentId(0));
 //                   dispatch(setDipendentItemQty(0));
 //                 }
 //               }
 //             }
+//           });
+//         }
+//       }
+//     } else if (
+//       menuItemDetail.topping != undefined &&
+//       menuItemDetail.topping.length > 0 &&
+//       selectedoption.length === 0
+//     ) {
+//       let itemobj = FormatOrderObject({
+//         restaurantinfo,
+//         selectedmenuitemdetail,
+//         menuItemDetail,
+//         customerId,
+//         total,
+//         currentQty,
+//         sessionId,
+//         ordertype,
+//         selecetdtime,
+//         //studentname
+//       });
+//       if (itemobj != undefined) {
+//         MenuItemServices.addItemToCart({
+//           orderobj: itemobj,
+//           restaurantId: restaurantId,
+//         }).then((response) => {
+//           if (response) {
+//             // dispatch({
+//             //   type: MenuItemTypes.ADD_ITEM_TO_CART,
+//             //   payload: response,
+//             // });
+//             dispatch(setCartItem(response));
+//             dispatch(
+//               getCartItemCount({
+//                 sessionId,
+//                 defaultlocationId,
+//                 restaurantId,
+//                 customerId,
+//               })
+//             );
+//             handleToggleMenuItem(false);
+//             dispatch(
+//               getCartItem({
+//                 cartsessionId: sessionid as string,
+//                 locationId: restaurantinfo.defaultlocationId,
+//                 restaurantId: restaurantinfo.restaurantId,
+//                 cartId: 0,
+//                 customerId: userinfo ? userinfo?.customerId : 0,
+//                 rewardpoints: rpoint,
+//                 redeemamount: ramount,
+//                 deliveryaddressId: 0,
+//                 tipPercentage: 0,
+//                 tipAmount: 0,
+//                 ordertype: String(ordertype),
+//                 selectedTime: order?.checktime,
+//                 requestId: order?.deliveryRequestId,
+//               }) as any
+//             );
+
+//             // dispatch(updateCartItemCount());
+//             // dispatch(getCartItemCount(sessionId, restaurantinfo.defaultlocationId, restaurantinfo.restaurantId, customerId));
+
+//             if (
+//               menuItemDetail?.dependantMenuList?.length > 0 &&
+//               ((dependentIds === undefined && dependentId === 0) ||
+//                 (dependentIds?.length === 0 && dependentId === 0))
+//             ) {
+//               //TODO:
+//               setTimeout(() => {
+//                 handleToggleDependnt?.(true);
+//               }, 500);
+//             } else {
+//               if (
+//                 (menuItemDetail?.dependantMenuList?.length > 0 &&
+//                   menuItemDetail?.dependantMenuList !== null) ||
+//                 dependentIds?.length > 0
+//               ) {
+//                 let dependentItemList =
+//                   dependentIds?.length > 0
+//                     ? dependentIds
+//                     : menuItemDetail?.dependantMenuList?.map(
+//                         (item) => item?.DependantMenuItemId
+//                       );
+//                 let removefirst = dependentItemList?.shift();
+//                 let remainingList = dependentItemList;
+//                 dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+//                 dispatch(setDipendentIds(remainingList));
+//                 // if (remainingList.length === 0 && removefirst?.DependantMenuItemId > 0) {
+
+//                 // }
+//               } else {
+//                 dispatch(setDipendentId(0));
+//                 dispatch(setDipendentItemQty(0));
+//               }
+//             }
 //           }
-//         );
+//         });
 //       }
 //     }
 //   };
@@ -682,31 +707,27 @@
 //       dispatch(setDipendentId(0));
 //     }
 //   };
-//   const selectedFavoriteClick = (item) => {
+//   const selectedFavoriteClick = (item: any) => {
 //     setcount(count + 1);
 //     let objdata = selectedmenuitemdetail;
-//     objdata.isFavoriteMenu = item;
+//     objdata[0].isFavoriteMenu = item;
 //     dispatch(removeMenuItemForFavorite());
-//     dispatch(selectedMenuItem(objdata));
+//     dispatch(selectedMenuItem(objdata as any));
 //     if (item === true) {
 //       dispatch(
-//         addFavorite(
-//           userinfo.customerId.toString(),
-//           restaurantinfo.restaurantId,
-//           objdata.menuitemId != undefined
-//             ? objdata.menuitemId
-//             : objdata.menuitemid
-//         )
+//         addFavorite({
+//           customerId: userinfo?.customerId as number,
+//           restaurantId: restaurantinfo.restaurantId,
+//           menuItemId: menuItemId,
+//         }) as any
 //       );
 //     } else {
 //       dispatch(
-//         deleteFavorite(
-//           userinfo.customerId,
-//           restaurantinfo.restaurantId,
-//           objdata.menuitemId != undefined
-//             ? objdata.menuitemId
-//             : objdata.menuitemid
-//         )
+//         deleteFavorite({
+//           customerId: userinfo?.customerId as number,
+//           restaurantId: restaurantinfo.restaurantId,
+//           menuItemId: selectedmenuitemdetail[0].menuitemId,
+//         }) as any
 //       );
 //     }
 //   };
@@ -738,7 +759,7 @@
 //                       name={selectedItemName}
 //                       desc={selectedItemDescription}
 //                       shareUrl={shareUrl}
-//                       isFavourite={selectedmenuitemdetail?.isFavoriteMenu}
+//                       isFavourite={selectedmenuitemdetail[0]?.isFavoriteMenu}
 //                       img={itemImage}
 //                     />
 //                     <div className="row mt-3">
@@ -795,6 +816,7 @@
 //               </>
 //             ) : (
 //               <>
+//                 {" "}
 //                 <MenuItemSkeletonComponent />
 //               </>
 //             )}
