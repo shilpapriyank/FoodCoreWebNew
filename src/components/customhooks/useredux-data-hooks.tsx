@@ -14,6 +14,11 @@ export const useReduxData = () => {
     shallowEqual
   );
 
+  const menuitem = useSelector(
+    (state: RootState) => state.menuitem,
+    shallowEqual
+  );
+
   const menuitemdetaillist = useSelector(
     (state: RootState) => menuitem.menuitemdetaillist,
     shallowEqual
@@ -28,10 +33,7 @@ export const useReduxData = () => {
     (state: RootState) => state.userdetail?.loggedinuser,
     shallowEqual
   );
-  const menuitem = useSelector(
-    (state: RootState) => state.menuitem,
-    shallowEqual
-  );
+
   const cart = useSelector((state: RootState) => state.cart, shallowEqual);
   const category = useSelector(
     (state: RootState) => state.category,

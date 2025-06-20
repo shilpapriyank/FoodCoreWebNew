@@ -935,6 +935,8 @@ export const countryData = {
     title: "United States",
   },
 } as const;
+type CountryKey = keyof typeof countryData;
+type CountryDataType = typeof countryData[CountryKey];
 
 export const getCountryList = () => {
   let data = Object.values(countryData);

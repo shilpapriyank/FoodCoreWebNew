@@ -6,7 +6,7 @@ import { ToasterTypes } from '../../default/helpers/toaster/toaster-types';
 import { selecteddeliveryaddress } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
 import { setDeliveryRequestId } from '../../../../redux/order/order.slice';
 import { DeliveryAddressTypes } from '../../../../redux/delivery-address/delivery-address.type';
-import { addTempDeliveryAddress, registerAddress } from '../../../../redux/delivery-address/delivery-address.slice';
+import { AddTempDeliveryAddress, registerAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import { DeliveryAddressServices } from '../../../../redux/delivery-address/delivery-address.services';
 import { GoogleAutoComplete } from '@/components/dominos/Address/autocomplete.component';
@@ -144,11 +144,11 @@ const AddAddress: React.FC<AddAddressProps> = ({
                     } else {
                         if (!isRegister) {
                             if (tempDeliveryAddress) {
-                                dispatch(addTempDeliveryAddress(null));
+                                dispatch(AddTempDeliveryAddress(null));
                             }
                             handleToggleTimingModal?.(true);
                             handleNotify('Address added successfully!', ToasterPositions.TopRight, ToasterTypes.Success);
-                            dispatch(addTempDeliveryAddress(obj));
+                            dispatch(AddTempDeliveryAddress(obj));
                         } else {
                             dispatch(registerAddress(obj));
                             handleNotify('Address added successfully!', ToasterPositions.TopRight, ToasterTypes.Success);
@@ -177,7 +177,9 @@ const AddAddress: React.FC<AddAddressProps> = ({
 
     return (
         <>
-            <div className={`modal fade modal-your-order address-modal ${isOpenModal ? 'show d-block' : ''}`} aria-hidden="true">
+            <div className={`modal fade modal-your-order address-modal ${isOpenModal ? 'show d-block' : ''}`}
+                aria-hidden="true"
+            >
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">Add New Address</h5>

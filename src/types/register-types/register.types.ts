@@ -5,7 +5,7 @@ export interface RegisterModel {
     email: string;
     password: string;
     countrycode: string;
-    isVerifiedPhone: boolean;
+    isVerifiedPhone?: boolean;
     businessName?: string;
 }
 

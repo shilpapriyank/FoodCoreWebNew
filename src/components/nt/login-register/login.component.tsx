@@ -10,18 +10,18 @@ import {
     setUserExpiryTime,
     unFormatePhoneNumber
 } from '../../common/utility';
-import useUtility from '../../customhooks/utility-hook';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
-import { LoginTypes } from '../../../../redux/login/login.types';
 import { LoginServices } from '../../../../redux/login/login.services';
+import { LoginTypes } from '../../../../redux/login/login.types';
 import { setintialrewardpoints } from '../../../../redux/rewardpoint/rewardpoint.slice';
 import { DeliveryAddressServices } from '../../../../redux/delivery-address/delivery-address.services';
 import { selecteddeliveryaddress } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
 import { DeliveryAddressTypes } from '../../../../redux/delivery-address/delivery-address.type';
+import useUtility from '../../customhooks/utility-hook';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import { ButtonLoader } from '@/components/common/buttonloader.component';
-import { addTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
+import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 
 interface LoginProps {
     isOpenModal: boolean;
@@ -68,32 +68,34 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
         setisDisable(false);
     }, [userinfo]);
 
+    let defaultflag = document.querySelector(".iti-flag")
+    let countryList = document.querySelector(".country-list")
     useEffect(() => {
         setTimeout(() => {
-            const defaultflag = document.querySelector('.iti-flag');
-            const countryList = document.querySelector('.country-list');
-            if (dialCode === locationCountryData.countryCode && defaultflag && countryList) {
-                onLoadSetDefaultFlag(defaultflag, countryList, locationCountryData);
+            const defaultflag = document.querySelector(".iti-flag")
+            if (dialCode === locationCountryData.countryCode) {
+                onLoadSetDefaultFlag(defaultflag, countryList, locationCountryData)
             }
-        }, 300);
-    }, [dialCode, locationCountryData, isSignIn]);
+        }, 300)
+    }, [defaultflag, countryList, isSignIn])
 
     const validateForm = (event: React.FormEvent): boolean => {
         event.preventDefault();
         let iserror = false;
         if (!userName) {
-            setErrorUsername('Username must be required');
+            setErrorUsername("Username must be required");
             iserror = true;
         }
         if (!password) {
-            setErrorPassword('Password must be required');
+            setErrorPassword("Password must be required");
             iserror = true;
         }
         if (iserror) {
-            setSubmitting(true);
+            setSubmitting(true)
             return false;
+        } else {
+            return true;
         }
-        return true;
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -102,6 +104,7 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
         if (validateForm(e)) {
             const formatedusername = unFormatePhoneNumber(userName);
             let usernames = userName.replace(/(\(\d{3}\))(\s\d{3})(\-\d{4})/, formatedusername).slice(0, 10);
+            usernames = usernames.slice(0, 10);
             setisDisable(true);
 
             LoginServices.getLoginUserDetails({
@@ -111,47 +114,63 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
                 dialCode: dialCode,
                 locationid: locationId,
             }).then((responsedata) => {
-                if (responsedata?.customerDetails) {
-                    dispatch({ type: LoginTypes.USER_DETAIL, payload: responsedata.customerDetails });
-                    setUserExpiryTime();
+                if (responsedata !== null && responsedata.customerDetails !== null && responsedata.customerDetails !== undefined) {
 
-                    if (restaurantinformation?.enableotpauthentication && restaurantinfo?.deliveryServicePartnerEnable && !responsedata.customerDetails?.isVerifiedPhone) {
-                        setphoneVerify(true);
-                        handleOpenLoginModal(false);
-                        handleToggle?.(true, 'openVerifyPhone');
-                    } else if (!responsedata.customerDetails.isVerified) {
-                        handleOpenLoginModal(false);
-                        handleToggleAccountConfirm(true);
-                    } else {
-                        if (restaurantinformation?.defaultLocation?.enableRewardPoint && responsedata.customerDetails?.customertype !== CUSTOMER_TYPE.SUBSCRIBE) {
-                            setLoadRewardPoint(true);
-                            setTimeout(() => handleToggle?.(true, 'openRewardModal'), 500);
+                    dispatch({ type: LoginTypes.USER_DETAIL, payload: responsedata.customerDetails });
+                    setUserExpiryTime()
+                    if (responsedata.customerDetails) {
+                        //check for varification phone with otp functionality
+                        if (restaurantinformation?.enableotpauthentication === true && restaurantinfo?.deliveryServicePartnerEnable === true && !responsedata.customerDetails?.isVerifiedPhone) {
+                            setphoneVerify(true)
+                            handleOpenLoginModal(false)
+                            handleToggle?.(true, 'openVerifyPhone')
+                            //TODO:NEW
+                            // setTimeout(() => {
+                            //     let confirmPhoneVerify = document.getElementById("btn-phoneverify-open");
+                            //     confirmPhoneVerify.click()
+                            // }, 500);
+                        }
+                        else {
+                            //CHECK CUSTOMER I VERIFIED OR NOT 
+                            if (!responsedata.customerDetails.isVerified) {
+                                handleOpenLoginModal(false)
+                                handleToggleAccountConfirm(true)
+                            } else {
+                                if (restaurantinformation?.defaultLocation?.enableRewardPoint && responsedata?.customerDetails?.customertype !== CUSTOMER_TYPE.SUBSCRIBE) {
+                                    setLoadRewardPoint(true)
+                                    setTimeout(() => {
+                                        handleToggle?.(true, 'openRewardModal')
+                                    }, 500);
+                                }
+                            }
+                        }
+
+                        // dispatch(initialrewardpoint(responsedata.customerDetails));
+                        dispatch(setintialrewardpoints(responsedata.customerDetails));
+                        // USER IS NOT LOGGED IN THEN SAVE THE TEMP ADRESS TO SELECTED DELEVERY ADDRESS 
+                        if (tempDeliveryAddress !== null) {
+                            tempDeliveryAddress.customerId = responsedata.customerDetails.customerId;
+                            DeliveryAddressServices.addDeliveryAddress(tempDeliveryAddress, restaurantinformation.restaurantId, restaurantinformation.defaultlocationId)
+                                .then((res) => {
+                                    if (res) {
+                                        tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
+                                        dispatch(selecteddeliveryaddress(tempDeliveryAddress));
+                                        let addressId = { customerAddressId: tempDeliveryAddress.deliveryaddressId, };
+                                        dispatch({
+                                            type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
+                                            payload: addressId,
+                                        });
+                                    }
+                                    dispatch(AddTempDeliveryAddress(null))
+                                });
+                        }
+                        if (responsedata.customerDetails.isVerified) {
+                            handleOpenLoginModal(false)
                         }
                     }
-
-                    dispatch(setintialrewardpoints(responsedata.customerDetails));
-
-                    if (tempDeliveryAddress) {
-                        tempDeliveryAddress.customerId = responsedata.customerDetails.customerId;
-                        DeliveryAddressServices.addDeliveryAddress(tempDeliveryAddress, restaurantId, restaurantinformation.defaultlocationId).then((res) => {
-                            if (res) {
-                                tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
-                                dispatch(selecteddeliveryaddress(tempDeliveryAddress));
-                                dispatch({
-                                    type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
-                                    payload: { customerAddressId: tempDeliveryAddress.deliveryaddressId },
-                                });
-                            }
-                            dispatch(addTempDeliveryAddress(null));
-                        });
-                    }
-
-                    if (responsedata.customerDetails.isVerified) {
-                        handleOpenLoginModal(false);
-                    }
                 } else {
-                    setSubmitting(false);
-                    setisDisable(false);
+                    setSubmitting(false)
+                    setisDisable(false)
                     setErrorMessage(responsedata.message);
                 }
             });
@@ -159,17 +178,17 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
     };
 
     const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const regex1 = allRegex.phoneRegex1;
-        const regex2 = allRegex.validwithFormatephoneRegex;
-        const regex3 = allRegex.phoneRegex3;
-        const validdigit = allRegex.validdigit;
-        const phoneno = unFormatePhoneNumber(e.target.value);
-
-        if (phoneno.length > 10) return;
-        if (phoneno === '') return setuserName(e.target.value);
-
-        if ((regex1.test(phoneno) || regex2.test(phoneno) || regex3.test(phoneno)) && validdigit.test(phoneno)) {
-            setSubmitting(false);
+        let regex1 = allRegex.phoneRegex1;
+        let regex2 = allRegex.validwithFormatephoneRegex
+        let regex3 = allRegex.phoneRegex3
+        let validdigit = allRegex.validdigit
+        let phoneno = unFormatePhoneNumber(e.target.value);
+        if (phoneno.length > 10)
+            return;
+        if (phoneno === "")
+            setuserName(e.target.value);
+        if ((regex1.test(phoneno) || regex2.test(phoneno) || (regex3.test(phoneno))) && validdigit.test(phoneno)) {
+            setSubmitting(false)
             setuserName(e.target.value);
             if (userName.length === 9) {
                 setuserName(formatePhoneNumber(e.target.value));
@@ -177,32 +196,58 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
             if (phoneno.length < 10) {
                 setuserName(unFormatePhoneNumber(e.target.value));
             }
-            setErrorUsername('');
-            setErrorMessage('');
+            setErrorUsername("");
+            setErrorMessage("");
+            return;
+        }
+        else {
+            return false;
+        }
+    };
+
+    const handlePaste = (e: any) => {
+        let pastedValue = e.clipboardData.getData("text")
+        if (Number(pastedValue)) {
+            if (pastedValue.length === 10) {
+                e.target.value = pastedValue;
+                let valuephone = "";
+                valuephone = e.target.value
+                let replacedvalue = formatePhoneNumber(valuephone);
+                setuserName(replacedvalue)
+            }
+        }
+        else {
             return;
         }
     };
 
-    const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-        const pastedValue = e.clipboardData.getData('text');
-        if (!Number(pastedValue)) return;
-        if (pastedValue.length === 10) {
-            const replacedvalue = formatePhoneNumber(pastedValue);
-            setuserName(replacedvalue);
-        }
-    };
-
     const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSubmitting(false);
+        setSubmitting(false)
         setpassword(e.target.value);
-        setErrorPassword('');
-        setErrorMessage('');
+        setErrorPassword("");
+        setErrorMessage("");
     };
 
+    // const handleClickRegister = () => {
+    //     console.log("open Register Modal from login")
+    //     handleOpenLoginModal(false);
+    //     handleToggle?.(true, 'openRegisterModal');
+    // };
     const handleClickRegister = () => {
+        // 👇 Blur any focused element inside the login modal
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
+        // 👇 Close the login modal
         handleOpenLoginModal(false);
-        handleToggle?.(true, 'openRegisterModal');
+
+        // 👇 Open the register modal after a short delay
+        setTimeout(() => {
+            handleToggle?.(true, 'openRegisterModal');
+        }, 100); // A small delay allows the DOM to clean up properly
     };
+
 
     const handleClickForgotPass = () => {
         handleOpenLoginModal(false);
@@ -211,7 +256,9 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
 
     return (
         <>
-            <div className={`modal modal-your-order loginmodal fade ${isOpenModal ? 'show d-block' : ''}`} id="exampleModal-login" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className={`modal modal-your-order loginmodal fade ${isOpenModal ? 'show d-block' : ''}`} id="exampleModal-login" tabIndex={-1} aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+            >
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">Login</h5>
@@ -242,8 +289,8 @@ const Login: React.FC<LoginProps> = ({ isOpenModal, handleToggle, handleOpenLogi
                                                 <label>Code</label>
                                                 <br></br>
                                                 <PhoneInput
-                                                    country={'us'}                // default country if dialCode is empty
-                                                    value={dialCode || '+' + '1'} // your state value
+                                                    country={'us'}
+                                                    value={dialCode || '+' + '1'}
                                                     onChange={(value: string, data: { dialCode: string }) => {
                                                         setDialCode('+' + data.dialCode);
                                                         setErrorMessage('');
