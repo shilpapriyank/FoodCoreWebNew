@@ -1,3 +1,5 @@
+import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
+
 interface Address {
   locationName: string;
   zipcode: string;
@@ -19,14 +21,20 @@ interface Marker {
   address1: string;
 }
 
-const ORDERTYPE = {
-  PICKUP: "Pickup",
-  DELIVERY: "Delivery",
-} as const;
+export enum ORDER_TYPE_ENUM {
+  PICKUP = "Pickup",
+  DELIVERY = "Delivery",
+}
 
-export type OrderType = (typeof ORDERTYPE)[keyof typeof ORDERTYPE];
+// const ORDERTYPE = {
+//   PICKUP: "Pickup",
+//   DELIVERY: "Delivery",
+// };
 
-export const getLoactionMarker = (addressList: Address[]): Marker[] => {
+//export type OrderType = (typeof ORDERTYPE)[keyof typeof ORDERTYPE];
+export type OrderType = `${ORDER_TYPE_ENUM}`;
+
+export const getLoactionMarker = (addressList: AddressListItem[]): Marker[] => {
   return addressList.map((item, index) => ({
     id: index + 1,
     name: `${item.locationName},${item.zipcode},${item.cityName}`,
@@ -157,7 +165,7 @@ export const orderDisable = (
     orderDisableObj.isorderdisable = true;
   } else {
     if (
-      deliveryaddressinfo?.pickupordelivery === ORDERTYPE.PICKUP &&
+      deliveryaddressinfo?.pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
       (location.isTakeoutOrderingDisable ||
         !restaurantinfo.istakeaway ||
         !location.istakeaway)
@@ -165,7 +173,7 @@ export const orderDisable = (
       orderDisableObj.errormessage = location.orderingMessage;
       orderDisableObj.isorderdisable = true;
     } else if (
-      deliveryaddressinfo?.pickupordelivery === ORDERTYPE.DELIVERY &&
+      deliveryaddressinfo?.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
       (location.isDeliveryOrderingDisable ||
         !restaurantinfo.isdelivery ||
         !location.isdelivery)
@@ -194,12 +202,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     const calculatedtopvalue =
       selectedOption.isHalfPizza &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     finalcount += tc.subOptionToppingQuantity * calculatedtopvalue;
@@ -245,20 +253,20 @@ export const checkTimeStatus = (
     (defaultLocation.isdelivery && deliveryWindow?.length > 0)
   ) {
     if (
-      orderType === ORDERTYPE.DELIVERY &&
+      orderType === ORDER_TYPE_ENUM.DELIVERY &&
       defaultLocation.isdelivery &&
       deliveryWindow?.length > 0
     ) {
       return { isCheckTime: true };
-    } else if (orderType === ORDERTYPE.DELIVERY) {
+    } else if (orderType === ORDER_TYPE_ENUM.DELIVERY) {
       return { isCheckTime: false, message: "" };
     } else if (
-      orderType === ORDERTYPE.PICKUP &&
+      orderType === ORDER_TYPE_ENUM.PICKUP &&
       defaultLocation.istakeaway &&
       pickupWindow?.length > 0
     ) {
       return { isCheckTime: true };
-    } else if (orderType === ORDERTYPE.PICKUP) {
+    } else if (orderType === ORDER_TYPE_ENUM.PICKUP) {
       return { isCheckTime: false, message: "Pickup Close" };
     }
   }
@@ -277,7 +285,9 @@ export const unFormatePhoneNumber = (number: string): string => {
   return unFormatedNumber;
 };
 
-export const convertSecondToMinute = (second: number): { minute: number; second: number } => {
+export const convertSecondToMinute = (
+  second: number
+): { minute: number; second: number } => {
   const totalSeconds = second;
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
@@ -287,7 +297,7 @@ export const convertSecondToMinute = (second: number): { minute: number; second:
   }
   return {
     minute: parseInt(padTo2Digits(minutes)),
-    second: parseInt(padTo2Digits(seconds))
+    second: parseInt(padTo2Digits(seconds)),
   };
 };
 

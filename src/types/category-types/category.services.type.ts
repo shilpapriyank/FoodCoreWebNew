@@ -73,3 +73,11 @@ export type CategoryItemListPOSRequest = {
   customerId: number;
   locationId: number;
 };
+
+export type CategoryItemRequest = {
+  restaurantId: number;
+  locationId: number;
+  customerId: number;
+  categories: string;
+  selectedCategoryUrl: string;
+};

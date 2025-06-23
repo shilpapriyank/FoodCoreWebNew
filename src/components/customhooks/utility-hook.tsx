@@ -3,6 +3,7 @@ import { CUSTOMER_TYPE, ORDERTYPE } from "../common/utility";
 import { useReduxData } from "./useredux-data-hooks";
 import { CategoryType } from "@/types/customhook-types/usesearchdata-type";
 import { CategoryItemType } from "@/types/category-types/category.services.type";
+import { ORDER_TYPE_ENUM } from "../default/common/dominos/helpers/utility";
 
 const useUtility = () => {
   const { userinfo, restaurantinfo } = useReduxData();
@@ -43,9 +44,9 @@ const useUtility = () => {
   ): CategoryItemType[] => {
     if (!pickupordelivery || allCat?.length === 0) return allCat;
 
-    if (pickupordelivery === ORDERTYPE.Pickup) {
+    if (pickupordelivery === ORDER_TYPE_ENUM.PICKUP) {
       return allCat.filter((cat) => cat.istakeoutavailable);
-    } else if (pickupordelivery === ORDERTYPE.Delivery) {
+    } else if (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY) {
       return allCat.filter((cat) => cat.isdeliveryavailable);
     }
 
