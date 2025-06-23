@@ -11,45 +11,43 @@ import PickupDeliveryTimeSelectPopup from "../../pickup-delivery/pickup-delivery
 import useFutureOrder from "@/components/customhooks/usefuture-order-hook";
 import TimeSlotPopupComponent from "../../timeslot/timeslot.component";
 import UserDropdown from "./user-dropdown.component";
+import Login from "../../login-register/login.component";
 import CommonModal from "../../common/common-model.component";
-import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
+import AccountConfirmation from "../../login-register/accountconfirmation.component";
+import { GetCurrency, GetThemeDetails } from "@/components/common/utility";
+import { logout } from "../../../../../redux/login/login.slice";
+import { clearSessionId, createSessionId } from "../../../../../redux/session/session.slice";
 import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.slice";
 import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import UserExist from "../../login-register/user-exist.component";
-import { PAGES } from "../../common/pages";
-import { GetCurrency, GetThemeDetails } from "@/components/common/utility";
 import { AppDispatch } from "../../../../../redux/store";
+import Register from "../../login-register/register.component";
+import UserExist from "../../login-register/user-exist.component";
+import VerifyPhoneComponent from "../../login-register/verifyphone.component";
+import { PAGES } from "../../common/pages";
+import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.component";
+import SendEmailAccountConfirm from "../../login-register/sendemail.component";
 import CartCounter from "../../common/cart-counter.component";
 import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
-import { ForgotPasswordComponent } from "../../forgot-password/forgot-password.component";
-import Login from "../../login-register/login.component";
-import AccountConfirmation from "../../login-register/accountconfirmation.component";
-import SendEmailAccountConfirm from "../../login-register/sendemail.component";
-import { logout } from "../../../../../redux/login/login.slice";
-import {
-  clearSessionId,
-  createSessionId,
-} from "../../../../../redux/session/session.slice";
-import Register from "../../login-register/register.component";
-import { UserInfo } from "@/types/rewardpoint-types/rewardpoint.type";
-import VerifyPhoneComponent from "../../login-register/verifyphone.component";
+import { LoggedInUser } from "../../../../../redux/login/login.types";
+
 interface HeaderProps {
   handleChangeAddress?: () => void;
   page?: string;
 }
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
-  const { restaurantinfo, selecteddelivery, order, userinfo } = useReduxData();
+  const { restaurantinfo, selecteddelivery, order, userinfo, cart } = useReduxData();
   const rewardAmount =
     userinfo?.totalRewardPoints && userinfo.rewardvalue
       ? parseFloat(
           (userinfo.totalRewardPoints / userinfo.rewardvalue).toString()
         ).toFixed(2)
       : "0";
+
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const pathname: string = usePathname();
@@ -339,7 +337,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         }
         isOpenModal={modalState.openRewardModal}
       >
-        {/* <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{(userinfo as any).totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6> */}
+        <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{userinfo?.totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6>
         <h6>You can use these points at checkout to save</h6>
       </CommonModal>
 

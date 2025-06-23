@@ -20,3 +20,30 @@ export interface AddressModel {
     addresstype?: number;
     businessname?: string;
 }
+
+export interface OTPVerificationSettingParams {
+    restaurantId: number;
+    enableotpauthentication: boolean;
+    smsapigateway: number;
+}
+
+export interface TwilioSendCodeParams extends OTPVerificationSettingParams {
+    mobilenumber: string;
+}
+export interface TwilioVerifyCodeParams extends TwilioSendCodeParams {
+    code: number;
+}
+
+export interface VerifyEmailParams {
+    restaurantId: number;
+    locationId: number;
+    code: string;
+    customerId: number;
+}
+
+export interface SendVerificationEmailParams {
+    restaurantId: number;
+    locationId: number;
+    requesturl: string;
+    customerId: number;
+}

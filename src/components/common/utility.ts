@@ -810,7 +810,8 @@ export const bindPlaceOrderObject = (
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
       pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-        ? parseFloat(cart.carttotal.deliveryAmount)
+        ? //pickupordelivery === ORDERTYPE.Delivery
+          parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,

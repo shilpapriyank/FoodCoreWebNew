@@ -3,7 +3,7 @@ export const BASE_URL: string = process.env.NEXT_PUBLIC_WEB_API_URL || "";
 
 const proxy: string = "";
 
-export const ENDPOINTS = {
+export const ENDPOINTS : Record<string, string> = {
   PROXY: `${proxy}`,
   BASE_URL: `${BASE_URL}`,
   GET_RESTAURANTS: `${BASE_URL}/RestaurantAPIOnlineWebV1.asmx/getAllRestaurantInfo`,

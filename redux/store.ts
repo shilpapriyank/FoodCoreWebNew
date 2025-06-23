@@ -23,29 +23,32 @@ import cartReducer from "./cart/cart.slice";
 import sessionReducer from "./session/session.slice";
 import metadataReducer from "./metadata/metadata.slice";
 import mainReducer from "./main/main.slice";
-import { thunk } from "redux-thunk";
 import tableOrderReducer from "./tableorder/tableorder.slice";
 import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
 import deliveryaddressReducer from "./delivery-address/delivery-address.slice";
 import studentReducer from '../redux/student/student.slice';
+import registerReducer from "./register/register.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
   restaurant: restaurantsReducer,
-  selecteddelivery: selecteddeliveryReducer,
-  menuitem: menuItemReducer,
-  category: categoryReducer,
-  userdetail: loginReducer,
-  order: orderReducer,
-  location: locationReducer,
-  metadata: metadataReducer,
-  cart: cartReducer,
-  session: sessionReducer,
   main: mainReducer,
-  tableorder: tableOrderReducer,
-  rewardpoints: rewardpointReducer,
+  category: categoryReducer,
+  menuitem: menuItemReducer,
+  cart: cartReducer,
+  register: registerReducer,
+  userdetail: loginReducer,
+  // location: locationReducer,
+  // todaytimming: timmingReducer,
+  order: orderReducer,
   deliveryaddress: deliveryaddressReducer,
-   student: studentReducer
+  selecteddelivery: selecteddeliveryReducer,
+  session: sessionReducer,
+  studentname: studentReducer,
+  rewardpoints: rewardpointReducer,
+  metadata: metadataReducer,
+  tableorder: tableOrderReducer,
+
 });
 
 // Persist configuration
