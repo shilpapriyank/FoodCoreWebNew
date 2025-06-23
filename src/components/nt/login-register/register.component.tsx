@@ -25,6 +25,7 @@ import { allRegex, countryData, formatePhoneNumber, getCountryList, GetThemeDeta
 import OtpVerificationComponent from "./otpverification.component";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/bootstrap.css';
+import { OTPVerificationSettingParams } from "@/types/register-types/register.types";
 
 
 interface RegisterProps {
@@ -124,20 +125,43 @@ const Register: React.FC<RegisterProps> = ({
         setisDisable(false)
     }
 
+    // useEffect(() => {
+    //     if (isNotValidateOtp) {
+    //         return;
+    //     }
+    //     if (restaurantinfo.smsapigateway === 1 && 
+    //         restaurantinfo.enableotpauthentication === true
+    //     ) {
+    //         RegisterServices.getOTPVerificationSetting(
+    //             restaurantinfo.restaurantId,
+    //             // restaurantinfo.enableotpauthentication,
+    //             // restaurantinfo.smsapigateway
+    //         ).then((response) => {
+    //             if (response && response != null) {
+    //                 setOTPDetail(response);
+    //             }
+    //         })
+    //     }
+    // }, []);
+
     useEffect(() => {
-        if (isNotValidateOtp) {
-            return;
-        }
-        if (restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true) {
-            RegisterServices.getOTPVerificationSetting(
-                restaurantinfo.restaurantId,
-                restaurantinfo.enableotpauthentication,
-                restaurantinfo.smsapigateway
-            ).then((response) => {
-                if (response && response != null) {
-                    setOTPDetail(response);
+        if (isNotValidateOtp) return;
+
+        if (
+            restaurantinfo.smsapigateway === 1 &&
+            restaurantinfo.enableotpauthentication === true
+        ) {
+            const payload: OTPVerificationSettingParams = {
+                restaurantId: restaurantinfo.restaurantId,
+                enableotpauthentication: restaurantinfo.enableotpauthentication,
+                smsapigateway: restaurantinfo.smsapigateway,
+            };
+
+            RegisterServices.getOTPVerificationSetting(payload).then((response) => {
+                if (response) {
+                    setOTPDetail(response as string | any);
                 }
-            })
+            });
         }
     }, []);
     useEffect(() => {
@@ -351,37 +375,73 @@ const Register: React.FC<RegisterProps> = ({
         dispatch(registerAddress({}));
     }
 
+    // const handleSendOTP = (): void => {
+    //     if (restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true) {
+    //         handleSendOtpHook(dialCode.toString(), values.phone).then((result) => {
+    //             setisotpVerification(true)
+    //             setsecond(otpTime.second)
+    //             setMinutes(otpTime.minute)
+    //             setisOtpSecond(!isOtpSecond)
+    //             handleOpenOtp(true)
+    //             handleNotify("Code sent successfully", ToasterPositions.TopRight, ToasterTypes.Success);
+    //         }).catch((err: any) => {
+
+    //         })
+    //     }
+    //     if (restaurantinfo.smsapigateway === 2 && restaurantinfo.enableotpauthentication === true) {
+    //         let mobileNumber = `${dialCode} ${unFormatePhoneNumber(values.phone)}`
+    //         RegisterServices.twilioSendCode(
+    //             restaurantinfo.restaurantId,
+    //             // restaurantinfo.enableotpauthentication,
+    //             // restaurantinfo.smsapigateway,
+    //             // mobileNumber
+    //         ).then((response) => {
+    //             if (response && response != null) {
+    //                 document.getElementById("btn-otp")?.click()
+    //                 setsecond(otpTime.second)
+    //                 setMinutes(otpTime.minute)
+    //                 setIsShowReSend(true);
+    //                 handleNotify("Code sent successfully", ToasterPositions.TopRight, ToasterTypes.Success);
+    //             }
+    //         })
+    //     }
+    // }
+
     const handleSendOTP = (): void => {
         if (restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true) {
             handleSendOtpHook(dialCode.toString(), values.phone).then((result) => {
-                setisotpVerification(true)
-                setsecond(otpTime.second)
-                setMinutes(otpTime.minute)
-                setisOtpSecond(!isOtpSecond)
-                handleOpenOtp(true)
+                setisotpVerification(true);
+                setsecond(otpTime.second);
+                setMinutes(otpTime.minute);
+                setisOtpSecond(!isOtpSecond);
+                handleOpenOtp(true);
                 handleNotify("Code sent successfully", ToasterPositions.TopRight, ToasterTypes.Success);
             }).catch((err: any) => {
-
-            })
+                // Handle error
+            });
         }
+
         if (restaurantinfo.smsapigateway === 2 && restaurantinfo.enableotpauthentication === true) {
-            let mobileNumber = `${dialCode} ${unFormatePhoneNumber(values.phone)}`
-            RegisterServices.twilioSendCode(
-                restaurantinfo.restaurantId,
-                restaurantinfo.enableotpauthentication,
-                restaurantinfo.smsapigateway,
-                mobileNumber
-            ).then((response) => {
-                if (response && response != null) {
-                    document.getElementById("btn-otp")?.click()
-                    setsecond(otpTime.second)
-                    setMinutes(otpTime.minute)
+            const mobileNumber = `${dialCode} ${unFormatePhoneNumber(values.phone)}`;
+
+            const payload = {
+                restaurantId: restaurantinfo.restaurantId,
+                enableotpauthentication: restaurantinfo.enableotpauthentication,
+                smsapigateway: restaurantinfo.smsapigateway,
+                mobilenumber: mobileNumber,
+            };
+
+            RegisterServices.twilioSendCode(payload).then((response) => {
+                if (response) {
+                    document.getElementById("btn-otp")?.click();
+                    setsecond(otpTime.second);
+                    setMinutes(otpTime.minute);
                     setIsShowReSend(true);
                     handleNotify("Code sent successfully", ToasterPositions.TopRight, ToasterTypes.Success);
                 }
-            })
+            });
         }
-    }
+    };
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();

@@ -2,7 +2,7 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import { AddressModel, RegisterModel } from "@/types/register-types/register.types";
+import { AddressModel, OTPVerificationSettingParams, RegisterModel, SendVerificationEmailParams, TwilioSendCodeParams, TwilioVerifyCodeParams, VerifyEmailParams } from "@/types/register-types/register.types";
 
 let responseclass = new ResponseModel();
 
@@ -67,17 +67,18 @@ export class RegisterServices {
   }
 
   static async getOTPVerificationSetting(
-    restaurantId: number,
-    enableotpauthentication: boolean,
-    smsapigateway: number
-  ): Promise<any> {
+    {
+      restaurantId,
+      enableotpauthentication,
+      smsapigateway,
+    }: OTPVerificationSettingParams): Promise<Record<string, any> | null> {
     responseclass = new ResponseModel();
     const methodName = "getOTPVerificationSetting";
     const location = ENDPOINTS.OTP_VERIFICATION_SETTING;
     const data = {
-      restaurantId: restaurantId,
-      enableotpauthentication: enableotpauthentication,
-      smsapigateway: smsapigateway,
+      restaurantId,
+      enableotpauthentication,
+      smsapigateway,
     };
     responseclass = await handleAxiosPostAsync(
       data,
@@ -97,19 +98,20 @@ export class RegisterServices {
   }
 
   static async twilioSendCode(
-    restaurantId: number,
-    enableotpauthentication: boolean,
-    smsapigateway: number,
-    mobilenumber: string
-  ): Promise<any> {
+    {
+      restaurantId,
+      enableotpauthentication,
+      smsapigateway,
+      mobilenumber,
+    }: TwilioSendCodeParams): Promise<Record<string, any> | null> {
     responseclass = new ResponseModel();
     const methodName = "twilioSendCode";
     const location = ENDPOINTS.TWILIO_SEND_CODE;
     const data = {
-      restaurantId: restaurantId,
-      enableotpauthentication: enableotpauthentication,
-      smsapigateway: smsapigateway,
-      mobilenumber: mobilenumber,
+      restaurantId,
+      enableotpauthentication,
+      smsapigateway,
+      mobilenumber,
     };
     responseclass = await handleAxiosPostAsync(
       data,
@@ -128,22 +130,22 @@ export class RegisterServices {
     }
   }
 
-  static async twilioVerifyCode(
-    restaurantId: number,
-    enableotpauthentication: boolean,
-    smsapigateway: number,
-    code: number,
-    mobilenumber: string
-  ): Promise<any> {
+  static async twilioVerifyCode({
+    restaurantId,
+    enableotpauthentication,
+    smsapigateway,
+    mobilenumber,
+    code,
+  }: TwilioVerifyCodeParams): Promise<Record<string, any> | null> {
     responseclass = new ResponseModel();
     const methodName = "twilioVerifyCode";
     const location = ENDPOINTS.TWILIO_VERIFY_CODE;
     const data = {
-      restaurantId: restaurantId,
-      enableotpauthentication: enableotpauthentication,
-      smsapigateway: smsapigateway,
-      code: code,
-      mobilenumber: mobilenumber,
+      restaurantId,
+      enableotpauthentication,
+      smsapigateway,
+      code,
+      mobilenumber,
     };
     responseclass = await handleAxiosPostAsync(
       data,
@@ -163,20 +165,21 @@ export class RegisterServices {
   }
 
   static async verifyEmail(
-    restaurantId: number,
-    locationId: number,
-    code: string,
-    customerId: number
-  ): Promise<any> {
+    {
+      restaurantId,
+      locationId,
+      code,
+      customerId,
+    }: VerifyEmailParams): Promise<Record<string, any> | null> {
     responseclass = new ResponseModel();
     const methodName = "verifyEmail";
     const verify = ENDPOINTS.VERIFY_EMAIL;
     const data = {
       verifyEmail: {
-        restaurantId: restaurantId,
-        locationId: locationId,
-        code: code,
-        customerId: customerId,
+        restaurantId,
+        locationId,
+        code,
+        customerId,
       },
     };
     responseclass = await handleAxiosPostAsync(
@@ -197,20 +200,21 @@ export class RegisterServices {
   }
 
   static async sendVerificationEmail(
-    restaurantId: number,
-    locationId: number,
-    requesturl: string,
-    customerId: number
-  ): Promise<any> {
+    {
+      restaurantId,
+      locationId,
+      requesturl,
+      customerId,
+    }: SendVerificationEmailParams): Promise<Record<string, any> | null> {
     responseclass = new ResponseModel();
     const methodName = "sendVerificationEmail";
     const sendVerificationEmail = ENDPOINTS.SEND_VERIFICATION_EMAIL;
     const data = {
       sendEmailRequest: {
-        restaurantId: restaurantId,
-        locationId: locationId,
-        requesturl: requesturl,
-        customerId: customerId,
+        restaurantId,
+        locationId,
+        requesturl,
+        customerId,
       },
     };
     responseclass = await handleAxiosPostAsync(

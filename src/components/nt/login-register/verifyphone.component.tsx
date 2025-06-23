@@ -46,8 +46,8 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({ isOpenModal
         if (restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true) {
             RegisterServices.getOTPVerificationSetting(
                 restaurantinfo.restaurantId,
-                restaurantinfo.enableotpauthentication,
-                restaurantinfo.smsapigateway
+                // restaurantinfo.enableotpauthentication,
+                // restaurantinfo.smsapigateway
             ).then((response) => {
                 if (response && response != null) {
                     setOTPDetail(response);
@@ -135,9 +135,9 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({ isOpenModal
         if (restaurantinfo.smsapigateway === 2 && restaurantinfo.enableotpauthentication === true) {
             RegisterServices.twilioSendCode(
                 restaurantinfo.restaurantId,
-                restaurantinfo.enableotpauthentication,
-                restaurantinfo.smsapigateway,
-                dialCode.toString() + values.phone
+                // restaurantinfo.enableotpauthentication,
+                // restaurantinfo.smsapigateway,
+                // dialCode.toString() + values.phone
             ).then((response) => {
                 if (response && response != null) {
                     setsecond(otpTime.second)
