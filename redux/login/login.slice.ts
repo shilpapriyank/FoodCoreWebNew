@@ -9,24 +9,23 @@ const initialState: LoginState = {
     loggedinuser: null,
 };
 
-// Thunk: Fetch login user details
 export const getLoginUserDetails = createAsyncThunk<
-  any, // You can replace this with `LoggedInUser | null` if you have a proper type
-  LoginParams,
-  { dispatch: AppDispatch }
+    LoggedInUser | null,
+    LoginParams,
+    { dispatch: AppDispatch }
 >(
-  'login/getLoginUserDetails',
-  async ({ username, password, restaurantId, dialCode, locationid }, { dispatch }) => {
-    const response = await LoginServices.getLoginUserDetails({
-      username,
-      password,
-      restaurantId,
-      dialCode,
-      locationid,
-    });
+    'login/getLoginUserDetails',
+    async ({ username, password, restaurantId, dialCode, locationid }, { dispatch }) => {
+        const response = await LoginServices.getLoginUserDetails({
+            username,
+            password,
+            restaurantId,
+            dialCode,
+            locationid: Number(locationid),
+        });
 
-    return response || null;
-  }
+        return response && 'customerId' in response ? response : null;
+    }
 );
 
 // Thunk: Fetch customer details & reward points
@@ -34,26 +33,28 @@ export const getCustomerDetails = createAsyncThunk<
     void,
     { restaurantId: number; customerId: number; rewardvalue: number; lid: number },
     { dispatch: AppDispatch }
->('login/getCustomerDetails', async ({ restaurantId, customerId, rewardvalue, lid }, { dispatch }) => {
-    const response = await LoginServices.getCustomerDetails(customerId, restaurantId, lid);
-    if (response) {
-        const totalRewardPoints = response?.customerDetails?.totalRewardPoints || 0;
-        const rewardamount = rewardvalue > 0 ? totalRewardPoints / rewardvalue : 0;
+>(
+    'login/getCustomerDetails',
+    async ({ restaurantId, customerId, rewardvalue, lid }, { dispatch }) => {
+        const response = await LoginServices.getCustomerDetails(customerId, restaurantId, lid);
+        if (response?.customerDetails) {
+            const totalRewardPoints = response?.customerDetails?.totalRewardPoints || 0;
+            const rewardamount = rewardvalue > 0 ? totalRewardPoints / rewardvalue : 0;
 
-        const rewardpoints = {
-            rewardvalue,
-            rewardamount,
-            rewardPoint: totalRewardPoints,
-            totalRewardPoints,
-            redeemPoint: 0,
-        };
+            const rewardpoints = {
+                rewardvalue,
+                rewardamount,
+                rewardPoint: totalRewardPoints,
+                totalRewardPoints,
+                redeemPoint: 0,
+            };
 
-        dispatch({
-            type: RewardPointTypes.SET_REWARD_POINT,
-            payload: rewardpoints,
-        });
-    }
-});
+            dispatch({
+                type: RewardPointTypes.SET_REWARD_POINT,
+                payload: rewardpoints,
+            });
+        }
+    });
 
 const loginSlice = createSlice({
     name: 'login',
@@ -62,7 +63,7 @@ const loginSlice = createSlice({
         logout: (state) => {
             state.loggedinuser = null;
         },
-        updateUserTotalRewardPoint: (state, action: PayloadAction<any>) => {
+        updateUserTotalRewardPoint: (state, action: PayloadAction<LoggedInUser>) => {
             state.loggedinuser = action.payload;
         },
     },

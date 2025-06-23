@@ -26,11 +26,11 @@ export interface AddressModel {
 }
 
 interface RegisterState {
-  registerUser?: ResponseModel | null;
+  register: ResponseModel[];
 }
 
 const initialState: RegisterState = {
-  registerUser: null,
+  register: []
 };
 
 // ✅ Async thunk for registration
@@ -44,7 +44,7 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await RegisterServices.registerUser(
+      const response = await RegisterServices.registerUserWithAddress(
         registerModel,
         address
       );
@@ -61,14 +61,14 @@ const registerSlice = createSlice({
   initialState,
   reducers: {
     resetRegister: (state) => {
-      state.registerUser = null;
+      state.register = [];
     },
   },
   extraReducers: (builder) => {
     builder.addCase(
       registerUser.fulfilled,
       (state, action: PayloadAction<ResponseModel>) => {
-        state.registerUser = action.payload;
+        state.register.push(action.payload);
       }
     );
   },

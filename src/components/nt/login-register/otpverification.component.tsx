@@ -167,7 +167,12 @@ const OtpVerificationComponent: React.FC<Props> = ({
             })
         }
         if (restaurantinfo.smsapigateway === SMS_API_TYPE.TWILIO.value && restaurantinfo.enableotpauthentication === true) {
-            RegisterServices.twilioVerifyCode(restaurantinfo.restaurantId, restaurantinfo.enableotpauthentication, restaurantinfo.smsapigateway, otp, dialCode.toString() + phone)
+            RegisterServices.twilioVerifyCode(restaurantinfo.restaurantId, 
+                // restaurantinfo.enableotpauthentication,
+                //  restaurantinfo.smsapigateway, 
+                //  otp, 
+                //  dialCode.toString() + phone
+                )
                 .then((response: any) => {
                     if (response && response != null) {
                         if (response.Valid && response.Valid === true) {
@@ -275,7 +280,11 @@ const OtpVerificationComponent: React.FC<Props> = ({
             })
         }
         if (restaurantinfo.smsapigateway === SMS_API_TYPE.TWILIO.value && restaurantinfo.enableotpauthentication === true) {
-            RegisterServices.twilioSendCode(restaurantinfo.restaurantId, restaurantinfo.enableotpauthentication, restaurantinfo.smsapigateway, dialCode.toString() + values.phone)
+            RegisterServices.twilioSendCode(restaurantinfo.restaurantId, 
+                // restaurantinfo.enableotpauthentication, 
+                // restaurantinfo.smsapigateway,
+                // dialCode.toString() + values.phone
+            )
                 .then((response: any) => {
                     if (response && response != null) {
                         setIsShowReSend(true);
@@ -304,7 +313,12 @@ const OtpVerificationComponent: React.FC<Props> = ({
             })
         }
         if (restaurantinfo.smsapigateway === SMS_API_TYPE.TWILIO.value && restaurantinfo.enableotpauthentication === true) {
-            RegisterServices.twilioVerifyCode(restaurantinfo.restaurantId, restaurantinfo.enableotpauthentication, restaurantinfo.smsapigateway, code, dialCode.toString() + values.phone)
+            RegisterServices.twilioVerifyCode(restaurantinfo.restaurantId, 
+                // restaurantinfo.enableotpauthentication, 
+                // restaurantinfo.smsapigateway,
+                //  code, 
+                //  dialCode.toString() + values.phone
+                )
                 .then((response: any) => {
                     if (response && response != null) {
                         setIsShowReSend(true);

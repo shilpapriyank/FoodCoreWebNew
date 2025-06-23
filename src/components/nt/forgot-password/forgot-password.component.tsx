@@ -41,18 +41,18 @@ export const ForgotPasswordComponent: React.FC<ForgotPasswordComponentProps> = (
     const { query: { dynamic = '', location = '' } } = router as { query: { dynamic?: string; location?: string } };
     const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [submitting, setSubmitting] = useState(false);
-    const [isDisable, setisDisable] = useState(false);
-    const [phoneNumber, setphoneNumber] = useState('');
+    const [submitting, setSubmitting] = useState<boolean>(false);
+    const [isDisable, setisDisable] = useState<boolean>(false);
+    const [phoneNumber, setphoneNumber] = useState<string>('');
     const [customerId, setCustomerId] = useState<number>();
-    const [phone, setphone] = useState('');
+    const [phone, setphone] = useState<string>('');
     const locationCountry = restaurantinfo?.defaultLocation?.countryName ?? 'usa';
     // const locationCountryData = countryData[locationCountry.toLowerCase()];
     type CountryKey = keyof typeof countryData;
     const locationKey = locationCountry.toLowerCase() as CountryKey;
     const locationCountryData = countryData[locationKey];
     const [dialCode, setDialCode] = useState<string>(locationCountryData.countryCode);
-    const [flag, setFlag] = useState(false);
+    const [flag, setFlag] = useState<boolean>(false);
 
     useEffect(() => {
         const defaultflag = document.querySelector('.forgot-pass')?.previousElementSibling?.firstElementChild?.firstElementChild as HTMLElement | null;
