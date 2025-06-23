@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { useEffect, useState, ReactNode, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   useParams,
@@ -31,7 +31,6 @@ import {
 } from "../common/localstore";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
 // import { v4 as uuidv4 } from "uuid";
-import { RestaurantsTypes } from "../../../redux/restaurants/restaurants.types";
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
   restaurantsdetail,
@@ -49,9 +48,14 @@ import { clearRedux } from "../../../redux/clearredux/clearredux.slice";
 import { createSessionId } from "../../../redux/session/session.slice";
 import { getSelectedRestaurantTime } from "../../../redux/main/main.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
-import { RootState } from "../../../redux/store";
+import { AppDispatch, RootState } from "../../../redux/store";
 import { Action } from "@reduxjs/toolkit";
-import { DefaultLocationApiTypes } from "@/types/restaurant-types/restaurant.type";
+import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
+import { logout } from "../../../redux/login/login.slice";
+import {
+  DefaultLocationType,
+  RestaurantsTimingList,
+} from "@/types/restaurant-types/restaurant.type";
 
 interface Props {
   children: ReactNode;
@@ -164,7 +168,7 @@ const RestaurantComponent = ({
       const isTableOrderTheme = path.includes(tableOrderTheme.url);
       //check is tableorder then update the theme type
       if (!isSameRestaurant) {
-        dispatch(clearRedux(true));
+        dispatch(clearRedux(true) as any);
         // if (newselectedRestaurant.restaurantId > 0 && userinfo) {
         //   if (userinfo.restaurantId !== newselectedRestaurant.restaurantId) {
         let rewardpoints = {
@@ -327,8 +331,8 @@ const RestaurantComponent = ({
           totalRewardPoints: 0,
           redeemPoint: 0,
         };
-        //dispatch(setRewardPoint(rewardpoints));
-        //dispatch(logout());
+        dispatch(setrewardpoint(rewardpoints));
+        dispatch(logout());
         let id = uuidv4();
         dispatch(createSessionId(id));
       }
@@ -343,7 +347,7 @@ const RestaurantComponent = ({
           : restaurantslocationlistwithtime?.addressList;
       if (restaurantslocationlist.addressList !== undefined) {
         let linkLoacationurl = formatStringToURLWithBlankSpace(location);
-        addressList.map((locations: DefaultLocationApiTypes) => {
+        addressList?.map((locations) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL
           );

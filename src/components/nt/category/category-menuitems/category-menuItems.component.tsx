@@ -136,7 +136,7 @@ const CategoryMenuItems = ({
     string[]
   >([]);
   let menuItemDetail = menuitem.menuitemdetaillist;
-  const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const [isStudentPopUp, setisStudentPopUp] = useState<boolean>(false);
   const isOrderingDisable = restaurantinfo?.defaultLocation?.isOrderingDisable;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
@@ -178,7 +178,7 @@ const CategoryMenuItems = ({
     }
   }, [
     categoryslug,
-    restaurantinfo.defaultlocationId,
+    restaurantinfo?.defaultlocationId,
     selectedCategory?.categoryslug,
   ]);
 
@@ -189,8 +189,8 @@ const CategoryMenuItems = ({
       //dispatch(selectedMenuItem())
 
       MenuItemServices.getMenuItemList({
-        restaurantId: restaurantinfo?.restaurantId,
-        locationId: restaurantinfo.defaultlocationId,
+        restaurantId: restaurantinfo?.restaurantId as number,
+        locationId: restaurantinfo?.defaultlocationId as number,
         customerId: customerId,
         menuitemId: dependentId,
         cartsessionId: String(sessionid),
@@ -310,7 +310,7 @@ const CategoryMenuItems = ({
       dispatch(
         addFavorite({
           customerId: userinfo?.customerId ?? 0,
-          restaurantId: restaurantinfo.restaurantId,
+          restaurantId: restaurantinfo?.restaurantId as number,
           menuItemId: selecteditem.menuitemId,
         }) as any
       );
@@ -321,7 +321,7 @@ const CategoryMenuItems = ({
       dispatch(
         deleteFavorite({
           customerId: userinfo?.customerId ?? 0,
-          restaurantId: restaurantinfo.restaurantId,
+          restaurantId: restaurantinfo?.restaurantId as number,
           menuItemId: selecteditem.menuitemId,
         }) as any
       );
@@ -351,8 +351,8 @@ const CategoryMenuItems = ({
       MenuItemServices.quickOrderaddToCart({
         menuItemId: item.menuitemId,
         cartsessionId: sessionid as string,
-        restaurantId: restaurantinfo.restaurantId,
-        locationId: restaurantinfo.defaultlocationId,
+        restaurantId: restaurantinfo?.restaurantId as number,
+        locationId: restaurantinfo?.defaultlocationId as number,
       }).then((res) => {
         if (res) {
           handleNotify(
@@ -363,16 +363,16 @@ const CategoryMenuItems = ({
           dispatch(
             getCartItemCount({
               cartsessionid: sessionid,
-              locationId: restaurantinfo.defaultlocationId,
-              restaurantId: restaurantinfo.restaurantId,
+              locationId: restaurantinfo?.defaultlocationId,
+              restaurantId: restaurantinfo?.restaurantId,
               customerId: userinfo ? userinfo?.customerId : 0,
             }) as any
           );
           //modalPopUpCloseClick();
           CartServices.getCartItemList({
             cartsessionId: sessionid as string,
-            locationId: restaurantinfo.locationId,
-            restaurantId: restaurantinfo.restaurantId,
+            locationId: restaurantinfo?.locationId as number,
+            restaurantId: restaurantinfo?.restaurantId as number,
             cartId: 0,
             customerId: userinfo ? userinfo?.customerId : 0,
             rewardpoints: rpoint,
@@ -484,7 +484,7 @@ const CategoryMenuItems = ({
                   <GridListButton
                     viewType={viewType}
                     handleClickView={handleClickView}
-                    dynamicColor={restaurantinfo.color}
+                    dynamicColor={restaurantinfo?.color}
                   />
                 </div>
               </div>
@@ -805,7 +805,8 @@ const CategoryMenuItems = ({
             selectedDependentItems={selectedDependentItems}
             handleOnCheck={handleOnCheck}
             dependantMenuList={
-              menuItemDetail[0]?.dependantMenuList ?? menuItemDetail[0]?.dependantMenuList
+              menuItemDetail[0]?.dependantMenuList ??
+              menuItemDetail[0]?.dependantMenuList
             }
           />
         </CommonModal>

@@ -34,15 +34,14 @@ export default function LocationPage() {
   } = useReduxData();
   console.log(
     "defaultLocation from location page",
-    restaurantinfo.defaultLocation
+    restaurantinfo?.defaultLocation
   );
   const params = useParams();
   const { location } = params;
   console.log("location from lacation page", location);
   const [isloadAdress, setisloadAdress] = useState<boolean>(true);
-  const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype;
-  const isSchoolProgramEnabled: boolean =
-    restaurantinfo?.isSchoolProgramEnabled;
+  const b2b = restaurantinfo?.defaultLocation?.b2btype;
+  const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
   const {

@@ -10,7 +10,7 @@ const MenuItemQuickOrder = ({ item, quickOrderClick }: any) => {
   const params = useParams();
   const { dynamic, location, category } = params;
   const deliveryaddressinfo = selecteddelivery;
-  const locationSelected = restaurantinfo.defaultLocation;
+  const locationSelected = restaurantinfo?.defaultLocation;
 
   const IsOrderDisable = () => {
     if (locationSelected && locationSelected.isOrderingDisable == true) {
@@ -19,13 +19,13 @@ const MenuItemQuickOrder = ({ item, quickOrderClick }: any) => {
       if (
         deliveryaddressinfo &&
         deliveryaddressinfo.pickupordelivery === "Pickup" &&
-        locationSelected.isTakeoutOrderingDisable === true
+        locationSelected?.isTakeoutOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else if (
         deliveryaddressinfo &&
         deliveryaddressinfo.pickupordelivery === ORDERTYPE.Delivery &&
-        locationSelected.isDeliveryOrderingDisable === true
+        locationSelected?.isDeliveryOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else {
