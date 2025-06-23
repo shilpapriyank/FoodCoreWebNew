@@ -92,6 +92,7 @@ export interface DefaultLocationType {
   timeduration: number;
   tipYourDriver: string;
   zipcode: string;
+  schoolprogramenabled: boolean;
 }
 
 export interface RestaurantDetails {

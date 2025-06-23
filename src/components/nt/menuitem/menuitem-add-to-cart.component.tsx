@@ -54,8 +54,8 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
   const dependentIds = menuitem?.dependentitemids;
   const dependentId = menuitem?.dependentid ?? 0;
   const cartdata = cart?.cartitemdetail && cart?.cartitemdetail;
-  const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
-  const locationSelected = restaurantinfo.defaultLocation;
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const locationSelected = restaurantinfo?.defaultLocation;
   const ordertype =
     deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
       ? ORDER_TYPE.DELIVERY.value
@@ -91,8 +91,8 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
   const addtocartclick = (item: any) => {
     dispatch(selectedMenuItem(item));
     MenuItemServices.getMenuItemList({
-      restaurantId: restaurantinfo.restaurantId,
-      locationId: restaurantinfo.defaultlocationId,
+      restaurantId: restaurantinfo?.restaurantId as number,
+      locationId: restaurantinfo?.defaultlocationId as number,
       customerId: customerId,
       menuitemId: item.menuitemId,
       cartsessionId: String(cartsessionid),
@@ -251,13 +251,13 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
       if (
         deliveryaddressinfo &&
         deliveryaddressinfo.pickupordelivery === "Pickup" &&
-        locationSelected.isTakeoutOrderingDisable === true
+        locationSelected?.isTakeoutOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else if (
         deliveryaddressinfo &&
         deliveryaddressinfo.pickupordelivery === ORDERTYPE.Delivery &&
-        locationSelected.isDeliveryOrderingDisable === true
+        locationSelected?.isDeliveryOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else {

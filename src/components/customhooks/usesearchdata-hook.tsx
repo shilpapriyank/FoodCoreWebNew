@@ -42,8 +42,8 @@ export const useSearchData = (searchtext: string) => {
       dispatch(setSearchText(searchItem));
       dispatch(setSearchData({}));
       MenuItemServices.getSerachResult({
-        locationId: restaurantinfo.defaultLocation.locationId,
-        restaurantId: restaurantinfo.restaurantId,
+        locationId: restaurantinfo?.defaultLocation.locationId as number,
+        restaurantId: restaurantinfo?.restaurantId as number,
         customerId: userinfo?.customerId ?? 0,
         serchQuery: searchItem.trim(),
       })
