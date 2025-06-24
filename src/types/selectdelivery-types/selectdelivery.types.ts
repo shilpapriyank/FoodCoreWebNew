@@ -1,7 +1,7 @@
 export interface SelectedDeliveryAddressType {
   address1: string;
   address2: string;
-  addresstype: number;
+  addresstype: 0 | 1; //number;
   businessname: string;
   city: string;
   contactname: string;

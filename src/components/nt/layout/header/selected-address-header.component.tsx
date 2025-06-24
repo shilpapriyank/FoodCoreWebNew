@@ -23,26 +23,23 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
   let myDeliveryAddress = selecteddeliveryaddress ?? tempDeliveryAddress;
 
   const DisplayselectedPickup = () => {
+    // debugger
     return (
       <>
         {orderTypeName === ORDER_TYPE.DELIVERY.text ? (
           <>
             {" "}
             {myDeliveryAddress &&
-              `${
-                myDeliveryAddress?.address1 && myDeliveryAddress?.address1
-              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${
-                myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
+              `${myDeliveryAddress?.address1 && myDeliveryAddress?.address1
+              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
               }`}
           </>
         ) : (
           <>
             {" "}
-            {`${
-              restaurantinfo && restaurantinfo?.defaultLocation?.address1
-            },  ${
-              restaurantinfo && restaurantinfo?.defaultLocation?.cityname
-            }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
+            {`${restaurantinfo && restaurantinfo?.defaultLocation?.address1
+              },  ${restaurantinfo && restaurantinfo?.defaultLocation?.cityname
+              }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
           </>
         )}
       </>

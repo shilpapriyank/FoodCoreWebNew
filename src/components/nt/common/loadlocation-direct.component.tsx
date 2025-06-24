@@ -37,14 +37,13 @@ import { CategoryItem } from "@/types/category-types/category.services.type";
 import { AppDispatch } from "../../../../redux/store";
 import { useDispatch } from "react-redux";
 import useLoadCatData from "@/components/customhooks/useloadcatdata-hook";
-import { ORDER_TYPE_ENUM } from "@/components/default/common/dominos/helpers/utility";
+import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
   children,
   isLoadAddressChangeUrl = true,
 }: any) => {
-  // const { restaurantinfo, sessionid, restaurant, userinfo,rewardpoints, selecteddelivery, categoryItemsList } = useReduxData()
   const {
     restaurantinfo,
     sessionid,

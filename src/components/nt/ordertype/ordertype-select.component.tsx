@@ -1,46 +1,48 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-
-import DeliveryaddresspillComponent from "../pickup-delivery/deliveryaddresspill.component";
+import PickupDeliveryButton from "./pickup-delivery-btn.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
+import { useDispatch } from "react-redux";
+import { useParams, useRouter } from "next/navigation";
 import { closeModal, GetThemeDetails, ORDER_TYPE } from "../../common/utility";
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import AddressList from "../common/adresslist.component";
+import { LocationServices } from "../../../../redux/location/location.services";
+import {
+  ChangeUrl,
+  restaurantsdetail,
+} from "../../../../redux/restaurants/restaurants.slice";
 import {
   getLocationIdFromStorage,
   setLocationIdInStorage,
 } from "@/components/common/localstore";
 import { clearRedux } from "../../../../redux/tableorder/tableorder.slice";
+import { v4 as uuidv4 } from "uuid";
+import { createSessionId } from "../../../../redux/session/session.slice";
 import {
   getSelectedRestaurantTime,
   refreshCategoryList,
 } from "../../../../redux/main/main.slice";
 import {
-  setintialrewardpoints,
-  setrewardpoint,
-} from "../../../../redux/rewardpoint/rewardpoint.slice";
-import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { LocationServices } from "../../../../redux/location/location.services";
-import { CustomerServices } from "../../../../redux/customer/customer.services";
-import PickupDeliveryButton from "./pickup-delivery-btn.component";
-import AddressList from "../common/adresslist.component";
-import { v4 as uuidv4 } from "uuid";
-import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
-import { createSessionId } from "../../../../redux/session/session.slice";
-import {
-  ChangeUrl,
-  restaurantsdetail,
-} from "../../../../redux/restaurants/restaurants.slice";
-import { AppDispatch } from "../../../../redux/store";
-import AddressPill from "@/components/common/address-pill.component";
-import {
   deleteCartItemFromSessionId,
   emptycart,
 } from "../../../../redux/cart/cart.slice";
-import { ORDER_TYPE_ENUM } from "@/components/default/common/dominos/helpers/utility";
 
 type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
+
+import {
+  setintialrewardpoints,
+  setrewardpoint,
+} from "../../../../redux/rewardpoint/rewardpoint.slice";
+import AddressPill from "@/components/common/address-pill.component";
+import DeliveryaddresspillComponent from "../pickup-delivery/deliveryaddresspill.component";
+import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
+import { CustomerServices } from "../../../../redux/customer/customer.services";
+import { AppDispatch } from "../../../../redux/store";
+import { ResponseModel } from "@/components/common/commonclass";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
 
 interface OrderTypeSelectProps {
   isOpenModal: boolean;
@@ -57,7 +59,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   handleChangeAddress,
   handleToggleAddAddressModal,
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
+  const params = useParams();
   const router = useRouter();
   const {
     selecteddelivery,
@@ -67,10 +70,11 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     userinfo,
     sessionid,
   } = useReduxData();
-
   const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
-  const customerId = userinfo?.customerId || 0;
+  const customerId = userinfo ? userinfo.customerId : 0;
   const rewardvalue = rewardpoints?.rewardvalue;
+  const dynamic = params.dynamic as string;
+  const location = params.location as string;
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}`;
   const defaultLocation = restaurantinfo?.defaultLocation;
@@ -89,15 +93,18 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         handleToggleOrderTypeModal(false);
         handleToggleAddAddressModal(true);
       }
-      // }, 300)
     }
   };
 
   const handleChangeLocation = (id: number) => {
+    debugger;
     setSelectedLocationId(id);
   };
 
-  const handleClickConfirmChangeLocation = async (lid: number) => {
+  const handleClickConfirmChangeLocation = async (
+    lid: number
+  ): Promise<void> => {
+    debugger;
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
     LocationServices.changeRestaurantLocation(
@@ -118,7 +125,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
           `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
         );
         dispatch(restaurantsdetail(restaurantinfo));
-        //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
         let oldLocationId = getLocationIdFromStorage();
         if (oldLocationId !== restaurantinfo.defaultlocationId) {
           dispatch(clearRedux(true as any));
@@ -132,7 +138,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
             0,
             "0",
             String(restaurantinfo?.defaultLocation.locationId)
-          ).then((res: any) => {
+          ).then((res: ResponseModel | any) => {
             if (res.status == 1) {
               let rewards = {
                 rewardvalue: rewardvalue,
@@ -148,13 +154,15 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
           });
         }
         setLocationIdInStorage(restaurantinfo.defaultlocationId);
-        // dispatch(refreshCategoryList(restaurantinfo, customerId) as any);
         dispatch(
           refreshCategoryList({
             newselectedRestaurant: restaurantinfo,
             customerId,
           }) as any
         );
+        //  dispatch(
+        // getSelectedRestaurantTime(
+        // restaurantinfo.restaurantId, lid))
 
         if (userinfo && userinfo?.customerId) {
           deleteCartItemFromSessionId(
@@ -181,7 +189,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   };
 
   const handleClickConfirm = () => {
-    //order type pickup then chnage location if location is not default location
     if (
       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
       selectedLocationId > 0 &&
@@ -212,7 +219,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <h5 className="modal-title fs-5" id="staticBackdropLabel">
-              YOUR ORDER 123
+              YOUR ORDER
             </h5>
             <button
               type="button"
