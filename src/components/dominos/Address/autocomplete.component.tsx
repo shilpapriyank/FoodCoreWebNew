@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
-import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
+//import { addTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
+ import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 
 // Define constants
 const apiKey = 'AIzaSyC6hNIP3xs2wN0tRG3Ue5Vg8seHGZTYnn4';
@@ -31,6 +32,10 @@ interface GoogleAutoCompleteProps {
 // Utility: Load Google Maps JS
 function loadAsyncScript(src: string): Promise<HTMLScriptElement> {
     return new Promise((resolve) => {
+        if (document.getElementById('google-maps-script')) {
+            resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+            return;
+        }
         const script = document.createElement('script');
         Object.assign(script, {
             type: 'text/javascript',

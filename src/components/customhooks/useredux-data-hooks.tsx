@@ -13,7 +13,6 @@ export const useReduxData = () => {
     (state: RootState) => state.userdetail?.loggedinuser,
     shallowEqual
   );
-  console.log("Logged in User Info:", userinfo); 
   const restaurantinfo = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual

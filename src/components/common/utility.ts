@@ -12,9 +12,10 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
 import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
-import { ORDER_TYPE_ENUM } from "../default/common/dominos/helpers/utility";
+// import { ORDER_TYPE_ENUM } from "../default/common/dominos/helpers/utility";
 import { DefaultLocationType } from "@/types/location-types/location.type";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
+import { ORDER_TYPE_ENUM } from "../default/Common/dominos/helpers/utility";
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -260,7 +261,7 @@ export const themeDefaultStyleArray: ThemeDefautStyle[] = [
 //CHECK THE CARTITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
 export const checkCheckoutDisable = (
   cartdata: any,
-  pickupordelivery: any,
+  pickupordelivery: string,
   dtotal: any
 ): boolean => {
   if (
@@ -290,9 +291,6 @@ export const checkCheckoutDisable = (
     ) {
       return true;
     }
-    // else{
-    //     return false;
-    // }
   } else {
     return false;
   }
@@ -313,7 +311,7 @@ export const getCategoryDetailById = (categoryList: any, catId: any) => {
 export const checkMenuItemAvailability = (
   categoryList: any,
   catId: any,
-  pickupordelivery: any
+  pickupordelivery: string
 ) => {
   if (catId === undefined || pickupordelivery === "") {
     return true;
@@ -794,7 +792,7 @@ export const bindPlaceOrderObject = (
         : "",
     deliveryNote:
       cart?.orderdeliveryinstruction ||
-      cart?.orderdeliveryinstruction !== undefined
+        cart?.orderdeliveryinstruction !== undefined
         ? cart.orderdeliveryinstruction
         : "",
     preDiscountSubTotal:
@@ -809,9 +807,9 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-      pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+        pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
         ? //pickupordelivery === ORDERTYPE.Delivery
-          parseFloat(cart.carttotal.deliveryAmount)
+        parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
@@ -889,7 +887,7 @@ export const getCheckTimeArr = (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
       restaurantinfo?.defaultLocation?.deliveryService ===
-        DELIVERYSERVICES.UBEREATS) &&
+      DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
@@ -1328,12 +1326,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
+        (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-            ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+          ? 1
+          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1358,12 +1356,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
+        (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-            ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+          ? 1
+          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1391,11 +1389,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-            ? 1
-            : parseInt(tc.halfpizzaprice) / 100)
+        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+          ? 1
+          : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1407,9 +1405,8 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
+          }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1421,9 +1418,8 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
+          }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1652,7 +1648,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-            data.subOptionToppingQuantity;
+          data.subOptionToppingQuantity;
       } else {
       }
     });

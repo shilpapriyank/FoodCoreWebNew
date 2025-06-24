@@ -1,26 +1,27 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import Layout from "@/components/nt/layout/layout.component";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../redux/store";
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { ORDER_TYPE } from "../../../../components/common/utility";
+import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import LoadLocationDirectComponent from "../../../../components/nt/common/loadlocation-direct.component";
 import CategoryMenuItems from "../../../../components/nt/category/category-menuitems/category-menuItems.component";
-import { useParams, useRouter } from "next/navigation";
-import { useSearchData } from "../../../../components/customhooks/usesearchdata-hook";
-import SearchBarComponent from "../../../../components/nt/category/category-menuitems/search-bar.component";
-import useUtility from "../../../../components/customhooks/utility-hook";
-import Layout from "@/components/nt/layout/layout.component";
-import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
-import { OrderServices } from "../../../../../redux/order/order.services";
+import { useParams } from "next/navigation";
+import CategoryHeader from "@/components/nt/category/category-header/category-header";
+import { OrderTypes } from "../../../../../redux/order/order.type";
 import {
   getordertime,
   isasap,
   setordertime,
 } from "../../../../../redux/order/order.slice";
-import { OrderTypes } from "../../../../../redux/order/order.type";
-import CategoryHeader from "@/components/nt/category/category-header/category-header";
-import { AppDispatch } from "../../../../../redux/store";
+import { OrderServices } from "../../../../../redux/order/order.services";
+import { useSearchData } from "../../../../components/customhooks/usesearchdata-hook";
+import SearchBarComponent from "../../../../components/nt/category/category-menuitems/search-bar.component";
+import useUtility from "../../../../components/customhooks/utility-hook";
+
 
 export default function LocationPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,13 +33,8 @@ export default function LocationPage() {
     userinfo,
     order,
   } = useReduxData();
-  console.log(
-    "defaultLocation from location page",
-    restaurantinfo?.defaultLocation
-  );
   const params = useParams();
   const { location } = params;
-  console.log("location from lacation page", location);
   const [isloadAdress, setisloadAdress] = useState<boolean>(true);
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
@@ -53,7 +49,7 @@ export default function LocationPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  console.log("pickupordelivery from location page", pickupordelivery);
+  //console.log("pickupordelivery from location page", pickupordelivery);
   let menuItemsWithCat = filterCategory(
     searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
