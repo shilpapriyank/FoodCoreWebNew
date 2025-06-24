@@ -53,6 +53,7 @@ import { Action } from "@reduxjs/toolkit";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { logout } from "../../../redux/login/login.slice";
 import {
+  AddressListItem,
   DefaultLocationType,
   RestaurantsTimingList,
 } from "@/types/restaurant-types/restaurant.type";
@@ -347,7 +348,7 @@ const RestaurantComponent = ({
           : restaurantslocationlistwithtime?.addressList;
       if (restaurantslocationlist.addressList !== undefined) {
         let linkLoacationurl = formatStringToURLWithBlankSpace(location);
-        addressList?.map((locations) => {
+        addressList?.map((locations: AddressListItem) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL
           );

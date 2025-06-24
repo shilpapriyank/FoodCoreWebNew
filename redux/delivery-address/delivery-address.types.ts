@@ -1,7 +1,7 @@
 export interface DeliveryAddressInput {
-    deliveryaddressId: string;
+    deliveryaddressId: number;
     customerId: number;
-    othercustomerId?: string;
+    othercustomerId?: number;
     address1: string;
     address2?: string;
     city: string;
@@ -33,12 +33,11 @@ export interface GetAddressResponse {
 }
 
 export interface DeliveryAddressState {
-  deliveryaddressdata: DeliveryAddressInput[] | null;
-  updatedAddress: boolean;
-  choosetime: Record<string, any>;
-  registeraddress: DeliveryAddressInput;
-  addressId: DeliveryAddressInput;
-  tempDeliveryAddress: DeliveryAddressInput | null;
-  pickupordelivery: string;
-  selecteddeliveryaddress: DeliveryAddressInput | null;
+    deliveryaddressdata: DeliveryAddressInput[] | null;
+    updatedAddress: boolean;
+    choosetime: Record<string, any>;
+    registeraddress: DeliveryAddressInput;
+    addressId: DeliveryAddressInput;
+    tempDeliveryAddress: DeliveryAddressInput | null;
+
 }

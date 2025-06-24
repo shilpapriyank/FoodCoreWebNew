@@ -4,13 +4,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface SelectedDeliveryState {
   choosetime: any;
   pickupordelivery: string;
-  selecteddeliveryaddress: SelectedDeliveryAddressType | null;
+  selecteddeliveryaddress: SelectedDeliveryAddressType | any;
 }
 
 const initialState: SelectedDeliveryState = {
   choosetime: {},
   pickupordelivery: "",
-  selecteddeliveryaddress: null,
+  selecteddeliveryaddress: {},
 };
 
 // Slice
