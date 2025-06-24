@@ -3,43 +3,24 @@
 import React, { useState } from "react";
 import PickupDeliveryButton from "./pickup-delivery-btn.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
-import { useDispatch } from "react-redux";
-import { useParams, useRouter } from "next/navigation";
+// import { useDispatch } from "react-redux";
 import { closeModal, GetThemeDetails, ORDER_TYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import AddressList from "../common/adresslist.component";
 import { LocationServices } from "../../../../redux/location/location.services";
-import {
-  ChangeUrl,
-  restaurantsdetail,
-} from "../../../../redux/restaurants/restaurants.slice";
-import {
-  getLocationIdFromStorage,
-  setLocationIdInStorage,
-} from "@/components/common/localstore";
+import { ChangeUrl, restaurantsdetail } from "../../../../redux/restaurants/restaurants.slice";
+import { getLocationIdFromStorage, setLocationIdInStorage } from "@/components/common/localstore";
 import { clearRedux } from "../../../../redux/tableorder/tableorder.slice";
 import { v4 as uuidv4 } from "uuid";
 import { createSessionId } from "../../../../redux/session/session.slice";
-import {
-  getSelectedRestaurantTime,
-  refreshCategoryList,
-} from "../../../../redux/main/main.slice";
-import {
-  deleteCartItemFromSessionId,
-  emptycart,
-} from "../../../../redux/cart/cart.slice";
-
-type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
-
-import {
-  setintialrewardpoints,
-  setrewardpoint,
-} from "../../../../redux/rewardpoint/rewardpoint.slice";
+import { getSelectedRestaurantTime, refreshCategoryList } from "../../../../redux/main/main.slice";
+import { deleteCartItemFromSessionId, emptycart } from "../../../../redux/cart/cart.slice";
+import { setrewardpoint } from "../../../../redux/rewardpoint/rewardpoint.slice";
+import { useParams, useRouter } from "next/navigation";
 import AddressPill from "@/components/common/address-pill.component";
 import DeliveryaddresspillComponent from "../pickup-delivery/deliveryaddresspill.component";
 import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
-import { AppDispatch } from "../../../../redux/store";
 import { ResponseModel } from "@/components/common/commonclass";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
@@ -70,6 +51,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     userinfo,
     sessionid,
   } = useReduxData();
+  //console.log("🟢 pickupordelivery from Redux:", selecteddelivery.pickupordelivery);
+
   const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
   const customerId = userinfo ? userinfo.customerId : 0;
   const rewardvalue = rewardpoints?.rewardvalue;
@@ -78,7 +61,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}`;
   const defaultLocation = restaurantinfo?.defaultLocation;
-  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+  const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
     orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
@@ -86,6 +69,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const myDeliveryAddress = tempDeliveryAddress;
 
   const handleChangeOrderType = (orderType: ORDER_TYPE_ENUM) => {
+   // console.log("Order Type changed to:", orderType);
     dispatch(setpickupordelivery(orderType));
     if (ORDER_TYPE_ENUM.DELIVERY === orderType) {
       // setTimeout(() => {
@@ -97,20 +81,19 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   };
 
   const handleChangeLocation = (id: number) => {
-    debugger;
+   // console.log("Location Changed to ID:", id);
     setSelectedLocationId(id);
   };
 
   const handleClickConfirmChangeLocation = async (
     lid: number
   ): Promise<void> => {
-    debugger;
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
     LocationServices.changeRestaurantLocation(
       restaurantinfo?.restaurantId as number,
       lid
-    ).then((res) => {
+    ).then((res: any) => {
       if (res && restaurantinfo) {
         Object.keys(restaurantinfo).map((session) => {
           if (session === "defaultLocation") {
@@ -208,9 +191,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   return (
     <>
       <div
-        className={`modal fade modal-your-order ${
-          isOpenModal ? "show d-block" : ""
-        }`}
+        className={`modal fade modal-your-order ${isOpenModal ? "show d-block" : ""
+          }`}
         tabIndex={-1}
         style={{ display: "block" }}
         aria-labelledby="exampleModalLabel"
@@ -235,141 +217,139 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                 </div>
                 {ORDER_TYPE.PICKUP.text ===
                   selecteddelivery.pickupordelivery && (
-                  <div id="takeout" className="row">
-                    <div className="col-lg-12 text-center col-md-12 col-12">
-                      <h2>Choose a Location 123</h2>
-                    </div>
-                    <div className="col-lg-12 mb-4 col-md-12 col-12">
-                      <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        {ORDER_TYPE.DELIVERY.text ===
-                          selecteddelivery.pickupordelivery && (
-                          <li className="nav-item w-100">
-                            <button
-                              className="nav-link active"
-                              id="home-tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#home-tab-pane"
-                              type="button"
-                              role="tab"
-                              aria-controls="home-tab-pane"
-                              aria-selected="true"
-                            >
-                              By address
-                            </button>
-                          </li>
-                        )}
-                        {ORDER_TYPE.PICKUP.text ===
-                          selecteddelivery.pickupordelivery && (
-                          <li className="nav-item w-100">
-                            <button
-                              className={`nav-link ${
-                                ORDER_TYPE.PICKUP.text ===
-                                selecteddelivery.pickupordelivery
-                                  ? "active"
-                                  : ""
-                              }`}
-                              id="profile-tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#profile-tab-pane"
-                              type="button"
-                              role="tab"
-                              aria-controls="profile-tab-pane"
-                              aria-selected="false"
-                            >
-                              By location
-                            </button>
-                          </li>
-                        )}
-                      </ul>
-                      <div className="tab-content" id="myTabContent">
-                        <div
-                          className="tab-pane fade show active"
-                          id="home-tab-pane"
-                          role="tabpanel"
-                          aria-labelledby="home-tab"
-                          tabIndex={0}
-                        >
+                    <div id="takeout" className="row">
+                      <div className="col-lg-12 text-center col-md-12 col-12">
+                        <h2>Choose a Location</h2>
+                      </div>
+                      <div className="col-lg-12 mb-4 col-md-12 col-12">
+                        <ul className="nav nav-tabs" id="myTab" role="tablist">
                           {ORDER_TYPE.DELIVERY.text ===
                             selecteddelivery.pickupordelivery && (
-                            <div className="row">
-                              <div className="col-lg-12 col-md-12 col-12">
-                                {/* ///// order confirmation html load model end*/}
-
-                                <label>Address</label>
-                                <div className="search">
-                                  <input
-                                    type="text"
-                                    className="form-control search"
-                                    defaultValue="undefined undefined, undefined, undefined, undefined"
-                                  />
-                                  <i className="fa fa-search" />
-                                </div>
-                                <div className="text-center">
-                                  <a className="address-nfound" href="#">
-                                    Address not found ?
-                                  </a>
-                                </div>
-                                <label>Apt #</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Optional"
-                                />
-                                <div className="text-center short-info">
-                                  <p>
-                                    <i className="fa fa-info-circle" />
-                                    <br /> Variable '$position.latitude' is
-                                    invalid. Received a null input for a
-                                    non-null variable. Variable
-                                    '$address.civicNumber' is invalid. No value
-                                    provided for a non-null variable.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          )}
+                              <li className="nav-item w-100">
+                                <button
+                                  className="nav-link active"
+                                  id="home-tab"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#home-tab-pane"
+                                  type="button"
+                                  role="tab"
+                                  aria-controls="home-tab-pane"
+                                  aria-selected="true"
+                                >
+                                  By address
+                                </button>
+                              </li>
+                            )}
                           {ORDER_TYPE.PICKUP.text ===
                             selecteddelivery.pickupordelivery && (
-                            <div className="row">
-                              <div className="col-lg-12 col-md-12 col-12">
-                                <AddressList
-                                  selectedLocationId={selectedLocationId}
-                                  handleChangeLocation={handleChangeLocation}
-                                />
-                              </div>
-                            </div>
-                          )}
+                              <li className="nav-item w-100">
+                                <button
+                                  className={`nav-link ${ORDER_TYPE.PICKUP.text ===
+                                    selecteddelivery.pickupordelivery
+                                    ? "active"
+                                    : ""
+                                    }`}
+                                  id="profile-tab"
+                                  data-bs-toggle="tab"
+                                  data-bs-target="#profile-tab-pane"
+                                  type="button"
+                                  role="tab"
+                                  aria-controls="profile-tab-pane"
+                                  aria-selected="false"
+                                >
+                                  By location
+                                </button>
+                              </li>
+                            )}
+                        </ul>
+                        <div className="tab-content" id="myTabContent">
+                          <div
+                            className="tab-pane fade show active"
+                            id="home-tab-pane"
+                            role="tabpanel"
+                            aria-labelledby="home-tab"
+                            tabIndex={0}
+                          >
+                            {ORDER_TYPE.DELIVERY.text ===
+                              selecteddelivery.pickupordelivery && (
+                                <div className="row">
+                                  <div className="col-lg-12 col-md-12 col-12">
+                                    {/* ///// order confirmation html load model end*/}
+                                    <label>Address</label>
+                                    <div className="search">
+                                      <input
+                                        type="text"
+                                        className="form-control search"
+                                        defaultValue="undefined undefined, undefined, undefined, undefined"
+                                      />
+                                      <i className="fa fa-search" />
+                                    </div>
+                                    <div className="text-center">
+                                      <a className="address-nfound" href="#">
+                                        Address not found ?
+                                      </a>
+                                    </div>
+                                    <label>Apt #</label>
+                                    <input
+                                      type="text"
+                                      className="form-control"
+                                      placeholder="Optional"
+                                    />
+                                    <div className="text-center short-info">
+                                      <p>
+                                        <i className="fa fa-info-circle" />
+                                        <br /> Variable '$position.latitude' is
+                                        invalid. Received a null input for a
+                                        non-null variable. Variable
+                                        '$address.civicNumber' is invalid. No value
+                                        provided for a non-null variable.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            {ORDER_TYPE.PICKUP.text ===
+                              selecteddelivery.pickupordelivery && (
+                                <div className="row">
+                                  <div className="col-lg-12 col-md-12 col-12">
+                                    <AddressList
+                                      selectedLocationId={selectedLocationId}
+                                      handleChangeLocation={handleChangeLocation}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 {ORDER_TYPE.DELIVERY.text ===
                   selecteddelivery.pickupordelivery && (
-                  <div id="delivery" className="row ">
-                    <div className="col-lg-12 text-center col-md-12 col-12">
-                      <h2 className="fs-16">Enter your address</h2>
-                    </div>
-                    <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
-                      {myDeliveryAddress && (
-                        <AddressPill
-                          isChecked={true}
-                          address={myDeliveryAddress}
-                          id={myDeliveryAddress.id}
-                        />
-                      )}
-                      {userinfo && <DeliveryaddresspillComponent />}
-                      <div className="text-center">
-                        <a
-                          className="address-nfound"
-                          onClick={handleClickAddNewAddress}
-                        >
-                          Add New Address
-                        </a>
+                    <div id="delivery" className="row ">
+                      <div className="col-lg-12 text-center col-md-12 col-12">
+                        <h2 className="fs-16">Enter your address</h2>
+                      </div>
+                      <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
+                        {myDeliveryAddress && (
+                          <AddressPill
+                            isChecked={true}
+                            address={myDeliveryAddress}
+                            id={myDeliveryAddress.id}
+                          />
+                        )}
+                        {userinfo && <DeliveryaddresspillComponent />}
+                        <div className="text-center">
+                          <a
+                            className="address-nfound"
+                            onClick={handleClickAddNewAddress}
+                          >
+                            Add New Address
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
               <div className="modal-footer">
                 <a className="btn-default w-100" onClick={handleClickConfirm}>

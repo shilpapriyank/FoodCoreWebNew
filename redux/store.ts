@@ -13,7 +13,7 @@ import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import { combineReducers } from "redux";
 import restaurantsReducer from "./restaurants/restaurants.slice";
-import selecteddeliveryReducer from "./delivery-address/delivery-address.slice";
+import selecteddeliveryReducer from "./selected-delivery-data/selecteddelivery.slice";
 import menuItemReducer from "./menu-item/menu-item.slice";
 import categoryReducer from "./category/category.slice";
 import loginReducer from "./login/login.slice";

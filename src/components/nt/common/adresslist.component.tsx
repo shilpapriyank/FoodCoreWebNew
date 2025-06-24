@@ -34,17 +34,18 @@ const AddressList: React.FC<AddressListProps> = ({
     (
       restaurant?.restaurantslocationlistwithtime as RestaurantLocationListWithTime
     )?.addressList ?? [];
-  console.log("addressList from addressList component", addressList);
+ // console.log("addressList from addressList component", addressList);
   return (
     <>
-      {addressList
+      {[...addressList]
+        .slice()
         .sort((a, b) => a.locationName.localeCompare(b.locationName))
         .map((address) => {
           const isChecked =
             selectedLocationId > 0
               ? selectedLocationId === address.locationId
               : restaurantinfo?.defaultLocation?.locationId ===
-                address.locationId;
+              address.locationId;
 
           return (
             <label className="radio-box" key={address.locationId}>

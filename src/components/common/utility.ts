@@ -879,8 +879,8 @@ export const calulateTotal = (cartdata: any) => {
 export const getCheckTimeArr = (
   orderTime: any,
   restaurantinfo: any,
-  orderDate: any = "",
-  isasap: boolean
+  orderDate: string = "",
+  isasap: any
 ) => {
   let Time = [];
   if (
@@ -1018,7 +1018,7 @@ export const convert24HourTo12Hour = (time: any) => {
 export const checkWindowTimeExpires = (
   windowEndTime: any,
   currentTime: any,
-  isLastOrder: any = false,
+  isLastOrder: boolean = false,
   isasap: any
 ) => {
   let [time, windowMeridian] = getCheckTimeArr(
