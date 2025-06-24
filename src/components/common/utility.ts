@@ -427,7 +427,7 @@ export const openCloseOption = (
 export const orderDisable = (
   restaurantinfo: any,
   deliveryaddressinfo: any,
-  restaurantWindowTime: any
+  restaurantWindowTime: RestaurantWindowTime
 ) => {
   const pickupWindow =
     restaurantWindowTime &&

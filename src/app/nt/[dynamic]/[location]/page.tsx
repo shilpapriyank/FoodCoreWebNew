@@ -21,6 +21,7 @@ import {
 import { OrderTypes } from "../../../../../redux/order/order.type";
 import CategoryHeader from "@/components/nt/category/category-header/category-header";
 import { AppDispatch } from "../../../../../redux/store";
+import { ORDER_TYPE_ENUM } from "@/components/default/common/dominos/helpers/utility";
 
 export default function LocationPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,10 +33,6 @@ export default function LocationPage() {
     userinfo,
     order,
   } = useReduxData();
-  console.log(
-    "defaultLocation from location page",
-    restaurantinfo?.defaultLocation
-  );
   const params = useParams();
   const { location } = params;
   console.log("location from lacation page", location);
@@ -53,7 +50,6 @@ export default function LocationPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  console.log("pickupordelivery from location page", pickupordelivery);
   let menuItemsWithCat = filterCategory(
     searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
@@ -68,10 +64,11 @@ export default function LocationPage() {
       dispatch(
         setpickupordelivery(
           restaurantinfo?.defaultLocation?.defaultordertype
-            ? ORDER_TYPE.DELIVERY.text
-            : ORDER_TYPE.PICKUP.text
+            ? ORDER_TYPE_ENUM.DELIVERY
+            : ORDER_TYPE_ENUM.PICKUP
         )
       );
+      console.log("pickup or delivery from location page", pickupordelivery);
     }
   }, []);
 

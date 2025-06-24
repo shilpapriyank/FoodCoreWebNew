@@ -1,9 +1,11 @@
 import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
-import { RestaurantWindowTime } from "@/components/default/common/dominos/helpers/types/utility-type";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import { MainCategory } from "@/types/mainservice-types/mainservice.type";
+import {
+  MainCategory,
+  RestaurantWindowTime,
+} from "@/types/mainservice-types/mainservice.type";
 import { ChildProcessWithoutNullStreams } from "child_process";
 
 let responseclass = new ResponseModel();

@@ -9,11 +9,17 @@ export const useReduxData = () => {
   //   (state: RootState) => state.userdetail?.loggedinuser,
   //   shallowEqual
   // );
-   const userinfo = useSelector(
+  const userinfo = useSelector(
     (state: RootState) => state.userdetail?.loggedinuser,
     shallowEqual
   );
-  console.log("Logged in User Info:", userinfo); 
+
+  const restaurant = useSelector(
+    (state: RootState) => state.restaurant,
+    shallowEqual
+  );
+
+  //console.log("Logged in User Info:", userinfo);
   const restaurantinfo = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
@@ -49,10 +55,7 @@ export const useReduxData = () => {
     shallowEqual
   );
   const order = useSelector((state: RootState) => state.order, shallowEqual);
-  const restaurant = useSelector(
-    (state: RootState) => state.restaurant,
-    shallowEqual
-  );
+
   const rewardpoints = useSelector(
     (state: RootState) => state.rewardpoints,
     shallowEqual

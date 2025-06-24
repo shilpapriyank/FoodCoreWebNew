@@ -9,7 +9,6 @@ import {
   useSearchParams,
 } from "next/navigation";
 import dynamic from "next/dynamic";
-import { useDispatch } from "react-redux";
 import {
   ThemeObj,
   dynamicColorObj,
@@ -34,6 +33,7 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
   restaurantsdetail,
+  restaurantstiming,
   setAppVersion,
 } from "../../../redux/restaurants/restaurants.slice";
 import { PAGES } from "../nt/common/pages";
@@ -54,8 +54,11 @@ import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { logout } from "../../../redux/login/login.slice";
 import {
   DefaultLocationType,
+  RestaurantDetails,
   RestaurantsTimingList,
 } from "@/types/restaurant-types/restaurant.type";
+import { useAppDispatch } from "../../../redux/hooks";
+import { ColorStyleType } from "@/types/common-types/common.types";
 
 interface Props {
   children: ReactNode;
@@ -75,9 +78,11 @@ const RestaurantComponent = ({
   const pathname = usePathname();
   const params = useParams();
   let sessionId = sessionid;
-  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
+  //const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
+  const dispatch = useAppDispatch();
   const [loadrestaurant, setLoadrestaurant] = useState<boolean>(false);
-  const [selectedRestaurant, setSelectedRestaurant] = useState<any>(null);
+  const [selectedRestaurant, setSelectedRestaurant] =
+    useState<RestaurantDetails | null>(null);
   const [adresslist, setadresslist] = useState<boolean>(false);
   const [isResturantClose, setisResturantClose] = useState<boolean>(false);
   const [isInvalidRestaurant, setisInvalidRestaurant] =
@@ -116,25 +121,29 @@ const RestaurantComponent = ({
   const isGetSeo =
     pathname.includes("[category]") || pathname.includes("[items]");
 
-  const handleSetThemeStyleDynamic = (newselectedRestaurant: any) => {
+  const handleSetThemeStyleDynamic = (
+    newselectedRestaurant: RestaurantDetails
+  ) => {
     newselectedRestaurant?.restaurantColorModel?.push({
       FieldName: "color",
       Color: newselectedRestaurant.color,
+      FieldType: newselectedRestaurant?.restaurantColorModel[0]?.FieldType,
+      StyleName: newselectedRestaurant?.restaurantColorModel[0]?.StyleName,
     });
     const colorStyleArray = handleDefaultDynamicFieldColor(
       newselectedRestaurant?.color,
-      newselectedRestaurant?.themetype
+      String(newselectedRestaurant?.themetype)
     );
 
     for (const [key, value] of Object.entries(dynamicColorObj)) {
       const defaultStyle = colorStyleArray.find(
-        (field) => field.FieldName === key
+        (field: ColorStyleType) => field.FieldName === key
       );
       const restaurantStyle = newselectedRestaurant?.restaurantColorModel?.find(
-        (field: any) => field.FieldName === key
+        (field: ColorStyleType) => field.FieldName === key
       );
       const color = restaurantStyle?.Color || defaultStyle?.Color;
-      document.documentElement.style.setProperty(value, color);
+      document.documentElement.style.setProperty(value, color as string);
     }
   };
 
@@ -146,10 +155,6 @@ const RestaurantComponent = ({
     let restaurantId = getRestaurantIdFromStorage();
     var isSameRestaurant;
     const newselectedRestaurant = response[0];
-    console.log(
-      "new selected restaurant from restaurant component",
-      newselectedRestaurant
-    );
     if (newselectedRestaurant?.defaultLocation === null) {
       const locationId =
         newselectedRestaurant.defaultlocationId ||
@@ -207,14 +212,13 @@ const RestaurantComponent = ({
           newselectedRestaurant.themetype = tableOrderTheme.value;
         }
         dispatch(restaurantsdetail(newselectedRestaurant));
-        dispatch(
-          getSelectedRestaurantTime(
-            newselectedRestaurant.restaurantId,
-            newselectedRestaurant.defaultlocationId
-          )
-        );
-        console.log("selected restaurant", newselectedRestaurant);
         setSelectedRestaurant(newselectedRestaurant);
+        dispatch(
+          getSelectedRestaurantTime({
+            restaurantId: newselectedRestaurant.restaurantId,
+            locationId: newselectedRestaurant.defaultlocationId,
+          }) as any
+        );
 
         if (
           cart?.cartitemdetail?.cartDetails?.cartItemDetails[0] !== undefined
@@ -239,7 +243,7 @@ const RestaurantComponent = ({
     // setLoadrestaurant(true);
   };
 
-  const handleInvalidRestaurant = (themetype: any) => {
+  const handleInvalidRestaurant = (themetype: string) => {
     setisInvalidRestaurant(true);
     const selectedTheme = GetThemeDetailsByName(themetype);
     setthemeUrl(selectedTheme.url);
@@ -260,7 +264,7 @@ const RestaurantComponent = ({
           if (response.length > 0) {
             handleValidResponse(response, dynamic, router);
           } else {
-            handleInvalidRestaurant(themetype);
+            handleInvalidRestaurant(themetype as string);
           }
         });
       }
@@ -323,7 +327,7 @@ const RestaurantComponent = ({
         restaurantinfo?.restaurantId !== restaurantId ||
         (userinfo !== null && userLoginExpire == true)
       ) {
-        dispatch(clearRedux(true));
+        dispatch(clearRedux(true) as any);
         let rewardpoints = {
           rewardvalue: 0,
           rewardamount: 0,
@@ -344,7 +348,7 @@ const RestaurantComponent = ({
       let addressList =
         selectedTheme.name === ThemeObj.default
           ? restaurantslocationlist.addressList
-          : restaurantslocationlistwithtime?.addressList;
+          : restaurantslocationlistwithtime.addressList;
       if (restaurantslocationlist.addressList !== undefined) {
         let linkLoacationurl = formatStringToURLWithBlankSpace(location);
         addressList?.map((locations) => {

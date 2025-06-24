@@ -38,6 +38,7 @@ import {
   deleteCartItemFromSessionId,
   emptycart,
 } from "../../../../redux/cart/cart.slice";
+import { ORDER_TYPE_ENUM } from "@/components/default/common/dominos/helpers/utility";
 
 type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
 
@@ -76,13 +77,13 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
-    orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
+    orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   const myDeliveryAddress = tempDeliveryAddress;
 
-  const handleChangeOrderType = (orderType: string) => {
+  const handleChangeOrderType = (orderType: ORDER_TYPE_ENUM) => {
     dispatch(setpickupordelivery(orderType));
-    if (ORDER_TYPE.DELIVERY.text === orderType) {
+    if (ORDER_TYPE_ENUM.DELIVERY === orderType) {
       // setTimeout(() => {
       if (userinfo === null) {
         handleToggleOrderTypeModal(false);
@@ -124,28 +125,28 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
           let id = uuidv4();
           dispatch(createSessionId(id));
         }
-        // if (userinfo && userinfo?.customerId) {
-        //   CustomerServices.checkCustomerRewardPointsLocationBase(
-        //     restaurantinfo.restaurantId,
-        //     userinfo.customerId,
-        //     0,
-        //     "0",
-        //     restaurantinfo?.defaultLocation.locationId
-        //   ).then((res: any) => {
-        //     if (res.status == 1) {
-        //       let rewards = {
-        //         rewardvalue: rewardvalue,
-        //         rewardamount: parseFloat(
-        //           (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
-        //         ),
-        //         rewardPoint: res?.result?.totalrewardpoints,
-        //         totalRewardPoints: res?.result?.totalrewardpoints,
-        //         redeemPoint: 0,
-        //       };
-        //       dispatch(setrewardpoint(rewards));
-        //     }
-        //   });
-        // }
+        if (userinfo && userinfo?.customerId) {
+          CustomerServices.checkCustomerRewardPointsLocationBase(
+            restaurantinfo.restaurantId,
+            userinfo.customerId,
+            0,
+            "0",
+            String(restaurantinfo?.defaultLocation.locationId)
+          ).then((res: any) => {
+            if (res.status == 1) {
+              let rewards = {
+                rewardvalue: rewardvalue,
+                rewardamount: parseFloat(
+                  (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
+                ),
+                rewardPoint: res?.result?.totalrewardpoints,
+                totalRewardPoints: res?.result?.totalrewardpoints,
+                redeemPoint: 0,
+              };
+              dispatch(setrewardpoint(rewards));
+            }
+          });
+        }
         setLocationIdInStorage(restaurantinfo.defaultlocationId);
         // dispatch(refreshCategoryList(restaurantinfo, customerId) as any);
         dispatch(
@@ -167,8 +168,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         dispatch(
           setpickupordelivery(
             restaurantinfo?.defaultLocation?.defaultordertype
-              ? ORDER_TYPE.DELIVERY.text
-              : ORDER_TYPE.PICKUP.text
+              ? ORDER_TYPE_ENUM.DELIVERY
+              : ORDER_TYPE_ENUM.PICKUP
           )
         );
         handleToggleOrderTypeModal(false);

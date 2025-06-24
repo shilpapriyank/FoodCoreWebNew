@@ -1,12 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ResponseModel } from "../../common/commonclass";
-import handleNotify from "./toaster/toaster-notify";
-import { ToasterTypes } from "./toaster/toaster-types";
 import * as Sentry from "@sentry/nextjs";
-import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { errorLog } from "./errorlog/errorlog";
 import { getAuthKey } from "../Common/auth";
-import { ToasterPositions } from "./toaster/toaster-positions";
 
 export const handleAxiosPostAsync = async (
   requestModel: unknown,

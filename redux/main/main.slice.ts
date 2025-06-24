@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  isRejectedWithValue,
+} from "@reduxjs/toolkit";
 import { MainServices } from "./main.services";
 import {
   getAllCategoryMenuItems,
@@ -6,16 +11,41 @@ import {
   selectedCategory,
 } from "../category/category.slice"; // Ensure these are converted slices
 import { MainTypes } from "./main.type";
-import { RestaurantWindowTime } from "@/components/default/common/dominos/helpers/types/utility-type";
 import { GetThemeDetails } from "@/components/common/utility";
-import { MainCategory } from "@/types/mainservice-types/mainservice.type";
+import {
+  DeliveryTimeSlot,
+  MainCategory,
+  RestaurantWindowTime,
+} from "@/types/mainservice-types/mainservice.type";
+import { RootState } from "../store";
+
+type ThunkConfig = {
+  state: RootState;
+  rejectValue: string;
+};
 
 interface MainState {
   maincategoryList: MainCategory[];
   promotioncategoryList: MainCategory[];
   deliverypickuppopup: boolean;
   ischangelocation: boolean;
-  restaurantWindowTime?: RestaurantWindowTime[];
+  restaurantWindowTime: RestaurantWindowTime | null;
+  // restaurantWindowTime?: {
+  //   OrdDeliveryClosingTime: DeliveryTimeSlot[];
+  //   OrdDeliveryClosingTimeV1: DeliveryTimeSlot[];
+  //   OrdDeliveryOpeningTime: DeliveryTimeSlot[];
+  //   OrdDeliveryOpeningTimeV1: DeliveryTimeSlot[];
+  //   TakeoutDeliveryClosingTime: DeliveryTimeSlot[];
+  //   TakeoutDeliveryClosingTimeV1: DeliveryTimeSlot[];
+  //   TakeoutDeliveryOpeningTime: DeliveryTimeSlot[];
+  //   TakeoutDeliveryOpeningTimeV1: DeliveryTimeSlot[];
+  //   deliveryClosingWindowTime: string | null;
+  //   deliveryOpeningWindowTime: string | null;
+  //   deliveryTime: string[];
+  //   pickupTime: string[];
+  //   isDeliveryClosed: boolean;
+  //   isPickupClosed: boolean;
+  // };
 }
 
 const initialState: MainState = {
@@ -23,6 +53,23 @@ const initialState: MainState = {
   promotioncategoryList: [],
   deliverypickuppopup: true,
   ischangelocation: false,
+  restaurantWindowTime: null,
+  // restaurantWindowTime: {
+  //   OrdDeliveryClosingTime: [],
+  //   OrdDeliveryClosingTimeV1: [],
+  //   OrdDeliveryOpeningTime: [],
+  //   OrdDeliveryOpeningTimeV1: [],
+  //   TakeoutDeliveryClosingTime: [],
+  //   TakeoutDeliveryClosingTimeV1: [],
+  //   TakeoutDeliveryOpeningTime: [],
+  //   TakeoutDeliveryOpeningTimeV1: [],
+  //   deliveryClosingWindowTime: "",
+  //   deliveryOpeningWindowTime: "",
+  //   deliveryTime: [],
+  //   pickupTime: [],
+  //   isDeliveryClosed: false,
+  //   isPickupClosed: false,
+  // },
 };
 
 export const getMenuCategoryList = createAsyncThunk(
@@ -48,27 +95,53 @@ export const getMenuCategoryList = createAsyncThunk(
   }
 );
 
-export const getSelectedRestaurantTime = createAsyncThunk(
+// export const getSelectedRestaurantTime = createAsyncThunk(
+//   MainTypes.GET_SELECTED_RESTAURANTTIME,
+//   async (
+//     {
+//       restaurantId,
+//       locationId,
+//     }: {
+//       restaurantId: number;
+//       locationId: number;
+//     },
+//     { dispatch }
+//   ) => {
+//     const response = await MainServices.getSelectedRestaurantWindowTime(
+//       restaurantId,
+//       locationId
+//     );
+//     if (response) {
+//       dispatch(getSelectedRestaurantTime(response as any));
+//       return response;
+//     }
+//     return [];
+//   }
+// );
+
+export const getSelectedRestaurantTime = createAsyncThunk<
+  RestaurantWindowTime, // ✅ Must always return this type
+  { restaurantId: number; locationId: number },
+  ThunkConfig
+>(
   MainTypes.GET_SELECTED_RESTAURANTTIME,
-  async (
-    {
-      restaurantId,
-      locationId,
-    }: {
-      restaurantId: number;
-      locationId: number;
-    },
-    { dispatch }
-  ) => {
-    const response = await MainServices.getSelectedRestaurantWindowTime(
-      restaurantId,
-      locationId
-    );
-    if (response) {
-      dispatch(getSelectedRestaurantTime(response as any));
-      return response;
+  async ({ restaurantId, locationId }, { rejectWithValue }) => {
+    try {
+      const response = await MainServices.getSelectedRestaurantWindowTime(
+        restaurantId,
+        locationId
+      );
+
+      // ✅ Ensure response is not null or empty
+      if (!response || response.length === 0) {
+        return rejectWithValue("No restaurant window time data found.");
+      }
+
+      // ✅ Always return a RestaurantWindowTime (not void)
+      return response[0]; // Assuming response is RestaurantWindowTime[]
+    } catch (error) {
+      return rejectWithValue("Failed to fetch restaurant window time.");
     }
-    return [];
   }
 );
 
@@ -195,11 +268,19 @@ export const mainSlice = createSlice({
       state.maincategoryList = action.payload;
     });
 
-    builder.addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
-      if (action.payload) {
+    builder.addCase(
+      getSelectedRestaurantTime.fulfilled,
+      (state, action: PayloadAction<RestaurantWindowTime>) => {
         state.restaurantWindowTime = action.payload;
       }
-    });
+    );
+
+    // builder.addCase(
+    //   getSelectedRestaurantTime.fulfilled,
+    //   (state, action) => {
+    //     state.restaurantWindowTime = action.payload;
+    //   }
+    // );
   },
 });
 

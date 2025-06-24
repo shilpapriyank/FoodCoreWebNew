@@ -1,6 +1,7 @@
 "use client";
 
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 import React from "react";
 
 // Define the expected props for the component
@@ -20,7 +21,7 @@ interface AddressItem {
 
 // Define the structure for restaurantslocationlistwithtime if needed
 interface RestaurantLocationListWithTime {
-  addressList: any[];
+  addressList: AddressListItem[];
 }
 
 const AddressList: React.FC<AddressListProps> = ({
@@ -29,8 +30,11 @@ const AddressList: React.FC<AddressListProps> = ({
 }) => {
   const { restaurant, restaurantinfo } = useReduxData();
 
-  const addressList: any[] =
-    (restaurant?.restaurantslocationlistwithtime as any)?.addressList ?? [];
+  const addressList: AddressListItem[] =
+    (
+      restaurant?.restaurantslocationlistwithtime as RestaurantLocationListWithTime
+    )?.addressList ?? [];
+  console.log("addressList from addressList component", addressList);
   return (
     <>
       {addressList

@@ -32,10 +32,10 @@ export interface OrderDisableObj {
   errormessage: string;
 }
 
-export interface RestaurantWindowTime {
-  pickupTime?: any[];
-  deliveryTime?: any[];
-}
+// export interface RestaurantWindowTime {
+//   pickupTime?: any[];
+//   deliveryTime?: any[];
+// }
 
 export interface RestaurantInfo {
   defaultLocation: {
