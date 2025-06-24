@@ -1,3 +1,5 @@
+import { RestaurantWindowTime } from "../mainservice-types/mainservice.type";
+
 export interface FirebaseConfig {
   accountSid: string | null;
   apikey: string;
@@ -126,7 +128,7 @@ export interface RestaurantDetails {
   restaurantColorModel: RestaurantColor[];
   restaurantId: number;
   restaurantURL: string;
-  restaurantWindowTime: string | null;
+  restaurantWindowTime: RestaurantWindowTime;
   restaurantappicon: string;
   restaurantname: string;
   skype: string;

@@ -108,6 +108,10 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const restaurantslocationlistwithtime =
     restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime.addressList;
+  console.log(
+    "address list from pickup and delivery time select popup component.tsx",
+    addressList
+  );
   const pickupordelivery = selecteddelivery?.pickupordelivery
     ? Object.keys(selecteddelivery?.pickupordelivery).length > 0
       ? selecteddelivery?.pickupordelivery
@@ -172,7 +176,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   let asapLaterOnState = getAsapLaterOnState(
     restaurantinfo?.defaultLocation as any,
     selecteddelivery?.pickupordelivery,
-    restaurantWindowTime?.[0]
+    restaurantWindowTime as any
   );
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const { deliveryRequestId } = order;

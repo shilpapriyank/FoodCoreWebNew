@@ -6,6 +6,7 @@ import TimeSlotSkeletonComponent from "../skeleton/timeslot-skeleton.component";
 import { TimeSlotPillComponent } from "./timeslot-pill.component";
 import "swiper/swiper-bundle.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { v4 as uuidv4 } from "uuid";
 import {
   GetThemeDetails,
   ORDERTYPE,
@@ -31,12 +32,32 @@ import {
   TimeSlotPopupComponentProps,
 } from "@/types/timeslot-types/timeslot.types";
 import { OrderTypes } from "../../../../redux/order/order.type";
-import { AppDispatch } from "../../../../redux/store";
+import { AppDispatch, RootState } from "../../../../redux/store";
 import { LocationServices } from "../../../../redux/location/location.services";
 import { PAGES } from "../common/pages";
 import { OrderServices } from "../../../../redux/order/order.services";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
+import { restaurantsdetail } from "../../../../redux/restaurants/restaurants.slice";
+import {
+  getLocationIdFromStorage,
+  setLocationIdInStorage,
+} from "@/components/common/localstore";
+import { clearRedux } from "../../../../redux/clearredux/clearredux.slice";
+import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
+import { ORDER_TYPE_ENUM } from "@/components/default/common/dominos/helpers/utility";
+import { createSessionId } from "../../../../redux/session/session.slice";
+import {
+  getSelectedRestaurantTime,
+  refreshCategoryList,
+} from "../../../../redux/main/main.slice";
+import {
+  deleteCartItemFromSessionId,
+  emptycart,
+} from "../../../../redux/cart/cart.slice";
+import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
+import { ThunkDispatch } from "redux-thunk";
+import { Action } from "@reduxjs/toolkit";
 
 const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   isOpenModal,
@@ -101,7 +122,8 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const locationFullLink = `/${selectedTheme.url}/${dynamic}/${locationUrl}/`;
-  const dispatch = useDispatch<AppDispatch>();
+  //const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
     defaultLocation as AddressListItem,
     pickupordelivery,
@@ -120,42 +142,62 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     setcurrentDate(date as any);
   }, []);
 
-  // const handleClick = async (
-  //     lid: number,
-  //     locationUrl: string,
-  //     isPickup: boolean): Promise<void> => {
-  //     LocationServices.changeRestaurantLocation(restaurantinfo.restaurantId, lid).then((res) => {
-  //         if (res) {
-  //             Object.keys(restaurantinfo).map((session) => {
-  //                 if (session === 'defaultLocation') {
-  //                     Object.assign(restaurantinfo.defaultLocation, res);
-  //                 }
-  //                 if (session === 'defaultlocationId') {
-  //                     restaurantinfo.defaultlocationId = res.locationId;
-  //                 };
-  //             });
-  //             dispatch(restaurantsdetail(null));
-  //             dispatch(restaurantsdetail(restaurantinfo));
-  //             let oldLocationId = getLocationIdFromStorage();
-  //             if (oldLocationId !== restaurantinfo.defaultlocationId) {
-  //                 dispatch(clearRedux(false));
-  //                 if (isPickup === true) {
-  //                     dispatch(setpickupordelivery(ORDERTYPE.Pickup))
-  //                 }
-  //                 setLocationIdInStorage(restaurantinfo.defaultlocationId);
-  //                 let id = uuidv4();
-  //                 dispatch(createSessionId(id));
-  //                 dispatch(refreshCategoryList(restaurantinfo, lid));
-  //                 dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, lid))
-  //                 if (userinfo && userinfo?.customerId) {
-  //                     deleteCartItemFromSessionId(sessionid, restaurantinfo.restaurantId, defaultLocation.locationId);
-  //                     dispatch(emptycart());
-  //                     dispatch(setintialrewardpoints(userinfo));
-  //                 }
-  //             } redirectOnTimeSelected(locationUrl)
-  //         }
-  //     })
-  // }
+  const handleClick = async (
+    lid: number,
+    locationUrl: string,
+    isPickup: boolean
+  ): Promise<void> => {
+    LocationServices.changeRestaurantLocation(
+      restaurantinfo?.restaurantId as number,
+      lid
+    ).then((res) => {
+      if (res && restaurantinfo) {
+        Object.keys(restaurantinfo).map((session) => {
+          if (session === "defaultLocation") {
+            Object.assign(restaurantinfo.defaultLocation, res);
+          }
+          if (session === "defaultlocationId") {
+            restaurantinfo.defaultlocationId = res.locationId;
+          }
+        });
+        dispatch(restaurantsdetail(null));
+        dispatch(restaurantsdetail(restaurantinfo));
+        let oldLocationId = getLocationIdFromStorage();
+        if (oldLocationId !== restaurantinfo.defaultlocationId) {
+          dispatch(clearRedux(false as any) as any);
+          if (isPickup === true) {
+            dispatch(setpickupordelivery(ORDER_TYPE_ENUM.PICKUP));
+          }
+          setLocationIdInStorage(restaurantinfo.defaultlocationId);
+          let id = uuidv4();
+          dispatch(createSessionId(id));
+          dispatch(
+            refreshCategoryList({
+              newselectedRestaurant: restaurantinfo,
+              //locationId: lid,
+              customerId: 0,
+            }) as any
+          );
+          dispatch(
+            getSelectedRestaurantTime({
+              restaurantId: restaurantinfo?.restaurantId as number,
+              locationId: lid as number,
+            })
+          );
+          if (userinfo && userinfo?.customerId) {
+            deleteCartItemFromSessionId(
+              sessionid,
+              restaurantinfo.restaurantId,
+              defaultLocation?.locationId
+            );
+            dispatch(emptycart() as any);
+            dispatch(setintialrewardpoints(userinfo));
+          }
+        }
+        redirectOnTimeSelected(locationUrl);
+      }
+    });
+  };
 
   const redirectOnTimeSelected = (locationUrl: string): void => {
     if (pathname.includes(PAGES.DELIVERY)) {

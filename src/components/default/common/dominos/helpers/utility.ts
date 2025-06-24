@@ -1,3 +1,4 @@
+import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 
 interface Address {
@@ -138,7 +139,7 @@ interface OrderDisableObj {
 export const orderDisable = (
   restaurantinfo: any,
   deliveryaddressinfo: any,
-  restaurantWindowTime: any
+  restaurantWindowTime: RestaurantWindowTime
 ): OrderDisableObj => {
   const pickupWindow = restaurantWindowTime?.pickupTime;
   const deliveryWindow = restaurantWindowTime?.deliveryTime;

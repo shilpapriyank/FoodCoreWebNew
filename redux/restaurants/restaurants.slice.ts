@@ -13,6 +13,12 @@ import {
   TextSizeParameter,
   TimingEntry,
 } from "@/types/restaurant-types/restaurant.type";
+import { RootState } from "../store";
+
+type ThunkConfig = {
+  state: RootState;
+  rejectValue: string;
+};
 
 export interface RestaurantState {
   restaurantsList: any;
@@ -83,18 +89,38 @@ export const getRestaurantsList = createAsyncThunk(
   }
 );
 
-export const updaterestaurantsdetail = createAsyncThunk(
-  "restaurant/updaterestaurantsdetail",
-  //RestaurantsTypes.UPDATE_RESTAURANT_DETAIL,
-  async ({
-    restauranturl,
-    defaultLocationId,
-    locationurl,
-  }: {
+// export const updaterestaurantsdetail = createAsyncThunk(
+//   "restaurant/updaterestaurantsdetail",
+//   //RestaurantsTypes.UPDATE_RESTAURANT_DETAIL,
+//   async ({
+//     restauranturl,
+//     defaultLocationId,
+//     locationurl,
+//   }: {
+//     restauranturl: string;
+//     locationurl: string;
+//     defaultLocationId: number;
+//   }) => {
+//     const response = await RestaurantsServices.getRestaurantsList(
+//       restauranturl,
+//       locationurl,
+//       defaultLocationId
+//     );
+//     return response ? response[0] : null;
+//   }
+// );
+
+export const updaterestaurantsdetail = createAsyncThunk<
+  RestaurantDetails | null,
+  {
     restauranturl: string;
     locationurl: string;
     defaultLocationId: number;
-  }) => {
+  },
+  ThunkConfig
+>(
+  "restaurant/updaterestaurantsdetail",
+  async ({ restauranturl, locationurl, defaultLocationId }) => {
     const response = await RestaurantsServices.getRestaurantsList(
       restauranturl,
       locationurl,
@@ -104,16 +130,32 @@ export const updaterestaurantsdetail = createAsyncThunk(
   }
 );
 
-export const restaurantAllLocation = createAsyncThunk(
-  //"restaurant/restaurantAllLocation",
-  RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
-  async (restaurantId: number) => {
-    const response = await LocationServices.getAllLoaction(restaurantId);
-    return response;
-  }
-);
+// export const restaurantAllLocation = createAsyncThunk(
+//   //"restaurant/restaurantAllLocation",
+//   RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
+//   async (restaurantId: number) => {
+//     const response = await LocationServices.getAllLoaction(restaurantId);
+//     return response;
+//   }
+// );
 
 // Sync helper functions
+
+export const restaurantAllLocation = createAsyncThunk<
+  {
+    addressList: AddressListItem[];
+    issupplychainenable: boolean;
+    parameterByColorList: ColorParameter | null;
+    parameterByTextSizeList: TextSizeParameter | null;
+    restaurantId: number;
+  },
+  number,
+  ThunkConfig
+>(RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME, async (restaurantId) => {
+  const response = await LocationServices.getAllLoaction(restaurantId);
+  return response;
+});
+
 export const restaurantsLocation = async (restaurantId: number) => {
   return await LocationServices.getLocationInfo(restaurantId);
 };
@@ -163,7 +205,10 @@ const restaurantSlice = createSlice({
   name: "restaurant",
   initialState,
   reducers: {
-    restaurantsdetail: (state, action: PayloadAction<RestaurantDetails | null>) => {
+    restaurantsdetail: (
+      state,
+      action: PayloadAction<RestaurantDetails | null>
+    ) => {
       state.restaurantdetail = action.payload;
     },
     leftMenuToggle: (state, action: PayloadAction<boolean>) => {

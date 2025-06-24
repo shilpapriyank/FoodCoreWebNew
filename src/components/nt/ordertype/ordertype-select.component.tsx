@@ -28,6 +28,9 @@ import {
   deleteCartItemFromSessionId,
   emptycart,
 } from "../../../../redux/cart/cart.slice";
+
+type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
+
 import {
   setintialrewardpoints,
   setrewardpoint,
@@ -39,6 +42,7 @@ import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { AppDispatch } from "../../../../redux/store";
 import { ResponseModel } from "@/components/common/commonclass";
 import { useAppDispatch } from "../../../../redux/hooks";
+import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
 
 interface OrderTypeSelectProps {
   isOpenModal: boolean;
@@ -77,14 +81,14 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
-    orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
+    orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   const myDeliveryAddress = tempDeliveryAddress;
 
-  const handleChangeOrderType = (orderType: string) => {
-   // debugger
+  const handleChangeOrderType = (orderType: ORDER_TYPE_ENUM) => {
     dispatch(setpickupordelivery(orderType));
-    if (ORDER_TYPE.DELIVERY.text === orderType) {
+    if (ORDER_TYPE_ENUM.DELIVERY === orderType) {
+      // setTimeout(() => {
       if (userinfo === null) {
         handleToggleOrderTypeModal(false);
         handleToggleAddAddressModal(true);
@@ -93,12 +97,14 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   };
 
   const handleChangeLocation = (id: number) => {
-    debugger
+    debugger;
     setSelectedLocationId(id);
   };
 
-  const handleClickConfirmChangeLocation = async (lid: number): Promise<void> => {
-    debugger
+  const handleClickConfirmChangeLocation = async (
+    lid: number
+  ): Promise<void> => {
+    debugger;
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
     LocationServices.changeRestaurantLocation(
@@ -170,8 +176,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         dispatch(
           setpickupordelivery(
             restaurantinfo?.defaultLocation?.defaultordertype
-              ? ORDER_TYPE.DELIVERY.text
-              : ORDER_TYPE.PICKUP.text
+              ? ORDER_TYPE_ENUM.DELIVERY
+              : ORDER_TYPE_ENUM.PICKUP
           )
         );
         handleToggleOrderTypeModal(false);
@@ -199,90 +205,176 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     handleToggleAddAddressModal(true);
   };
 
-
   return (
     <>
-      <div className={`modal fade modal-your-order ${isOpenModal ? 'show d-block' : ''}`} tabIndex={-1} style={{ display: 'block' }} aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div
+        className={`modal fade modal-your-order ${
+          isOpenModal ? "show d-block" : ""
+        }`}
+        tabIndex={-1}
+        style={{ display: "block" }}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
-            <h5 className="modal-title fs-5" id="staticBackdropLabel">YOUR ORDER</h5>
-            <button type="button" className="btn-close" onClick={() => handleToggleOrderTypeModal(false)} />
+            <h5 className="modal-title fs-5" id="staticBackdropLabel">
+              YOUR ORDER
+            </h5>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => handleToggleOrderTypeModal(false)}
+            />
             <form>
               <div className="modal-body">
                 <div className="row">
-                  <PickupDeliveryButton handleChangeOrderType={handleChangeOrderType} />
+                  <PickupDeliveryButton
+                    handleChangeOrderType={handleChangeOrderType}
+                  />
                 </div>
-                {
-                  ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
-
+                {ORDER_TYPE.PICKUP.text ===
+                  selecteddelivery.pickupordelivery && (
                   <div id="takeout" className="row">
                     <div className="col-lg-12 text-center col-md-12 col-12">
                       <h2>Choose a Location 123</h2>
                     </div>
                     <div className="col-lg-12 mb-4 col-md-12 col-12">
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        {
-                          ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery &&
-                          <li className="nav-item w-100" >
-                            <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">By address</button>
+                        {ORDER_TYPE.DELIVERY.text ===
+                          selecteddelivery.pickupordelivery && (
+                          <li className="nav-item w-100">
+                            <button
+                              className="nav-link active"
+                              id="home-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#home-tab-pane"
+                              type="button"
+                              role="tab"
+                              aria-controls="home-tab-pane"
+                              aria-selected="true"
+                            >
+                              By address
+                            </button>
                           </li>
-                        }
-                        {
-                          ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
-                          <li className="nav-item w-100" >
-                            <button className={`nav-link ${ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery ? "active" : ""}`} id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">By location</button>
+                        )}
+                        {ORDER_TYPE.PICKUP.text ===
+                          selecteddelivery.pickupordelivery && (
+                          <li className="nav-item w-100">
+                            <button
+                              className={`nav-link ${
+                                ORDER_TYPE.PICKUP.text ===
+                                selecteddelivery.pickupordelivery
+                                  ? "active"
+                                  : ""
+                              }`}
+                              id="profile-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#profile-tab-pane"
+                              type="button"
+                              role="tab"
+                              aria-controls="profile-tab-pane"
+                              aria-selected="false"
+                            >
+                              By location
+                            </button>
                           </li>
-                        }
+                        )}
                       </ul>
                       <div className="tab-content" id="myTabContent">
-                        <div className="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabIndex={0}>
-                          {ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery && <div className="row">
-                            <div className="col-lg-12 col-md-12 col-12">
+                        <div
+                          className="tab-pane fade show active"
+                          id="home-tab-pane"
+                          role="tabpanel"
+                          aria-labelledby="home-tab"
+                          tabIndex={0}
+                        >
+                          {ORDER_TYPE.DELIVERY.text ===
+                            selecteddelivery.pickupordelivery && (
+                            <div className="row">
+                              <div className="col-lg-12 col-md-12 col-12">
+                                {/* ///// order confirmation html load model end*/}
 
-                              {/* ///// order confirmation html load model end*/}
-
-                              <label>Address</label>
-                              <div className="search">
-                                <input type="text" className="form-control search" defaultValue="undefined undefined, undefined, undefined, undefined" />
-                                <i className="fa fa-search" />
-                              </div>
-                              <div className="text-center">
-                                <a className="address-nfound" href="#">Address not found ?</a>
-                              </div>
-                              <label>Apt #</label>
-                              <input type="text" className="form-control" placeholder="Optional" />
-                              <div className="text-center short-info">
-                                <p><i className="fa fa-info-circle" /><br /> Variable '$position.latitude' is invalid. Received a null input for a non-null variable. Variable '$address.civicNumber' is invalid. No value provided for a non-null variable.</p>
+                                <label>Address</label>
+                                <div className="search">
+                                  <input
+                                    type="text"
+                                    className="form-control search"
+                                    defaultValue="undefined undefined, undefined, undefined, undefined"
+                                  />
+                                  <i className="fa fa-search" />
+                                </div>
+                                <div className="text-center">
+                                  <a className="address-nfound" href="#">
+                                    Address not found ?
+                                  </a>
+                                </div>
+                                <label>Apt #</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Optional"
+                                />
+                                <div className="text-center short-info">
+                                  <p>
+                                    <i className="fa fa-info-circle" />
+                                    <br /> Variable '$position.latitude' is
+                                    invalid. Received a null input for a
+                                    non-null variable. Variable
+                                    '$address.civicNumber' is invalid. No value
+                                    provided for a non-null variable.
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>}
-                          {ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery && <div className="row">
-                            <div className="col-lg-12 col-md-12 col-12">
-                              <AddressList selectedLocationId={selectedLocationId} handleChangeLocation={handleChangeLocation} />
+                          )}
+                          {ORDER_TYPE.PICKUP.text ===
+                            selecteddelivery.pickupordelivery && (
+                            <div className="row">
+                              <div className="col-lg-12 col-md-12 col-12">
+                                <AddressList
+                                  selectedLocationId={selectedLocationId}
+                                  handleChangeLocation={handleChangeLocation}
+                                />
+                              </div>
                             </div>
-                          </div>}
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>}
-                {
-                  ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery &&
+                  </div>
+                )}
+                {ORDER_TYPE.DELIVERY.text ===
+                  selecteddelivery.pickupordelivery && (
                   <div id="delivery" className="row ">
                     <div className="col-lg-12 text-center col-md-12 col-12">
                       <h2 className="fs-16">Enter your address</h2>
                     </div>
                     <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
-                      {myDeliveryAddress && <AddressPill isChecked={true} address={myDeliveryAddress} id={myDeliveryAddress.id} />}
+                      {myDeliveryAddress && (
+                        <AddressPill
+                          isChecked={true}
+                          address={myDeliveryAddress}
+                          id={myDeliveryAddress.id}
+                        />
+                      )}
                       {userinfo && <DeliveryaddresspillComponent />}
                       <div className="text-center">
-                        <a className="address-nfound" onClick={handleClickAddNewAddress}>Add New Address</a>
+                        <a
+                          className="address-nfound"
+                          onClick={handleClickAddNewAddress}
+                        >
+                          Add New Address
+                        </a>
                       </div>
                     </div>
                   </div>
-                }
+                )}
               </div>
               <div className="modal-footer">
-                <a className="btn-default w-100" onClick={handleClickConfirm} >Confirm</a>
+                <a className="btn-default w-100" onClick={handleClickConfirm}>
+                  Confirm
+                </a>
               </div>
             </form>
           </div>
