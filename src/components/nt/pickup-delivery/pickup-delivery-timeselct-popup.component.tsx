@@ -36,6 +36,7 @@ import {
   GetThemeDetails,
   ORDERTYPE,
   ORDER_TYPE,
+  ORDER_TYPE_ENUM,
   checkWindowTimeExpires,
   getAsapLaterOnState,
 } from "../../common/utility";
@@ -108,10 +109,6 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const restaurantslocationlistwithtime =
     restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime.addressList;
-  console.log(
-    "address list from pickup and delivery time select popup component.tsx",
-    addressList
-  );
   const pickupordelivery = selecteddelivery?.pickupordelivery
     ? Object.keys(selecteddelivery?.pickupordelivery).length > 0
       ? selecteddelivery?.pickupordelivery
@@ -161,8 +158,12 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const [isTimeLoad, setisTimeLoad] = useState<boolean>(false);
   const customerId = userinfo?.customerId ?? 0;
   const [defaultLoactionId, setdefaultLoactionId] = useState<number | null>();
+  // var ordertype =
+  //   selecteddelivery.pickupordelivery === ORDERTYPE.Delivery ? 2 : 1;
   var ordertype =
-    selecteddelivery.pickupordelivery === ORDERTYPE.Delivery ? 2 : 1;
+    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      ? ORDER_TYPE_ENUM.DELIVERY
+      : ORDER_TYPE_ENUM.PICKUP;
   let selectedAddress =
     userinfo === null
       ? deliveryaddress?.tempDeliveryAddress
@@ -282,7 +283,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   };
   const handleAsapClick = () => {
     if (
-      ordertype === ORDER_TYPE.DELIVERY.value &&
+      ordertype === ORDER_TYPE_ENUM.DELIVERY &&
       deliveryService === DELIVERYSERVICES.UBEREATS &&
       selectedAddress === null
     ) {
@@ -303,7 +304,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
       locationId: Number(defaultLocation?.locationId),
-      ordertype: ordertype.toString(),
+      ordertype: ordertype,
       obj: selectedAddress,
       requestId: id,
     }).then((gettimeresponse) => {
@@ -317,7 +318,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
               locationId: Number(defaultLocation?.locationId),
               recievingTime: time[0],
               recieving: time[1],
-              flg: Number(ordertype),
+              flg: ordertype as any,
               obj: selectedAddress,
               requestId: requestID || "",
             }).then((response) => {
@@ -352,7 +353,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   };
   const handleLaterOnClick = () => {
     if (
-      ordertype === ORDER_TYPE.DELIVERY.value &&
+      (ordertype as any) === ORDER_TYPE_ENUM.DELIVERY &&
       deliveryService === DELIVERYSERVICES.UBEREATS &&
       selectedAddress === null
     ) {
@@ -442,8 +443,8 @@ const PickupDeliveryTimeSelectPopup: React.FC<
             dispatch(
               setpickupordelivery(
                 res?.defaultordertype
-                  ? ORDER_TYPE.DELIVERY.text
-                  : ORDER_TYPE.PICKUP.text
+                  ? ORDER_TYPE_ENUM.DELIVERY
+                  : ORDER_TYPE_ENUM.PICKUP
               )
             );
           }
@@ -479,7 +480,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         locationId: Number(defaultLocation?.locationId),
         recievingTime,
         recieving: meridiem,
-        flg: ordertype,
+        flg: ordertype as any,
         obj: selectedAddress,
         requestId: defaultRequestId,
       });
@@ -501,11 +502,14 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         setsuccessMessage(message);
         dispatch(setordertime(timedisplay));
 
-        if (ordertype === 1 || ordertype === 2) {
+        if (
+          ordertype === ORDER_TYPE_ENUM.DELIVERY ||
+          ordertype === ORDER_TYPE_ENUM.PICKUP
+        ) {
           if (isRedirectMenu) {
             handleClick(locationId, locationUrl, true);
             handleToggleTimingModal(false);
-          } else if (ordertype === 2) {
+          } else if (ordertype === ORDER_TYPE_ENUM.PICKUP) {
             setTimeout(() => {
               handleToggleTimingModal(false);
               redirectOnTimeSelected();
@@ -572,7 +576,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   <p>
                     {DELIVERYPAGEMESSAGE.PREP_TIME}&nbsp;
                     <b>
-                      {pickupordelivery === ORDER_TYPE.DELIVERY.text
+                      {pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
                         ? defaultLocation?.ordersubmittime ?? 0
                         : defaultLocation?.takeawayextratime ?? 0}{" "}
                       minute
@@ -592,10 +596,10 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   isPickupWindowAvailable={isPickupWindowAvailable}
                 />
                 {((selecteddelivery.pickupordelivery ===
-                  ORDER_TYPE.DELIVERY.text &&
+                  ORDER_TYPE_ENUM.DELIVERY &&
                   isDeliveryWindowAvailable) ||
                   (selecteddelivery.pickupordelivery ===
-                    ORDER_TYPE.PICKUP.text &&
+                    ORDER_TYPE_ENUM.PICKUP &&
                     isPickupWindowAvailable) ||
                   selecteddelivery.pickupordelivery === "") && (
                   <>

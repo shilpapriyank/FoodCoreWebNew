@@ -1,3 +1,4 @@
+import { ORDER_TYPE_ENUM } from "@/components/common/utility";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 
@@ -22,10 +23,10 @@ interface Marker {
   address1: string;
 }
 
-export enum ORDER_TYPE_ENUM {
-  PICKUP = "Pickup",
-  DELIVERY = "Delivery",
-}
+// export enum ORDER_TYPE_ENUM {
+//   PICKUP = "Pickup",
+//   DELIVERY = "Delivery",
+// }
 
 // const ORDERTYPE = {
 //   PICKUP: "Pickup",
@@ -286,21 +287,21 @@ export const unFormatePhoneNumber = (number: string): string => {
   return unFormatedNumber;
 };
 
-export const convertSecondToMinute = (
-  second: number
-): { minute: number; second: number } => {
-  const totalSeconds = second;
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
+// export const convertSecondToMinute = (
+//   second: number
+// ): { minute: number; second: number } => {
+//   const totalSeconds = second;
+//   const minutes = Math.floor(totalSeconds / 60);
+//   const seconds = totalSeconds % 60;
 
-  function padTo2Digits(num: number) {
-    return num.toString().padStart(2, "0");
-  }
-  return {
-    minute: parseInt(padTo2Digits(minutes)),
-    second: parseInt(padTo2Digits(seconds)),
-  };
-};
+//   function padTo2Digits(num: number) {
+//     return num.toString().padStart(2, "0");
+//   }
+//   return {
+//     minute: parseInt(padTo2Digits(minutes)),
+//     second: parseInt(padTo2Digits(seconds)),
+//   };
+// };
 
 export const allRegex = {
   phoneRegex1: /(\(?\d{1,2})/,

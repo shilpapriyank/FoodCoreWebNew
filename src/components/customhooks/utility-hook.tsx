@@ -1,9 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { CUSTOMER_TYPE, ORDERTYPE } from "../common/utility";
+import { CUSTOMER_TYPE, ORDER_TYPE_ENUM, ORDERTYPE } from "../common/utility";
 import { useReduxData } from "./useredux-data-hooks";
 import { CategoryType } from "@/types/customhook-types/usesearchdata-type";
 import { CategoryItemType } from "@/types/category-types/category.services.type";
-import { ORDER_TYPE_ENUM } from "../default/common/dominos/helpers/utility";
 
 const useUtility = () => {
   const { userinfo, restaurantinfo } = useReduxData();

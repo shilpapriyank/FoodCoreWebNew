@@ -7,6 +7,7 @@ import {
   checkDisableWindow,
   GetThemeDetails,
   ORDER_TYPE,
+  ORDER_TYPE_ENUM,
 } from "../../common/utility";
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { useDispatch } from "react-redux";
@@ -66,15 +67,15 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
           {defaultLocation.istakeaway === true && isEnablePickup ? (
             <>
               <a
-                onClick={() => handleChangeOrderType(ORDER_TYPE.PICKUP.text)}
+                onClick={() => handleChangeOrderType(ORDER_TYPE_ENUM.PICKUP)}
                 className={`btn-default  ${
-                  ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery
+                  ORDER_TYPE_ENUM.PICKUP === selecteddelivery.pickupordelivery
                     ? "active"
                     : ""
                 }`}
                 id="takeout-btn"
               >
-                <i className="fa fa-shopping-bag" /> {ORDER_TYPE.PICKUP.text}
+                <i className="fa fa-shopping-bag" /> {ORDER_TYPE_ENUM.PICKUP}
               </a>
             </>
           ) : (
@@ -90,15 +91,15 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
         <>
           {defaultLocation.isdelivery === true && isEnableDelivery ? (
             <a
-              onClick={() => handleChangeOrderType(ORDER_TYPE.DELIVERY.text)}
+              onClick={() => handleChangeOrderType(ORDER_TYPE_ENUM.DELIVERY)}
               className={`btn-default  ${
-                ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery
+                ORDER_TYPE_ENUM.DELIVERY === selecteddelivery.pickupordelivery
                   ? "active"
                   : ""
               }`}
               id="delivery-btn"
             >
-              <i className="fa fa-car" /> {ORDER_TYPE.DELIVERY.text}
+              <i className="fa fa-car" /> {ORDER_TYPE_ENUM.DELIVERY}
             </a>
           ) : (
             <a className="btn-default opacity-50 pe-none" id="delivery-btn">

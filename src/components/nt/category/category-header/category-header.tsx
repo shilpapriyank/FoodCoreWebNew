@@ -7,14 +7,14 @@ import { fixedLengthString, getImagePath } from "../../common/utility";
 import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useUtility from "@/components/customhooks/utility-hook";
-import { selectedCategory } from "../../../../../redux/category/category.slice";
 import { AppDispatch } from "../../../../../redux/store";
 import {
   CategoryItem,
   CategoryItemType,
 } from "@/types/category-types/category.services.type";
+import { selectedCategory } from "../../../../../redux/category/category.slice";
 
-const CategoryHeader = ({ selectedCatId }: any) => {
+const CategoryHeader = () => {
   const {
     restaurantinfo,
     maincategoryList,
@@ -28,9 +28,7 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const dispatch = useDispatch<AppDispatch>();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(
-    selectedcategory && selectedcategory?.[0]?.catId
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
   const categoryListItems: CategoryItemType[] =
@@ -38,7 +36,6 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   let pickupordelivery = selecteddelivery.pickupordelivery;
   const { filterCategory } = useUtility();
   const catWithSearch = filterCategory(categoryListItems, pickupordelivery);
-  console.log("category with search", catWithSearch);
   const activeItemRef = useRef<HTMLLIElement | null>(null);
   const [activeSection, setActiveSection] = useState<string>("");
 
@@ -122,7 +119,7 @@ const CategoryHeader = ({ selectedCatId }: any) => {
                     catWithSearch?.map((c: CategoryItemType) => {
                       const isActive =
                         selectedCategoryId === c.catId ||
-                        selectedcategory[0]?.catId === c.catId ||
+                        selectedcategory?.catId === c.catId ||
                         category === c.categoryslug;
                       let menuImage = getImagePath(
                         c.imgurl,

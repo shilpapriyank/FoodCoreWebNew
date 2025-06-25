@@ -238,7 +238,7 @@ export const {
   setDipendentItemQty,
   setMenuCategoryData,
   setMenuItemDetailList,
-  setSelectedMenuItemDetailList
+  setSelectedMenuItemDetailList,
 } = menuItemSlice.actions;
 
 export default menuItemSlice.reducer;

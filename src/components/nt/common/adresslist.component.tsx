@@ -34,7 +34,6 @@ const AddressList: React.FC<AddressListProps> = ({
     (
       restaurant?.restaurantslocationlistwithtime as RestaurantLocationListWithTime
     )?.addressList ?? [];
-  console.log("addressList from addressList component", addressList);
   return (
     <>
       {addressList

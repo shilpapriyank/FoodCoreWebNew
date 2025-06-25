@@ -11,6 +11,7 @@ import {
   GetThemeDetails,
   ORDERTYPE,
   ORDER_TYPE,
+  ORDER_TYPE_ENUM,
   getAsapLaterOnState,
   orderDisable,
 } from "../../common/utility";
@@ -45,7 +46,6 @@ import {
 } from "@/components/common/localstore";
 import { clearRedux } from "../../../../redux/clearredux/clearredux.slice";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
-import { ORDER_TYPE_ENUM } from "@/components/default/common/dominos/helpers/utility";
 import { createSessionId } from "../../../../redux/session/session.slice";
 import {
   getSelectedRestaurantTime,
@@ -88,9 +88,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   );
   const pickupordelivery = selecteddelivery?.pickupordelivery;
   const ordertype =
-    pickupordelivery === ORDER_TYPE.DELIVERY.text
-      ? ORDER_TYPE.DELIVERY.value
-      : ORDER_TYPE.PICKUP.value;
+    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      ? ORDER_TYPE_ENUM.DELIVERY
+      : ORDER_TYPE_ENUM.PICKUP;
   const [timeSlots, settimeSlots] = useState<TimeSlot[]>([]);
   const [loadTimeslot, setLoadTimeslot] = useState<boolean>(false);
   const [selectedTime, setselectedTime] = useState<string>(order.checktime);
@@ -127,12 +127,12 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
     defaultLocation as AddressListItem,
     pickupordelivery,
-    restaurantWindowTime as RestaurantWindowTime
+    restaurantWindowTime as any
   );
   const orderDisableData: OrderDisableData = orderDisable(
     restaurantinfo,
     selecteddelivery,
-    restaurantWindowTime
+    restaurantWindowTime as any
   );
   const selectedDay: string = (order?.futureOrderDay as any)?.futureDay || "";
   const [dayCloseError, setDayCloseError] = useState<string>("");
@@ -234,7 +234,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     isClose?: boolean
   ): void => {
     const isClosed =
-      ordertype === ORDER_TYPE.DELIVERY.value
+      ordertype === ORDER_TYPE_ENUM.DELIVERY
         ? day?.deliveryStatus === "Closed"
         : day?.takeoutStatus === "Closed";
 
@@ -291,7 +291,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               recievingTime: time[0],
               //recievingTime: time[0],
               recieving: time[1],
-              flg: ordertype,
+              flg: ordertype as any,
               obj: selectedAddress,
               requestId: requestID as any,
             }).then((response) => {
@@ -364,9 +364,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         >
           <div className="modal-content pb-0">
             <h5 className="modal-title" id="login-modal-Label">{`Schedule ${
-              ordertype === ORDER_TYPE.DELIVERY.value
-                ? ORDER_TYPE.DELIVERY.text
-                : ORDER_TYPE.PICKUP.text
+              ordertype === ORDER_TYPE_ENUM.DELIVERY
+                ? ORDER_TYPE_ENUM.DELIVERY
+                : ORDER_TYPE_ENUM.PICKUP
             }`}</h5>
             <a
               className="btn-close close-time "

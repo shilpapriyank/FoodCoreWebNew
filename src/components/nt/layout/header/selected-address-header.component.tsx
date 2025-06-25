@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { ORDER_TYPE } from "@/components/common/utility";
+import { ORDER_TYPE, ORDER_TYPE_ENUM } from "@/components/common/utility";
 
 interface SelectedAddressHeaderProps {
   handleToggleOrderTypeModal: (value: boolean) => void;
@@ -18,28 +18,31 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
-    orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
+    orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   let myDeliveryAddress = selecteddeliveryaddress ?? tempDeliveryAddress;
 
   const DisplayselectedPickup = () => {
-    // debugger
     return (
       <>
-        {orderTypeName === ORDER_TYPE.DELIVERY.text ? (
+        {orderTypeName === ORDER_TYPE_ENUM.DELIVERY ? (
           <>
             {" "}
             {myDeliveryAddress &&
-              `${myDeliveryAddress?.address1 && myDeliveryAddress?.address1
-              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
+              `${
+                myDeliveryAddress?.address1 && myDeliveryAddress?.address1
+              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${
+                myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
               }`}
           </>
         ) : (
           <>
             {" "}
-            {`${restaurantinfo && restaurantinfo?.defaultLocation?.address1
-              },  ${restaurantinfo && restaurantinfo?.defaultLocation?.cityname
-              }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
+            {`${
+              restaurantinfo && restaurantinfo?.defaultLocation?.address1
+            },  ${
+              restaurantinfo && restaurantinfo?.defaultLocation?.cityname
+            }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
           </>
         )}
       </>
@@ -56,7 +59,7 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
       {!b2b && (
         <>
           {" "}
-          {orderTypeName === ORDER_TYPE.PICKUP.text ? (
+          {orderTypeName === ORDER_TYPE_ENUM.PICKUP ? (
             <i className="fa icon fa-shopping-bag" />
           ) : (
             <i className="fa icon fa-car"></i>

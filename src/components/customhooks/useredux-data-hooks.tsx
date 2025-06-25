@@ -19,7 +19,6 @@ export const useReduxData = () => {
     shallowEqual
   );
 
-  //console.log("Logged in User Info:", userinfo);
   const restaurantinfo = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
@@ -97,6 +96,10 @@ export const useReduxData = () => {
     (state: RootState) => state.category?.categoryitemlist,
     shallowEqual
   );
+  const selectedcategorydetail = useSelector(
+    (state: RootState) => state.category?.selectedcategorydetail,
+    shallowEqual
+  );
   const maincategoryList = useSelector(
     (state: RootState) => state.main?.maincategoryList,
     shallowEqual
@@ -158,6 +161,7 @@ export const useReduxData = () => {
     rewardpoints,
     addressList,
     menuitemdetaillist,
+    selectedcategorydetail,
     // studentdata,
     // cartItemsAmountTotal,
     // cartItemsQuantity,

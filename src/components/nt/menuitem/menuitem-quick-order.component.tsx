@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ORDERTYPE, TOOLTIP_MSG } from "../../common/utility";
+import { ORDER_TYPE_ENUM, ORDERTYPE, TOOLTIP_MSG } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
 
@@ -24,7 +24,7 @@ const MenuItemQuickOrder = ({ item, quickOrderClick }: any) => {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else if (
         deliveryaddressinfo &&
-        deliveryaddressinfo.pickupordelivery === ORDERTYPE.Delivery &&
+        deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
         locationSelected?.isDeliveryOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;

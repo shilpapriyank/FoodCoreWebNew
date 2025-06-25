@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import '../../styles/globals.css';
+import "../../styles/globals.css";
 //import '../styles/globals.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import type { ReactNode } from "react";
@@ -60,16 +60,13 @@ export default async function RootLayout({
 
         {/* Load theme-specific CSS */}
         <ThemeStyles themeType={themeType} />
-
       </head>
       <body>
-
         {/* Pass only serializable data to client components */}
         <ClientWrapper>{children}</ClientWrapper>
 
         {/* Load theme-specific scripts */}
         <ThemeScripts themeType={themeType} />
-
       </body>
     </html>
   );

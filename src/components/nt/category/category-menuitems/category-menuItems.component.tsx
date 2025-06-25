@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback, useTransition, useMemo } from "react";
+import React, { useEffect } from "react";
 import {
   fixedLengthString,
   getImagePath,
@@ -10,19 +10,16 @@ import CategorySidebar from "../category-sidebar/category-sidebar.component";
 // import MenuItemDetail from "../../menuitem/menuitem.component";
 import { useState } from "react";
 import GridListButton from "../../../common/gridlistbutton.component";
-import SearchBarComponent from "./search-bar.component";
 import useUtility from "../../../customhooks/utility-hook";
 import handleNotify from "../../../default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "../../../default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "../../../default/helpers/toaster/toaster-types";
 // import "react-lazy-load-image-component/src/effects/blur.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../redux/store";
-import { useParams, useRouter } from "next/navigation";
 import {
   GetThemeDetails,
   ORDER_TYPE,
+  ORDER_TYPE_ENUM,
   scrollToElementWithOffset,
   TOOLTIP_MSG,
 } from "@/components/common/utility";
@@ -39,6 +36,7 @@ import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.servi
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
 import {
   removeCategoryList,
+  selectedCategory,
   setCategoryList,
 } from "../../../../../redux/category/category.slice";
 import { useAppDispatch } from "../../../../../redux/hooks";
@@ -61,7 +59,7 @@ import CommonModal from "../../common/common-model.component";
 import DependentItemListComponent from "./dependentitems-list.component";
 import { SelectedMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 import { setCartItem } from "../../../../../redux/cart/cart.slice";
-//import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
+import { useParams, useRouter } from "next/navigation";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -88,7 +86,7 @@ const CategoryMenuItems = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isFavourite, setisFavourite] = useState<boolean>(false);
   const categoryItemList = category.categoryitemlist;
-  const selectedCategory = category?.selectedcategorydetail?.[0];
+  const selectCategory = category?.selectedcategorydetail?.[0];
   const [openMenuItemModal, setopenMenuItemModal] = useState<boolean>(false);
   const itemsPerPage = 500; // Number of categories to load per page.
   const dispatch = useAppDispatch();
@@ -121,9 +119,9 @@ const CategoryMenuItems = ({
   const normalizedMenuItemId = menuitemId;
   const [isBottomSlide, setisBottomSlide] = useState(false);
   const ordertype =
-    selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text
-      ? ORDER_TYPE.DELIVERY.value
-      : ORDER_TYPE.PICKUP.value;
+    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      ? ORDER_TYPE_ENUM.DELIVERY
+      : ORDER_TYPE_ENUM.PICKUP;
   const [selectedCatItem, setselectedCatItem] = useState(null);
   const [updateId, setupdateId] = useState("");
   const [openDependentList, setopenDependentList] = useState<boolean>(false);
@@ -158,7 +156,6 @@ const CategoryMenuItems = ({
     if (categoryslug) {
       const targetElement = document.getElementById(categoryslug);
       if (targetElement) {
-        // targetElement.scrollIntoView({ behavior: "smooth" });
         scrollToElementWithOffset(categoryslug);
       } else {
         setTimeout(() => {
@@ -170,16 +167,16 @@ const CategoryMenuItems = ({
     }
 
     //check category slug and selected category url not same then select  categoryslug category
-    if (selectedCategory?.categoryslug !== categoryUrl && categoryUrl) {
+    if (selectCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
-        (cat: any) => cat?.categoryslug === categoryUrl
+        (cat: CategoryItem) => cat?.categoryslug === categoryUrl
       );
       dispatch(selectedCategory(findedCat));
     }
   }, [
     categoryslug,
     restaurantinfo?.defaultlocationId,
-    selectedCategory?.categoryslug,
+    selectCategory?.categoryslug,
   ]);
 
   useEffect(() => {
@@ -197,12 +194,11 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          console.log("response", response);
           // dispatch({
           //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
           //   payload: response,
           // });
-          dispatch(selectedMenuItem(response as any));
+          dispatch(selectedMenuItem(response));
         }
       });
     }
@@ -213,7 +209,7 @@ const CategoryMenuItems = ({
     let selectedCat = [];
     if (categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
-        (cat: any) => cat.categoryslug === categoryUrl
+        (cat: CategoryItem) => cat.categoryslug === categoryUrl
       );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
@@ -495,7 +491,7 @@ const CategoryMenuItems = ({
                 {menuItemsWithCat?.length > 0 &&
                   menuItemsWithCat?.map((category: any, index: any) => {
                     return (
-                      <div key={index}>
+                      <div key={`${category.catId}`}>
                         <div
                           className="row"
                           id={category.categoryslug}
@@ -522,12 +518,15 @@ const CategoryMenuItems = ({
                                 const isRegular =
                                   menu?.typeid === 0 &&
                                   menu?.isdefaultprice === 1;
+                                const imgSrc = getImagePath(
+                                  menu.imgurl,
+                                  defaultLocation?.defaultmenuitemimage
+                                );
                                 return (
-                                  <div className="cols menu-item" key={index}>
-                                    {/* <PopOver description="Popover on top" /> */}
-                                    {/* <button type="button" className="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
-  Popover on top
-</button> */}
+                                  <div
+                                    className="cols menu-item"
+                                    key={`${category.catId}-${menu.menuitemId}`}
+                                  >
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
@@ -651,18 +650,22 @@ const CategoryMenuItems = ({
                                         )}
                                       </div>
                                       <div className="img">
-                                        <LazyLoadImage
-                                          src={getImagePath(
-                                            menu.imgurl,
-                                            defaultLocation?.defaultmenuitemimage
-                                          )}
-                                          style={{ maxHeight: "136px" }}
-                                          effect="blur"
-                                          wrapperProps={{
-                                            style: { transitionDelay: "1s" },
-                                          }}
-                                          alt={menu.menuItemName}
-                                        />
+                                        {imgSrc ? (
+                                          <LazyLoadImage
+                                            // src={getImagePath(
+                                            //   menu.imgurl,
+                                            //   defaultLocation?.defaultmenuitemimage
+                                            // )}
+                                            src={imgSrc}
+                                            style={{ maxHeight: "136px" }}
+                                            effect="blur"
+                                            wrapperProps={{
+                                              style: { transitionDelay: "1s" },
+                                            }}
+                                            alt={menu.menuItemName}
+                                          />
+                                        ) : null}
+
                                         {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt style={{ maxHeight: "136px" }} /> */}
                                         <a
                                           data-toggle="tooltip"
@@ -692,23 +695,33 @@ const CategoryMenuItems = ({
                         {viewType === ViewTypeEnum.GRID && (
                           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
                             {category?.menuitems?.map((menu: any) => {
+                              const imgSrc = getImagePath(
+                                menu.imgurl,
+                                defaultLocation?.defaultmenuitemimage
+                              );
                               return (
-                                <div className="cols menu-item" key={index}>
+                                <div
+                                  className="cols menu-item"
+                                  key={`${category.catId}-${menu.menuitemId}`}
+                                >
                                   <div className="card features itembox">
                                     <div className="img position-relative">
-                                      <LazyLoadImage
-                                        src={getImagePath(
-                                          menu.imgurl,
-                                          defaultLocation?.defaultmenuitemimage
-                                        )}
-                                        style={{ maxHeight: "136px" }}
-                                        effect="blur"
-                                        wrapperProps={{
-                                          // If you need to, you can tweak the effect transition using the wrapper style.
-                                          style: { transitionDelay: "1s" },
-                                        }}
-                                        alt={menu.menuItemName}
-                                      />
+                                      {imgSrc ? (
+                                        <LazyLoadImage
+                                          // src={getImagePath(
+                                          //   menu.imgurl,
+                                          //   defaultLocation?.defaultmenuitemimage
+                                          // )}
+                                          src={imgSrc}
+                                          style={{ maxHeight: "136px" }}
+                                          effect="blur"
+                                          wrapperProps={{
+                                            // If you need to, you can tweak the effect transition using the wrapper style.
+                                            style: { transitionDelay: "1s" },
+                                          }}
+                                          alt={menu.menuItemName}
+                                        />
+                                      ) : null}
                                       {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt={menu.menuItemName} className="img-fluid" /> */}
                                       <a
                                         className="fa plusbutton fa-plus"

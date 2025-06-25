@@ -1,5 +1,5 @@
 import React from "react";
-import { ORDER_TYPE, getAsapLaterOnState } from "../../common/utility";
+import { ORDER_TYPE, ORDER_TYPE_ENUM, getAsapLaterOnState } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { DefaultLocation } from "@/types/location-types/location.type";
@@ -35,12 +35,12 @@ export const AsapLateronButtonComponent: React.FC<AsapLateronButtonProps> = ({
   const restaurantWindowTime = main.restaurantWindowTime;
   let isDisableAsapLaterOn = false;
   isDisableAsapLaterOn =
-    selecteddelivery.pickupordelivery === ORDER_TYPE.PICKUP.text &&
+    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
     !isPickupWindowAvailable
       ? true
       : isDisableAsapLaterOn;
   isDisableAsapLaterOn =
-    selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text &&
+    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
     !isDeliveryWindowAvailable
       ? true
       : isDisableAsapLaterOn;

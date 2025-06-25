@@ -5,7 +5,12 @@ import PickupDeliveryButton from "./pickup-delivery-btn.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { useDispatch } from "react-redux";
 import { useParams, useRouter } from "next/navigation";
-import { closeModal, GetThemeDetails, ORDER_TYPE } from "../../common/utility";
+import {
+  closeModal,
+  GetThemeDetails,
+  ORDER_TYPE,
+  ORDER_TYPE_ENUM,
+} from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import AddressList from "../common/adresslist.component";
 import { LocationServices } from "../../../../redux/location/location.services";
@@ -42,7 +47,6 @@ import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { AppDispatch } from "../../../../redux/store";
 import { ResponseModel } from "@/components/common/commonclass";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
 
 interface OrderTypeSelectProps {
   isOpenModal: boolean;
@@ -97,14 +101,12 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   };
 
   const handleChangeLocation = (id: number) => {
-    debugger;
     setSelectedLocationId(id);
   };
 
   const handleClickConfirmChangeLocation = async (
     lid: number
   ): Promise<void> => {
-    debugger;
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
     LocationServices.changeRestaurantLocation(
@@ -190,7 +192,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
 
   const handleClickConfirm = () => {
     if (
-      ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
+      ORDER_TYPE_ENUM.PICKUP === selecteddelivery.pickupordelivery &&
       selectedLocationId > 0 &&
       selectedLocationId !== restaurantinfo?.defaultlocationId
     ) {
@@ -233,7 +235,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                     handleChangeOrderType={handleChangeOrderType}
                   />
                 </div>
-                {ORDER_TYPE.PICKUP.text ===
+                {ORDER_TYPE_ENUM.PICKUP ===
                   selecteddelivery.pickupordelivery && (
                   <div id="takeout" className="row">
                     <div className="col-lg-12 text-center col-md-12 col-12">
@@ -241,7 +243,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                     </div>
                     <div className="col-lg-12 mb-4 col-md-12 col-12">
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        {ORDER_TYPE.DELIVERY.text ===
+                        {ORDER_TYPE_ENUM.DELIVERY ===
                           selecteddelivery.pickupordelivery && (
                           <li className="nav-item w-100">
                             <button
@@ -258,12 +260,12 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                             </button>
                           </li>
                         )}
-                        {ORDER_TYPE.PICKUP.text ===
+                        {ORDER_TYPE_ENUM.PICKUP ===
                           selecteddelivery.pickupordelivery && (
                           <li className="nav-item w-100">
                             <button
                               className={`nav-link ${
-                                ORDER_TYPE.PICKUP.text ===
+                                ORDER_TYPE_ENUM.PICKUP ===
                                 selecteddelivery.pickupordelivery
                                   ? "active"
                                   : ""
@@ -289,7 +291,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                           aria-labelledby="home-tab"
                           tabIndex={0}
                         >
-                          {ORDER_TYPE.DELIVERY.text ===
+                          {ORDER_TYPE_ENUM.DELIVERY ===
                             selecteddelivery.pickupordelivery && (
                             <div className="row">
                               <div className="col-lg-12 col-md-12 col-12">
@@ -328,7 +330,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                               </div>
                             </div>
                           )}
-                          {ORDER_TYPE.PICKUP.text ===
+                          {ORDER_TYPE_ENUM.PICKUP ===
                             selecteddelivery.pickupordelivery && (
                             <div className="row">
                               <div className="col-lg-12 col-md-12 col-12">
@@ -344,7 +346,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                     </div>
                   </div>
                 )}
-                {ORDER_TYPE.DELIVERY.text ===
+                {ORDER_TYPE_ENUM.DELIVERY ===
                   selecteddelivery.pickupordelivery && (
                   <div id="delivery" className="row ">
                     <div className="col-lg-12 text-center col-md-12 col-12">

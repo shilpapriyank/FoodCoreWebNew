@@ -11,7 +11,7 @@ import { setMainCategoryList } from "../main/main.slice";
 import { MainCategory } from "@/types/mainservice-types/mainservice.type";
 
 export interface CategoryState {
-  selectedcategorydetail: any[];
+  selectedcategorydetail: any;
   categoryitemlist: CategoryItemType[];
   categorylist: CategoryItem[];
 }

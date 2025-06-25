@@ -24,7 +24,7 @@ const ScrollToTop = ({ toClass = "container-fluid" }) => {
       <ScrollLink
         className="topArrow"
         to={toClass}
-        spy={true}
+        //spy={true}
         smooth={true}
         offset={0}
         duration={100}

@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
-import { GetThemeDetails, ORDER_TYPE } from "../../common/utility";
+import { GetThemeDetails, ORDER_TYPE, ORDER_TYPE_ENUM } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
@@ -37,7 +37,6 @@ import { CategoryItem } from "@/types/category-types/category.services.type";
 import { AppDispatch } from "../../../../redux/store";
 import { useDispatch } from "react-redux";
 import useLoadCatData from "@/components/customhooks/useloadcatdata-hook";
-import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({

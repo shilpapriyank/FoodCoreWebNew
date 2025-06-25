@@ -3,6 +3,7 @@
 import { useCallback, useState, ChangeEvent } from "react";
 import {
   GetThemeDetails,
+  ORDER_TYPE_ENUM,
   ORDERTYPE,
   ThemeObj,
 } from "@/components/common/utility";
@@ -16,7 +17,6 @@ import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
 import { useReduxData } from "./useredux-data-hooks";
 import { selectedCategory } from "../../../redux/category/category.slice";
 import { ThemeType } from "@/types/common-types/common.types";
-import { ORDER_TYPE_ENUM } from "../default/common/dominos/helpers/utility";
 
 interface Category {
   catId: number;
