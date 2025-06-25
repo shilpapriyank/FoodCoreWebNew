@@ -68,7 +68,7 @@ export default function LocationPage() {
             : ORDER_TYPE_ENUM.PICKUP
         )
       );
-      console.log("pickup or delivery from location page", pickupordelivery);
+     // console.log("pickup or delivery from location page", pickupordelivery);
     }
   }, []);
 

@@ -5,10 +5,6 @@ import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
-  // const userinfo = useSelector(
-  //   (state: RootState) => state.userdetail?.loggedinuser,
-  //   shallowEqual
-  // );
   const userinfo = useSelector(
     (state: RootState) => state.userdetail?.loggedinuser,
     shallowEqual
@@ -19,7 +15,6 @@ export const useReduxData = () => {
     shallowEqual
   );
 
-  //console.log("Logged in User Info:", userinfo);
   const restaurantinfo = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
