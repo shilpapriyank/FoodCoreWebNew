@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import { combineReducers } from "redux";
 import restaurantsReducer from "./restaurants/restaurants.slice";
+import selecteddeliveryReducer from "./selected-delivery-data/selecteddelivery.slice";
 import menuItemReducer from "./menu-item/menu-item.slice";
 import categoryReducer from "./category/category.slice";
 import loginReducer from "./login/login.slice";
@@ -26,7 +27,7 @@ import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
 import deliveryaddressReducer from "./selected-delivery-data/selecteddelivery.slice";
 import studentReducer from "../redux/student/student.slice";
 import registerReducer from "./register/register.slice";
-import selecteddeliveryReducer from "./selected-delivery-data/selecteddelivery.slice";
+//import selecteddeliveryReducer from "./selected-delivery-data/selecteddelivery.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({

@@ -68,7 +68,7 @@ export default function LocationPage() {
             ? ORDER_TYPE_ENUM.DELIVERY
             : ORDER_TYPE_ENUM.PICKUP
         )
-      );
+      ); 
     }
   }, []);
 

@@ -5,10 +5,6 @@ import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 
 export const useReduxData = () => {
-  // const userinfo = useSelector(
-  //   (state: RootState) => state.userdetail?.loggedinuser,
-  //   shallowEqual
-  // );
   const userinfo = useSelector(
     (state: RootState) => state.userdetail?.loggedinuser,
     shallowEqual

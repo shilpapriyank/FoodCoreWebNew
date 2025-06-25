@@ -15,7 +15,7 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
 }) => {
   const { selecteddelivery, restaurantinfo, deliveryaddress } = useReduxData();
   const defaultLocation = restaurantinfo?.defaultLocation;
-  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+  const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
     orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";

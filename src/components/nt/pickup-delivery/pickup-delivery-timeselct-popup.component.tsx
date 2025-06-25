@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { clearRedux } from "../../../../redux/clearredux/clearredux.slice";
 import {
   emptyordertime,
@@ -36,7 +35,6 @@ import {
   GetThemeDetails,
   ORDERTYPE,
   ORDER_TYPE,
-  ORDER_TYPE_ENUM,
   checkWindowTimeExpires,
   getAsapLaterOnState,
 } from "../../common/utility";
@@ -48,7 +46,7 @@ import { ToasterTypes } from "../../default/helpers/toaster/toaster-types";
 import { RestaurantsServices } from "../../../../redux/restaurants/restaurants.services";
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { useEffect, useState } from "react";
-import { AppDispatch } from "../../../../redux/store";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
@@ -90,14 +88,11 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     main,
     deliveryaddress,
   } = useReduxData();
-  const dispatch = useDispatch<AppDispatch>();
-
+  const dispatch = useAppDispatch();
   let load = false;
   const router = useRouter();
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
-
   const searchParams = useSearchParams();
-
   const dynamic = searchParams.get("dynamic") ?? "";
   const location = searchParams.get("location") ?? "";
   const id = searchParams.get("id") ?? "";
@@ -109,6 +104,10 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const restaurantslocationlistwithtime =
     restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime.addressList;
+  // console.log(
+  //   "address list from pickup and delivery time select popup component.tsx",
+  //   addressList
+  // );
   const pickupordelivery = selecteddelivery?.pickupordelivery
     ? Object.keys(selecteddelivery?.pickupordelivery).length > 0
       ? selecteddelivery?.pickupordelivery
@@ -150,20 +149,16 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const [isConfirmDisable, setisConfirmDisable] = useState<boolean>(false);
   const [successMessage, setsuccessMessage] = useState<string>("");
   const [selectedDate, setselectedDate] = useState<string>(
-    order?.futureOrderDay ?? ""
-  ); //futureDay
+    order?.futureOrderDay.futureDay ?? ""
+  );
   const [Hour, setHour] = useState<string>("");
   const [Minute, setMinute] = useState<string>("");
   const [Meridiem, setMeridiem] = useState<any>();
   const [isTimeLoad, setisTimeLoad] = useState<boolean>(false);
   const customerId = userinfo?.customerId ?? 0;
   const [defaultLoactionId, setdefaultLoactionId] = useState<number | null>();
-  // var ordertype =
-  //   selecteddelivery.pickupordelivery === ORDERTYPE.Delivery ? 2 : 1;
   var ordertype =
-    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-      ? ORDER_TYPE_ENUM.DELIVERY
-      : ORDER_TYPE_ENUM.PICKUP;
+    selecteddelivery.pickupordelivery === ORDERTYPE.Delivery ? 2 : 1;
   let selectedAddress =
     userinfo === null
       ? deliveryaddress?.tempDeliveryAddress
@@ -174,11 +169,12 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   let meridiem;
   load = true;
   const restaurantWindowTime = main.restaurantWindowTime;
-  let asapLaterOnState = getAsapLaterOnState(
-    restaurantinfo?.defaultLocation as any,
-    selecteddelivery?.pickupordelivery,
-    restaurantWindowTime as any
-  );
+  // let asapLaterOnState = getAsapLaterOnState(
+  //   restaurantinfo?.defaultLocation as any,
+  //   selecteddelivery?.pickupordelivery,
+  //   restaurantWindowTime as any
+  // );
+
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const { deliveryRequestId } = order;
   const defaultRequestId = "";
@@ -283,7 +279,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   };
   const handleAsapClick = () => {
     if (
-      ordertype === ORDER_TYPE_ENUM.DELIVERY &&
+      ordertype === ORDER_TYPE.DELIVERY.value &&
       deliveryService === DELIVERYSERVICES.UBEREATS &&
       selectedAddress === null
     ) {
@@ -304,7 +300,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
       locationId: Number(defaultLocation?.locationId),
-      ordertype: ordertype,
+      ordertype: ordertype.toString(),
       obj: selectedAddress,
       requestId: id,
     }).then((gettimeresponse) => {
@@ -318,7 +314,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
               locationId: Number(defaultLocation?.locationId),
               recievingTime: time[0],
               recieving: time[1],
-              flg: ordertype as any,
+              flg: Number(ordertype),
               obj: selectedAddress,
               requestId: requestID || "",
             }).then((response) => {
@@ -353,7 +349,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   };
   const handleLaterOnClick = () => {
     if (
-      (ordertype as any) === ORDER_TYPE_ENUM.DELIVERY &&
+      ordertype === ORDER_TYPE.DELIVERY.value &&
       deliveryService === DELIVERYSERVICES.UBEREATS &&
       selectedAddress === null
     ) {
@@ -443,8 +439,8 @@ const PickupDeliveryTimeSelectPopup: React.FC<
             dispatch(
               setpickupordelivery(
                 res?.defaultordertype
-                  ? ORDER_TYPE_ENUM.DELIVERY
-                  : ORDER_TYPE_ENUM.PICKUP
+                  ? ORDER_TYPE.DELIVERY.text
+                  : ORDER_TYPE.PICKUP.text
               )
             );
           }
@@ -480,7 +476,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         locationId: Number(defaultLocation?.locationId),
         recievingTime,
         recieving: meridiem,
-        flg: ordertype as any,
+        flg: ordertype,
         obj: selectedAddress,
         requestId: defaultRequestId,
       });
@@ -502,14 +498,11 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         setsuccessMessage(message);
         dispatch(setordertime(timedisplay));
 
-        if (
-          ordertype === ORDER_TYPE_ENUM.DELIVERY ||
-          ordertype === ORDER_TYPE_ENUM.PICKUP
-        ) {
+        if (ordertype === 1 || ordertype === 2) {
           if (isRedirectMenu) {
             handleClick(locationId, locationUrl, true);
             handleToggleTimingModal(false);
-          } else if (ordertype === ORDER_TYPE_ENUM.PICKUP) {
+          } else if (ordertype === 2) {
             setTimeout(() => {
               handleToggleTimingModal(false);
               redirectOnTimeSelected();
@@ -576,7 +569,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   <p>
                     {DELIVERYPAGEMESSAGE.PREP_TIME}&nbsp;
                     <b>
-                      {pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+                      {pickupordelivery === ORDER_TYPE.DELIVERY.text
                         ? defaultLocation?.ordersubmittime ?? 0
                         : defaultLocation?.takeawayextratime ?? 0}{" "}
                       minute
@@ -596,10 +589,10 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   isPickupWindowAvailable={isPickupWindowAvailable}
                 />
                 {((selecteddelivery.pickupordelivery ===
-                  ORDER_TYPE_ENUM.DELIVERY &&
+                  ORDER_TYPE.DELIVERY.text &&
                   isDeliveryWindowAvailable) ||
                   (selecteddelivery.pickupordelivery ===
-                    ORDER_TYPE_ENUM.PICKUP &&
+                    ORDER_TYPE.PICKUP.text &&
                     isPickupWindowAvailable) ||
                   selecteddelivery.pickupordelivery === "") && (
                   <>
@@ -644,53 +637,53 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                         </form>
                       </>
                     )}
-                    {isLaterOn && asapLaterOnState.isLateron && (
-                      <form className="later-date-form ">
-                        <div className="row">
-                          <div
-                            className="col-lg-12 col-sm-12 col-12 text-center"
-                            id="datepicker"
-                          >
-                            <h4>{DELIVERYPAGEMESSAGE.SELECT_TIME}</h4>
-                            <div
-                              className="d-block mx-auto"
-                              id="datetimepicker4"
-                            />
-                          </div>
-                          {timeOrErrorMessage !== "" && (
-                            <h6 className="text-center error">
-                              {timeOrErrorMessage}
-                            </h6>
-                          )}
-                          {successMessage !== "" && (
-                            <h6
-                              style={{ color: "green" }}
-                              className="text-center"
-                            >
-                              {successMessage}
-                            </h6>
-                          )}
-                          {isConfirmDisable ||
-                          defaultLocation?.isOrderingDisable ? (
-                            <div className="col-lg-12 col-md-12 col-12 text-center">
-                              <a className=" greyColor opacity-50 pe-none non-cursor btn-default mt-3 px-5">
-                                {DELIVERYPAGEMESSAGE.CONFIRM_SELECTION}{" "}
-                              </a>
-                            </div>
-                          ) : (
-                            <div className="col-lg-12 col-md-12 col-12 text-center">
-                              <a
-                                className="btn-default px-5"
-                                onClick={handleLaterOnConfirmSelectionClick}
+                    {/* {isLaterOn && asapLaterOnState.isLateron && (
+                          <form className="later-date-form ">
+                            <div className="row">
+                              <div
+                                className="col-lg-12 col-sm-12 col-12 text-center"
+                                id="datepicker"
                               >
-                                {" "}
-                                {DELIVERYPAGEMESSAGE.CONFIRM_SELECTION}{" "}
-                              </a>
+                                <h4>{DELIVERYPAGEMESSAGE.SELECT_TIME}</h4>
+                                <div
+                                  className="d-block mx-auto"
+                                  id="datetimepicker4"
+                                />
+                              </div>
+                              {timeOrErrorMessage !== "" && (
+                                <h6 className="text-center error">
+                                  {timeOrErrorMessage}
+                                </h6>
+                              )}
+                              {successMessage !== "" && (
+                                <h6
+                                  style={{ color: "green" }}
+                                  className="text-center"
+                                >
+                                  {successMessage}
+                                </h6>
+                              )}
+                              {isConfirmDisable ||
+                                defaultLocation?.isOrderingDisable ? (
+                                <div className="col-lg-12 col-md-12 col-12 text-center">
+                                  <a className=" greyColor opacity-50 pe-none non-cursor btn-default mt-3 px-5">
+                                    {DELIVERYPAGEMESSAGE.CONFIRM_SELECTION}{" "}
+                                  </a>
+                                </div>
+                              ) : (
+                                <div className="col-lg-12 col-md-12 col-12 text-center">
+                                  <a
+                                    className="btn-default px-5"
+                                    onClick={handleLaterOnConfirmSelectionClick}
+                                  >
+                                    {" "}
+                                    {DELIVERYPAGEMESSAGE.CONFIRM_SELECTION}{" "}
+                                  </a>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                      </form>
-                    )}
+                          </form>
+                        )} */}
                   </>
                 )}
                 <PickupdeliveryWindowTime

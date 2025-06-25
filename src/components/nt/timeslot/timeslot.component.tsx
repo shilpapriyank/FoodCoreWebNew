@@ -1,63 +1,41 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ButtonComponent from "../../../components/common/button.component";
 import TimeSlotSkeletonComponent from "../skeleton/timeslot-skeleton.component";
+import ButtonComponent from "../../../components/common/button.component";
 import { TimeSlotPillComponent } from "./timeslot-pill.component";
 import "swiper/swiper-bundle.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { v4 as uuidv4 } from "uuid";
-import {
-  GetThemeDetails,
-  ORDERTYPE,
-  ORDER_TYPE,
-  ORDER_TYPE_ENUM,
-  getAsapLaterOnState,
-  orderDisable,
-} from "../../common/utility";
-import {
-  checkOrderTime,
-  emptyorder,
-  emptyordertime,
-  isasap,
-  setFutureOrderDay,
-  setordertime,
-} from "../../../../redux/order/order.slice";
-import FutureDayComponent from "./future-day.component";
+import { OrderServices } from "../../../../redux/order/order.services";
+import { GetThemeDetails, ORDERTYPE, ORDER_TYPE, getAsapLaterOnState, orderDisable } from "../../common/utility";
+import { checkOrderTime, emptyorder, emptyordertime, isasap, setFutureOrderDay, setordertime } from "../../../../redux/order/order.slice";
 import { useDispatch } from "react-redux";
+import { OrderTypes } from "../../../../redux/order/order.type";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
+import { LocationServices } from "../../../../redux/location/location.services";
+import { restaurantsdetail } from "../../../../redux/restaurants/restaurants.slice";
+import { getLocationIdFromStorage, setLocationIdInStorage } from "@/components/common/localstore";
 import {
   AsapLaterOnState,
+  FutureOrderDay,
   OrderDisableData,
   TimeSlot,
   TimeSlotPopupComponentProps,
 } from "@/types/timeslot-types/timeslot.types";
-import { OrderTypes } from "../../../../redux/order/order.type";
 import { AppDispatch, RootState } from "../../../../redux/store";
-import { LocationServices } from "../../../../redux/location/location.services";
-import { PAGES } from "../common/pages";
-import { OrderServices } from "../../../../redux/order/order.services";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
-import { restaurantsdetail } from "../../../../redux/restaurants/restaurants.slice";
-import {
-  getLocationIdFromStorage,
-  setLocationIdInStorage,
-} from "@/components/common/localstore";
 import { clearRedux } from "../../../../redux/clearredux/clearredux.slice";
-import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { createSessionId } from "../../../../redux/session/session.slice";
-import {
-  getSelectedRestaurantTime,
-  refreshCategoryList,
-} from "../../../../redux/main/main.slice";
-import {
-  deleteCartItemFromSessionId,
-  emptycart,
-} from "../../../../redux/cart/cart.slice";
+import { getSelectedRestaurantTime, refreshCategoryList } from "../../../../redux/main/main.slice";
+import { deleteCartItemFromSessionId, emptycart } from "../../../../redux/cart/cart.slice";
 import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
-import { ThunkDispatch } from "redux-thunk";
-import { Action } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+import FutureDayComponent from "./future-day.component";
+import { PAGES } from "../common/pages";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { ORDER_TYPE_ENUM } from "@/components/default/Common/dominos/helpers/utility";
 
 const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   isOpenModal,
@@ -75,6 +53,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const [loadSwipe, setloadSwipe] = useState<boolean>(false);
   const {
     restaurantinfo,
+    //futureDate,
     selecteddelivery,
     order,
     restaurant,
@@ -82,10 +61,8 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     userinfo,
     deliveryaddress,
     sessionid,
-  } = useReduxData(); //futureDate
-  const [selectedDate, setselectedDate] = useState<string>(
-    (order?.futureOrderDay as any)?.futureDay ?? ""
-  );
+  } = useReduxData();
+  const [selectedDate, setselectedDate] = useState<string>(order?.futureOrderDay?.futureDay ?? "");
   const pickupordelivery = selecteddelivery?.pickupordelivery;
   const ordertype =
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
@@ -94,17 +71,11 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const [timeSlots, settimeSlots] = useState<TimeSlot[]>([]);
   const [loadTimeslot, setLoadTimeslot] = useState<boolean>(false);
   const [selectedTime, setselectedTime] = useState<string>(order.checktime);
-  const restaurantslocationlistwithtime =
-    restaurant.restaurantslocationlistwithtime;
+  const restaurantslocationlistwithtime = restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime?.addressList ?? [];
-  const selectedAddress =
-    userinfo === null
-      ? deliveryaddress?.tempDeliveryAddress
-      : selecteddelivery?.selecteddeliveryaddress;
+  const selectedAddress = userinfo === null ? deliveryaddress?.tempDeliveryAddress : selecteddelivery?.selecteddeliveryaddress;
   const restaurantWindowTime = main.restaurantWindowTime;
-  const defaultLocation = addressList.find(
-    (location: any) => location.locationId === locationId
-  );
+  const defaultLocation = addressList?.find((location: any) => location.locationId === locationId);
   const [timeOrErrorMessage, setTimeOrErrorMessage] = useState<string>("");
   const [isConfirmDisable, setisConfirmDisable] = useState<boolean>(false);
   const [orderTime, setOrderTime] = useState<string>("");
@@ -112,29 +83,28 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const [asapTime, setAsapTime] = useState<string>("");
   const [isAsap, setisAsap] = useState<boolean>(order.isasap);
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const location = searchParams.get("location") || "";
   const dynamic = searchParams.get("dynamic") || "";
   const id = searchParams.get("id") || "";
   const category = searchParams.get("category") || "";
   const items = searchParams.get("items") || "";
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const locationFullLink = `/${selectedTheme.url}/${dynamic}/${locationUrl}/`;
-  //const dispatch = useDispatch<AppDispatch>();
-  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
+  const dispatch = useAppDispatch();
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
     defaultLocation as AddressListItem,
-    pickupordelivery,
-    restaurantWindowTime as any
+    pickupordelivery as ORDER_TYPE_ENUM,
+    restaurantWindowTime as RestaurantWindowTime | any,
   );
-  const orderDisableData: OrderDisableData = orderDisable(
-    restaurantinfo,
-    selecteddelivery,
-    restaurantWindowTime as any
-  );
-  const selectedDay: string = (order?.futureOrderDay as any)?.futureDay || "";
+  // const orderDisableData: OrderDisableData = orderDisable(
+  //   restaurantinfo,
+  //   selecteddelivery,
+  //   restaurantWindowTime
+  // );
+  const selectedDay: string = (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
   const [dayCloseError, setDayCloseError] = useState<string>("");
 
   useEffect(() => {
@@ -174,16 +144,15 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
           dispatch(
             refreshCategoryList({
               newselectedRestaurant: restaurantinfo,
-              //locationId: lid,
-              customerId: 0,
+              customerId: lid,
             }) as any
           );
-          dispatch(
-            getSelectedRestaurantTime({
-              restaurantId: restaurantinfo?.restaurantId as number,
-              locationId: lid as number,
-            })
-          );
+          // dispatch(
+          //   getSelectedRestaurantTime({
+          //     restaurantId: restaurantinfo.restaurantId,
+          //     locationId: lid,
+          //   })
+          // );
           if (userinfo && userinfo?.customerId) {
             deleteCartItemFromSessionId(
               sessionid,
@@ -349,25 +318,22 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   return (
     <>
       <div
-        className={`modal fade modal-your-order address-modal ${
-          isOpenModal ? "show d-block" : ""
-        }`}
+        className={`modal fade modal-your-order address-modal ${isOpenModal ? "show d-block" : ""
+          }`}
         style={{ display: "block" }}
         id="order-time-modal"
         aria-labelledby="order-time-modal-Label"
         aria-hidden="true"
       >
         <div
-          className={`modal-dialog modal-dialog-centered ${
-            true ? "modal-dialog-scrollable" : ""
-          }`}
+          className={`modal-dialog modal-dialog-centered ${true ? "modal-dialog-scrollable" : ""
+            }`}
         >
           <div className="modal-content pb-0">
-            <h5 className="modal-title" id="login-modal-Label">{`Schedule ${
-              ordertype === ORDER_TYPE_ENUM.DELIVERY
-                ? ORDER_TYPE_ENUM.DELIVERY
-                : ORDER_TYPE_ENUM.PICKUP
-            }`}</h5>
+            <h5 className="modal-title" id="login-modal-Label">{`Schedule ${ordertype === ORDER_TYPE.DELIVERY.value
+              ? ORDER_TYPE.DELIVERY.text
+              : ORDER_TYPE.PICKUP.text
+              }`}</h5>
             <a
               className="btn-close close-time "
               id="close-modal "
@@ -393,9 +359,8 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               </div>
             )}
             <div
-              className={`modal-body ts-body ${
-                dayCloseError !== "" ? "p-0 pb-2" : ""
-              }`}
+              className={`modal-body ts-body ${dayCloseError !== "" ? "p-0 pb-2" : ""
+                }`}
             >
               <div className="time-slot">
                 <div className="row ">
@@ -450,7 +415,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
             <div className="row modal-footer position-sticky sticky-bottom border-top-0 footer-top-shadow">
               {order.isasap && asapTime !== "" && dayCloseError === "" && (
                 <h6 className="text-center fs-5">
-                  {}
+                  { }
                   {selectedDay},&nbsp;
                   {(order?.futureOrderDay as any)?.futureDate}, {asapTime}
                 </h6>
@@ -460,7 +425,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 timeOrErrorMessage === "" &&
                 dayCloseError === "" && (
                   <h6 className="text-center fs-5">
-                    {}
+                    { }
                     {selectedDay},&nbsp;
                     {(order?.futureOrderDay as any)?.futureDate},{" "}
                     {selectedTime || order?.checktime}
@@ -471,15 +436,15 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                   {timeOrErrorMessage}
                 </h6>
               )}
-              {orderDisableData.isorderdisable &&
+              {/* {orderDisableData.isorderdisable &&
                 (selectedDay === "Today" || selectedDay === "") && (
                   <h6 className="text-center red-text fs-6">
                     {orderDisableData.errormessage}
                   </h6>
-                )}
+                )} */}
               <div className="d-grid gap-2 col-md-6 col-12 mx-auto mt-2">
                 {(selectedTime === "" && order?.checktime === "") ||
-                dayCloseError !== "" ? (
+                  dayCloseError !== "" ? (
                   <ButtonComponent
                     classname=" btn-default btn-orange opacity-50 no-drop"
                     textName="Schedule"

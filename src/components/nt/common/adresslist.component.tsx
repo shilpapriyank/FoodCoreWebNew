@@ -34,9 +34,11 @@ const AddressList: React.FC<AddressListProps> = ({
     (
       restaurant?.restaurantslocationlistwithtime as RestaurantLocationListWithTime
     )?.addressList ?? [];
+
   return (
     <>
-      {addressList
+      {[...addressList]
+        .slice()
         .sort((a, b) => a.locationName.localeCompare(b.locationName))
         .map((address) => {
           const isChecked =

@@ -14,8 +14,8 @@ import {
   setSearchText,
 } from "../../../redux/menu-item/menu-item.slice";
 import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
-import { useReduxData } from "./useredux-data-hooks";
 import { selectedCategory } from "../../../redux/category/category.slice";
+import { useReduxData } from "./useredux-data-hooks";
 import { ThemeType } from "@/types/common-types/common.types";
 
 interface Category {

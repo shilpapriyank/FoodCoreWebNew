@@ -33,18 +33,11 @@ import {
   deleteCartItemFromSessionId,
   emptycart,
 } from "../../../../redux/cart/cart.slice";
-
-type PickupOrDeliveryType = "" | "Pickup" | "Delivery";
-
-import {
-  setintialrewardpoints,
-  setrewardpoint,
-} from "../../../../redux/rewardpoint/rewardpoint.slice";
+import { setrewardpoint } from "../../../../redux/rewardpoint/rewardpoint.slice";
 import AddressPill from "@/components/common/address-pill.component";
 import DeliveryaddresspillComponent from "../pickup-delivery/deliveryaddresspill.component";
 import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
-import { AppDispatch } from "../../../../redux/store";
 import { ResponseModel } from "@/components/common/commonclass";
 import { useAppDispatch } from "../../../../redux/hooks";
 
@@ -74,6 +67,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     userinfo,
     sessionid,
   } = useReduxData();
+  //console.log("🟢 pickupordelivery from Redux:", selecteddelivery.pickupordelivery);
+
   const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
   const customerId = userinfo ? userinfo.customerId : 0;
   const rewardvalue = rewardpoints?.rewardvalue;
@@ -82,7 +77,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}`;
   const defaultLocation = restaurantinfo?.defaultLocation;
-  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+  const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
     orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
@@ -90,6 +85,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const myDeliveryAddress = tempDeliveryAddress;
 
   const handleChangeOrderType = (orderType: ORDER_TYPE_ENUM) => {
+    // console.log("Order Type changed to:", orderType);
     dispatch(setpickupordelivery(orderType));
     if (ORDER_TYPE_ENUM.DELIVERY === orderType) {
       // setTimeout(() => {
@@ -112,7 +108,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     LocationServices.changeRestaurantLocation(
       restaurantinfo?.restaurantId as number,
       lid
-    ).then((res) => {
+    ).then((res: any) => {
       if (res && restaurantinfo) {
         Object.keys(restaurantinfo).map((session) => {
           if (session === "defaultLocation") {
@@ -235,11 +231,11 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                     handleChangeOrderType={handleChangeOrderType}
                   />
                 </div>
-                {ORDER_TYPE_ENUM.PICKUP ===
+                {/* {ORDER_TYPE_ENUM.PICKUP ===
                   selecteddelivery.pickupordelivery && (
                   <div id="takeout" className="row">
                     <div className="col-lg-12 text-center col-md-12 col-12">
-                      <h2>Choose a Location 123</h2>
+                      <h2>Choose a Location</h2>
                     </div>
                     <div className="col-lg-12 mb-4 col-md-12 col-12">
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -295,8 +291,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                             selecteddelivery.pickupordelivery && (
                             <div className="row">
                               <div className="col-lg-12 col-md-12 col-12">
-                                {/* ///// order confirmation html load model end*/}
-
                                 <label>Address</label>
                                 <div className="search">
                                   <input
@@ -371,7 +365,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
               <div className="modal-footer">
                 <a className="btn-default w-100" onClick={handleClickConfirm}>
