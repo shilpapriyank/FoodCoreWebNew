@@ -35,6 +35,7 @@ import {
   GetThemeDetails,
   ORDERTYPE,
   ORDER_TYPE,
+  ORDER_TYPE_ENUM,
   checkWindowTimeExpires,
   getAsapLaterOnState,
 } from "../../common/utility";
@@ -277,25 +278,25 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     } else {
     }
   };
-  const handleAsapClick = () => {
-    if (
-      ordertype === ORDER_TYPE.DELIVERY.value &&
-      deliveryService === DELIVERYSERVICES.UBEREATS &&
-      selectedAddress === null
-    ) {
-      handleNotify(
-        ERRORMESSAGE.SELECT_ADDRESS,
-        ToasterPositions.TopRight,
-        ToasterTypes.Warning
-      );
-      return;
-    }
-    setisConfirmDisable(true);
-    setActiveButtonClass("asap");
-    setisAsap(true);
-    setisLaterOn(false);
-    handleTimeClick();
-  };
+  // const handleAsapClick = () => {
+  //   if (
+  //     ordertype === ORDER_TYPE_ENUM.DELIVERY &&
+  //     deliveryService === DELIVERYSERVICES.UBEREATS &&
+  //     selectedAddress === null
+  //   ) {
+  //     handleNotify(
+  //       ERRORMESSAGE.SELECT_ADDRESS,
+  //       ToasterPositions.TopRight,
+  //       ToasterTypes.Warning
+  //     );
+  //     return;
+  //   }
+  //   setisConfirmDisable(true);
+  //   setActiveButtonClass("asap");
+  //   setisAsap(true);
+  //   setisLaterOn(false);
+  //   handleTimeClick();
+  // };
   const handleTimeClick = () => {
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
@@ -347,34 +348,34 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       }, 500);
     });
   };
-  const handleLaterOnClick = () => {
-    if (
-      ordertype === ORDER_TYPE.DELIVERY.value &&
-      deliveryService === DELIVERYSERVICES.UBEREATS &&
-      selectedAddress === null
-    ) {
-      handleNotify(
-        ERRORMESSAGE.SELECT_ADDRESS,
-        ToasterPositions.TopRight,
-        ToasterTypes.Warning
-      );
-      return;
-    }
-    handleCurrentTime();
-    setisLaterOn(true);
-    let hour =
-      Meridiem === "AM"
-        ? parseInt(Hour)
-        : parseInt(Hour) + 12 === 24
-        ? 12
-        : parseInt(Hour) + 12;
-    let Time = `${hour}:${parseInt(Minute)}`;
-    setTimeOrErrorMessage("");
-    setsuccessMessage("");
-    setActiveButtonClass("lateron");
-    setisAsap(false);
-    setisConfirmDisable(false);
-  };
+  // const handleLaterOnClick = () => {
+  //   if (
+  //     ordertype === ORDER_TYPE_ENUM.DELIVERY &&
+  //     deliveryService === DELIVERYSERVICES.UBEREATS &&
+  //     selectedAddress === null
+  //   ) {
+  //     handleNotify(
+  //       ERRORMESSAGE.SELECT_ADDRESS,
+  //       ToasterPositions.TopRight,
+  //       ToasterTypes.Warning
+  //     );
+  //     return;
+  //   }
+  //   handleCurrentTime();
+  //   setisLaterOn(true);
+  //   let hour =
+  //     Meridiem === "AM"
+  //       ? parseInt(Hour)
+  //       : parseInt(Hour) + 12 === 24
+  //       ? 12
+  //       : parseInt(Hour) + 12;
+  //   let Time = `${hour}:${parseInt(Minute)}`;
+  //   setTimeOrErrorMessage("");
+  //   setsuccessMessage("");
+  //   setActiveButtonClass("lateron");
+  //   setisAsap(false);
+  //   setisConfirmDisable(false);
+  // };
   function handleCurrentTime() {
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
@@ -439,8 +440,8 @@ const PickupDeliveryTimeSelectPopup: React.FC<
             dispatch(
               setpickupordelivery(
                 res?.defaultordertype
-                  ? ORDER_TYPE.DELIVERY.text
-                  : ORDER_TYPE.PICKUP.text
+                  ? ORDER_TYPE_ENUM.DELIVERY
+                  : ORDER_TYPE_ENUM.PICKUP
               )
             );
           }
@@ -569,14 +570,14 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   <p>
                     {DELIVERYPAGEMESSAGE.PREP_TIME}&nbsp;
                     <b>
-                      {pickupordelivery === ORDER_TYPE.DELIVERY.text
+                      {pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
                         ? defaultLocation?.ordersubmittime ?? 0
                         : defaultLocation?.takeawayextratime ?? 0}{" "}
                       minute
                     </b>
                   </p>{" "}
                 </a>
-                <AsapLateronButtonComponent
+                {/* <AsapLateronButtonComponent
                   handleAsapClick={handleAsapClick}
                   handleLaterOnClick={handleLaterOnClick}
                   isTakeOutPickupTime={isTakeOutPickupTime as boolean}
@@ -587,12 +588,12 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   activeButtonClass={activeButtonClass}
                   isDeliveryWindowAvailable={isDeliveryWindowAvailable}
                   isPickupWindowAvailable={isPickupWindowAvailable}
-                />
+                /> */}
                 {((selecteddelivery.pickupordelivery ===
-                  ORDER_TYPE.DELIVERY.text &&
+                  ORDER_TYPE_ENUM.DELIVERY &&
                   isDeliveryWindowAvailable) ||
                   (selecteddelivery.pickupordelivery ===
-                    ORDER_TYPE.PICKUP.text &&
+                    ORDER_TYPE_ENUM.PICKUP &&
                     isPickupWindowAvailable) ||
                   selecteddelivery.pickupordelivery === "") && (
                   <>
