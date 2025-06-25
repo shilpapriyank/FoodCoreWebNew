@@ -1,16 +1,16 @@
 export type ThemeType = {
-    name: string;
-    value: number;
-    url: string;
+  name: string;
+  value: number;
+  url: string;
 };
 
 export interface PromotionTypes {
-  Percentage:number,
-  Fixed :number
+  Percentage: number;
+  Fixed: number;
 }
 export interface AllRegex {
   phoneRegex1: RegExp;
-  phoneRegex2:RegExp;
+  phoneRegex2: RegExp;
   validwithFormatephoneRegex: RegExp;
   phoneRegex3: RegExp;
   validdigit: RegExp;
@@ -49,9 +49,9 @@ export type DefaultStyleType = {
   categoryBackgroundColor: string;
 };
 
-export interface ColorStyleType{
-FieldName:string,
-Color:string
+export interface ColorStyleType {
+  FieldName: string;
+  Color: string;
 }
 
 export type ThemeDefautStyle = {
@@ -64,16 +64,16 @@ export type ThemeDefautStyle = {
   iconColor: string;
   headerColor: string;
 };
-export type OrderTypes = {
-  PICKUP: {
-    text: string;
-    value: number;
-  };
-  DELIVERY: {
-    text: string;
-    value: number;
-  };
-};
+// export type OrderTypes = {
+//   PICKUP: {
+//     text: string;
+//     value: number;
+//   };
+//   DELIVERY: {
+//     text: string;
+//     value: number;
+//   };
+// };
 
 export type OrderTimeTypes = {
   ASAP: {
@@ -85,4 +85,3 @@ export type OrderTimeTypes = {
     value: number;
   };
 };
-

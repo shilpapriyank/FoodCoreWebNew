@@ -16,6 +16,16 @@ export interface CategoryItem {
   imgurl: string;
 }
 
+export interface SelectedCategoryDetail {
+  catId: number;
+  catName: string;
+  categoryslug: string;
+  imgurl: string;
+  isdeliveryavailable: boolean;
+  istakeoutavailable: boolean;
+  sortorder: number;
+}
+
 export interface MenuItemType {
   menuitemId: number;
   catId: number;

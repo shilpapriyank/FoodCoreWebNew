@@ -72,18 +72,18 @@ export const MonthList = (mname: number): string => {
   return monthNames[mname];
 };
 
-// // Convert seconds into minute format, e.g., 125 → { minute: 2, second: 5 }
-// export const convertSecondToMinute = (second: number): { minute: number; second: number } => {
-//     const totalSeconds: number = second;
-//     const minutes: number = Math.floor(totalSeconds / 60);
-//     const seconds: number = totalSeconds % 60;
+// Convert seconds into minute format, e.g., 125 → { minute: 2, second: 5 }
+export const convertSecondToMinute = (second: number): { minute: number; second: number } => {
+    const totalSeconds: number = second;
+    const minutes: number = Math.floor(totalSeconds / 60);
+    const seconds: number = totalSeconds % 60;
 
-//     function padTo2Digits(num: number): string {
-//         return num.toString().padStart(2, '0');
-//     }
+    function padTo2Digits(num: number): string {
+        return num.toString().padStart(2, '0');
+    }
 
-//     return {
-//         minute: parseInt(padTo2Digits(minutes)),
-//         second: parseInt(padTo2Digits(seconds)),
-//     };
-// };
+    return {
+        minute: parseInt(padTo2Digits(minutes)),
+        second: parseInt(padTo2Digits(seconds)),
+    };
+};

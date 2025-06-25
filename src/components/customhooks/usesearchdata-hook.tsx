@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { GetThemeDetails, ORDERTYPE, ThemeObj } from "../common/utility";
+import { GetThemeDetails, ORDER_TYPE_ENUM, ThemeObj } from "../common/utility";
 import { useAppDispatch } from "../../../redux/hooks";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -51,11 +51,11 @@ export const useSearchData = (searchtext: string) => {
           if (Object.keys(res).length > 0) {
             seterrorMessage("");
             let orderTypeCat = null;
-            if (pickupordelivery === ORDERTYPE.Pickup) {
+            if (pickupordelivery === ORDER_TYPE_ENUM.PICKUP) {
               orderTypeCat = res.categories.filter(
                 (item: any) => item.istakeoutavailable === true
               );
-            } else if (pickupordelivery === ORDERTYPE.Delivery) {
+            } else if (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY) {
               orderTypeCat = res.categories.filter(
                 (item: any) => item.isdeliveryavailable === true
               );

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import {
   GetThemeDetails,
   ORDER_TYPE,
+  ORDER_TYPE_ENUM,
   ORDERTYPE,
   TOOLTIP_MSG,
 } from "../../common/utility";
@@ -57,9 +58,9 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const locationSelected = restaurantinfo?.defaultLocation;
   const ordertype =
-    deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
-      ? ORDER_TYPE.DELIVERY.value
-      : ORDER_TYPE.PICKUP.value;
+    deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      ? ORDER_TYPE_ENUM.DELIVERY
+      : ORDER_TYPE_ENUM.PICKUP;
   var itemRow = cartdata?.cartDetails?.cartItemDetails?.filter(
     (items) => items.menuitemid === item.menuitemId
   );

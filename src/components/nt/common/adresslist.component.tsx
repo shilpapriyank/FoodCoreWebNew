@@ -34,7 +34,7 @@ const AddressList: React.FC<AddressListProps> = ({
     (
       restaurant?.restaurantslocationlistwithtime as RestaurantLocationListWithTime
     )?.addressList ?? [];
- // console.log("addressList from addressList component", addressList);
+
   return (
     <>
       {[...addressList]
@@ -45,7 +45,7 @@ const AddressList: React.FC<AddressListProps> = ({
             selectedLocationId > 0
               ? selectedLocationId === address.locationId
               : restaurantinfo?.defaultLocation?.locationId ===
-              address.locationId;
+                address.locationId;
 
           return (
             <label className="radio-box" key={address.locationId}>

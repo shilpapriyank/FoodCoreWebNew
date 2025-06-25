@@ -10,28 +10,27 @@ import { selectedCategory } from "../../../../redux/category/category.slice";
 import { PAGES } from "../common/pages";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../redux/store";
-
-interface CategoryItem {
-  catId: number;
-  catName: string;
-  categoryslug: string;
-}
+import {
+  CategoryItem,
+  CategoryItemType,
+} from "@/types/category-types/category.services.type";
 
 const CategoryModalComponent: React.FC = () => {
-  const { main, category, restaurantinfo, tableorder } = useReduxData();
-  const selectedCatId = category?.selectedcategorydetail?.catId;
+  const { main, category, restaurantinfo, tableorder, selectedcategorydetail } =
+    useReduxData();
+  const selectedCatId = category.selectedcategorydetail?.catId
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const closeBtn = useRef<HTMLButtonElement>(null);
   const params = useParams();
   const dynamic = params.dynamic;
   const tableno = params.tableno;
   const locationFullLink = `/${selectedTheme.url}/${
-    restaurantinfo.restaurantURL
+    restaurantinfo?.restaurantURL
   }/${restaurantinfo?.defaultLocation?.locationURL.trim()}`;
 
-  const handleClickCat = useCallback((cat: CategoryItem) => {
+  const handleClickCat = useCallback((cat: CategoryItemType) => {
     if (cat) {
       dispatch({
         type: CategoryTypes.CATEGORY_ITEM_LIST,
@@ -66,7 +65,7 @@ const CategoryModalComponent: React.FC = () => {
             <h3 className="title">Menu</h3>
             <div className="text">
               <ul className="menu-list-popup">
-                {main?.maincategoryList?.map((cat: CategoryItem) => (
+                {main?.maincategoryList?.map((cat: CategoryItemType) => (
                   <li
                     key={cat.catId}
                     className={

@@ -12,10 +12,15 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
 import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
-// import { ORDER_TYPE_ENUM } from "../default/common/dominos/helpers/utility";
 import { DefaultLocationType } from "@/types/location-types/location.type";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
-import { ORDER_TYPE_ENUM } from "../default/Common/dominos/helpers/utility";
+
+export enum ORDER_TYPE_ENUM {
+  PICKUP = "Pickup",
+  DELIVERY = "Delivery",
+}
+
+export type OrderType = `${ORDER_TYPE_ENUM}`;
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -58,7 +63,7 @@ interface ThemeType {
 }
 
 export const GetThemeDetails = (value: any): any => {
-  const ThemeTypeObj: ThemeType[] = [
+  const ThemeTypeObj = [
     { name: "default", value: 1, url: "dt" },
     { name: "dominos", value: 2, url: "dm" },
     { name: "tableorder", value: 201, url: "to" },
@@ -621,27 +626,21 @@ export const onLoadSetDefaultFlag = (
   }
 };
 
-// export const ORDER_TYPE: OrderTypes = {
+export const ORDER_TYPE = {
+  PICKUP: ORDER_TYPE_ENUM.PICKUP,
+  DELIVERY: ORDER_TYPE_ENUM.DELIVERY
+};
+
+// export const ORDER_TYPE = {
 //   PICKUP: {
-//     text: "Pickup",
+//     text: ORDER_TYPE_ENUM.PICKUP,
 //     value: 1,
 //   },
 //   DELIVERY: {
-//     text: "Delivery",
+//     text: ORDER_TYPE_ENUM.DELIVERY,
 //     value: 2,
 //   },
 // };
-
-export const ORDER_TYPE = {
-  PICKUP: {
-    text: ORDER_TYPE_ENUM.PICKUP,
-    value: 1,
-  },
-  DELIVERY: {
-    text: ORDER_TYPE_ENUM.DELIVERY,
-    value: 2,
-  },
-};
 
 export const ORDER_TIME_TYPE: OrderTimeTypes = {
   ASAP: {
@@ -767,7 +766,7 @@ export const handleSetDeliveryTypeError = (
 export const bindPlaceOrderObject = (
   rewardpoints: any,
   cart: any,
-  ordertype: any,
+  ordertype: string,
   sessionid: any,
   userinfo: any,
   deliveryaddressId: any,
@@ -792,7 +791,7 @@ export const bindPlaceOrderObject = (
         : "",
     deliveryNote:
       cart?.orderdeliveryinstruction ||
-        cart?.orderdeliveryinstruction !== undefined
+      cart?.orderdeliveryinstruction !== undefined
         ? cart.orderdeliveryinstruction
         : "",
     preDiscountSubTotal:
@@ -807,9 +806,9 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-        pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
         ? //pickupordelivery === ORDERTYPE.Delivery
-        parseFloat(cart.carttotal.deliveryAmount)
+          parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
@@ -887,7 +886,7 @@ export const getCheckTimeArr = (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
       restaurantinfo?.defaultLocation?.deliveryService ===
-      DELIVERYSERVICES.UBEREATS) &&
+        DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
@@ -1326,12 +1325,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1356,12 +1355,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1389,11 +1388,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-          ? 1
-          : parseInt(tc.halfpizzaprice) / 100)
+          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+            ? 1
+            : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1405,8 +1404,9 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1418,8 +1418,9 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1648,7 +1649,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-          data.subOptionToppingQuantity;
+            data.subOptionToppingQuantity;
       } else {
       }
     });

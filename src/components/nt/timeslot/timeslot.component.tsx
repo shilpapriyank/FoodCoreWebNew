@@ -65,9 +65,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const [selectedDate, setselectedDate] = useState<string>(order?.futureOrderDay?.futureDay ?? "");
   const pickupordelivery = selecteddelivery?.pickupordelivery;
   const ordertype =
-    pickupordelivery === ORDER_TYPE.DELIVERY.text
-      ? ORDER_TYPE.DELIVERY.value
-      : ORDER_TYPE.PICKUP.value;
+    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      ? ORDER_TYPE_ENUM.DELIVERY
+      : ORDER_TYPE_ENUM.PICKUP;
   const [timeSlots, settimeSlots] = useState<TimeSlot[]>([]);
   const [loadTimeslot, setLoadTimeslot] = useState<boolean>(false);
   const [selectedTime, setselectedTime] = useState<string>(order.checktime);
@@ -203,7 +203,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     isClose?: boolean
   ): void => {
     const isClosed =
-      ordertype === ORDER_TYPE.DELIVERY.value
+      ordertype === ORDER_TYPE_ENUM.DELIVERY
         ? day?.deliveryStatus === "Closed"
         : day?.takeoutStatus === "Closed";
 
@@ -260,7 +260,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               recievingTime: time[0],
               //recievingTime: time[0],
               recieving: time[1],
-              flg: ordertype,
+              flg: ordertype as any,
               obj: selectedAddress,
               requestId: requestID as any,
             }).then((response) => {

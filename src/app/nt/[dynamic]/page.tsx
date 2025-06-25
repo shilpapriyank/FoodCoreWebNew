@@ -33,7 +33,7 @@ const Page: React.FC = () => {
     let routepath = "";
     if (!dynamic || !restaurantinfo) return;
 
-    const selectedTheme: ThemeType | undefined = GetThemeDetails(
+    const selectedTheme = GetThemeDetails(
       restaurantinfo.themetype
     );
 

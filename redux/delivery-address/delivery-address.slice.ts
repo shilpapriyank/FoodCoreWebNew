@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { DeliveryAddressServices } from './delivery-address.services';
-import { DeliveryAddressTypes } from './delivery-address.type';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { DeliveryAddressServices } from "./delivery-address.services";
+import { DeliveryAddressTypes } from "./delivery-address.type";
 
 interface DeliveryAddressState {
   deliveryaddressdata: any[] | null;
@@ -10,7 +10,7 @@ interface DeliveryAddressState {
   addressId: Record<string, any>;
   tempDeliveryAddress: any | null;
   pickupordelivery: string | any;
-  selecteddeliveryaddress: any
+  selecteddeliveryaddress: any;
 }
 
 const initialState: DeliveryAddressState = {
@@ -21,7 +21,7 @@ const initialState: DeliveryAddressState = {
   addressId: {},
   tempDeliveryAddress: null,
   pickupordelivery: {},
-  selecteddeliveryaddress:null,
+  selecteddeliveryaddress: null,
 };
 
 // Async thunks
@@ -30,7 +30,7 @@ export const getAddress = createAsyncThunk(
   async ({
     customerId,
     restaurantId,
-    locationId
+    locationId,
   }: {
     customerId: number;
     restaurantId: number;
@@ -52,7 +52,7 @@ export const deleteAddress = createAsyncThunk(
   DeliveryAddressTypes.DELETE_ADDRESS,
   async ({
     deliveryaddressId,
-    restaurantId
+    restaurantId,
   }: {
     deliveryaddressId: number;
     restaurantId: number;
@@ -73,7 +73,7 @@ export const addAddress = createAsyncThunk(
   async ({
     obj,
     restaurantId,
-    locationId
+    locationId,
   }: {
     obj: any;
     restaurantId: number;
@@ -91,9 +91,8 @@ export const addAddress = createAsyncThunk(
   }
 );
 
-
 const deliveryAddressSlice = createSlice({
-  name: 'deliveryAddress',
+  name: "deliveryAddress",
   initialState,
   reducers: {
     updateAddressCheck(state, action: PayloadAction<boolean>) {
@@ -121,17 +120,23 @@ const deliveryAddressSlice = createSlice({
         addressId: {},
         tempDeliveryAddress: null,
         pickupordelivery: null,
-        selecteddeliveryaddress: null
+        selecteddeliveryaddress: null,
       };
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getAddress.fulfilled, (state, action: PayloadAction<any[]>) => {
-      state.deliveryaddressdata = action.payload;
-    });
-    builder.addCase(addAddress.fulfilled, (state, action: PayloadAction<any>) => {
-      state.addressId = action.payload;
-    });
+    builder.addCase(
+      getAddress.fulfilled,
+      (state, action: PayloadAction<any[]>) => {
+        state.deliveryaddressdata = action.payload;
+      }
+    );
+    builder.addCase(
+      addAddress.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.addressId = action.payload;
+      }
+    );
   },
 });
 
@@ -145,8 +150,6 @@ export const {
 } = deliveryAddressSlice.actions;
 
 export default deliveryAddressSlice.reducer;
-
-
 
 // import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 // import { DeliveryAddressServices } from './delivery-address.services';
@@ -224,7 +227,6 @@ export default deliveryAddressSlice.reducer;
 //   return [];
 // }
 // );
-
 
 // // --- Slice ---
 

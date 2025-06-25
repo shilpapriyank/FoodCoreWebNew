@@ -18,16 +18,16 @@ import menuItemReducer from "./menu-item/menu-item.slice";
 import categoryReducer from "./category/category.slice";
 import loginReducer from "./login/login.slice";
 import orderReducer from "./order/order.slice";
-import locationReducer from "./location/location.slice";
 import cartReducer from "./cart/cart.slice";
 import sessionReducer from "./session/session.slice";
 import metadataReducer from "./metadata/metadata.slice";
 import mainReducer from "./main/main.slice";
 import tableOrderReducer from "./tableorder/tableorder.slice";
 import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
-import deliveryaddressReducer from "./delivery-address/delivery-address.slice";
-import studentReducer from '../redux/student/student.slice';
+import deliveryaddressReducer from "./selected-delivery-data/selecteddelivery.slice";
+import studentReducer from "../redux/student/student.slice";
 import registerReducer from "./register/register.slice";
+//import selecteddeliveryReducer from "./selected-delivery-data/selecteddelivery.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -40,24 +40,36 @@ const rootReducer = combineReducers({
   userdetail: loginReducer,
   // location: locationReducer,
   // todaytimming: timmingReducer,
+  selecteddelivery: selecteddeliveryReducer,
   order: orderReducer,
   deliveryaddress: deliveryaddressReducer,
-  selecteddelivery: selecteddeliveryReducer,
   session: sessionReducer,
   studentname: studentReducer,
   rewardpoints: rewardpointReducer,
   metadata: metadataReducer,
   tableorder: tableOrderReducer,
-
 });
 
 // Persist configuration
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ['userdetail', 'selecteddelivery', 'cart', 'order', 'menuitem', 'main', 'restaurantWindowTime',
-    'deliveryaddress', 'session', 'studentname', 'rewardpoints', 'restaurant', 'tableorder'],
-}
+  whitelist: [
+    "userdetail",
+    "selecteddelivery",
+    "cart",
+    "order",
+    "menuitem",
+    "main",
+    "restaurantWindowTime",
+    "deliveryaddress",
+    "session",
+    "studentname",
+    "rewardpoints",
+    "restaurant",
+    "tableorder",
+  ],
+};
 
 // Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);

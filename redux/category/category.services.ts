@@ -48,7 +48,7 @@ export class CategoryServices {
     sessionId: string,
     locationId: number,
     restaurantId: number
-  ): Promise<CategoryItemType[] | null> {
+  ): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryRelativesItems";
     const location = ENDPOINTS.GET_CATEGORIES_RELATIVE_ITEMS;

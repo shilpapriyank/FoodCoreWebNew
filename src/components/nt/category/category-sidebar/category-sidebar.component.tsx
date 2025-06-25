@@ -23,7 +23,6 @@ const CategorySidebar: React.FC = () => {
     useState<boolean>(false);
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
-  //console.log("address list from categoery sideber component", addressList);
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
 
   const handleClick = () => {

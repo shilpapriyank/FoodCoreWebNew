@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { RegisterServices } from "../../../../redux/register/register.services";
 import { useDispatch } from 'react-redux';
-import { convertSecondToMinute } from "@/components/default/Common/dominos/helpers/utility";
 import { registerAddress } from "../../../../redux/delivery-address/delivery-address.slice";
 import { ToasterPositions } from '../../default/helpers/toaster/toaster-positions';
 import { ToasterTypes } from '../../default/helpers/toaster/toaster-types';
@@ -26,6 +25,7 @@ import OtpVerificationComponent from "./otpverification.component";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/bootstrap.css';
 import { OTPVerificationSettingParams } from "@/types/register-types/register.types";
+import { convertSecondToMinute } from "../common/utility";
 
 
 interface RegisterProps {
@@ -67,7 +67,7 @@ const Register: React.FC<RegisterProps> = ({
     const locationCountry = restaurantinfo?.defaultLocation?.countryName;
     // let locationCountryData = countryData[locationCountry.toLowerCase()]
     type CountryKey = keyof typeof countryData;
-    const locationKey = locationCountry.toLowerCase() as CountryKey;
+    const locationKey = locationCountry?.toLowerCase() as CountryKey;
     const locationCountryData = countryData[locationKey];
 
     const [dialCode, setDialCode] = useState<string>(locationCountryData.countryCode)
@@ -148,8 +148,8 @@ const Register: React.FC<RegisterProps> = ({
         if (isNotValidateOtp) return;
 
         if (
-            restaurantinfo.smsapigateway === 1 &&
-            restaurantinfo.enableotpauthentication === true
+            restaurantinfo?.smsapigateway === 1 &&
+            restaurantinfo?.enableotpauthentication === true
         ) {
             const payload: OTPVerificationSettingParams = {
                 restaurantId: restaurantinfo.restaurantId,
@@ -168,7 +168,7 @@ const Register: React.FC<RegisterProps> = ({
         if (isNotValidateOtp) {
             return;
         }
-        if (OTPDetail && OTPDetail !== undefined && OTPDetail !== null && restaurantinfo.enableotpauthentication === true
+        if (OTPDetail && OTPDetail !== undefined && OTPDetail !== null && restaurantinfo?.enableotpauthentication === true
             && (apiKey !== "" && apiKey !== undefined) && (authDomain !== "" && authDomain !== undefined)) {
             intializeFirebaseApp()
             // https://www.youtube.com/watch?v=lDzBtOo1S8Y
@@ -408,7 +408,7 @@ const Register: React.FC<RegisterProps> = ({
     // }
 
     const handleSendOTP = (): void => {
-        if (restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true) {
+        if (restaurantinfo?.smsapigateway === 1 && restaurantinfo?.enableotpauthentication === true) {
             handleSendOtpHook(dialCode.toString(), values.phone).then((result) => {
                 setisotpVerification(true);
                 setsecond(otpTime.second);
@@ -421,7 +421,7 @@ const Register: React.FC<RegisterProps> = ({
             });
         }
 
-        if (restaurantinfo.smsapigateway === 2 && restaurantinfo.enableotpauthentication === true) {
+        if (restaurantinfo?.smsapigateway === 2 && restaurantinfo?.enableotpauthentication === true) {
             const mobileNumber = `${dialCode} ${unFormatePhoneNumber(values.phone)}`;
 
             const payload = {
@@ -479,7 +479,7 @@ const Register: React.FC<RegisterProps> = ({
         }
 
         const checkPhoneRequestModel: CheckPhoneRequestModel = {
-            restaurantId: restaurantinfo.restaurantId,
+            restaurantId: restaurantinfo?.restaurantId as number,
             phoneNumber: `${dialCode}${unFormatePhoneNumber(values.phone)}`
         };
 
@@ -503,8 +503,8 @@ const Register: React.FC<RegisterProps> = ({
 
             if (data?.message === "") {
                 if (
-                    (restaurantinfo.smsapigateway === 1 || restaurantinfo.smsapigateway === 2) &&
-                    restaurantinfo.enableotpauthentication === true
+                    (restaurantinfo?.smsapigateway === 1 || restaurantinfo?.smsapigateway === 2) &&
+                    restaurantinfo?.enableotpauthentication === true
                 ) {
                     handleSendOTP();
                     return;
@@ -512,8 +512,8 @@ const Register: React.FC<RegisterProps> = ({
                     RegisterServices.registerUserWithAddress(
                         userModel,
                         addressmodel,
-                        restaurantinfo.defaultlocationId,
-                        restaurantinfo.restaurantId,
+                        restaurantinfo?.defaultlocationId,
+                        restaurantinfo?.restaurantId,
                         requesturl
                     ).then((response: any) => {
                         if (response) {
@@ -539,9 +539,9 @@ const Register: React.FC<RegisterProps> = ({
                                     LoginServices.getLoginUserDetails({
                                         username: unPhormatedPhone,
                                         password: values.password,
-                                        restaurantId: restaurantinfo.restaurantId,
+                                        restaurantId: restaurantinfo?.restaurantId as number,
                                         dialCode: dialCode,
-                                        locationid: locationId
+                                        locationid: locationId as number
                                     }).then((responsedata: any) => {
                                         if (responsedata?.customerDetails) {
                                             dispatch({
@@ -554,7 +554,7 @@ const Register: React.FC<RegisterProps> = ({
                                             if (addressmodel && Object.keys(addressmodel).length > 0) {
                                                 const customerId = responsedata.customerDetails.customerId;
                                                 if (customerId > 0) {
-                                                    DeliveryAddressServices.getDeliveryAddress(customerId, restaurantinfo.restaurantId, restaurantinfo.defaultLocation.locationId).then(
+                                                    DeliveryAddressServices.getDeliveryAddress(customerId, restaurantinfo?.restaurantId as number, restaurantinfo?.defaultLocation.locationId as number).then(
                                                         (response: any) => {
                                                             if (response) {
                                                                 if (response.AddressLists) {
@@ -762,7 +762,7 @@ const Register: React.FC<RegisterProps> = ({
                                             <div className="error-text text-danger fs-12 mt-2 mb-2">Passwords do not match.</div>
                                         )}
                                     </div>
-                                    {restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true && (
+                                    {restaurantinfo?.smsapigateway === 1 && restaurantinfo?.enableotpauthentication === true && (
                                         <div className="col-lg-12 col-sm-12 col-xs-12 d-flex justify-content-end mt-2">
                                             <div style={{ width: "32% !important", border: "none !important" }} id="recaptcha-container"></div>
                                         </div>
