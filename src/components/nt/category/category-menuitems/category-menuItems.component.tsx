@@ -1,24 +1,21 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import {
   fixedLengthString,
   getImagePath,
   ViewTypeEnum,
 } from "../../common/utility";
 import CategorySidebar from "../category-sidebar/category-sidebar.component";
-// import MenuItemDetail from "../../menuitem/menuitem.component";
 import { useState } from "react";
 import GridListButton from "../../../common/gridlistbutton.component";
 import useUtility from "../../../customhooks/utility-hook";
 import handleNotify from "../../../default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "../../../default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "../../../default/helpers/toaster/toaster-types";
-// import "react-lazy-load-image-component/src/effects/blur.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import {
   GetThemeDetails,
-  ORDER_TYPE,
   ORDER_TYPE_ENUM,
   scrollToElementWithOffset,
   TOOLTIP_MSG,
@@ -31,8 +28,8 @@ import {
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
+  setMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
-import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
 import {
   removeCategoryList,
@@ -49,25 +46,32 @@ import MenuItemAddToCart from "../../menuitem/menuitem-add-to-cart.component";
 import ShareitemComponent from "../../common/shareitem.component";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { CategoryItem } from "@/types/category-types/category.services.type";
 import MenuItemQuickOrder from "../../menuitem/menuitem-quick-order.component";
 import FavouriteSkeleton from "../../skeleton/favourite-skeleton";
-import ScrollToTop from "@/components/common/scroll-to-top";
-import Login from "../../login-register/login.component";
 import BottomBash from "../../common/bottom-bash.component";
 import CommonModal from "../../common/common-model.component";
 import DependentItemListComponent from "./dependentitems-list.component";
-import { SelectedMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 import { setCartItem } from "../../../../../redux/cart/cart.slice";
 import { useParams, useRouter } from "next/navigation";
+import {
+  CategoryItem,
+  CategoryItemType,
+} from "@/types/category-types/category.services.type";
+import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
+import ScrollToTop from "@/components/common/scroll-to-top";
+import { MenuItemDetailList } from "@/types/menuitem-types/menuitem.type";
 
 const CategoryMenuItems = ({
   categoryslug,
-  handleCatError,
   menuItemsWithCat,
   children,
   errorMessage,
-}: any) => {
+}: {
+  categoryslug: string;
+  menuItemsWithCat: CategoryItemType[];
+  children: ReactNode;
+  errorMessage: string;
+}) => {
   const {
     categoryItemsList,
     restaurantinfo,
@@ -86,7 +90,7 @@ const CategoryMenuItems = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isFavourite, setisFavourite] = useState<boolean>(false);
   const categoryItemList = category.categoryitemlist;
-  const selectCategory = category?.selectedcategorydetail?.[0];
+  const selectCategory = category?.selectedcategorydetail;
   const [openMenuItemModal, setopenMenuItemModal] = useState<boolean>(false);
   const itemsPerPage = 500; // Number of categories to load per page.
   const dispatch = useAppDispatch();
@@ -115,15 +119,21 @@ const CategoryMenuItems = ({
     index,
     menuitemId,
   } = params;
-  //const normalizedMenuItemId = typeof menuitemId === "string" ? menuitemId : menuitemId?.[0] ?? "";
-  const normalizedMenuItemId = menuitemId;
-  const [isBottomSlide, setisBottomSlide] = useState(false);
+  // const normalizedMenuItemId =
+  //   typeof menuitemId === "string" ? menuitemId : menuitemId?.[0] ?? "";
+  const parsedMenuItemId =
+    typeof menuitemId === "string"
+      ? parseInt(menuitemId)
+      : parseInt(menuitemId?.[0] ?? "0");
+  const [isBottomSlide, setisBottomSlide] = useState<boolean>(false);
   const ordertype =
     selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
       ? ORDER_TYPE_ENUM.DELIVERY
       : ORDER_TYPE_ENUM.PICKUP;
-  const [selectedCatItem, setselectedCatItem] = useState(null);
-  const [updateId, setupdateId] = useState("");
+  const [selectedCatItem, setselectedCatItem] = useState<
+    CategoryItemType[] | null
+  >(null);
+  const [updateId, setupdateId] = useState<string>("");
   const [openDependentList, setopenDependentList] = useState<boolean>(false);
   let customerId = userinfo ? userinfo.customerId : 0;
   const selecetdtime = order?.checktime;
@@ -131,7 +141,7 @@ const CategoryMenuItems = ({
   let selectedMenuItemDetail = menuitem.selectedmenuitemdetail;
   const dependentId = menuitem?.dependentid ?? 0;
   const [selectedDependentItems, setselectedDependentItems] = useState<
-    string[]
+    number[]
   >([]);
   let menuItemDetail = menuitem.menuitemdetaillist;
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
@@ -206,7 +216,7 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     //let selectedCat = {};
-    let selectedCat = [];
+    let selectedCat: CategoryItemType | undefined;
     if (categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
         (cat: CategoryItem) => cat.categoryslug === categoryUrl
@@ -214,20 +224,17 @@ const CategoryMenuItems = ({
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
     if (
+      selectedCat?.menuitems &&
       menuitemId !== undefined &&
-      Number(menuitemId) > 0 &&
       selectedCat?.menuitems?.length > 0
     ) {
-      var menuitemObj = selectedCat?.menuitems?.find(
-        (item: any, index: any) => {
-          if (item.menuitemId === menuitemId) {
-            return item;
-          }
+      var menuitemObj = selectedCat?.menuitems?.find((item) => {
+        if (item.menuitemId === parsedMenuItemId) {
+          return item;
         }
-      );
+      });
       if (menuitemObj) {
-        dispatch(selectedMenuItem(menuitemObj));
-
+        dispatch(selectedMenuItem(menuitemObj as any));
         if (
           menuitemObj.quickorderallow === true &&
           isOrderingDisable === false
@@ -253,13 +260,17 @@ const CategoryMenuItems = ({
     }
   }, [menuItemsWithCat, menuitemId]);
 
-  const handleClickItem = (e: any, item: any) => {
-    dispatch({
-      type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-      payload: {},
-    });
+  const handleClickItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    item: MenuItemDetailList[]
+  ) => {
+    // dispatch({
+    //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
+    //   payload: {},
+    // });
+    dispatch(setMenuItemDetailList(item));
 
-    dispatch(selectedMenuItem(item));
+    //dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
       return;
@@ -267,13 +278,17 @@ const CategoryMenuItems = ({
     setopenMenuItemModal(true);
   };
 
-  const handleClickItemSlider = (e: any, item: any) => {
+  const handleClickItemSlider = (
+    e: React.MouseEvent<HTMLDivElement>,
+    item: MenuItemDetailList[]
+  ) => {
     e.stopPropagation();
     setisBottomSlide(false);
-    dispatch({
-      type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-      payload: {},
-    });
+    // dispatch({
+    //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
+    //   payload: {},
+    // });
+    dispatch(setMenuItemDetailList(item));
     dispatch(selectedMenuItem(item));
     setopenMenuItemModal(true);
   };
@@ -284,7 +299,7 @@ const CategoryMenuItems = ({
     }, 2000);
   }, []);
 
-  const handleToggleMenuItem = (value: any) => {
+  const handleToggleMenuItem = (value: boolean) => {
     setopenMenuItemModal(value);
   };
 
@@ -362,7 +377,7 @@ const CategoryMenuItems = ({
               locationId: restaurantinfo?.defaultlocationId,
               restaurantId: restaurantinfo?.restaurantId,
               customerId: userinfo ? userinfo?.customerId : 0,
-            }) as any
+            })
           );
           //modalPopUpCloseClick();
           CartServices.getCartItemList({
@@ -398,7 +413,7 @@ const CategoryMenuItems = ({
     }
   }
 
-  const handleToggleBottomSlide = (value: any) => {
+  const handleToggleBottomSlide = (value: boolean) => {
     setisBottomSlide(value);
   };
 
@@ -407,7 +422,7 @@ const CategoryMenuItems = ({
     const selectedItem = menuItemsWithCat?.find(
       (catMenu: any) => catMenu.catId === item?.catId
     );
-    setselectedCatItem(selectedItem);
+    setselectedCatItem(selectedItem as any);
   };
 
   const handleClickOnNoThanks = () => {
@@ -418,7 +433,7 @@ const CategoryMenuItems = ({
     dispatch(setDipendentItemQty(0));
     setopenDependentList(false);
   };
-  const handleOnCheck = (id: any) => {
+  const handleOnCheck = (id: number) => {
     if (selectedDependentItems.includes(id)) {
       let item = selectedDependentItems.filter((item) => item !== id);
       setselectedDependentItems([...item]);
@@ -445,7 +460,7 @@ const CategoryMenuItems = ({
     setopenDependentList(false);
   }
 
-  function handleToggleDependnt(value: any) {
+  function handleToggleDependnt(value: boolean) {
     setopenDependentList(value);
   }
 
@@ -591,9 +606,9 @@ const CategoryMenuItems = ({
                                                   data-menuitemid={
                                                     menu.menuitemId
                                                   }
-                                                  onClick={(e) =>
-                                                    handleClickItem(e, menu)
-                                                  }
+                                                  // onClick={(e) =>
+                                                  //   handleClickItem(e, menu)
+                                                  // }
                                                 >
                                                   {" "}
                                                   <h3>
@@ -630,9 +645,9 @@ const CategoryMenuItems = ({
                                                   data-toggle="tooltip"
                                                   data-placement="left"
                                                   title="Open item"
-                                                  onClick={(e) =>
-                                                    handleClickItem(e, menu)
-                                                  }
+                                                  // onClick={(e) =>
+                                                  //   handleClickItem(e, menu)
+                                                  // }
                                                 ></a>
                                               </div>
                                             </div>
@@ -728,9 +743,9 @@ const CategoryMenuItems = ({
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="Open item"
-                                        onClick={(e) =>
-                                          handleClickItem(e, menu)
-                                        }
+                                        // onClick={(e) =>
+                                        //   handleClickItem(e, menu)
+                                        // }
                                       ></a>
                                     </div>
                                     <div className="text">

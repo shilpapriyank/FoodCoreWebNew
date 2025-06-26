@@ -4,22 +4,16 @@ import React, { useCallback, useRef } from "react";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { GetThemeDetails } from "../../common/utility";
 import { useRouter, useParams } from "next/navigation";
-import { useAppDispatch } from "../../../../redux/hooks";
 import { CategoryTypes } from "../../../../redux/category/category.types";
 import { selectedCategory } from "../../../../redux/category/category.slice";
 import { PAGES } from "../common/pages";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../redux/store";
-import {
-  CategoryItem,
-  CategoryItemType,
-} from "@/types/category-types/category.services.type";
+import { CategoryItemType } from "@/types/category-types/category.services.type";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 const CategoryModalComponent: React.FC = () => {
-  const { main, category, restaurantinfo, tableorder, selectedcategorydetail } =
-    useReduxData();
-  const selectedCatId = category.selectedcategorydetail?.catId
-  const dispatch = useDispatch<AppDispatch>();
+  const { main, category, restaurantinfo, tableorder } = useReduxData();
+  const selectedCatId = category.selectedcategorydetail?.catId;
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   const closeBtn = useRef<HTMLButtonElement>(null);

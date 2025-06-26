@@ -67,7 +67,7 @@ export class MenuItemServices {
     customerId: number;
     restaurantId: number;
     menuItemId: number;
-  }): Promise<any[] | null> {
+  }): Promise<MenuItemDetailList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "addfavorite";
     const location = ENDPOINTS.ADD_FAVORITE;
@@ -124,7 +124,7 @@ export class MenuItemServices {
     customerId: number;
     restaurantId: number;
     menuItemId: number;
-  }): Promise<any[] | null> {
+  }): Promise<MenuItemDetailList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "deletefavorite";
     const location = ENDPOINTS.DELETE_FAVORITE;
@@ -218,7 +218,7 @@ export class MenuItemServices {
   }: {
     orderobj: any;
     restaurantId: number;
-  }): Promise<any | null> {
+  }): Promise<MenuItemDetailList | null> {
     responseclass = new ResponseModel();
     const methodName = "updateCartOrdersItem";
     const location = ENDPOINTS.UPDATE_CART_ORDER_ITEMS;
@@ -334,7 +334,7 @@ export class MenuItemServices {
     menuitemId: number;
     cartsessionId: string;
     cartId: number;
-  }): Promise<any[]> {
+  }): Promise<MenuItemDetailList[]> {
     responseclass = new ResponseModel();
     const methodName = "getMenuItemList";
     const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 // import { GetThemeDetails, ThemeObj } from '../../../components/dominos/helpers/utility';
 // import { useReduxData } from '../../../components/customhooks/useredux-data-hook';
@@ -18,7 +18,7 @@ const Page: React.FC = () => {
   //     if (!dynamic || !restaurantinfo) return; // safety check to avoid undefined
 
   //     let routepath = '';
-  //     const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
+  //     const selectedTheme = GetThemeDetails(restaurantsinfo.themetype);
 
   //     if (selectedTheme.name === ThemeObj.dominos) {
   //       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;

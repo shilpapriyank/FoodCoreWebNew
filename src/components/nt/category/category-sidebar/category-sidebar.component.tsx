@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { GetThemeDetails } from "../../../common/utility";
 import useUtility from "../../../customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CommonModal from "../../common/common-model.component";
 import { OrderPreparationDetail } from "./order-preparation-detail.component";
-import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
+import { useAppDispatch } from "../../../../../redux/hooks";
+import OrderItemsList from "./order-items-list.component";
 
 const CategorySidebar: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { restaurantinfo, cart, restaurant } = useReduxData();
   const router = useRouter();
   const { isDisplayPrice, isRewardTip } = useUtility();
@@ -57,10 +56,8 @@ const CategorySidebar: React.FC = () => {
         <div className="sidebar">
           {!isSchoolProgramEnabled && <OrderPreparationDetail />}
           <div className="card totalbox">
-            {/* <OrderItemsList />
-                      
-                        {/* {cart?.cartitemcount > 0 && <RelatedItemsList />} */}
-
+             <OrderItemsList />
+            {/*{cart?.cartitemcount > 0 && <RelatedItemsList />} */}
             {cart?.cartitemcount > 0 ? (
               <a className="btn-default w-100" onClick={handleClick}>
                 {" "}

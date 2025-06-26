@@ -92,7 +92,6 @@ export interface SelectedMenuItemDetail {
   sortorder: number;
 }
 
-
 // export interface DependantMenuItem {
 //   DependantMenuItemId: number;
 //   MenuItemId: number;
@@ -186,4 +185,3 @@ export interface SelectedMenuItemDetail {
 //   quickorderallow: boolean;
 //   sortorder: number;
 // }
-

@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { GetThemeDetails } from "../../../common/utility";
 import { useParams, useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { fixedLengthString, getImagePath } from "../../common/utility";
 import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useUtility from "@/components/customhooks/utility-hook";
-import { AppDispatch } from "../../../../../redux/store";
-import {
-  CategoryItem,
-  CategoryItemType,
-} from "@/types/category-types/category.services.type";
+import { CategoryItemType } from "@/types/category-types/category.services.type";
 import { selectedCategory } from "../../../../../redux/category/category.slice";
+import { useAppDispatch } from "../../../../../redux/hooks";
 
 const CategoryHeader = () => {
   const {
@@ -27,11 +22,11 @@ const CategoryHeader = () => {
   const params = useParams();
   const { dynamic, location, id, category, index } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
-  const categoryListItems: CategoryItemType[] =
+  const categoryListItems =
     searchtext !== "" ? searchdata?.categories : maincategoryList;
   let pickupordelivery = selecteddelivery.pickupordelivery;
   const { filterCategory } = useUtility();
@@ -40,9 +35,11 @@ const CategoryHeader = () => {
   const [activeSection, setActiveSection] = useState<string>("");
 
   const handleClick = (slug: string, catId: number) => {
-    const selected = catWithSearch.filter((x) => x.catId === catId);
+    const selected = catWithSearch.find((x) => x.catId === catId);
     setSelectedCategoryId(catId);
-    dispatch(selectedCategory(selected));
+    if (selected) {
+      dispatch(selectedCategory(selected));
+    }
     router.push(`/${selctedTheme?.url}/${dynamic}/${location}/${slug}`);
   };
   const { width } = useWindowDimensions();
