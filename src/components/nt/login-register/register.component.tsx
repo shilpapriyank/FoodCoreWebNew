@@ -10,7 +10,6 @@ import { ToasterPositions } from '../../default/helpers/toaster/toaster-position
 import { ToasterTypes } from '../../default/helpers/toaster/toaster-types';
 import { CheckPhoneRequestModel, CustomerServices } from "../../../../redux/customer/customer.services";
 import { LoginServices } from "../../../../redux/login/login.services";
-import { LoginTypes } from "../../../../redux/login/login.types";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
 import { selecteddeliveryaddress } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
@@ -26,6 +25,7 @@ import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/bootstrap.css';
 import { OTPVerificationSettingParams } from "@/types/register-types/register.types";
 import { convertSecondToMinute } from "../common/utility";
+import { setUserDetail } from "../../../../redux/login/login.slice";
 
 
 interface RegisterProps {
@@ -125,25 +125,6 @@ const Register: React.FC<RegisterProps> = ({
         setisDisable(false)
     }
 
-    // useEffect(() => {
-    //     if (isNotValidateOtp) {
-    //         return;
-    //     }
-    //     if (restaurantinfo.smsapigateway === 1 && 
-    //         restaurantinfo.enableotpauthentication === true
-    //     ) {
-    //         RegisterServices.getOTPVerificationSetting(
-    //             restaurantinfo.restaurantId,
-    //             // restaurantinfo.enableotpauthentication,
-    //             // restaurantinfo.smsapigateway
-    //         ).then((response) => {
-    //             if (response && response != null) {
-    //                 setOTPDetail(response);
-    //             }
-    //         })
-    //     }
-    // }, []);
-
     useEffect(() => {
         if (isNotValidateOtp) return;
 
@@ -198,7 +179,6 @@ const Register: React.FC<RegisterProps> = ({
         setuserExistError(error)
         $('#errorbutton').click();
     }
-
 
     const handleChange = (event: any) => {
         event.preventDefault();
@@ -375,38 +355,6 @@ const Register: React.FC<RegisterProps> = ({
         dispatch(registerAddress({}));
     }
 
-    // const handleSendOTP = (): void => {
-    //     if (restaurantinfo.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true) {
-    //         handleSendOtpHook(dialCode.toString(), values.phone).then((result) => {
-    //             setisotpVerification(true)
-    //             setsecond(otpTime.second)
-    //             setMinutes(otpTime.minute)
-    //             setisOtpSecond(!isOtpSecond)
-    //             handleOpenOtp(true)
-    //             handleNotify("Code sent successfully", ToasterPositions.TopRight, ToasterTypes.Success);
-    //         }).catch((err: any) => {
-
-    //         })
-    //     }
-    //     if (restaurantinfo.smsapigateway === 2 && restaurantinfo.enableotpauthentication === true) {
-    //         let mobileNumber = `${dialCode} ${unFormatePhoneNumber(values.phone)}`
-    //         RegisterServices.twilioSendCode(
-    //             restaurantinfo.restaurantId,
-    //             // restaurantinfo.enableotpauthentication,
-    //             // restaurantinfo.smsapigateway,
-    //             // mobileNumber
-    //         ).then((response) => {
-    //             if (response && response != null) {
-    //                 document.getElementById("btn-otp")?.click()
-    //                 setsecond(otpTime.second)
-    //                 setMinutes(otpTime.minute)
-    //                 setIsShowReSend(true);
-    //                 handleNotify("Code sent successfully", ToasterPositions.TopRight, ToasterTypes.Success);
-    //             }
-    //         })
-    //     }
-    // }
-
     const handleSendOTP = (): void => {
         if (restaurantinfo?.smsapigateway === 1 && restaurantinfo?.enableotpauthentication === true) {
             handleSendOtpHook(dialCode.toString(), values.phone).then((result) => {
@@ -544,11 +492,11 @@ const Register: React.FC<RegisterProps> = ({
                                         locationid: locationId as number
                                     }).then((responsedata: any) => {
                                         if (responsedata?.customerDetails) {
-                                            dispatch({
-                                                type: LoginTypes.USER_DETAIL,
-                                                payload: responsedata.customerDetails,
-                                            });
-
+                                            // dispatch({
+                                            //     type: LoginTypes.USER_DETAIL,
+                                            //     payload: responsedata.customerDetails,
+                                            // });
+                                            dispatch(setUserDetail(responsedata.customerDetails));
                                             setUserExpiryTime();
 
                                             if (addressmodel && Object.keys(addressmodel).length > 0) {
@@ -601,17 +549,12 @@ const Register: React.FC<RegisterProps> = ({
             }
         }
     }
-
-
     const handleAutocompleteOff = (e: any) => {
         e.target.setAttribute("autoComplete", "off")
     }
-
     function handleOpenOtp(value: any) {
         setisOtpModal(value)
     }
-
-
     const handleOpenLogin = () => {
         handleToggle(false, 'openRegisterModal')
         handleOpenLoginModal(true)
@@ -623,7 +566,13 @@ const Register: React.FC<RegisterProps> = ({
                 <div className="modal-dialog modal-dialog-centered ru-model">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">Register</h5>
-                        {!(b2b && isBusinessNameRequired) && <button type="button" className="btn-close" onClick={() => handleToggle(false, 'openRegisterModal')} aria-label="Close" />}
+                        {!(b2b && isBusinessNameRequired) &&
+                            <button type="button"
+                                className="btn-close"
+                                onClick={() => handleToggle
+                                    (false, 'openRegisterModal')}
+                                aria-label="Close"
+                            />}
                         <form onSubmit={handleSubmit}>
                             <div className="modal-body">
                                 <div className="row mt-2">

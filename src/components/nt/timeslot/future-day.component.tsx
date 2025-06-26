@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from "react";
 import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { ORDER_TYPE, ORDER_TYPE_ENUM } from "../../common/utility";
+import { ORDER_TYPE_ENUM } from "../../common/utility";
 
 interface FutureDateType {
   deliveryStatus?: string;
@@ -35,11 +35,11 @@ const FutureDayComponent: React.FC<FutureDayComponentProps> = ({
   const sliderRef = useRef<any>(null);
 
   const handleSlideNext = () => {
-    sliderRef.current?.slideNext();
+    sliderRef.current.swiper.slideNext();
   };
 
   const handleSlidePrev = () => {
-    sliderRef.current?.slidePrev();
+    sliderRef.current.swiper.slidePrev();
   };
 
   return (
@@ -49,16 +49,17 @@ const FutureDayComponent: React.FC<FutureDayComponentProps> = ({
       spaceBetween={5}
       centeredSlides={false}
       breakpoints={{
-        0: { slidesPerView: 3 },
-        600: { slidesPerView: 3 },
-        1000: { slidesPerView: 5 },
+        0: { slidesPerView: 3 }, //3
+        600: { slidesPerView: 3 },//3
+        1000: { slidesPerView: 5 },//5
       }}
       allowSlideNext={true}
       allowSlidePrev={true}
-      navigation
-      pagination={false}
+    // navigation
+    // pagination={false}
     >
-      {enablefutureordering &&
+      {/* {enablefutureordering && */}
+      {
         futureDateList?.map((day, index) => {
           const isClose =
             ordertype === ORDER_TYPE_ENUM.DELIVERY
@@ -72,12 +73,11 @@ const FutureDayComponent: React.FC<FutureDayComponentProps> = ({
                   onClick={() => handleClickDate(day, isClose)}
                 >
                   <div
-                    className={`rounded border border-2 shadow p-3 pointer-cursor ${
-                      day?.futureDay === selectedDate ||
+                    className={`rounded border border-2 shadow p-3 pointer-cursor ${day?.futureDay === selectedDate ||
                       day?.futureDay === order?.futureOrderDay?.futureDay
-                        ? "border-dynamic"
-                        : ""
-                    } `}
+                      ? "border-dynamic"
+                      : ""
+                      } `}
                   >
                     <h6 className="fw-bold-light fs-6 ">{day?.futureDay}</h6>
                     <p className="mb-0">{day?.futureDate}</p>
@@ -86,7 +86,8 @@ const FutureDayComponent: React.FC<FutureDayComponentProps> = ({
               </div>
             </Fragment>
           );
-        })}
+        })
+      }
       <button
         onClick={handleSlideNext}
         className="swiper-button-next bg-white op-1"

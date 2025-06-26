@@ -13,7 +13,7 @@ interface AddressItem {
 
 interface AddressPillProps {
     isChecked: boolean;
-    handleChangeLocation?: (id: number) => void; 
+    handleChangeLocation?: (id: number) => void;
     handleChangeAddress?: (address: AddressItem) => void;
     address: AddressItem;
     id: string;
@@ -27,9 +27,15 @@ const AddressPill: React.FC<AddressPillProps> = ({
     id
 }) => {
     return (
-        <label className="radio-box pointer-cursor" onClick={() => handleChangeAddress?.(address)} key={id}>
-            <input type="radio" checked={isChecked} />
-            {address?.city}<br /><span>
+        <label className="radio-box pointer-cursor" key={id}>
+            <input
+                type="radio"
+                checked={isChecked}
+                onChange={() => handleChangeAddress?.(address)}
+            />
+            {address?.city}
+            <br />
+            <span>
                 {address?.address1}, {address?.cityName}, {address?.zipcode}
             </span>
         </label>

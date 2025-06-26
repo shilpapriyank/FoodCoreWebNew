@@ -24,7 +24,7 @@ import metadataReducer from "./metadata/metadata.slice";
 import mainReducer from "./main/main.slice";
 import tableOrderReducer from "./tableorder/tableorder.slice";
 import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
-import deliveryaddressReducer from "./selected-delivery-data/selecteddelivery.slice";
+import deliveryaddressReducer from "./delivery-address/delivery-address.slice";
 import studentReducer from "../redux/student/student.slice";
 import registerReducer from "./register/register.slice";
 

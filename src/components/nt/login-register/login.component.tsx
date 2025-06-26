@@ -13,7 +13,6 @@ import {
     unFormatePhoneNumber
 } from '../../common/utility';
 import { LoginServices } from '../../../../redux/login/login.services';
-import { LoggedInUser, LoginTypes } from '../../../../redux/login/login.types';
 import { setintialrewardpoints } from '../../../../redux/rewardpoint/rewardpoint.slice';
 import { DeliveryAddressServices } from '../../../../redux/delivery-address/delivery-address.services';
 import { selecteddeliveryaddress } from '../../../../redux/selected-delivery-data/selecteddelivery.slice';
@@ -23,6 +22,7 @@ import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import { ButtonLoader } from '@/components/common/buttonloader.component';
 import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 import { AppDispatch } from '../../../../redux/store';
+import { setUserDetail } from '../../../../redux/login/login.slice';
 
 interface LoginProps {
     isOpenModal: boolean;
@@ -60,7 +60,8 @@ const Login: React.FC<LoginProps> = ({
     //let locationCountryData = countryData[locationCountry || 'usa'];
     const locationCountryData = countryData[locationCountry as keyof typeof countryData];
     // const [dialCode, setDialCode] = useState(locationCountryData.countryCode);
-    const [dialCode, setDialCode] = useState<'+1' | '+91'>('+1');
+    //const [dialCode, setDialCode] = useState<'+1' | '+91'>('+1');
+    const [dialCode, setDialCode] = useState<string>('+1');
 
     const locationId = restaurantinfo?.defaultLocation?.locationId;
     const restaurantId = restaurantinfo?.restaurantId;
@@ -188,14 +189,17 @@ const Login: React.FC<LoginProps> = ({
             LoginServices.getLoginUserDetails({
                 username: usernames,
                 password: password,
-                restaurantId: restaurantId ?? 0,
+                restaurantId: restaurantinfo?.restaurantId as number,
                 dialCode: dialCode,
-                locationid: locationId,
+                locationid: locationId as number,
             }).then((responsedata) => {
                 if ('customerDetails' in responsedata) {
                     const customer = responsedata?.customerDetails;
                     if (responsedata && customer) {
-                        dispatch({ type: LoginTypes.USER_DETAIL, payload: customer });
+                        debugger
+                       // console.log("Login Customer from logincomponent:", customer);
+                        // dispatch({ type: LoginTypes.USER_DETAIL, payload: customer });
+                        dispatch(setUserDetail(customer))
                         setUserExpiryTime();
 
                         if (restaurantinformation?.enableotpauthentication && restaurantinfo?.deliveryServicePartnerEnable && !customer.isVerifiedPhone) {
@@ -221,7 +225,7 @@ const Login: React.FC<LoginProps> = ({
 
                         dispatch(setintialrewardpoints(customer));
 
-                        if (tempDeliveryAddress !== null) {
+                        if (tempDeliveryAddress !== null && restaurantinformation) {
                             tempDeliveryAddress.customerId = customer.customerId;
 
                             DeliveryAddressServices.addDeliveryAddress(
@@ -307,16 +311,22 @@ const Login: React.FC<LoginProps> = ({
     const handleClickRegister = () => {
         // 👇 Blur any focused element inside the login modal
         if (document.activeElement instanceof HTMLElement) {
+           // console.log("Blurring focused element:", document.activeElement);
             document.activeElement.blur();
         }
+       // console.log("Closing login modal");
         handleOpenLoginModal(false);
         setTimeout(() => {
+          //  console.log("Opening register modal");
             handleToggle?.(true, 'openRegisterModal');
         }, 100); // A small delay allows the DOM to clean up properly
     };
     const handleClickForgotPass = () => {
+       // console.log("Forgot Password clicked!");
         handleOpenLoginModal(false);
+       // console.log("Login modal closed");
         handleToggle?.(true, 'openForgotPassModal');
+      //  console.log("Attempted to open forgot password modal");
     };
     return (
         <>
@@ -338,12 +348,17 @@ const Login: React.FC<LoginProps> = ({
                                 <div className="row">
                                     <div className="col-lg-12 mb-4 text-center col-md-12 col-12">
                                         <h2>SIGN IN TO YOUR PROFILE</h2>
-                                        {!(b2b && !isBusinessNameRequired) && <p className="fs-14">
-                                            Don&apos;t have one?{" "}
-                                            <a className="color-green" onClick={handleClickRegister}>
-                                                CREATE ONE <i className="fa fa-arrow-right" />
-                                            </a>
-                                        </p>}
+                                        {!(b2b && !isBusinessNameRequired) &&
+                                            <p className="fs-14">
+                                                Don&apos;t have one?{" "}
+                                                <a className="color-green" onClick={() => {
+                                                   // console.log("Create button clicked!");
+                                                    handleClickRegister();
+                                                }}>
+                                                    CREATE ONE <i className="fa fa-arrow-right" />
+                                                </a>
+                                            </p>
+                                        }
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-12">
                                         <div className="row">
@@ -356,7 +371,7 @@ const Login: React.FC<LoginProps> = ({
                                                     country={'us'}
                                                     value={dialCode || '+' + '1'}
                                                     onChange={(value: string, data: { dialCode: string }) => {
-                                                      //  setDialCode('+' + data.dialCode);
+                                                        setDialCode('+' + data.dialCode);
                                                         setErrorMessage('');
                                                         setSubmitting(false);
                                                     }}
