@@ -1,13 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, ReactNode, useRef } from "react";
+import React, { useEffect, useState, ReactNode } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import {
   ThemeObj,
@@ -33,7 +28,6 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
   restaurantsdetail,
-  restaurantstiming,
   setAppVersion,
 } from "../../../redux/restaurants/restaurants.slice";
 import { PAGES } from "../nt/common/pages";
@@ -41,29 +35,25 @@ import RestaurantClosedmComponent from "./restaurant-closedm.component";
 import RestaurantCloseComponent from "./restaurant-close.componet";
 import RestaurantInvalidDMComponent from "./restaurant-invalid.component";
 import RestaurantNotExist from "./restaurant-not-exist.component";
-import { ThunkDispatch } from "redux-thunk";
 import SEOComponent from "../common/seo.component";
 import useLoadCatData from "../customhooks/useloadcatdata-hook";
 import { clearRedux } from "../../../redux/clearredux/clearredux.slice";
 import { createSessionId } from "../../../redux/session/session.slice";
 import { getSelectedRestaurantTime } from "../../../redux/main/main.slice";
 import useFutureOrder from "../customhooks/usefuture-order-hook";
-import { AppDispatch, RootState } from "../../../redux/store";
-import { Action } from "@reduxjs/toolkit";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { logout } from "../../../redux/login/login.slice";
-import {
-  AddressListItem,
-  DefaultLocationType,
-  RestaurantDetails,
-  RestaurantsTimingList,
-} from "@/types/restaurant-types/restaurant.type";
 import { useAppDispatch } from "../../../redux/hooks";
 import { ColorStyleType } from "@/types/common-types/common.types";
+import { AddressList } from "@/types/location-types/location.type";
+import {
+  GetAllRestaurantInfo,
+  Seodetails,
+} from "@/types/restaurant-types/restaurant.type";
 
 interface Props {
   children: ReactNode;
-  metaDataRestaurant?: any;
+  metaDataRestaurant?: Seodetails;
   themetype?: string;
 }
 
@@ -79,18 +69,16 @@ const RestaurantComponent = ({
   const pathname = usePathname();
   const params = useParams();
   let sessionId = sessionid;
-  //const dispatch = useDispatch<ThunkDispatch<RootState, unknown, Action>>();
   const dispatch = useAppDispatch();
   const [loadrestaurant, setLoadrestaurant] = useState<boolean>(false);
   const [selectedRestaurant, setSelectedRestaurant] =
-    useState<RestaurantDetails | null>(null);
+    useState<GetAllRestaurantInfo | null>(null);
   const [adresslist, setadresslist] = useState<boolean>(false);
   const [isResturantClose, setisResturantClose] = useState<boolean>(false);
   const [isInvalidRestaurant, setisInvalidRestaurant] =
     useState<boolean>(false);
   const [themeUrl, setthemeUrl] = useState<string>("");
   const [loadPaymentScreen, setloadPaymentScreen] = useState<boolean>(false);
-  //const { enabletimeslot, futureDays, isFutureOrder } = useFutureOrder();
   const restaurantinfo = restaurant.restaurantdetail;
   const restaurantslocationlist = restaurant.restaurantslocationlist;
   const { loadCatData } = useLoadCatData(customerId);
@@ -123,7 +111,7 @@ const RestaurantComponent = ({
     pathname.includes("[category]") || pathname.includes("[items]");
 
   const handleSetThemeStyleDynamic = (
-    newselectedRestaurant: RestaurantDetails
+    newselectedRestaurant: GetAllRestaurantInfo
   ) => {
     newselectedRestaurant?.restaurantColorModel?.push({
       FieldName: "color",
@@ -149,17 +137,14 @@ const RestaurantComponent = ({
   };
 
   const handleValidResponse = async (
-    response: any,
+    response: GetAllRestaurantInfo[],
     dynamic: string,
-    router: any
+    router: ReturnType<typeof useRouter>
   ) => {
     let restaurantId = getRestaurantIdFromStorage();
     var isSameRestaurant;
     const newselectedRestaurant = response[0];
     if (newselectedRestaurant?.defaultLocation === null) {
-      const locationId =
-        newselectedRestaurant.defaultlocationId ||
-        newselectedRestaurant?.defaultLocation?.locationId;
       handleSetThemeStyleDynamic(newselectedRestaurant);
       let selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
       setthemeUrl(selectedTheme.url);
@@ -172,11 +157,8 @@ const RestaurantComponent = ({
       const path = pathname.split("/");
       const tableOrderTheme = GetThemeDetails(201);
       const isTableOrderTheme = path.includes(tableOrderTheme.url);
-      //check is tableorder then update the theme type
       if (!isSameRestaurant) {
         dispatch(clearRedux(true) as any);
-        // if (newselectedRestaurant.restaurantId > 0 && userinfo) {
-        //   if (userinfo.restaurantId !== newselectedRestaurant.restaurantId) {
         let rewardpoints = {
           rewardvalue: 0,
           rewardamount: 0,
@@ -184,10 +166,8 @@ const RestaurantComponent = ({
           totalRewardPoints: 0,
           redeemPoint: 0,
         };
-        //dispatch(setRewardPoint(rewardpoints));
-        //dispatch(logout());
-        // }
-        // }
+        dispatch(setrewardpoint(rewardpoints));
+        dispatch(logout());
         let id = uuidv4();
         dispatch(createSessionId(id));
       } else {
@@ -236,12 +216,6 @@ const RestaurantComponent = ({
         setLoadrestaurant(true);
       }
     }
-    // setLocationIdInStorage(newselectedRestaurant.locationId);
-    // setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
-    // setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
-    // dispatch(restaurantsdetail(newselectedRestaurant));
-    // setSelectedRestaurant(newselectedRestaurant);
-    // setLoadrestaurant(true);
   };
 
   const handleInvalidRestaurant = (themetype: string) => {
@@ -262,7 +236,7 @@ const RestaurantComponent = ({
           locationurl,
           defaultlocationId
         ).then((response) => {
-          if (response.length > 0) {
+          if (response && response.length > 0) {
             handleValidResponse(response, dynamic, router);
           } else {
             handleInvalidRestaurant(themetype as string);
@@ -321,7 +295,6 @@ const RestaurantComponent = ({
         //fetchData();
       }
 
-      // USER LOGOUT IF RESTAURANT IS DIFFERENT \
       let userLoginExpire = getUserLoginExpiryTime();
       const restaurantId = getRestaurantIdFromStorage();
       if (
@@ -348,11 +321,11 @@ const RestaurantComponent = ({
     if (adresslist === true && pathname.includes(ThemeObj.FD123456)) {
       let addressList =
         selectedTheme.name === ThemeObj.default
-          ? restaurantslocationlist.addressList
-          : restaurantslocationlistwithtime.addressList;
-      if (restaurantslocationlist.addressList !== undefined) {
+          ? restaurantslocationlist?.addressList
+          : restaurantslocationlistwithtime?.addressList;
+      if (restaurantslocationlist?.addressList !== undefined) {
         let linkLoacationurl = formatStringToURLWithBlankSpace(location);
-        addressList?.map((locations: AddressListItem) => {
+        addressList?.map((locations: AddressList) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL
           );

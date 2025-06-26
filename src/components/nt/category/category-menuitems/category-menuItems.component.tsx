@@ -260,17 +260,9 @@ const CategoryMenuItems = ({
     }
   }, [menuItemsWithCat, menuitemId]);
 
-  const handleClickItem = (
-    e: React.MouseEvent<HTMLDivElement>,
-    item: MenuItemDetailList[]
-  ) => {
-    // dispatch({
-    //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-    //   payload: {},
-    // });
+  const handleClickItem = (e: React.MouseEvent, item: MenuItemDetailList[]) => {
     dispatch(setMenuItemDetailList(item));
 
-    //dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
       return;
@@ -279,15 +271,11 @@ const CategoryMenuItems = ({
   };
 
   const handleClickItemSlider = (
-    e: React.MouseEvent<HTMLDivElement>,
+    e: React.MouseEvent,
     item: MenuItemDetailList[]
   ) => {
     e.stopPropagation();
     setisBottomSlide(false);
-    // dispatch({
-    //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-    //   payload: {},
-    // });
     dispatch(setMenuItemDetailList(item));
     dispatch(selectedMenuItem(item));
     setopenMenuItemModal(true);
@@ -606,9 +594,9 @@ const CategoryMenuItems = ({
                                                   data-menuitemid={
                                                     menu.menuitemId
                                                   }
-                                                  // onClick={(e) =>
-                                                  //   handleClickItem(e, menu)
-                                                  // }
+                                                  onClick={(e) =>
+                                                    handleClickItem(e, menu)
+                                                  }
                                                 >
                                                   {" "}
                                                   <h3>
@@ -645,9 +633,9 @@ const CategoryMenuItems = ({
                                                   data-toggle="tooltip"
                                                   data-placement="left"
                                                   title="Open item"
-                                                  // onClick={(e) =>
-                                                  //   handleClickItem(e, menu)
-                                                  // }
+                                                  onClick={(e) =>
+                                                    handleClickItem(e, menu)
+                                                  }
                                                 ></a>
                                               </div>
                                             </div>
@@ -667,10 +655,6 @@ const CategoryMenuItems = ({
                                       <div className="img">
                                         {imgSrc ? (
                                           <LazyLoadImage
-                                            // src={getImagePath(
-                                            //   menu.imgurl,
-                                            //   defaultLocation?.defaultmenuitemimage
-                                            // )}
                                             src={imgSrc}
                                             style={{ maxHeight: "136px" }}
                                             effect="blur"
@@ -681,7 +665,6 @@ const CategoryMenuItems = ({
                                           />
                                         ) : null}
 
-                                        {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt style={{ maxHeight: "136px" }} /> */}
                                         <a
                                           data-toggle="tooltip"
                                           data-placement="left"

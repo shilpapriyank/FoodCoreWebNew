@@ -9,13 +9,13 @@ const RestaurantCloseComponent = () => {
   const { restaurantinfo } = useReduxData();
   const router = useRouter();
   const locationUrl = router.query.location;
-  const location = restaurantinfo.defaultLocation;
-  const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
+  const location = restaurantinfo?.defaultLocation;
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
   let locationFullLink =
     "/" +
     selectedTheme.url +
     "/" +
-    restaurantinfo.restaurantURL +
+    restaurantinfo?.restaurantURL +
     "/" +
     locationUrl +
     "/";
@@ -60,7 +60,7 @@ const RestaurantCloseComponent = () => {
                             textAlign: "center",
                           }}
                         >
-                          {location.orderingMessage}
+                          {location?.orderingMessage}
                         </p>
                       )}
                     </div>
@@ -92,8 +92,8 @@ const RestaurantCloseComponent = () => {
                                     </button>
                                   </Link> */}
                                   <Link
-                                    href={`/${selectedTheme.url}/${restaurantinfo.restaurantURL}/pickup`}
-                                    as={`/${selectedTheme.url}/${restaurantinfo.restaurantURL}/pickup`}
+                                    href={`/${selectedTheme.url}/${restaurantinfo?.restaurantURL}/pickup`}
+                                    as={`/${selectedTheme.url}/${restaurantinfo?.restaurantURL}/pickup`}
                                   >
                                     <a>
                                       <button
