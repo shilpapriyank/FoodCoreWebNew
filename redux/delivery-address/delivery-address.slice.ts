@@ -10,8 +10,6 @@ interface DeliveryAddressState {
   registeraddress: Record<string, any>;
   addressId: Record<string, any>;
   tempDeliveryAddress: any | null;
-  pickupordelivery: string | any;
-  selecteddeliveryaddress: any;
 }
 
 const initialState: DeliveryAddressState = {
@@ -21,8 +19,6 @@ const initialState: DeliveryAddressState = {
   registeraddress: {},
   addressId: {},
   tempDeliveryAddress: null,
-  pickupordelivery: {},
-  selecteddeliveryaddress: null,
 };
 
 // Async thunks

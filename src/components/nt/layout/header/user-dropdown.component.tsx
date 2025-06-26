@@ -66,7 +66,71 @@ const UserDropdown = ({
           </button>
 
           <ul className={`dropdown-menu ${isOpenDropdown ? "show" : ""}`}>
-            <Link legacyBehavior href={locationHrefLink + "myaccount"} as={`${locationFullLink}myaccount`}>
+            <Link
+              href={`${locationFullLink}myaccount`}
+              className={getDropdownClass("/myaccount")}
+            >
+              <i className="fa fa-user me-3"></i>My Profile
+            </Link>
+
+            <Link
+              href={`${locationFullLink}favourite`}
+              className={getDropdownClass("/favourite")}
+            >
+              <i className="fa fa-heart me-3"></i>Favourite
+            </Link>
+
+            <Link
+              href={`${locationFullLink}${PAGES.MYORDERS}`}
+              className={getDropdownClass("/myorders")}
+            >
+              <i className="fa fa-cutlery me-3"></i>My Orders
+            </Link>
+
+            <Link
+              href={`${locationFullLink}${PAGES.LOCATIONS}`}
+              className={getDropdownClass("/locations")}
+            >
+              <i className="fa fa-map-marker me-3 fs-5"></i>Locations
+            </Link>
+
+            <Link
+              href={`${locationFullLink}${PAGES.ABOUTUS}`}
+              className={getDropdownClass("/aboutus")}
+            >
+              <i className="fa fa-info me-3 fs-5"></i>&nbsp;About Us
+            </Link>
+
+            <Link
+              href={`${locationFullLink}${PAGES.PRIVACY}`}
+              className={getDropdownClass("/privacy")}
+            >
+              <i className="fa fa-shield me-3"></i>Privacy
+            </Link>
+
+            <Link
+              href={`${locationFullLink}${PAGES.TERMS}`}
+              className={getDropdownClass("/terms")}
+            >
+              <i className="fa fa-pencil-square-o me-3"></i>Terms
+            </Link>
+
+            <li>
+              <a className="dropdown-item" onClick={handleClickLogout}>
+                <i className="fa fa-sign-out me-3"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      )}
+    </>
+  );
+};
+
+export default UserDropdown;
+
+
+{/* <Link legacyBehavior href={locationHrefLink + "myaccount"} as={`${locationFullLink}myaccount`}>
               <a className={getDropdownClass("/myaccount")}>
                 <i className="fa fa-user me-3"></i>My Profile
               </a>
@@ -112,12 +176,4 @@ const UserDropdown = ({
               <a className="dropdown-item" onClick={handleClickLogout}>
                 <i className="fa fa-sign-out me-3"></i>Logout
               </a>
-            </li>
-          </ul>
-        </li>
-      )}
-    </>
-  );
-};
-
-export default UserDropdown;
+            </li> */}

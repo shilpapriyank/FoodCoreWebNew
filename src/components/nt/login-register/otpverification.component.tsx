@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/router";
 import { SMS_API_TYPE } from "../../common/utility";
 import { useParams } from "next/navigation";
-import { LoginTypes } from "../../../../redux/login/login.types";
+//import { LoginTypes } from "../../../../redux/login/login.types";
 import { LoginServices } from "../../../../redux/login/login.services";
 import { DeliveryAddressTypes } from "../../../../redux/delivery-address/delivery-address.type";
 import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
@@ -22,6 +22,7 @@ import { RegisterServices } from "../../../../redux/register/register.services";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
 import OtpInput from "./otp-input.component";
 import { convertSecondToMinute } from "../common/utility";
+import { setUserDetail } from "../../../../redux/login/login.slice";
 
 interface Props {
   closeModal?: () => void;
@@ -162,10 +163,12 @@ const OtpVerificationComponent: React.FC<Props> = ({
       phoneNumber: phone,
       countryCode: dialCode,
     };
+    if (!userinfo?.customerId) return;
     const newDetails = {
       ...userinfo,
       phone,
       isVerifiedPhone,
+      customerId: userinfo.customerId,
     };
 
     if (
@@ -175,10 +178,11 @@ const OtpVerificationComponent: React.FC<Props> = ({
       CustomerServices.updateVerifiedPhoneNumber(updateObj as any).then(
         (res: any) => {
           if (res !== undefined) {
-            dispatch({
-              type: LoginTypes.USER_DETAIL,
-              payload: newDetails,
-            });
+            // dispatch({
+            //   type: LoginTypes.USER_DETAIL,
+            //   payload: newDetails,
+            // });
+            dispatch(setUserDetail(newDetails));
             handleNotify(
               "Successfully verified",
               ToasterPositions.TopRight,
@@ -206,10 +210,11 @@ const OtpVerificationComponent: React.FC<Props> = ({
             CustomerServices.updateVerifiedPhoneNumber(updateObj as any).then(
               (res: any) => {
                 if (res !== undefined) {
-                  dispatch({
-                    type: LoginTypes.USER_DETAIL,
-                    payload: newDetails,
-                  });
+                  // dispatch({
+                  //   type: LoginTypes.USER_DETAIL,
+                  //   payload: newDetails,
+                  // });
+                  dispatch(setUserDetail(newDetails));
                   handleNotify(
                     "Successfully verified",
                     ToasterPositions.TopRight,
@@ -284,10 +289,12 @@ const OtpVerificationComponent: React.FC<Props> = ({
               responsedata.customerDetails !== null &&
               responsedata.customerDetails !== undefined
             ) {
-              dispatch({
-                type: LoginTypes.USER_DETAIL,
-                payload: responsedata.customerDetails,
-              });
+              // dispatch({
+              //   type: LoginTypes.USER_DETAIL,
+              //   payload: responsedata.customerDetails,
+              // });
+              dispatch(setUserDetail(responsedata.customerDetails));
+
               if (addressmodel && Object.keys(addressmodel).length > 0) {
                 const { customerId } = responsedata?.customerDetails;
                 if (customerId > 0) {
@@ -348,7 +355,7 @@ const OtpVerificationComponent: React.FC<Props> = ({
             ToasterTypes.Success
           );
         })
-        .catch((err) => {});
+        .catch((err) => { });
     }
     if (
       restaurantinfo?.smsapigateway === SMS_API_TYPE.TWILIO.value &&
@@ -391,11 +398,11 @@ const OtpVerificationComponent: React.FC<Props> = ({
             );
             registerUser();
           } else {
-            console.log("successfully verified");
+           // console.log("successfully verified");
             handleClickValidateOTP(true);
           }
         })
-        .catch((err) => {});
+        .catch((err) => { });
     }
     if (
       restaurantinfo?.smsapigateway === SMS_API_TYPE.TWILIO.value &&
@@ -454,9 +461,8 @@ const OtpVerificationComponent: React.FC<Props> = ({
   return (
     <>
       <div
-        className={`modal modal-your-order loginmodal fade ${
-          isOpenModal ? "show d-block" : ""
-        }`}
+        className={`modal modal-your-order loginmodal fade ${isOpenModal ? "show d-block" : ""
+          }`}
         id="otp-modal"
         tabIndex={-1}
         aria-labelledby="otp-modall-Label"

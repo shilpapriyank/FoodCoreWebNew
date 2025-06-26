@@ -7,11 +7,11 @@ import {
   PromotionTypes,
   ThemeDefautStyle,
 } from "@/types/common-types/common.types";
-import { AsapLaterOnState } from "@/types/timeslot-types/timeslot.types";
+//import { AsapLaterOnState } from "@/types/timeslot-types/timeslot.types";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
-import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
+//import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
 import { DefaultLocationType } from "@/types/location-types/location.type";
 import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 
@@ -511,48 +511,120 @@ export const checkCategoryExist = (categoryList: any, url: string): boolean => {
 //   const deliveryWindow = restaurantWindowTime?.deliveryTime;
 //   let enableDisableState: any = {};
 
+// export const getAsapLaterOnState = (
+//   defaultLocation: AddressListItem,
+//   pickupordelivery: ORDER_TYPE_ENUM,
+//   restaurantWindowTime?: RestaurantWindowTime
+// ): AsapLaterOnState => {
+//   const pickupWindow = restaurantWindowTime?.pickupTime;
+//   const deliveryWindow = restaurantWindowTime?.deliveryTime;
+
+//   const {
+//     isTakeOutAsap,
+//     isTakeOutPickupTime,
+//     isDeliveryAsap,
+//     isDeliveryPickupTime,
+//     isTakeoutOrderingDisable,
+//     isDeliveryOrderingDisable,
+//     isOrderingDisable,
+//   } = defaultLocation;
+
+//   const orderState =
+//     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+//       ? {
+//         timeWindow: deliveryWindow,
+//         isAsap: isDeliveryAsap,
+//         isLaterOn: isDeliveryPickupTime,
+//         isOrderTypeDisable: isDeliveryOrderingDisable,
+//       }
+//       : {
+//         timeWindow: pickupWindow,
+//         isAsap: isTakeOutAsap,
+//         isLaterOn: isTakeOutPickupTime,
+//         isOrderTypeDisable: isTakeoutOrderingDisable,
+//       };
+
+//   const isdisplay = orderState.isAsap || orderState.isLaterOn;
+
+//   const isDisableAsapLateron =
+//     !(
+//       isOrderingDisable === false &&
+//       orderState.isOrderTypeDisable === false &&
+//       orderState.timeWindow &&
+//       orderState.timeWindow.length > 0
+//     );
+
+//   return {
+//     isdisplay,
+//     isDisableAsapLateron,
+//     isAsap: orderState.isAsap,
+//     isLateron: orderState.isLaterOn,
+//   };
+// };
+
+export interface AsapLaterOnState {
+  isdisplay: boolean;
+  isDisableAsapLateron: boolean;
+  isAsap: boolean;
+  isLateron: boolean;
+}
+
+export interface RestaurantWindowTime {
+  pickupTime?: string[];
+  deliveryTime?: string[];
+}
+
 export const getAsapLaterOnState = (
-  defaultLocation: AddressListItem,
-  pickupordelivery: ORDER_TYPE_ENUM,
+  defaultLocation?: AddressListItem,
+  pickupordelivery?: ORDER_TYPE_ENUM,
   restaurantWindowTime?: RestaurantWindowTime
 ): AsapLaterOnState => {
+  // ✅ Fallback in case required inputs are not provided
+  if (!defaultLocation || !pickupordelivery) {
+    return {
+      isdisplay: false,
+      isDisableAsapLateron: true,
+      isAsap: false,
+      isLateron: false,
+    };
+  }
+
   const pickupWindow = restaurantWindowTime?.pickupTime ?? [];
   const deliveryWindow = restaurantWindowTime?.deliveryTime ?? [];
 
   const {
     isTakeOutAsap,
     isTakeOutPickupTime,
-    isDeliveryPickupTime,
     isDeliveryAsap,
+    isDeliveryPickupTime,
     isTakeoutOrderingDisable,
     isDeliveryOrderingDisable,
     isOrderingDisable,
   } = defaultLocation;
 
-  let orderState = {
-    timeWindow: pickupWindow,
-    isAsap: isTakeOutAsap,
-    isLaterOn: isTakeOutPickupTime,
-    isOrderTypeDisable: isTakeoutOrderingDisable,
-  };
-
-  if (pickupordelivery === "Delivery") {
-    orderState = {
-      timeWindow: deliveryWindow,
-      isAsap: isDeliveryAsap,
-      isLaterOn: isDeliveryPickupTime,
-      isOrderTypeDisable: isDeliveryOrderingDisable,
-    };
-  }
+  const orderState =
+    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      ? {
+          timeWindow: deliveryWindow,
+          isAsap: isDeliveryAsap,
+          isLaterOn: isDeliveryPickupTime,
+          isOrderTypeDisable: isDeliveryOrderingDisable,
+        }
+      : {
+          timeWindow: pickupWindow,
+          isAsap: isTakeOutAsap,
+          isLaterOn: isTakeOutPickupTime,
+          isOrderTypeDisable: isTakeoutOrderingDisable,
+        };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 
-  const isDisableAsapLateron = !(
-    !isOrderingDisable &&
-    !orderState.isOrderTypeDisable &&
-    orderState.timeWindow &&
-    orderState.timeWindow.length > 0
-  );
+  const isDisableAsapLateron =
+    !(
+      isOrderingDisable === false &&
+      orderState.isOrderTypeDisable === false &&
+      orderState.timeWindow.length > 0
+    );
 
   return {
     isdisplay,
@@ -561,6 +633,7 @@ export const getAsapLaterOnState = (
     isLateron: orderState.isLaterOn,
   };
 };
+
 
 export const getorigin = () => {
   return process.env.NEXT_PUBLIC_WEB_URL;
