@@ -152,16 +152,22 @@ const LoadLocationDirectComponent = ({
       lid
     ).then((res) => {
       if (res && restaurantinfo) {
-        Object.keys(restaurantinfo).map((session) => {
-          if (session === "defaultLocation") {
-            Object.assign(restaurantinfo.defaultLocation, res);
-          }
-          if (session === "defaultlocationId") {
-            restaurantinfo.defaultlocationId = res.locationId;
-          }
-        });
+        // Object.keys(restaurantinfo).map((session) => {
+        //   if (session === "defaultLocation") {
+        //     Object.assign(restaurantinfo.defaultLocation, res);
+        //   }
+        //   if (session === "defaultlocationId") {
+        //     restaurantinfo.defaultlocationId = res.locationId;
+        //   }
+        // });
+        const updatedRestaurantInfo = {
+          ...restaurantinfo,
+          defaultlocationId: res.locationId,
+        };
         dispatch(restaurantsdetail(null));
-        dispatch(restaurantsdetail(restaurantinfo));
+        dispatch(restaurantsdetail(updatedRestaurantInfo)); // assuming this is your action
+
+        // dispatch(restaurantsdetail(restaurantinfo));
         //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
         let oldLocationId = getLocationIdFromStorage();
         if (oldLocationId !== restaurantinfo.defaultlocationId) {
@@ -221,12 +227,11 @@ const LoadLocationDirectComponent = ({
           });
         }
         dispatch(clearDeliveryRequestId());
-
         dispatch(
           getAllCategoryMenuItems({
             restaurantId: restaurantinfo?.restaurantId,
             locationId: lid,
-            customerId: userinfo?.customerId,
+            customerId: userinfo?.customerId ?? 0,
             categories: "",
             selectedCategoryUrl: "",
           }) as any

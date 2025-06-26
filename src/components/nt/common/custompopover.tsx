@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 
 const Popover = ({ children, content, position = "bottom" }: any) => {
   const [isOpen, setIsOpen] = useState(false);
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<any>(null);
+  const triggerRef = useRef<any>(null);
 
   const togglePopover = () => {
     setIsOpen((prev) => !prev);
@@ -13,7 +13,6 @@ const Popover = ({ children, content, position = "bottom" }: any) => {
     if (
       popoverRef.current &&
       !popoverRef.current.contains(event.target as Node) &&
-      triggerRef.current &&
       !triggerRef.current.contains(event.target as Node)
     ) {
       setIsOpen(false);
@@ -29,7 +28,11 @@ const Popover = ({ children, content, position = "bottom" }: any) => {
 
   return (
     <div className="popover-container">
-      <div ref={triggerRef} className="popover-trigger" onClick={togglePopover}>
+      <div
+        ref={triggerRef}
+        className="popover-trigger"
+        onClick={togglePopover}
+      >
         {children}
       </div>
       {isOpen && (

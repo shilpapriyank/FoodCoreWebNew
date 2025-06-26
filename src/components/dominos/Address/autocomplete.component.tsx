@@ -29,24 +29,47 @@ interface GoogleAutoCompleteProps {
     isResetQuery?: boolean;
 }
 
-// Utility: Load Google Maps JS
+// // Utility: Load Google Maps JS
+// function loadAsyncScript(src: string): Promise<HTMLScriptElement> {
+//     return new Promise((resolve) => {
+//         if (document.getElementById('google-maps-script')) {
+//             resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+//             return;
+//         }
+//         const script = document.createElement('script');
+//         Object.assign(script, {
+//             type: 'text/javascript',
+//             id: 'locationscript',
+//             async: true,
+//             src,
+//         });
+//         script.addEventListener('load', () => resolve(script));
+//         document.head.appendChild(script);
+//     });
+// }
 function loadAsyncScript(src: string): Promise<HTMLScriptElement> {
-    return new Promise((resolve) => {
-        if (document.getElementById('google-maps-script')) {
-            resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
-            return;
-        }
-        const script = document.createElement('script');
-        Object.assign(script, {
-            type: 'text/javascript',
-            id: 'locationscript',
-            async: true,
-            src,
-        });
-        script.addEventListener('load', () => resolve(script));
-        document.head.appendChild(script);
+  return new Promise((resolve) => {
+    if ((window as any).google) {
+      resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+      return;
+    }
+    if (document.getElementById('google-maps-script')) {
+      resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+      return;
+    }
+
+    const script = document.createElement('script');
+    Object.assign(script, {
+      type: 'text/javascript',
+      id: 'google-maps-script', // ✅ Corrected ID
+      async: true,
+      src,
     });
+    script.addEventListener('load', () => resolve(script));
+    document.head.appendChild(script);
+  });
 }
+
 
 // Utility: Extract address from Google place result
 function extractAddress(place: any): Address {

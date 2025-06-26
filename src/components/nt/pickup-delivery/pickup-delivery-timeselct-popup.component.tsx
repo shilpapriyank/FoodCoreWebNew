@@ -144,7 +144,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     const restaurantWindowTime = main.restaurantWindowTime;
     let asapLaterOnState = getAsapLaterOnState(
       restaurantinfo?.defaultLocation as any,
-      selecteddelivery?.pickupordelivery,
+      selecteddelivery?.pickupordelivery as any,
       restaurantWindowTime as any
     );
     const redirectPrevPage = searchParams.get("redirectcart") === "true";
@@ -486,7 +486,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
           }
         }
       } catch (error) {
-        console.error("Error in handlesave:", error);
+        // console.error("Error in handlesave:", error);
       }
     };
 
