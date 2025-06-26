@@ -47,3 +47,23 @@ export interface SendVerificationEmailParams {
     requesturl: string;
     customerId: number;
 }
+
+export interface RegisterRequestData {
+  register: {
+    user: RegisterModel;
+    address?: {
+      address1?: string;
+      address2?: string;
+      address3?: string;
+      city?: string;
+      state?: string;
+      country?: string;
+      zipcode?: string;
+      addressType?: number;
+      businessname?: string;
+    };
+    locationId?: number;
+    restaurantId?: number;
+    requesturl?: string;
+  };
+}

@@ -1,6 +1,30 @@
 
 import React from "react";
 
+interface CheckBoxProps {
+  type: {
+    suboptionId: string;
+    subOptionselected: boolean;
+  };
+  item: {
+    optionId: string | number;
+    subparameterId: string | number;
+  };
+  isRadioButton: boolean;
+  classInputName?: string;
+  disabled?: boolean;
+  handleOnChangeSubOption: (
+    type: {
+      suboptionId: string | number;
+      subOptionselected: boolean;
+    },
+    optionId: string | number,
+    action: "select" | "deselect",
+    isRadioButton: boolean,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+}
+
 const CheckBox = ({
   type,
   item,
@@ -8,7 +32,7 @@ const CheckBox = ({
   classInputName,
   handleOnChangeSubOption,
   disabled,
-}: any) => {
+}: CheckBoxProps) => {
   return (
     <>
       <input
@@ -26,13 +50,9 @@ const CheckBox = ({
             e
           )
         }
-        //defaultChecked={type?.subOptionselected}
         value={type.suboptionId}
         checked={type?.subOptionselected == true}
       />
-
-      {/* <input id={type.suboptionId} onChange={() => handleOnChangeSubOption(type, item.optionId, type.subOptionselected === true ? "deselect" : "select")} 
-        value={type.suboptionId} name={`${item.optionId}_${item.subparameterId}`} type="radio" checked={type?.subOptionselected == true } /> */}
     </>
   );
 };

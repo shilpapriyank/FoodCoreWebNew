@@ -61,7 +61,7 @@ const AddAddress: React.FC<AddAddressProps> = ({
   const customerId = userinfo?.customerId || 0;
   const restaurantId = restaurantinfo?.restaurantId;
   const locationId = restaurantinfo?.defaultLocation?.locationId;
-  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
+  const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
 
   const sendToParent = (index: any) => {
     setAddressField((prev) => ({
@@ -109,7 +109,7 @@ const AddAddress: React.FC<AddAddressProps> = ({
     } = addressField;
 
     if (address1 && city && state && postalcode) {
-      const obj: any = {
+      const obj = {
         customerId,
         othercustomerId: 0,
         deliveryaddressId: 0,
@@ -199,9 +199,8 @@ const AddAddress: React.FC<AddAddressProps> = ({
   return (
     <>
       <div
-        className={`modal fade modal-your-order address-modal ${
-          isOpenModal ? "show d-block" : ""
-        }`}
+        className={`modal fade modal-your-order address-modal ${isOpenModal ? "show d-block" : ""
+          }`}
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">

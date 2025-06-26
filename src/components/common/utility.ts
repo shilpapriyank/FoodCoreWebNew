@@ -791,7 +791,7 @@ export const bindPlaceOrderObject = (
         : "",
     deliveryNote:
       cart?.orderdeliveryinstruction ||
-      cart?.orderdeliveryinstruction !== undefined
+        cart?.orderdeliveryinstruction !== undefined
         ? cart.orderdeliveryinstruction
         : "",
     preDiscountSubTotal:
@@ -806,9 +806,9 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-      pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+        pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
         ? //pickupordelivery === ORDERTYPE.Delivery
-          parseFloat(cart.carttotal.deliveryAmount)
+        parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
@@ -886,7 +886,7 @@ export const getCheckTimeArr = (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
       restaurantinfo?.defaultLocation?.deliveryService ===
-        DELIVERYSERVICES.UBEREATS) &&
+      DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
@@ -1014,6 +1014,41 @@ export const convert24HourTo12Hour = (time: any) => {
   return [hour, minute, meridian];
 };
 
+// export const checkWindowTimeExpires = (
+//   windowEndTime: any,
+//   currentTime: any,
+//   isLastOrder: boolean = false,
+//   isasap: any
+// ) => {
+//   let [time, windowMeridian] = getCheckTimeArr(
+//     currentTime,
+//     isLastOrder,
+//     windowEndTime,
+//     isasap
+//   );
+//   const [windowHour, windowMinute] = time.split(":");
+//   const [currentHour, currentMinute, meridian] =
+//     convert24HourTo12Hour(currentTime);
+//   //check window expiry time
+//   var beginningTime = moment(
+//     `${currentHour}:${currentMinute}${meridian}`,
+//     "hh:mma"
+//   );
+//   var endTime = moment(
+//     `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
+//     "hh:mma"
+//   );
+//   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
+//   if (
+//     meridian.trim().toLowerCase() === "pm" &&
+//     isLastOrder &&
+//     windowMeridian.trim().toLowerCase() === "am"
+//   ) {
+//     WindowTimeIsAvailable = true;
+//   }
+//   return WindowTimeIsAvailable;
+// };
+
 export const checkWindowTimeExpires = (
   windowEndTime: any,
   currentTime: any,
@@ -1026,26 +1061,31 @@ export const checkWindowTimeExpires = (
     windowEndTime,
     isasap
   );
+
+  if (!time || !windowMeridian) {
+    console.warn("Invalid time or windowMeridian from getCheckTimeArr");
+    return false;
+  }
+
   const [windowHour, windowMinute] = time.split(":");
   const [currentHour, currentMinute, meridian] =
     convert24HourTo12Hour(currentTime);
-  //check window expiry time
-  var beginningTime = moment(
-    `${currentHour}:${currentMinute}${meridian}`,
-    "hh:mma"
-  );
-  var endTime = moment(
-    `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
-    "hh:mma"
-  );
+
+  const beginningTime = moment(`${currentHour}:${currentMinute}${meridian}`, "hh:mma");
+
+  const safeMeridian = (windowMeridian || "").toLowerCase();
+  const endTime = moment(`${windowHour}:${windowMinute}${safeMeridian}`, "hh:mma");
+
   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
+
   if (
     meridian.trim().toLowerCase() === "pm" &&
     isLastOrder &&
-    windowMeridian.trim().toLowerCase() === "am"
+    safeMeridian === "am"
   ) {
     WindowTimeIsAvailable = true;
   }
+
   return WindowTimeIsAvailable;
 };
 
@@ -1325,12 +1365,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
+        (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-            ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+          ? 1
+          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1355,12 +1395,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
+        (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-            ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+          ? 1
+          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1388,11 +1428,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-            ? 1
-            : parseInt(tc.halfpizzaprice) / 100)
+        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+          ? 1
+          : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1404,9 +1444,8 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
+          }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1418,9 +1457,8 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
+          }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1649,7 +1687,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-            data.subOptionToppingQuantity;
+          data.subOptionToppingQuantity;
       } else {
       }
     });

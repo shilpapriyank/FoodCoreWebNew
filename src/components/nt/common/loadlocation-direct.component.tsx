@@ -68,7 +68,7 @@ const LoadLocationDirectComponent = ({
     if (
       selecteddelivery?.pickupordelivery === null ||
       Object.keys(selecteddelivery?.pickupordelivery).length === 0 ||
-      selecteddelivery?.pickupordelivery === ""
+      selecteddelivery?.pickupordelivery === null
     ) {
       dispatch(
         setpickupordelivery(
