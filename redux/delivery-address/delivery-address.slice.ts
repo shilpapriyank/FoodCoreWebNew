@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { DeliveryAddressServices } from "./delivery-address.services";
 import { DeliveryAddressTypes } from "./delivery-address.type";
+import { DeliveryAddressInput } from "./delivery-address.types";
 
 interface DeliveryAddressState {
-  deliveryaddressdata: any[] | null;
+  deliveryaddressdata: DeliveryAddressInput[] |null;
   updatedAddress: boolean | { isAddressUpdated: boolean };
   choosetime: Record<string, any>;
   registeraddress: Record<string, any>;
@@ -150,130 +151,3 @@ export const {
 } = deliveryAddressSlice.actions;
 
 export default deliveryAddressSlice.reducer;
-
-// import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { DeliveryAddressServices } from './delivery-address.services';
-
-// // --- Types ---
-
-// export interface DeliveryAddressInput {
-//   customerId?: number;
-//   othercustomerId?: number;
-//   deliveryaddressId?: number;
-//   address1?: string;
-//   address2?: string;
-//   city?: string;
-//   state?: string;
-//   zip?: string;
-//   zipcode?: string;
-//   landmark?: string;
-//   contactno?: string;
-//   contactname?: string;
-//   latitude?: string;
-//   longitude?: string;
-//   [key: string]: any;
-// }
-
-// export interface DeliveryAddressState {
-//   deliveryaddressdata: DeliveryAddressInput[] | null;
-//   updatedAddress: boolean;
-//   choosetime: Record<string, any>;
-//   registeraddress: DeliveryAddressInput;
-//   addressId: DeliveryAddressInput;
-//   tempDeliveryAddress: DeliveryAddressInput | null;
-// }
-
-// // --- Initial State ---
-
-// const initialState: DeliveryAddressState = {
-//   deliveryaddressdata: null,
-//   updatedAddress: false,
-//   choosetime: {},
-//   registeraddress: {},
-//   addressId: {},
-//   tempDeliveryAddress: null,
-// };
-
-// // --- Async Thunks ---
-
-// export const getAddress = createAsyncThunk<
-//   DeliveryAddressInput[],
-//   { customerId: number; restaurantId: number; locationId: number }
-// >('deliveryAddress/getAddress', async ({ customerId, restaurantId, locationId }) => {
-//   const response = await DeliveryAddressServices.getDeliveryAddress(customerId, restaurantId, locationId);
-//   if (response) {
-//     return response;
-//   }
-//   return [];
-// }
-// );
-
-// export const deleteAddress = createAsyncThunk<
-//   any,
-//   { deliveryaddressId: number; restaurantId: number }
-// >('deliveryAddress/deleteAddress', async ({ deliveryaddressId, restaurantId }) => {
-//   const response = await DeliveryAddressServices.deleteDeliveryAddress(deliveryaddressId, restaurantId);
-//   return response;
-// });
-
-// export const addAddress = createAsyncThunk<
-//   DeliveryAddressInput,
-//   { obj: any; restaurantId: number; locationId: number }
-// >('deliveryAddress/addAddress', async ({ obj, restaurantId, locationId }) => {
-//   const response = await DeliveryAddressServices.addDeliveryAddress(obj, restaurantId, locationId);
-//   if (response) {
-//     return response;
-//   }
-//   return [];
-// }
-// );
-
-// // --- Slice ---
-
-// const deliveryAddressSlice = createSlice({
-//   name: 'deliveryAddress',
-//   initialState,
-//   reducers: {
-//     updateAddressCheck(state, action: PayloadAction<boolean>) {
-//       state.updatedAddress = action.payload;
-//     },
-//     registerAddress(state, action: PayloadAction<DeliveryAddressInput>) {
-//       state.registeraddress = action.payload;
-//       state.tempDeliveryAddress = null;
-//     },
-//     insertAddressId(state, action: PayloadAction<DeliveryAddressInput>) {
-//       state.addressId = action.payload;
-//     },
-//     addTempDeliveryAddress(state, action: PayloadAction<DeliveryAddressInput | null>) {
-//       state.tempDeliveryAddress = action.payload;
-//     },
-//     deleteTempDeliveryAddress(state) {
-//       state.tempDeliveryAddress = null;
-//     },
-//     resetDeliveryAddress() {
-//       return initialState;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(getAddress.fulfilled, (state, action: PayloadAction<DeliveryAddressInput[]>) => {
-//         state.deliveryaddressdata = action.payload;
-//       })
-//       .addCase(addAddress.fulfilled, (state, action: PayloadAction<DeliveryAddressInput>) => {
-//         state.addressId = action.payload;
-//       });
-//   },
-// });
-
-// // --- Exports ---
-
-// export const {
-//   updateAddressCheck,
-//   registerAddress,
-//   insertAddressId,
-//   addTempDeliveryAddress,
-//   deleteTempDeliveryAddress,
-//   resetDeliveryAddress,
-// } = deliveryAddressSlice.actions;
-
-// export default deliveryAddressSlice.reducer;

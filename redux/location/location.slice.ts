@@ -1,13 +1,3 @@
-// import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { LocationServices } from "./location.services";
-// import { RootState } from "../store";
-
-// export interface LocationState {
-//   location: any[];
-// }
-
-// const initialState: LocationState = {
-//   location: [],
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LocationServices } from "./location.services";
 import { RootState } from "../store";

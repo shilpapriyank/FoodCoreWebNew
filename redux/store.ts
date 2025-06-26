@@ -27,7 +27,6 @@ import rewardpointReducer from "./rewardpoint/rewardpoint.slice";
 import deliveryaddressReducer from "./selected-delivery-data/selecteddelivery.slice";
 import studentReducer from "../redux/student/student.slice";
 import registerReducer from "./register/register.slice";
-//import selecteddeliveryReducer from "./selected-delivery-data/selecteddelivery.slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
