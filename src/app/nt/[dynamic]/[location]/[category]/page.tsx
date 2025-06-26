@@ -142,7 +142,7 @@ export default function CategoryPage() {
           {/* <CategoryHeader /> */}
           <CategoryMenuItems
             menuItemsWithCat={menuItemsWithCat}
-            categoryslug={params?.category}
+            categoryslug={params?.category as string}
             errorMessage={errorMessage}
           >
             <SearchBarComponent

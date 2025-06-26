@@ -3,10 +3,9 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import { CategoryItemType } from "@/types/category-types/category.services.type";
+import { MenuItemDetailList } from "@/types/menuitem-types/menuitem.type";
 
 let responseclass = new ResponseModel();
-
-// Define request and response types
 
 export class CategoryServices {
   static async getCategoryItemList(
@@ -15,7 +14,6 @@ export class CategoryServices {
     customerId: number,
     locationId: number
   ): Promise<CategoryItemType[] | null> {
-    // ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
@@ -48,7 +46,7 @@ export class CategoryServices {
     sessionId: string,
     locationId: number,
     restaurantId: number
-  ): Promise<any> {
+  ): Promise<MenuItemDetailList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryRelativesItems";
     const location = ENDPOINTS.GET_CATEGORIES_RELATIVE_ITEMS;
@@ -66,6 +64,7 @@ export class CategoryServices {
       true,
       restaurantId
     );
+
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

@@ -1,5 +1,7 @@
+'use client';
+
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 // import { GetThemeDetails, ThemeObj } from '../../../components/dominos/helpers/utility';
 // import { useReduxData } from '../../../components/customhooks/useredux-data-hook';
