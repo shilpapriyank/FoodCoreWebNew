@@ -18,7 +18,7 @@ export class DeliveryAddressServices {
     customerId: number,
     restaurantId: number,
     locationId: number
-  ): Promise<any[] | null> {
+  ): Promise<DeliveryAddressInput[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getDeliveryAddress";
     const location = ENDPOINTS.GET_DELIVERY_ADDRESS;
@@ -48,7 +48,7 @@ export class DeliveryAddressServices {
   static async deleteDeliveryAddress(
     deliveryaddressId: number,
     restaurantId: number
-  ): Promise<any | null> {
+  ): Promise<boolean> {
     responseclass = new ResponseModel();
     const methodName = "deleteDeliveryAddress";
     const location = ENDPOINTS.DELETE_DELIVERY_ADDRESS;
@@ -80,7 +80,7 @@ export class DeliveryAddressServices {
         ToasterPositions.TopRight,
         ToasterTypes.Error
       );
-      return null;
+      return false;
     }
   }
 
@@ -88,7 +88,7 @@ export class DeliveryAddressServices {
     obj: DeliveryAddressInput,
     restaurantId: number,
     locationId: number
-  ): Promise<any | null> {
+  ): Promise<DeliveryAddressInput  | null> {
     responseclass = new ResponseModel();
     const methodName = "addDeliveryAddress";
     const location = ENDPOINTS.ADD_DELIVERY_ADDRESS;

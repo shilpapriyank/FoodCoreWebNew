@@ -2,7 +2,7 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import { AddressModel, OTPVerificationSettingParams, RegisterModel, SendVerificationEmailParams, TwilioSendCodeParams, TwilioVerifyCodeParams, VerifyEmailParams } from "@/types/register-types/register.types";
+import { AddressModel, OTPVerificationSettingParams, RegisterModel, RegisterRequestData, SendVerificationEmailParams, TwilioSendCodeParams, TwilioVerifyCodeParams, VerifyEmailParams } from "@/types/register-types/register.types";
 
 let responseclass = new ResponseModel();
 
@@ -21,7 +21,7 @@ export class RegisterServices {
     if (address !== null) registerurl = ENDPOINTS.REGISTER;
     else registerurl = ENDPOINTS.REGISTER_USER;
 
-    const data: any = {
+    const data: RegisterRequestData = {
       register: {
         user: {
           firstname: registerModel.firstname,
@@ -71,7 +71,7 @@ export class RegisterServices {
       restaurantId,
       enableotpauthentication,
       smsapigateway,
-    }: OTPVerificationSettingParams): Promise<Record<string, any> | null> {
+    }: OTPVerificationSettingParams): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "getOTPVerificationSetting";
     const location = ENDPOINTS.OTP_VERIFICATION_SETTING;
@@ -103,7 +103,7 @@ export class RegisterServices {
       enableotpauthentication,
       smsapigateway,
       mobilenumber,
-    }: TwilioSendCodeParams): Promise<Record<string, any> | null> {
+    }: TwilioSendCodeParams): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "twilioSendCode";
     const location = ENDPOINTS.TWILIO_SEND_CODE;
@@ -136,7 +136,7 @@ export class RegisterServices {
     smsapigateway,
     mobilenumber,
     code,
-  }: TwilioVerifyCodeParams): Promise<Record<string, any> | null> {
+  }: TwilioVerifyCodeParams): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "twilioVerifyCode";
     const location = ENDPOINTS.TWILIO_VERIFY_CODE;
@@ -170,7 +170,7 @@ export class RegisterServices {
       locationId,
       code,
       customerId,
-    }: VerifyEmailParams): Promise<Record<string, any> | null> {
+    }: VerifyEmailParams): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "verifyEmail";
     const verify = ENDPOINTS.VERIFY_EMAIL;
@@ -205,7 +205,7 @@ export class RegisterServices {
       locationId,
       requesturl,
       customerId,
-    }: SendVerificationEmailParams): Promise<Record<string, any> | null> {
+    }: SendVerificationEmailParams): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "sendVerificationEmail";
     const sendVerificationEmail = ENDPOINTS.SEND_VERIFICATION_EMAIL;

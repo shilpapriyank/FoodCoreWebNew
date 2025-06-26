@@ -5,6 +5,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useRouter, useParams } from "next/navigation";
 import { GetThemeDetails, ThemeObj } from "@/components/common/utility";
 import stylesloader from "../[dynamic]/stylesloader.module.css";
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 
 const DynamicPage = () => {
   const dispatch = useDispatch();
@@ -13,11 +14,7 @@ const DynamicPage = () => {
   const dynamic = params.dynamic as string | undefined;
   const location = params?.location as string;
   const theme = params?.theme as string;
-
-  const restaurantinfo = useSelector(
-    ({ restaurant }: any) => restaurant?.restaurantdetail,
-    shallowEqual
-  );
+  const { restaurantinfo } = useReduxData()
 
   useEffect(() => {
     let routepath = "";
