@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import React, { useState } from "react";
 
-const RestaurantArrayList = (props: any) => {
+const RestaurantArrayListNew = (props: any) => {
   const [restaurantList, setrestaurantList] = useState(props.restaurantList);
   return (
     <div>
-      {restaurantList.map((location: any, index: any) => {
+      {restaurantList?.map((location: any, index: any) => {
         if (index % 2 == 0) {
           return (
             <div
@@ -314,4 +312,4 @@ const RestaurantArrayList = (props: any) => {
   );
 };
 
-export default RestaurantArrayList;
+export default RestaurantArrayListNew;

@@ -1,47 +1,23 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  PayloadAction,
-  isRejectedWithValue,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { MainServices } from "./main.services";
 import {
   getAllCategoryMenuItems,
   getCategoryItemList,
   selectedCategory,
-} from "../category/category.slice"; // Ensure these are converted slices
+} from "../category/category.slice";
 import { MainTypes } from "./main.type";
 import { GetThemeDetails } from "@/components/common/utility";
 import {
-  DeliveryTimeSlot,
-  MainCategory,
-  RestaurantWindowTime,
+  MainCategoryList,
+  RestaurantWindowTimeNew,
 } from "@/types/mainservice-types/mainservice.type";
-import { RootState } from "../store";
-import { GetSelectedRestaurantTime } from "@/types/restaurant-types/restaurant.type";
 
 interface MainState {
-  maincategoryList: MainCategory[];
-  promotioncategoryList: MainCategory[];
+  maincategoryList: MainCategoryList[];
+  promotioncategoryList: MainCategoryList[];
   deliverypickuppopup: boolean;
   ischangelocation: boolean;
-  restaurantWindowTime: RestaurantWindowTime[] | null;
-  // restaurantWindowTime?: {
-  //   OrdDeliveryClosingTime: DeliveryTimeSlot[];
-  //   OrdDeliveryClosingTimeV1: DeliveryTimeSlot[];
-  //   OrdDeliveryOpeningTime: DeliveryTimeSlot[];
-  //   OrdDeliveryOpeningTimeV1: DeliveryTimeSlot[];
-  //   TakeoutDeliveryClosingTime: DeliveryTimeSlot[];
-  //   TakeoutDeliveryClosingTimeV1: DeliveryTimeSlot[];
-  //   TakeoutDeliveryOpeningTime: DeliveryTimeSlot[];
-  //   TakeoutDeliveryOpeningTimeV1: DeliveryTimeSlot[];
-  //   deliveryClosingWindowTime: string | null;
-  //   deliveryOpeningWindowTime: string | null;
-  //   deliveryTime: string[];
-  //   pickupTime: string[];
-  //   isDeliveryClosed: boolean;
-  //   isPickupClosed: boolean;
-  // };
+  restaurantWindowTime: RestaurantWindowTimeNew[] | null;
 }
 
 const initialState: MainState = {
@@ -50,67 +26,30 @@ const initialState: MainState = {
   deliverypickuppopup: true,
   ischangelocation: false,
   restaurantWindowTime: null,
-  // restaurantWindowTime: {
-  //   OrdDeliveryClosingTime: [],
-  //   OrdDeliveryClosingTimeV1: [],
-  //   OrdDeliveryOpeningTime: [],
-  //   OrdDeliveryOpeningTimeV1: [],
-  //   TakeoutDeliveryClosingTime: [],
-  //   TakeoutDeliveryClosingTimeV1: [],
-  //   TakeoutDeliveryOpeningTime: [],
-  //   TakeoutDeliveryOpeningTimeV1: [],
-  //   deliveryClosingWindowTime: "",
-  //   deliveryOpeningWindowTime: "",
-  //   deliveryTime: [],
-  //   pickupTime: [],
-  //   isDeliveryClosed: false,
-  //   isPickupClosed: false,
-  // },
 };
 
-export const getMenuCategoryList = createAsyncThunk(
-  MainTypes.GET_MENU_CATEGORY_DATA,
-  async (
-    { restaurantId, locationId }: { restaurantId: number; locationId: number },
-    { dispatch }
-  ) => {
-    const response = await MainServices.getMenuCategoryList(
-      restaurantId,
-      locationId
-    );
-    if (response) {
-      // dispatch({
-      //   type: MainTypes.GET_MENU_CATEGORY_DATA,
-      //   payload: response,
-      // });
-      dispatch(setMainCategoryList(response as MainCategory[]));
+export const getMenuCategoryList = createAsyncThunk<
+  MainCategoryList[], // Return type
+  { restaurantId: number; locationId: number } // Arg type
+>(MainTypes.GET_MENU_CATEGORY_DATA, async ({ restaurantId, locationId }) => {
+  const response = await MainServices.getMenuCategoryList(
+    restaurantId,
+    locationId
+  );
+  return response as MainCategoryList[];
+});
 
-      return response;
-    }
-    return [];
-  }
-);
-
-export const getSelectedRestaurantTime = createAsyncThunk(
+export const getSelectedRestaurantTime = createAsyncThunk<
+  RestaurantWindowTimeNew[], // Return type
+  { restaurantId: number; locationId: number } // Arg type
+>(
   MainTypes.GET_SELECTED_RESTAURANTTIME,
-  async (
-    { restaurantId, locationId }: { restaurantId: number; locationId: number },
-    { dispatch }
-  ) => {
+  async ({ restaurantId, locationId }) => {
     const response = await MainServices.getSelectedRestaurantWindowTime(
       restaurantId,
       locationId
     );
-    if (response) {
-      // dispatch({
-      //   type: MainTypes.GET_MENU_CATEGORY_DATA,
-      //   payload: response,
-      // });
-      //dispatch(setMainCategoryList(response as RestaurantWindowTime));
-
-      return response as RestaurantWindowTime[];
-    }
-    return [];
+    return response as RestaurantWindowTimeNew[];
   }
 );
 
@@ -120,7 +59,10 @@ export const refreshCategoryList = createAsyncThunk(
     {
       newselectedRestaurant,
       customerId,
-    }: { newselectedRestaurant: any; customerId: number },
+    }: {
+      newselectedRestaurant: any;
+      customerId: number;
+    },
     { dispatch }
   ) => {
     const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
@@ -132,71 +74,47 @@ export const refreshCategoryList = createAsyncThunk(
           locationId: newselectedRestaurant.defaultlocationId,
           customerId,
           categories: "",
-        }) as any
+          selectedCategoryUrl: "",
+        })
       );
     } else {
-      let catresponse;
-      await MainServices.getMenuCategoryList(
+      const response = await MainServices.getMenuCategoryList(
         newselectedRestaurant.restaurantId,
         newselectedRestaurant.defaultlocationId
-      ).then((catresponsedata) => {
-        catresponse = catresponsedata;
-        if (
-          catresponse &&
-          catresponse !== null &&
-          catresponse !== undefined &&
-          catresponse.length > 0
-        ) {
-          let categoryresponse = catresponse;
-          // dispatch({
-          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
-          //   payload: categoryresponse,
-          // });
-          dispatch(mainSlice.actions.setMainCategoryList(categoryresponse));
+      );
 
-          const firstCategory = { ...catresponse[0], catSelected: true };
-          dispatch(selectedCategory(firstCategory));
-          dispatch(
-            getCategoryItemList({
-              restaurantId: newselectedRestaurant.restaurantId,
-              categories: String(firstCategory.catId),
-              customerId,
-              locationId: newselectedRestaurant.defaultlocationId,
-            })
+      if (response?.length) {
+        dispatch(setMainCategoryList(response));
+
+        const firstCategory = { ...response[0], catSelected: true };
+        dispatch(selectedCategory(firstCategory));
+
+        dispatch(
+          getCategoryItemList({
+            restaurantId: newselectedRestaurant.restaurantId,
+            categories: String(firstCategory.catId),
+            customerId,
+            locationId: newselectedRestaurant.defaultlocationId,
+          })
+        );
+
+        const promotion = response.find((x) => x.catName === "PROMOTION");
+        if (promotion) {
+          const promoResponse = await MainServices.getPromotionCategoryList(
+            newselectedRestaurant.restaurantId,
+            String(promotion.catId),
+            customerId,
+            newselectedRestaurant.defaultlocationId
           );
 
-          const promotioncategories = catresponse.find(
-            (x) => x.catName === "PROMOTION"
-          );
-          let promotionCatId: string = "0";
-          if (promotioncategories) {
-            promotionCatId = String(promotioncategories.catId);
-            MainServices.getPromotionCategoryList(
-              newselectedRestaurant.restaurantId,
-              promotionCatId,
-              customerId,
-              newselectedRestaurant.defaultlocationId
-            ).then((promocatresponse) => {
-              if (promocatresponse && promocatresponse != null) {
-                dispatch(
-                  mainSlice.actions.setPromotionCategoryList(promocatresponse)
-                );
-              }
-            });
+          if (promoResponse) {
+            dispatch(setPromotionCategoryList(promoResponse));
           }
-        } else {
-          dispatch(mainSlice.actions.updateMenuCategoryData([]));
-          dispatch(mainSlice.actions.updatePromotionCategoryData([]));
-          // dispatch({
-          //   type: MainTypes.UPDATE_MENU_CATEGORY_DATA,
-          //   payload: [],
-          // });
-          // dispatch({
-          //   type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
-          //   payload: [],
-          // });
         }
-      });
+      } else {
+        dispatch(updateMenuCategoryData([]));
+        dispatch(updatePromotionCategoryData([]));
+      }
     }
   }
 );
@@ -216,37 +134,39 @@ export const mainSlice = createSlice({
     changeLocationModal(state, action: PayloadAction<boolean>) {
       state.ischangelocation = action.payload;
     },
-    setMainCategoryList(state, action: PayloadAction<MainCategory[]>) {
+    setMainCategoryList(state, action: PayloadAction<MainCategoryList[]>) {
       state.maincategoryList = action.payload;
     },
-    setPromotionCategoryList(state, action: PayloadAction<MainCategory[]>) {
+    setPromotionCategoryList(state, action: PayloadAction<MainCategoryList[]>) {
       state.promotioncategoryList = action.payload;
     },
     getPromotionCategoryData(state, action: PayloadAction<any[]>) {
       state.promotioncategoryList = action.payload;
     },
-    updateMenuCategoryData(state, action: PayloadAction<MainCategory[]>) {
+    updateMenuCategoryData(state, action: PayloadAction<MainCategoryList[]>) {
       state.maincategoryList = action.payload;
     },
-    updatePromotionCategoryData(state, action: PayloadAction<MainCategory[]>) {
+    updatePromotionCategoryData(
+      state,
+      action: PayloadAction<MainCategoryList[]>
+    ) {
       state.promotioncategoryList = action.payload;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(getMenuCategoryList.fulfilled, (state, action) => {
-      state.maincategoryList = action.payload;
-    });
 
+  extraReducers: (builder) => {
+    builder.addCase(
+      getMenuCategoryList.fulfilled,
+      (state, action: PayloadAction<MainCategoryList[]>) => {
+        state.maincategoryList = action.payload;
+      }
+    );
     builder.addCase(
       getSelectedRestaurantTime.fulfilled,
-      (state, action: PayloadAction<RestaurantWindowTime[]>) => {
+      (state, action: PayloadAction<RestaurantWindowTimeNew[]>) => {
         state.restaurantWindowTime = action.payload;
       }
     );
-
-    // builder.addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
-    //   state.restaurantWindowTime = action.payload;
-    // });
   },
 });
 

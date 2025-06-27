@@ -3,47 +3,18 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import {
-  MainCategory,
+  MainCategoryList,
   RestaurantWindowTime,
+  RestaurantWindowTimeNew,
 } from "@/types/mainservice-types/mainservice.type";
-import { GetSelectedRestaurantTime } from "@/types/restaurant-types/restaurant.type";
-import { ChildProcessWithoutNullStreams } from "child_process";
 
 let responseclass = new ResponseModel();
-
-// Define structured request types
-interface MainCategoryListRequest {
-  restaurantId: number;
-  locationId: number;
-}
-
-interface MainCategoryListPOSRequest extends MainCategoryListRequest {
-  isPOS: boolean;
-  customerId: number;
-  categories: string;
-}
-
-interface PromotionCategoryRequest {
-  menuItemRequest: {
-    restaurantId: number;
-    categories: string;
-    customerId: number;
-    locationId: number;
-  };
-}
-
-interface RestaurantTimeRequest {
-  selectedRestaurant: {
-    restaurantId: number;
-    locationId: number;
-  };
-}
 
 export class MainServices {
   static async getMenuCategoryList(
     restaurantId: number,
     locationId: number
-  ): Promise<MainCategory[] | null> {
+  ): Promise<MainCategoryList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuCategoryList";
     const location = ENDPOINTS.GET_MENU_CATEGORY;
@@ -67,7 +38,7 @@ export class MainServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as MainCategoryList[];
     } else {
       return [];
     }
@@ -78,7 +49,7 @@ export class MainServices {
     locationId: number,
     isPOS: boolean,
     customerId: number
-  ): Promise<MainCategory[] | ChildProcessWithoutNullStreams | null> {
+  ): Promise<MainCategoryList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuCategoryListPOS";
     const location = ENDPOINTS.GET_MENU_CATEGORY_POS;
@@ -105,7 +76,7 @@ export class MainServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as MainCategoryList[];
     } else {
       return [];
     }
@@ -116,7 +87,7 @@ export class MainServices {
     categories: string,
     customerId: number,
     locationId: number
-  ): Promise<MainCategory[]> {
+  ): Promise<MainCategoryList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getPromotionCategoryList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
@@ -142,7 +113,7 @@ export class MainServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as MainCategoryList[];
     } else {
       return [];
     }
@@ -151,12 +122,12 @@ export class MainServices {
   static async getSelectedRestaurantWindowTime(
     restaurantId: number,
     locationId: number
-  ): Promise<RestaurantWindowTime[] | null> {
+  ): Promise<RestaurantWindowTimeNew[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getSelectedRestaurantWindowTime";
     const selecetdrestaurant = ENDPOINTS.GET_SELECTED_RESTAURANT_TIME;
 
-    const data: RestaurantTimeRequest = {
+    const data = {
       selectedRestaurant: {
         restaurantId,
         locationId,

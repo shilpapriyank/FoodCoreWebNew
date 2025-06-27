@@ -7,8 +7,11 @@ import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-p
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import {
-  MenuItemDetailList,
-  SelectedMenuItemDetail,
+  AddOrDeleteFavorite,
+  AddToCart,
+  GetMenuItemDetail,
+  GetSerachResult,
+  UpdateItemToCart,
 } from "@/types/menuitem-types/menuitem.type";
 
 let responseclass = new ResponseModel();
@@ -28,7 +31,7 @@ export class MenuItemServices {
     menuitemId: number;
     cartsessionId: string;
     cartId: number;
-  }): Promise<MenuItemDetailList[] | null> {
+  }): Promise<GetMenuItemDetail[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuItemList";
     const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
@@ -53,7 +56,7 @@ export class MenuItemServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as GetMenuItemDetail[];
     } else {
       return [];
     }
@@ -67,7 +70,7 @@ export class MenuItemServices {
     customerId: number;
     restaurantId: number;
     menuItemId: number;
-  }): Promise<MenuItemDetailList[] | null> {
+  }): Promise<AddOrDeleteFavorite | null> {
     responseclass = new ResponseModel();
     const methodName = "addfavorite";
     const location = ENDPOINTS.ADD_FAVORITE;
@@ -92,7 +95,7 @@ export class MenuItemServices {
         ToasterPositions.TopRight,
         ToasterTypes.Success
       );
-      return responseclass.result;
+      return responseclass.result as AddOrDeleteFavorite;
     } else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
       handleNotify(
         responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,
@@ -111,9 +114,9 @@ export class MenuItemServices {
         ToasterPositions.TopRight,
         ToasterTypes.Warning
       );
-      return [];
+      return null;
     }
-    return [];
+    return null;
   }
 
   static async deletefavorite({
@@ -124,7 +127,7 @@ export class MenuItemServices {
     customerId: number;
     restaurantId: number;
     menuItemId: number;
-  }): Promise<MenuItemDetailList[] | null> {
+  }): Promise<AddOrDeleteFavorite | null> {
     responseclass = new ResponseModel();
     const methodName = "deletefavorite";
     const location = ENDPOINTS.DELETE_FAVORITE;
@@ -149,7 +152,7 @@ export class MenuItemServices {
         ToasterPositions.TopRight,
         ToasterTypes.Success
       );
-      return responseclass.result;
+      return responseclass.result as AddOrDeleteFavorite;
     } else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
       handleNotify(
         responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,
@@ -168,9 +171,9 @@ export class MenuItemServices {
         ToasterPositions.TopRight,
         ToasterTypes.Warning
       );
-      return [];
+      return null;
     }
-    return [];
+    return null;
   }
 
   static async addItemToCart({
@@ -179,7 +182,7 @@ export class MenuItemServices {
   }: {
     orderobj: any;
     restaurantId: number;
-  }): Promise<SelectedMenuItemDetail[] | null> {
+  }): Promise<AddToCart | null> {
     responseclass = new ResponseModel();
     const methodName = "addItemToCart";
     const location = ENDPOINTS.ADD_ITEM_TO_CART;
@@ -218,7 +221,7 @@ export class MenuItemServices {
   }: {
     orderobj: any;
     restaurantId: number;
-  }): Promise<MenuItemDetailList | null> {
+  }): Promise<UpdateItemToCart[] | null> {
     responseclass = new ResponseModel();
     const methodName = "updateCartOrdersItem";
     const location = ENDPOINTS.UPDATE_CART_ORDER_ITEMS;
@@ -252,7 +255,7 @@ export class MenuItemServices {
     restaurantId: number;
     customerId: number;
     serchQuery: string;
-  }): Promise<any> {
+  }): Promise<GetSerachResult[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getSerachResult";
     const location = ENDPOINTS.GET_SEARCH_RESULT;
@@ -276,9 +279,9 @@ export class MenuItemServices {
       responseclass.status === API_RESPONSE_STATUS.SUCCESS &&
       responseclass?.message === ""
     ) {
-      return responseclass.result;
+      return responseclass.result as GetSerachResult[];
     } else {
-      return {};
+      return [];
     }
   }
 
@@ -334,7 +337,7 @@ export class MenuItemServices {
     menuitemId: number;
     cartsessionId: string;
     cartId: number;
-  }): Promise<MenuItemDetailList[]> {
+  }): Promise<any[]> {
     responseclass = new ResponseModel();
     const methodName = "getMenuItemList";
     const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;

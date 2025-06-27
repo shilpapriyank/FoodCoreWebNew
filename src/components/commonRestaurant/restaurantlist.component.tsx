@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
-import RestaurantArrayList from "./restaurantarraylist.component";
+import React, { useState } from "react";
+import RestaurantArrayListNew from "./restaurantarraylistnew.component";
+
 const RestaurantListComponent = () => {
   const [restaurantList, setRestaurantList] = useState([]);
   // useEffect(() => {
@@ -20,9 +20,9 @@ const RestaurantListComponent = () => {
       <div className="row">
         <div className="col-lg-12 col-sm-12 col-xs-12">
           {restaurantList.length > 0 ? (
-            <RestaurantArrayList
+            <RestaurantArrayListNew
               restaurantList={restaurantList}
-            ></RestaurantArrayList>
+            ></RestaurantArrayListNew>
           ) : (
             <></>
           )}
