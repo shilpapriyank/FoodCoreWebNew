@@ -244,9 +244,9 @@ export const mainSlice = createSlice({
       }
     );
 
-    builder.addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
-      state.restaurantWindowTime = action.payload;
-    });
+    // builder.addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
+    //   state.restaurantWindowTime = action.payload;
+    // });
   },
 });
 
