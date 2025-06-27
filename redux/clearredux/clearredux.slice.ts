@@ -19,11 +19,12 @@ import {
 import { resetBannerDetails } from "../restaurants/restaurants.slice";
 import { resetSelectedDelivery } from "../selected-delivery-data/selecteddelivery.slice";
 import { resetSessionId } from "../session/session.slice";
+import { AppDispatch } from "../store";
 import { resetStudent } from "../student/student.slice";
 
 // Redux Toolkit Thunk style function
 export const clearRedux = (resetallorder: boolean, isnewtheme = false) => {
-  return async (dispatch: any) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(resetCart());
     dispatch(resetMain(true));
     dispatch(changeLocationModal(false));

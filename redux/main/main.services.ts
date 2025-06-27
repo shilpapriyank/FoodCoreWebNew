@@ -6,6 +6,7 @@ import {
   MainCategory,
   RestaurantWindowTime,
 } from "@/types/mainservice-types/mainservice.type";
+import { GetSelectedRestaurantTime } from "@/types/restaurant-types/restaurant.type";
 import { ChildProcessWithoutNullStreams } from "child_process";
 
 let responseclass = new ResponseModel();
@@ -174,7 +175,7 @@ export class MainServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as RestaurantWindowTime[];
     } else {
       return null;
     }

@@ -2,7 +2,11 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import { DefaultLocationType } from "@/types/restaurant-types/restaurant.type";
+import { GetAllLocationInfoNew } from "@/types/location-types/location.type";
+import {
+  GetAllRestaurantInfo,
+  GetRestaurantThemeType,
+} from "@/types/restaurant-types/restaurant.type";
 
 let responseclass = new ResponseModel();
 
@@ -11,7 +15,7 @@ export class RestaurantsServices {
     restauranturl: string,
     locationurl: string,
     defaultLocationId: number
-  ): Promise<any[]> {
+  ): Promise<GetAllRestaurantInfo[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantsList";
     const location = ENDPOINTS.GET_RESTAURANTS;
@@ -22,6 +26,7 @@ export class RestaurantsServices {
         locationURL: locationurl,
       },
     };
+    console.log("data from getRestaurantsList in restaurant service", data);
     responseclass = await handleAxiosPostAsync(
       data,
       location,
@@ -34,13 +39,19 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      console.log(
+        "response from getRestaurantsList in restaurant service",
+        responseclass.result
+      );
+      return responseclass.result as GetAllRestaurantInfo[] | null;
     } else {
-      return [];
+      return null;
     }
   }
 
-  static async getRestaurantLocationList(): Promise<DefaultLocationType | null> {
+  static async getRestaurantLocationList(): Promise<
+    GetAllLocationInfoNew[] | null
+  > {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantLocationList";
     const location = ENDPOINTS.GET_RESTAURANT_LOCATIONS_LIST;
@@ -55,7 +66,11 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      console.log(
+        "response from getRestaurantLocationList",
+        responseclass.result
+      );
+      return responseclass.result as GetAllLocationInfoNew[] | null;
     } else {
       return null;
     }
@@ -65,7 +80,7 @@ export class RestaurantsServices {
     frompage: string = "",
     restaurantId: number,
     locationId: number
-  ): Promise<any[]> {
+  ) {
     responseclass = new ResponseModel();
     const methodName = "getHomepageBannerDetaile";
     const restaurantbannerurl = ENDPOINTS.GET_HOMEPAGE_BANNER_LIST;
@@ -76,6 +91,7 @@ export class RestaurantsServices {
         locationId,
       },
     };
+    console.log("data from getHomepageBannerDetails", data);
     responseclass = await handleAxiosPostAsync(
       data,
       restaurantbannerurl,
@@ -87,13 +103,19 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
+      console.log(
+        "response from getHomepageBannerDetails",
+        responseclass.result
+      );
       return responseclass.result;
     } else {
       return [];
     }
   }
 
-  static async getRestaurantThemeType(restauranturl: string): Promise<any> {
+  static async getRestaurantThemeType(
+    restauranturl: string
+  ): Promise<GetRestaurantThemeType[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantThemeType";
     const themetypeurl = ENDPOINTS.GET_THEME_TYPE;
@@ -102,6 +124,7 @@ export class RestaurantsServices {
         restaurantURL: restauranturl,
       },
     };
+    console.log("data from getRestaurantThemeType", data);
     responseclass = await handleAxiosPostAsync(
       data,
       themetypeurl,
@@ -113,6 +136,7 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
+      console.log("response from getRestaurantThemeType", responseclass.result);
       return responseclass.result;
     } else {
       return null;
@@ -122,7 +146,7 @@ export class RestaurantsServices {
   static async getPageContentRestaurant(
     pageName: string,
     restaurantId: number
-  ): Promise<any> {
+  ) {
     responseclass = new ResponseModel();
     const methodName = "getPageContentRestaurant";
     const getPageContent = ENDPOINTS.GET_PAGE_CONTENT_RESTAURANT;
@@ -132,6 +156,7 @@ export class RestaurantsServices {
         restaurantId,
       },
     };
+    console.log("data from getPageContentRestaurant", data);
     responseclass = await handleAxiosPostAsync(
       data,
       getPageContent,
@@ -143,6 +168,10 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
+      console.log(
+        "response from getPageContentRestaurant",
+        responseclass.result
+      );
       return responseclass.result;
     } else {
       return null;
@@ -158,6 +187,7 @@ export class RestaurantsServices {
     const data = {
       seoDetailRequest: metaDataObj,
     };
+    console.log("data from getMetadataDetails", data);
     responseclass = await handleAxiosPostAsync(
       data,
       getMetaDataDetail,
@@ -168,6 +198,7 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
+      console.log("response from getMetadataDetails", responseclass.result);
       return responseclass.result;
     } else {
       return null;
@@ -186,6 +217,7 @@ export class RestaurantsServices {
       restaurantId,
       locationId,
     };
+    console.log("data from getCurrentTime", data);
     responseclass = await handleAxiosPostAsync(
       data,
       getCurrentTime,
@@ -197,6 +229,7 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
+      console.log("response from getCurrentTime", responseclass.result);
       return responseclass.result;
     } else {
       return null;
@@ -208,10 +241,7 @@ export class RestaurantsServices {
 // import { API_RESPONSE_STATUS } from "@/components/common/enums";
 // import { ENDPOINTS } from "@/components/default/config";
 // import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-// import {
-//   DefaultLocationApiTypes,
-//   RestaurantApiTypes,
-// } from "@/types/restaurant-types/restaurant.type";
+// import { DefaultLocationType } from "@/types/restaurant-types/restaurant.type";
 
 // let responseclass = new ResponseModel();
 
@@ -220,7 +250,7 @@ export class RestaurantsServices {
 //     restauranturl: string,
 //     locationurl: string,
 //     defaultLocationId: number
-//   ): Promise<RestaurantApiTypes[]> {
+//   ): Promise<any[]> {
 //     responseclass = new ResponseModel();
 //     const methodName = "getRestaurantsList";
 //     const location = ENDPOINTS.GET_RESTAURANTS;
@@ -249,7 +279,7 @@ export class RestaurantsServices {
 //     }
 //   }
 
-//   static async getRestaurantLocationList(): Promise<DefaultLocationApiTypes[]> {
+//   static async getRestaurantLocationList(): Promise<DefaultLocationType | null> {
 //     responseclass = new ResponseModel();
 //     const methodName = "getRestaurantLocationList";
 //     const location = ENDPOINTS.GET_RESTAURANT_LOCATIONS_LIST;
@@ -266,7 +296,7 @@ export class RestaurantsServices {
 //     ) {
 //       return responseclass.result;
 //     } else {
-//       return [];
+//       return null;
 //     }
 //   }
 

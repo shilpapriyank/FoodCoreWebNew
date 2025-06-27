@@ -1,6 +1,12 @@
-export class ResponseModel {
-  result: any = '';
-  status: number = 0;;
+// export class ResponseModel {
+//   result: any = '';
+//   status: number = 0;;
+//   message: string = "";
+// }
+
+export class ResponseModel<T = any> {
+  result: T | null = null;
+  status: number = 0;
   message: string = "";
 }
 

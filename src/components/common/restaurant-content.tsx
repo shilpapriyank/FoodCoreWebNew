@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
 interface RestaurantData {
-  id: string
-  name: string
-  themeType: string
-  description: string
+  id: string;
+  name: string;
+  themeType: string;
+  description: string;
 }
 
 interface RestaurantContentProps {
-  data: RestaurantData
+  data: RestaurantData;
 }
 
 export function RestaurantContent({ data }: RestaurantContentProps) {
@@ -19,5 +19,5 @@ export function RestaurantContent({ data }: RestaurantContentProps) {
       <p>{data.description}</p>
       {/* Your interactive content here */}
     </div>
-  )
+  );
 }

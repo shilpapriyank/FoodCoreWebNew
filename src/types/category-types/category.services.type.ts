@@ -91,3 +91,25 @@ export type CategoryItemRequest = {
   categories: string;
   selectedCategoryUrl: string;
 };
+
+////getCategoriesRelativeItems response after selecting toppings and size and confirm button click
+export interface GetCategoriesRelativeItems {
+  categoryId: number;
+  categoryname: string;
+  sortOrder: number;
+  categoryslug: string;
+  items: Item[];
+}
+
+export interface Item {
+  menuItemId: number;
+  menuItemName: string;
+  menuDescription: string;
+  menuItemImage?: string;
+  menuitemslug: string;
+  typeid: number;
+  price: number;
+  isdefaultprice: number;
+  originalPrice: number;
+  isMenuCategoryDiscountApplied: boolean;
+}
