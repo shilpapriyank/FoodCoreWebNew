@@ -2,8 +2,11 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import { CategoryItemType } from "@/types/category-types/category.services.type";
-import { MenuItemDetailList } from "@/types/menuitem-types/menuitem.type";
+import {
+  GetCategoriesRelativeItems,
+} from "@/types/category-types/category.services.type";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 let responseclass = new ResponseModel();
 
@@ -13,7 +16,7 @@ export class CategoryServices {
     categories: string,
     customerId: number,
     locationId: number
-  ): Promise<CategoryItemType[] | null> {
+  ): Promise<MainCategoryList[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemList";
     const endpoint = ENDPOINTS.GET_CATEGORY_MENUITEM_LIST;
@@ -36,7 +39,7 @@ export class CategoryServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as MainCategoryList[];
     } else {
       return null;
     }
@@ -46,7 +49,7 @@ export class CategoryServices {
     sessionId: string,
     locationId: number,
     restaurantId: number
-  ): Promise<MenuItemDetailList[] | null> {
+  ): Promise<GetCategoriesRelativeItems[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryRelativesItems";
     const location = ENDPOINTS.GET_CATEGORIES_RELATIVE_ITEMS;
@@ -69,7 +72,7 @@ export class CategoryServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as GetCategoriesRelativeItems[];
     } else {
       return null;
     }
@@ -81,7 +84,7 @@ export class CategoryServices {
     categories: string,
     customerId: number,
     locationId: number
-  ): Promise<CategoryItemType[] | null> {
+  ): Promise<any[]> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryItemListPOS";
     const location = ENDPOINTS.GET_CATEGORY_ITEMS_POS;
@@ -105,7 +108,7 @@ export class CategoryServices {
     ) {
       return responseclass.result;
     } else {
-      return null;
+      return [];
     }
   }
 
@@ -114,7 +117,7 @@ export class CategoryServices {
     locationId: number,
     customerId: number,
     categories: string
-  ): Promise<CategoryItemType[] | null> {
+  ): Promise<GetAllMenuCategoryItems[] | null> {
     responseclass = new ResponseModel();
     const methodName = "getAllMenuCategoryItems";
     const url = ENDPOINTS.GET_ALL_CATEGORY_MENU_ITEMS;
@@ -137,7 +140,7 @@ export class CategoryServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as GetAllMenuCategoryItems[];
     } else {
       return null;
     }

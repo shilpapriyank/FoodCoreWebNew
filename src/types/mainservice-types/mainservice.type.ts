@@ -1,60 +1,3 @@
-export interface MainMenuItemRequest {
-  restaurantId: number;
-  categories: string;
-  customerId: number;
-  locationId: number;
-}
-
-// Types
-export type MainCategory = {
-  catId: number;
-  catName: string;
-  categoryslug: string;
-  imgurl: string;
-  isdeliveryavailable: boolean;
-  istakeoutavailable: boolean;
-  sortorder: number;
-};
-
-// export type MainCategory = {
-//   catId: string;
-//   catName: string;
-//   sortorder: number;
-//   categoryslug: string;
-//   isdeliveryavailable: boolean;
-//   istakeoutavailable: boolean;
-//   imgurl: string;
-// }
-
-export interface MainPOSRequest {
-  restaurantId: string;
-  ispos: boolean;
-  categories: string;
-  customerId: number;
-  locationId: number;
-}
-
-export interface MainRelativeItemRequest {
-  sessionId: string;
-  locationId: number;
-  restaurantId: number;
-}
-
-export interface MainAllRequest {
-  restaurantId: number;
-  locationId: number;
-  customerId: number;
-  categories: string;
-}
-
-export type MainItemListPOSRequest = {
-  restaurantId: number;
-  ispos: boolean;
-  categories: string;
-  customerId: number;
-  locationId: number;
-};
-
 export interface RestaurantWindowTime {
   OrdDeliveryClosingTime: DeliveryTimeSlot[];
   OrdDeliveryClosingTimeV1: DeliveryTimeSlot[];
@@ -74,6 +17,66 @@ export interface RestaurantWindowTime {
 
 export interface DeliveryTimeSlot {
   DeliveryTakeoutTiming: string; // e.g., "02:50 AM"
+  RestaurantIsClosed: boolean;
+  isLastOrder: boolean;
+}
+
+export interface MainMenuItemRequest {
+  restaurantId: number;
+  categories: string;
+  customerId: number;
+  locationId: number;
+}
+
+// Types includes new define types
+export type MainCategoryList = {
+  catId: number;
+  catName: string;
+  categoryslug: string;
+  imgurl: string;
+  isdeliveryavailable: boolean;
+  istakeoutavailable: boolean;
+  sortorder: number;
+};
+
+////getRestaurantTime new defined types
+export interface RestaurantWindowTimeNew {
+  deliveryTime: string[];
+  pickupTime: string[];
+  OrdDeliveryOpeningTime: any[];
+  OrdDeliveryOpeningTimeV1: OrdDeliveryOpeningTimeV1[];
+  OrdDeliveryClosingTime: any[];
+  OrdDeliveryClosingTimeV1: OrdDeliveryClosingTimeV1[];
+  TakeoutDeliveryOpeningTime: any[];
+  TakeoutDeliveryOpeningTimeV1: TakeoutDeliveryOpeningTimeV1[];
+  TakeoutDeliveryClosingTime: any[];
+  TakeoutDeliveryClosingTimeV1: TakeoutDeliveryClosingTimeV1[];
+  deliveryOpeningWindowTime: any;
+  deliveryClosingWindowTime: any;
+  isDeliveryClosed: boolean;
+  isPickupClosed: boolean;
+}
+
+export interface OrdDeliveryOpeningTimeV1 {
+  DeliveryTakeoutTiming: string;
+  RestaurantIsClosed: boolean;
+  isLastOrder: boolean;
+}
+
+export interface OrdDeliveryClosingTimeV1 {
+  DeliveryTakeoutTiming: string;
+  RestaurantIsClosed: boolean;
+  isLastOrder: boolean;
+}
+
+export interface TakeoutDeliveryOpeningTimeV1 {
+  DeliveryTakeoutTiming: string;
+  RestaurantIsClosed: boolean;
+  isLastOrder: boolean;
+}
+
+export interface TakeoutDeliveryClosingTimeV1 {
+  DeliveryTakeoutTiming: string;
   RestaurantIsClosed: boolean;
   isLastOrder: boolean;
 }

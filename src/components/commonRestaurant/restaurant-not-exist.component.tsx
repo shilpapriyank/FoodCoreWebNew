@@ -1,17 +1,15 @@
-import React, { Component, useState } from "react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation"; import { useSelector } from "react-redux";
+import React from "react";
+import { useParams } from "next/navigation";
 import { GetThemeDetails } from "../common/utility";
+import { useReduxData } from "../customhooks/useredux-data-hooks";
 
 const RestaurantNotExist = () => {
-  const searchParams = useSearchParams();
-  const locationUrl = searchParams.get("location");
-  const dynamic = searchParams.get("dynamic");
-  const restaurantinfo = useSelector(
-    ({ restaurant }: any) => restaurant.restaurantdetail
-  );
-  const location = restaurantinfo.defaultLocation;
-  const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
+  const params = useParams();
+  const locationUrl = params.location;
+  const dynamic = params.dynamic;
+  const { restaurantinfo } = useReduxData();
+  const location = restaurantinfo?.defaultLocation;
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
 
   return (
     <>

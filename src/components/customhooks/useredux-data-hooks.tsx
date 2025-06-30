@@ -20,6 +20,11 @@ export const useReduxData = () => {
     shallowEqual
   );
 
+  const restaurantinfodetail = useSelector(
+    (state: RootState) => state.restaurant?.restaurantdetail,
+    shallowEqual
+  );
+
   const menuitem = useSelector(
     (state: RootState) => state.menuitem,
     shallowEqual
@@ -158,6 +163,7 @@ export const useReduxData = () => {
     addressList,
     menuitemdetaillist,
     selectedcategorydetail,
+    restaurantinfodetail
     // studentdata,
     // cartItemsAmountTotal,
     // cartItemsQuantity,

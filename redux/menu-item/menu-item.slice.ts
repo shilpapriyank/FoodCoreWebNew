@@ -8,18 +8,19 @@ import {
 import { MenuItemServices } from "./menu-item.services";
 import { MenuItemTypes } from "./menuitem.type";
 import {
-  MenuItemDetailList,
+  GetMenuItemDetail,
+  GetSerachResult,
   SelectedMenuItemDetail,
 } from "@/types/menuitem-types/menuitem.type";
 
 // Types
 export interface MenuItemState {
   selectedmenuitemdetail: SelectedMenuItemDetail[];
-  menuitemdetaillist: MenuItemDetailList[];
+  menuitemdetaillist: GetMenuItemDetail[];
   selecteditemquantity: number;
   updateitemoptionincart: number;
   searchtext: string;
-  searchdata: Record<string, any>;
+  searchdata: GetSerachResult[];
   dependentid: number;
   dependentitemids: number[];
   dependentqty: number;
@@ -31,7 +32,7 @@ const initialState: MenuItemState = {
   selecteditemquantity: 0,
   updateitemoptionincart: 0,
   searchtext: "",
-  searchdata: {},
+  searchdata: [],
   dependentid: 0,
   dependentitemids: [],
   dependentqty: 0,
@@ -158,16 +159,16 @@ const menuItemSlice = createSlice({
   reducers: {
     setMenuCategoryData: (
       state,
-      action: PayloadAction<MenuItemDetailList[]>
+      action: PayloadAction<GetMenuItemDetail[]>
     ) => {
       state.menuitemdetaillist = action.payload;
     },
-    selectedMenuItem: (state, action: PayloadAction<MenuItemDetailList[]>) => {
+    selectedMenuItem: (state, action: PayloadAction<GetMenuItemDetail[]>) => {
       state.menuitemdetaillist = action.payload;
     },
     setMenuItemDetailList: (
       state,
-      action: PayloadAction<MenuItemDetailList[]>
+      action: PayloadAction<GetMenuItemDetail[]>
     ) => {
       state.menuitemdetaillist = action.payload;
     },
@@ -180,7 +181,7 @@ const menuItemSlice = createSlice({
     removeMenuItemForFavorite: (state) => {
       state.selectedmenuitemdetail = [];
     },
-    selectedItemSize: (state, action: PayloadAction<MenuItemDetailList[]>) => {
+    selectedItemSize: (state, action: PayloadAction<GetMenuItemDetail[]>) => {
       state.menuitemdetaillist = action.payload;
     },
     removeMenuItem: (state) => {
@@ -199,7 +200,7 @@ const menuItemSlice = createSlice({
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchtext = action.payload;
     },
-    setSearchData: (state, action: PayloadAction<any>) => {
+    setSearchData: (state, action: PayloadAction<GetSerachResult[]>) => {
       state.searchdata = action.payload;
     },
     setDipendentId: (state, action: PayloadAction<number>) => {
@@ -215,7 +216,7 @@ const menuItemSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       getMenuItemDetailes.fulfilled,
-      (state, action: PayloadAction<MenuItemDetailList[]>) => {
+      (state, action: PayloadAction<GetMenuItemDetail[]>) => {
         state.menuitemdetaillist = action.payload;
       }
     );
