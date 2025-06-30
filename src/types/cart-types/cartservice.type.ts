@@ -47,6 +47,7 @@ export interface CartItem {
   taxPercentage: number;
   totalprice: number;
   unitprice: number;
+  cartitemcount: number;
 }
 
 export interface CartTotal {
@@ -73,12 +74,14 @@ export interface CartTotal {
   tipAmount: number;
   tipPercentage: number;
   totalTip: number;
+  cartitemcount: number;
 }
 
 export interface CartDetails {
   cartItemDetails: CartItem[];
   cartOptionParams: any[]; // Add more specific typing if structure known
   cartTotal: CartTotal;
+  cartitemcount: number;
 }
 
 ///// getCartItemsCount service response after menuitem added to cart
@@ -100,6 +103,8 @@ export interface CartDetails {
 
 export interface CartItemDetail {
   categoryname: string;
+  cartitemcount: number;
+  categoryId: number;
   itemname: string;
   orderItemType: number;
   orderitemId: number;

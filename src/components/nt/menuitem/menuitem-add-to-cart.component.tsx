@@ -27,6 +27,7 @@ import { getCartItemCount } from "../../../../redux/tableorder/tableorder.slice"
 import { CartServices } from "../../../../redux/cart/cart.services";
 import ShareitemComponent from "../common/shareitem.component";
 import Popover from "../common/custompopover";
+import { GetMenuItemDetail, SelectedMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 
 const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
   const {
@@ -55,7 +56,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
   const dependentIds = menuitem?.dependentitemids;
   const dependentId = menuitem?.dependentid ?? 0;
   const cartdata = cart?.cartitemdetail && cart?.cartitemdetail;
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const locationSelected = restaurantinfo?.defaultLocation;
   const ordertype =
     deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
@@ -105,7 +106,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
           //     type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
           //     payload: response,
           //   });
-          dispatch(selectedMenuItem(response));
+          dispatch(selectedMenuItem(response as any));
         }
         //save selected menu item with topping and size
         // dispatch(
