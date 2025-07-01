@@ -16,7 +16,7 @@ import { ToasterTypes } from "../../../default/helpers/toaster/toaster-types";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import {
   GetThemeDetails,
-  ORDER_TYPE_ENUM,
+  ORDER_TYPE,
   scrollToElementWithOffset,
   TOOLTIP_MSG,
 } from "@/components/common/utility";
@@ -129,9 +129,9 @@ const CategoryMenuItems = ({
       : parseInt(menuitemId?.[0] ?? "0");
   const [isBottomSlide, setisBottomSlide] = useState<boolean>(false);
   const ordertype =
-    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-      ? ORDER_TYPE_ENUM.DELIVERY
-      : ORDER_TYPE_ENUM.PICKUP;
+    selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text
+      ? ORDER_TYPE.DELIVERY.value
+      : ORDER_TYPE.PICKUP.value;
   const [selectedCatItem, setselectedCatItem] = useState<
     MainCategoryList[] | null
   >(null);
@@ -146,7 +146,7 @@ const CategoryMenuItems = ({
     number[]
   >([]);
   let menuItemDetail = menuitem.menuitemdetaillist;
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
   const [isStudentPopUp, setisStudentPopUp] = useState<boolean>(false);
   const isOrderingDisable = restaurantinfo?.defaultLocation?.isOrderingDisable;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
@@ -210,7 +210,7 @@ const CategoryMenuItems = ({
           //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
           //   payload: response,
           // });
-          dispatch(selectedMenuItem(response));
+          dispatch(selectedMenuItem((response as any)));
         }
       });
     }
@@ -263,7 +263,7 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail[]) => {
-    dispatch(setMenuItemDetailList(item));
+    dispatch(setMenuItemDetailList(item as any));
 
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
@@ -278,8 +278,8 @@ const CategoryMenuItems = ({
   ) => {
     e.stopPropagation();
     setisBottomSlide(false);
-    dispatch(setMenuItemDetailList(item));
-    dispatch(selectedMenuItem(item));
+    dispatch(setMenuItemDetailList(item as any));
+    dispatch(selectedMenuItem(item as any));
     setopenMenuItemModal(true);
   };
 
@@ -519,7 +519,7 @@ const CategoryMenuItems = ({
                           <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
                             {category?.menuitems?.map(
                               (menu: any, index: any) => {
-                                let shareUrl = `${window.location.origin}/${selectedTheme.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
+                                let shareUrl = `${window.location.origin}/${selectedTheme?.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
                                 const isRegular =
                                   menu?.typeid === 0 &&
                                   menu?.isdefaultprice === 1;
@@ -535,8 +535,8 @@ const CategoryMenuItems = ({
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
-                                        (menu?.isregular === true ||
-                                          isRegular) ? (
+                                          (menu?.isregular === true ||
+                                            isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -552,7 +552,7 @@ const CategoryMenuItems = ({
                                                   </h3>
                                                 </a>
                                                 {menu.description.length <
-                                                100 ? (
+                                                  100 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -608,7 +608,7 @@ const CategoryMenuItems = ({
                                                 </a>
                                                 {/* <p>{fixedLengthString(menu.description)}</p> */}
                                                 {menu.description.length <
-                                                180 ? (
+                                                  180 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -677,11 +677,10 @@ const CategoryMenuItems = ({
                                               !menu.isFavoriteMenu
                                             );
                                           }}
-                                          className={`fa wishlist fa-heart-o ${
-                                            menu?.isFavoriteMenu == true
-                                              ? "active"
-                                              : ""
-                                          }`}
+                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
+                                            ? "active"
+                                            : ""
+                                            }`}
                                         />
                                       </div>
                                     </div>
@@ -728,9 +727,9 @@ const CategoryMenuItems = ({
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="Open item"
-                                        // onClick={(e) =>
-                                        //   handleClickItem(e, menu)
-                                        // }
+                                      // onClick={(e) =>
+                                      //   handleClickItem(e, menu)
+                                      // }
                                       ></a>
                                     </div>
                                     <div className="text">
@@ -817,10 +816,10 @@ const CategoryMenuItems = ({
           <DependentItemListComponent
             selectedDependentItems={selectedDependentItems}
             handleOnCheck={handleOnCheck}
-            dependantMenuList={
-              menuItemDetail[0]?.dependantMenuList ??
-              menuItemDetail[0]?.dependantMenuList
-            }
+          // dependantMenuList={
+          //   menuItemDetail[0]?.dependantMenuList ??
+          //   menuItemDetail[0]?.dependantMenuList
+          // }
           />
         </CommonModal>
       )}

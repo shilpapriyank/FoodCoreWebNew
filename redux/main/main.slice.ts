@@ -67,16 +67,16 @@ export const refreshCategoryList = createAsyncThunk(
   ) => {
     const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
 
-    if (selectedTheme.url === "nt") {
-      dispatch(
-        getAllCategoryMenuItems({
-          restaurantId: newselectedRestaurant.restaurantId,
-          locationId: newselectedRestaurant.defaultlocationId,
-          customerId,
-          categories: "",
-          selectedCategoryUrl: "",
-        })
-      );
+    if (selectedTheme?.url === "nt") {
+      // dispatch(
+      //   getAllCategoryMenuItems({
+      //     restaurantId: newselectedRestaurant.restaurantId,
+      //     locationId: newselectedRestaurant.defaultlocationId,
+      //     customerId,
+      //     categories: "",
+      //     selectedCategoryUrl: "",
+      //   })
+      // );
     } else {
       const response = await MainServices.getMenuCategoryList(
         newselectedRestaurant.restaurantId,

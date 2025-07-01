@@ -30,8 +30,8 @@ const PickupdeliveryWindowTime: React.FC<Props> = ({
     let isAlldeliveryWindowClose = deliveryWindow?.length > 0 && deliveryWindow.every(time => time.isClosed === true)
     let isAllPickupWindowClose = pickupWindow?.length > 0 && pickupWindow.every(time => time.isClosed === true)
     let isDisableAsapLaterOn = false;
-    isDisableAsapLaterOn = (selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.PICKUP && !isPickupWindowAvailable) ? true : isDisableAsapLaterOn;
-    isDisableAsapLaterOn = (selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY && !isDeliveryWindowAvailable) ? true : isDisableAsapLaterOn;
+    isDisableAsapLaterOn = (selecteddelivery.pickupordelivery === ORDER_TYPE.PICKUP.text && !isPickupWindowAvailable) ? true : isDisableAsapLaterOn;
+    isDisableAsapLaterOn = (selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text && !isDeliveryWindowAvailable) ? true : isDisableAsapLaterOn;
     return (
         <div className="row mt-4">
             {

@@ -4,7 +4,6 @@ import {
   getDependentParentQty,
   ORDER_TYPE,
   ORDER_TYPE_ENUM,
-  ORDERTYPE,
 } from "../../../common/utility";
 import useUtility from "../../../customhooks/utility-hook";
 import useFutureOrder from "../../../customhooks/usefuture-order-hook";
@@ -48,10 +47,12 @@ export const OrderItemsList = () => {
   const params = useParams();
   const { update } = params;
   var carttotal = cart?.carttotal && cart.carttotal;
-  const ordertype =
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-      ? ORDER_TYPE_ENUM.DELIVERY
-      : ORDER_TYPE_ENUM.PICKUP;
+  // const ordertype =
+  //   pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+  //     ? ORDER_TYPE_ENUM.DELIVERY
+  //     : ORDER_TYPE_ENUM.PICKUP;
+    const ordertype = pickupordelivery === ORDER_TYPE.DELIVERY.text ? ORDER_TYPE.DELIVERY.value : ORDER_TYPE.PICKUP.value;
+
   let rewardvalue = rewardpoints?.rewardvalue;
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [deleteItemData, setdeleteItemData] = useState();

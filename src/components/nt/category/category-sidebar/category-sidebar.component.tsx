@@ -20,7 +20,7 @@ const CategorySidebar: React.FC = () => {
   const location = searchParams.get("location");
   const [isOpenChangeLocation, setIsOpenChangeLocation] =
     useState<boolean>(false);
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
   const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
 

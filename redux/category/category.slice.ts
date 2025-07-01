@@ -93,7 +93,7 @@ export const getCategoryItemListPOS = createAsyncThunk<
 });
 
 export const getAllCategoryMenuItems = createAsyncThunk<
-  GetAllMenuCategoryItems[], // ✅ return type
+  GetAllMenuCategoryItems[],
   {
     restaurantId: number;
     locationId: number;

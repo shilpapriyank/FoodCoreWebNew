@@ -18,31 +18,27 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
   const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
-    orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
+    orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   let myDeliveryAddress = selecteddeliveryaddress ?? tempDeliveryAddress;
 
   const DisplayselectedPickup = () => {
     return (
       <>
-        {orderTypeName === ORDER_TYPE_ENUM.DELIVERY ? (
+        {orderTypeName === ORDER_TYPE.DELIVERY.text ? (
           <>
             {" "}
             {myDeliveryAddress &&
-              `${
-                myDeliveryAddress?.address1 && myDeliveryAddress?.address1
-              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${
-                myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
+              `${myDeliveryAddress?.address1 && myDeliveryAddress?.address1
+              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
               }`}
           </>
         ) : (
           <>
             {" "}
-            {`${
-              restaurantinfo && restaurantinfo?.defaultLocation?.address1
-            },  ${
-              restaurantinfo && restaurantinfo?.defaultLocation?.cityname
-            }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
+            {`${restaurantinfo && restaurantinfo?.defaultLocation?.address1
+              },  ${restaurantinfo && restaurantinfo?.defaultLocation?.cityname
+              }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
           </>
         )}
       </>
@@ -59,7 +55,7 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
       {!b2b && (
         <>
           {" "}
-          {orderTypeName === ORDER_TYPE_ENUM.PICKUP ? (
+          {orderTypeName === ORDER_TYPE.PICKUP.text ? (
             <i className="fa icon fa-shopping-bag" />
           ) : (
             <i className="fa icon fa-car"></i>

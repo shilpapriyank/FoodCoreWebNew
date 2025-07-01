@@ -4,7 +4,6 @@ import {
   GetThemeDetails,
   ORDER_TYPE,
   ORDER_TYPE_ENUM,
-  ORDERTYPE,
   TOOLTIP_MSG,
 } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
@@ -258,7 +257,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else if (
         deliveryaddressinfo &&
-        deliveryaddressinfo.pickupordelivery === ORDERTYPE.Delivery &&
+        deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
         locationSelected?.isDeliveryOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;

@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from "react";
 import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { ORDER_TYPE_ENUM } from "../../common/utility";
+import { ORDER_TYPE_ENUM,ORDER_TYPE } from "../../common/utility";
 
 interface FutureDateType {
   deliveryStatus?: string;
@@ -62,7 +62,7 @@ const FutureDayComponent: React.FC<FutureDayComponentProps> = ({
       {
         futureDateList?.map((day, index) => {
           const isClose =
-            ordertype === ORDER_TYPE_ENUM.DELIVERY
+            ordertype === ORDER_TYPE.DELIVERY.value
               ? day?.deliveryStatus === "Closed"
               : day?.takeoutStatus === "Closed";
           return (

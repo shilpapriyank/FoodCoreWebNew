@@ -2,7 +2,6 @@ import { ChangeEvent, useCallback, useState } from "react";
 import {
   GetThemeDetails,
   ORDER_TYPE_ENUM,
-  ORDERTYPE,
   ThemeObj,
 } from "../common/utility";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -35,7 +34,7 @@ export const useSearchData = (searchtext: string) => {
       ? "Opps! No Items Found"
       : ""
   );
-  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selctedTheme = GetThemeDetails(restaurantinfo!.themetype);
 
   const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -80,11 +79,11 @@ export const useSearchData = (searchtext: string) => {
             });
             res.categories = orderTypeCat;
             //chnage for the newtheme category based on theme condition
-            if (selctedTheme.name !== ThemeObj.newtheme) {
+            if (selctedTheme?.name !== ThemeObj.newtheme) {
               res.menuItems = avilableMenuItem;
               dispatch(setSearchData(res));
               router.push(
-                `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
+                `/${selctedTheme?.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
               );
               dispatch(selectedCategory(res?.categories[0]));
             } else {

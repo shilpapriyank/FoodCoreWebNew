@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { CUSTOMER_TYPE, ORDER_TYPE_ENUM, ORDERTYPE } from "../common/utility";
+import { CUSTOMER_TYPE, ORDER_TYPE_ENUM } from "../common/utility";
 import { useReduxData } from "./useredux-data-hooks";
 import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
