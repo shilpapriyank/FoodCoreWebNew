@@ -1,16 +1,6 @@
 import { ORDER_TYPE_ENUM } from "@/components/common/utility";
+import { AddressList } from "@/types/location-types/location.type";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
-import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
-
-interface Address {
-  locationName: string;
-  zipcode: string;
-  cityName: string;
-  latitude: number;
-  longitude: number;
-  phone: string;
-  address1: string;
-}
 
 interface Marker {
   id: number;
@@ -36,7 +26,7 @@ interface Marker {
 //export type OrderType = (typeof ORDERTYPE)[keyof typeof ORDERTYPE];
 export type OrderType = `${ORDER_TYPE_ENUM}`;
 
-export const getLoactionMarker = (addressList: AddressListItem[]): Marker[] => {
+export const getLoactionMarker = (addressList: AddressList[]): Marker[] => {
   return addressList.map((item, index) => ({
     id: index + 1,
     name: `${item.locationName},${item.zipcode},${item.cityName}`,

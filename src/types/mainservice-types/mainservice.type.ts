@@ -33,7 +33,7 @@ export type MainCategoryList = {
   catId: number;
   catName: string;
   categoryslug: string;
-  imgurl: string;
+  imgurl?: string;
   isdeliveryavailable: boolean;
   istakeoutavailable: boolean;
   sortorder: number;

@@ -255,7 +255,7 @@ export class MenuItemServices {
     restaurantId: number;
     customerId: number;
     serchQuery: string;
-  }): Promise<GetSerachResult[] | null> {
+  }): Promise<GetSerachResult | null> {
     responseclass = new ResponseModel();
     const methodName = "getSerachResult";
     const location = ENDPOINTS.GET_SEARCH_RESULT;
@@ -279,9 +279,9 @@ export class MenuItemServices {
       responseclass.status === API_RESPONSE_STATUS.SUCCESS &&
       responseclass?.message === ""
     ) {
-      return responseclass.result as GetSerachResult[];
+      return responseclass.result as GetSerachResult | null;
     } else {
-      return [];
+      return null;
     }
   }
 

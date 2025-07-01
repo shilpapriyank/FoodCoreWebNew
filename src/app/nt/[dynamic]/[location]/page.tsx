@@ -1,32 +1,25 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@/components/nt/layout/layout.component";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../redux/store";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import {
-  ORDER_TYPE,
-  ORDER_TYPE_ENUM,
-} from "../../../../components/common/utility";
+import { ORDER_TYPE_ENUM } from "../../../../components/common/utility";
 import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import LoadLocationDirectComponent from "../../../../components/nt/common/loadlocation-direct.component";
 import CategoryMenuItems from "../../../../components/nt/category/category-menuitems/category-menuItems.component";
 import { useParams } from "next/navigation";
 import CategoryHeader from "@/components/nt/category/category-header/category-header";
-import { OrderTypes } from "../../../../../redux/order/order.type";
-import {
-  getordertime,
-  isasap,
-  setordertime,
-} from "../../../../../redux/order/order.slice";
+import { isasap, setordertime } from "../../../../../redux/order/order.slice";
 import { OrderServices } from "../../../../../redux/order/order.services";
 import { useSearchData } from "../../../../components/customhooks/usesearchdata-hook";
 import SearchBarComponent from "../../../../components/nt/category/category-menuitems/search-bar.component";
 import useUtility from "../../../../components/customhooks/utility-hook";
+import { useAppDispatch } from "../../../../../redux/hooks";
 
 export default function LocationPage() {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const {
     selecteddelivery,
     restaurantinfo,
@@ -68,7 +61,7 @@ export default function LocationPage() {
             ? ORDER_TYPE_ENUM.DELIVERY
             : ORDER_TYPE_ENUM.PICKUP
         )
-      ); 
+      );
     }
   }, []);
 
@@ -118,6 +111,7 @@ export default function LocationPage() {
         <CategoryMenuItems
           menuItemsWithCat={menuItemsWithCat}
           errorMessage={errorMessage}
+          categoryslug=""
         >
           <SearchBarComponent
             searchItem={searchItem}

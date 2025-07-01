@@ -5,9 +5,9 @@ import { fixedLengthString, getImagePath } from "../../common/utility";
 import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useUtility from "@/components/customhooks/utility-hook";
-import { CategoryItemType } from "@/types/category-types/category.services.type";
 import { selectedCategory } from "../../../../../redux/category/category.slice";
 import { useAppDispatch } from "../../../../../redux/hooks";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 
 const CategoryHeader = () => {
   const {
@@ -113,7 +113,7 @@ const CategoryHeader = () => {
               <div className="col-12">
                 <ul className="categories-scroll">
                   {catWithSearch &&
-                    catWithSearch?.map((c: CategoryItemType) => {
+                    catWithSearch?.map((c: MainCategoryList) => {
                       const isActive =
                         selectedCategoryId === c.catId ||
                         selectedcategory?.catId === c.catId ||
