@@ -11,9 +11,30 @@ import {
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
-//import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
-import { DefaultLocationType } from "@/types/location-types/location.type";
-import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
+import { AddressList } from "@/types/location-types/location.type";
+import {
+  MainCategoryList,
+  RestaurantWindowTimeNew,
+} from "@/types/mainservice-types/mainservice.type";
+import {
+  CartDetails,
+  CartItem,
+  CartItemDetail,
+  CartTotal,
+} from "@/types/cart-types/cartservice.type";
+import {
+  GetAllMenuCategoryItems,
+  List,
+  Size,
+  Topping,
+  Type,
+} from "@/types/menuitem-types/menuitem.type";
+import {
+  DefaultLocation,
+  GetAllRestaurantInfo,
+} from "@/types/restaurant-types/restaurant.type";
+import { DeliveryAddressInput } from "../../../redux/delivery-address/delivery-address.types";
+import { DeliveryAddressInfo } from "../default/common/dominos/helpers/types/utility-type";
 
 export enum ORDER_TYPE_ENUM {
   PICKUP = "Pickup",
@@ -62,8 +83,8 @@ interface ThemeType {
   url: string;
 }
 
-export const GetThemeDetails = (value: any): any => {
-  const ThemeTypeObj = [
+export const GetThemeDetails = (value: number | string) => {
+  const ThemeTypeObj: ThemeType[] = [
     { name: "default", value: 1, url: "dt" },
     { name: "dominos", value: 2, url: "dm" },
     { name: "tableorder", value: 201, url: "to" },
@@ -72,7 +93,7 @@ export const GetThemeDetails = (value: any): any => {
   return ThemeTypeObj.find((x) => x.value === value);
 };
 
-export const GetThemeDetailsByName = (value: string): any => {
+export const GetThemeDetailsByName = (value: string) => {
   const ThemeTypeObj: ThemeType[] = [
     { name: "default", value: 1, url: "dt" },
     { name: "dominos", value: 2, url: "dm" },
@@ -123,7 +144,7 @@ export const formatURL = (value: string): string => {
   return formattedString;
 };
 
-export const formatStringToURLWithBlankSpace = (value: any): any => {
+export const formatStringToURLWithBlankSpace = (value: string) => {
   let formattedString = value
     .toLowerCase()
     .toString()
@@ -265,7 +286,7 @@ export const themeDefaultStyleArray: ThemeDefautStyle[] = [
 
 //CHECK THE CARTITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
 export const checkCheckoutDisable = (
-  cartdata: any,
+  cartdata: CartDetails,
   pickupordelivery: string,
   dtotal: any
 ): boolean => {
@@ -273,12 +294,13 @@ export const checkCheckoutDisable = (
     pickupordelivery === ORDER_TYPE_ENUM.PICKUP ||
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
   ) {
-    let cartItems = cartdata?.cartDetails?.cartItemDetails;
+    //let cartItems = cartdata?.cartDetails?.cartItemDetails;
+    let cartItems: CartItem[] = cartdata?.cartItemDetails;
     let isAnyPickupItemNotAvailable = cartItems?.some(
-      (item: any) => item?.categorytakeoutavailable === false
+      (item) => item?.categorytakeoutavailable === false
     );
     let isAnydeliveryItemNotAvailable = cartItems?.some(
-      (item: any) => item?.categorydeliveryavailable === false
+      (item) => item?.categorydeliveryavailable === false
     );
 
     if (
@@ -302,20 +324,25 @@ export const checkCheckoutDisable = (
   return false;
 };
 
-export const checkMenuItemTimeAvailability = (cartItems: any): boolean => {
-  return cartItems?.some((item: any) => item.availability == false);
+export const checkMenuItemTimeAvailability = (
+  cartItems: CartItem[]
+): boolean => {
+  return cartItems?.some((item) => item.availability == false);
 };
 
 //FIND THE CATEGORY FROM CATEGORY LIST BY CATID
-export const getCategoryDetailById = (categoryList: any, catId: any) => {
-  let cat = categoryList?.find((cat: any) => cat?.catId == catId);
+export const getCategoryDetailById = (
+  categoryList: GetAllMenuCategoryItems[],
+  catId: number
+) => {
+  let cat = categoryList?.find((cat) => cat?.catId == catId);
   return cat;
 };
 
 // FUNCTION CHECK THE IS MENUITEM AVAILABLE FOR THE TAKEOUT OR DELIVERY
 export const checkMenuItemAvailability = (
-  categoryList: any,
-  catId: any,
+  categoryList: GetAllMenuCategoryItems[],
+  catId: number,
   pickupordelivery: string
 ) => {
   if (catId === undefined || pickupordelivery === "") {
@@ -326,12 +353,12 @@ export const checkMenuItemAvailability = (
   let isItemAvailable = true;
   if (
     pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
-    filteredCategory.istakeoutavailable === false
+    filteredCategory?.istakeoutavailable === false
   ) {
     isItemAvailable = false;
   } else if (
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
-    filteredCategory.isdeliveryavailable === false
+    filteredCategory?.isdeliveryavailable === false
   ) {
     isItemAvailable = false;
   } else {
@@ -341,9 +368,9 @@ export const checkMenuItemAvailability = (
 };
 // GET AVAILABLE CARTRELATIVE ITEMS
 export const getAvailableCartRelativeData = (
-  categoryList: any,
-  pickupordelivery: any,
-  cartRelativeData: any
+  categoryList: GetAllMenuCategoryItems[],
+  pickupordelivery: string,
+  cartRelativeData: CartItemDetail[]
 ) => {
   if (cartRelativeData === undefined || cartRelativeData === null) {
     return undefined;
@@ -354,43 +381,39 @@ export const getAvailableCartRelativeData = (
   if (pickupordelivery === "Pickup") {
     //NEED TO CATEGORY LIST THAT INCLUDE istakeoutavailable SO ITRATE OVER THE REDUX-CATEGORY LIST
     //GET THAT ITEM AND FILTER WITH CAT ID AND istakeoutavailable SO DIRECTLY FIND THE CATEGORYLIST THAT IS istakeoutavailable
-    let categoryData = categoryList.filter((category: any) => {
+    let categoryData = categoryList?.filter((category) => {
       return cartRelativeData?.some(
-        (relativeItem: any) =>
+        (relativeItem) =>
           relativeItem?.categoryId === category?.catId &&
           category?.istakeoutavailable
       );
     });
     //WE FIND THE CATEGORY THAT IS AVILABLE TAKEOUT BUT OUR NEED IS FIND CART RELATIVE DATA TAHT AVAILABLE FOR ISTAKEOUT
     //SO FILTER cartRelativeData WITH categoryData IS SAME CATID
-    let AvailableCartRelativeItem = cartRelativeData?.filter(
-      (relativeItem: any) => {
-        return categoryData?.some(
-          (catItem: any) => catItem?.catId === relativeItem.categoryId
-        );
-      }
-    );
+    let AvailableCartRelativeItem = cartRelativeData?.filter((relativeItem) => {
+      return categoryData?.some(
+        (catItem) => catItem?.catId === relativeItem.categoryId
+      );
+    });
     return AvailableCartRelativeItem;
   }
   if (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY) {
     //NEED TO CATEGORY LIST THAT INCLUDE isdeliveryavailable SO ITRATE OVER THE REDUX-CATEGORY LIST
     //GET THAT ITEM AND FILTER WITH CAT ID AND isdeliveryavailable SO DIRECTLY FIND THE CATEGORYLIST THAT IS isdeliveryavailable
-    let categoryData = categoryList?.filter((category: any) => {
+    let categoryData = categoryList?.filter((category) => {
       return cartRelativeData?.some(
-        (relativeItem: any) =>
+        (relativeItem) =>
           relativeItem.categoryId === category?.catId &&
           category?.isdeliveryavailable
       );
     });
     //WE FIND THE CATEGORY THAT IS AVILABLE TAKEOUT BUT OUR NEED IS FIND CART RELATIVE DATA TAHT AVAILABLE FOR delivery
     //SO FILTER cartRelativeData WITH categoryData IS SAME CATID
-    let AvailableCartRelativeItem = cartRelativeData?.filter(
-      (relativeItem: any) => {
-        return categoryData?.some(
-          (catItem: any) => catItem?.catId === relativeItem?.categoryId
-        );
-      }
-    );
+    let AvailableCartRelativeItem = cartRelativeData?.filter((relativeItem) => {
+      return categoryData?.some(
+        (catItem) => catItem?.catId === relativeItem?.categoryId
+      );
+    });
     return AvailableCartRelativeItem;
   }
 };
@@ -406,18 +429,16 @@ export const getNameFromURL = (url: string): string => {
 };
 
 export const openCloseOption = (
-  selectedoption: any,
-  selectedToppingList: any
+  selectedoption: Type,
+  selectedToppingList: List[]
 ) => {
   const selectedButton = document.getElementById(
     `itembutton${selectedoption?.optionId}`
   ) as HTMLButtonElement;
   const optionClick = selectedButton.click();
-  let compulsoryList = selectedToppingList.filter(
-    (item: any) => item.isCompulsory
-  );
-  let nonSelectedOptionList = compulsoryList.filter((option: any) =>
-    option.type.every((suboption: any) => suboption.subOptionselected === false)
+  let compulsoryList = selectedToppingList.filter((item) => item.isCompulsory);
+  let nonSelectedOptionList = compulsoryList.filter((option) =>
+    option.type.every((suboption) => suboption.subOptionselected === false)
   );
   let optionbtn = document.getElementById(
     `itembutton${nonSelectedOptionList[0]?.optionId}`
@@ -428,9 +449,9 @@ export const openCloseOption = (
 };
 
 export const orderDisable = (
-  restaurantinfo: any,
-  deliveryaddressinfo: any,
-  restaurantWindowTime: RestaurantWindowTime
+  restaurantinfo: GetAllRestaurantInfo,
+  deliveryaddressinfo: DeliveryAddressInfo,
+  restaurantWindowTime: RestaurantWindowTimeNew
 ) => {
   const pickupWindow =
     restaurantWindowTime &&
@@ -493,8 +514,11 @@ export const orderDisable = (
   return orderDisableObj;
 };
 
-export const checkCategoryExist = (categoryList: any, url: string): boolean => {
-  if (categoryList.some((item: any) => item.categoryslug === url)) {
+export const checkCategoryExist = (
+  categoryList: MainCategoryList[],
+  url: string
+) => {
+  if (categoryList.find((item) => item.categoryslug === url)) {
     return true;
   } else {
     return false;
@@ -575,9 +599,9 @@ export interface RestaurantWindowTime {
 }
 
 export const getAsapLaterOnState = (
-  defaultLocation?: AddressListItem,
+  defaultLocation?: AddressList,
   pickupordelivery?: ORDER_TYPE_ENUM,
-  restaurantWindowTime?: RestaurantWindowTime
+  restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
   // ✅ Fallback in case required inputs are not provided
   if (!defaultLocation || !pickupordelivery) {
@@ -619,12 +643,11 @@ export const getAsapLaterOnState = (
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 
-  const isDisableAsapLateron =
-    !(
-      isOrderingDisable === false &&
-      orderState.isOrderTypeDisable === false &&
-      orderState.timeWindow.length > 0
-    );
+  const isDisableAsapLateron = !(
+    isOrderingDisable === false &&
+    orderState.isOrderTypeDisable === false &&
+    orderState.timeWindow.length > 0
+  );
 
   return {
     isdisplay,
@@ -633,7 +656,6 @@ export const getAsapLaterOnState = (
     isLateron: orderState.isLaterOn,
   };
 };
-
 
 export const getorigin = () => {
   return process.env.NEXT_PUBLIC_WEB_URL;
@@ -701,7 +723,7 @@ export const onLoadSetDefaultFlag = (
 
 export const ORDER_TYPE = {
   PICKUP: ORDER_TYPE_ENUM.PICKUP,
-  DELIVERY: ORDER_TYPE_ENUM.DELIVERY
+  DELIVERY: ORDER_TYPE_ENUM.DELIVERY,
 };
 
 // export const ORDER_TYPE = {
@@ -755,7 +777,7 @@ export const SMS_API_TYPE = {
   },
 };
 
-export const isSeoDetail = (url: any) => {
+export const isSeoDetail = (url: string) => {
   let isGetSeo = false;
   if (url.includes("confirmation") || url.includes("create-new-password")) {
     isGetSeo = true;
@@ -763,7 +785,7 @@ export const isSeoDetail = (url: any) => {
   return isGetSeo;
 };
 
-export const checkIntegerValue = (value: any = 0) => {
+export const checkIntegerValue = (value: any) => {
   let zero = 0;
   let intValue = value ?? zero;
   intValue = intValue === "" ? zero : intValue;
@@ -772,13 +794,13 @@ export const checkIntegerValue = (value: any = 0) => {
 };
 
 export const handleSetDeliveryTypeError = (
-  pickupordelivery: any,
-  deliveryaddressinfo: any,
+  pickupordelivery: string,
+  deliveryaddressinfo: DeliveryAddressInfo[],
   carttotal: any,
   dcharges: any,
   cart: any,
   cartdata: any,
-  isCartError = true
+  isCartError: boolean
 ) => {
   let errorMessage = "";
   if (
@@ -819,10 +841,10 @@ export const handleSetDeliveryTypeError = (
     }
   } else if (
     dcharges &&
-    dcharges.minOrderForAddress > cart.carttotal.subTotal &&
+    dcharges.minOrderForAddress > cart?.carttotal.subTotal &&
     carttotal?.cartCount > 0 &&
-    cartdata?.cartDetails?.cartItemDetails != undefined &&
-    cartdata?.cartDetails?.cartItemDetails?.length > 0 &&
+    cartdata?.cartItemDetails != undefined &&
+    cartdata?.cartItemDetails?.length > 0 &&
     isCartError
   ) {
     errorMessage =
@@ -840,31 +862,31 @@ export const bindPlaceOrderObject = (
   rewardpoints: any,
   cart: any,
   ordertype: string,
-  sessionid: any,
+  sessionid: number,
   userinfo: any,
-  deliveryaddressId: any,
+  deliveryaddressId: number,
   order: any,
   isAsap: boolean,
-  paymentType: any,
-  restaurantinfo: any,
+  paymentType: string,
+  restaurantinfo: GetAllRestaurantInfo,
   promotionData: any,
-  studentname: any,
+  studentname: string,
   distance: any,
-  pickupordelivery: any,
+  pickupordelivery: string,
   isFutureOrder: boolean,
   timeSlot: string,
-  futureDate: any
+  futureDate: string
 ) => {
   let placeOrder = {
     // redeemPoints: cart.rewardpoints?.redeemPoint > 0 ? cart.rewardpoints?.redeemPoint : 0,
     redeemPoints: rewardpoints?.redeemPoint > 0 ? rewardpoints?.redeemPoint : 0,
     orderInstruction:
-      cart.orderinstruction || cart.orderinstruction !== undefined
+      cart?.orderinstruction || cart?.orderinstruction !== undefined
         ? cart.orderinstruction
         : "",
     deliveryNote:
       cart?.orderdeliveryinstruction ||
-        cart?.orderdeliveryinstruction !== undefined
+      cart?.orderdeliveryinstruction !== undefined
         ? cart.orderdeliveryinstruction
         : "",
     preDiscountSubTotal:
@@ -879,9 +901,9 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-        pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
         ? //pickupordelivery === ORDERTYPE.Delivery
-        parseFloat(cart.carttotal.deliveryAmount)
+          parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
@@ -940,26 +962,26 @@ export const ORDERSTATUS = {
   PENDING: "Pending",
   FAILED: "Failed",
 };
-export const calulateTotal = (cartdata: any) => {
+export const calulateTotal = (cartdata: CartDetails) => {
   let total: any = 0;
-  cartdata?.cartDetails?.cartItemDetails.map((data: any) => {
+  cartdata?.cartItemDetails.map((data) => {
     total += data?.totalprice;
   });
   return parseFloat(total)?.toFixed(2);
 };
 
 export const getCheckTimeArr = (
-  orderTime: any,
-  restaurantinfo: any,
-  orderDate: string = "",
-  isasap: any
+  orderTime: string,
+  restaurantinfo: GetAllRestaurantInfo,
+  orderDate: string,
+  isasap: boolean
 ) => {
   let Time = [];
   if (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
       restaurantinfo?.defaultLocation?.deliveryService ===
-      DELIVERYSERVICES.UBEREATS) &&
+        DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
@@ -1029,10 +1051,10 @@ export const getCountryList = () => {
 };
 
 export const sortArrayOnSelectedLocation = (
-  addressList: any,
-  defaultLocationId: any
+  addressList: AddressList[],
+  defaultLocationId: number
 ) => {
-  return addressList?.sort((item: any) => {
+  return addressList?.sort((item) => {
     if (item?.locationId === defaultLocationId) {
       return -1;
     } else {
@@ -1041,7 +1063,7 @@ export const sortArrayOnSelectedLocation = (
   });
 };
 
-export const getTimeInMiliSecond = (hour: any) => {
+export const getTimeInMiliSecond = (hour: number) => {
   return hour * 36_00_000;
   // return 300000
 };
@@ -1123,10 +1145,10 @@ export const convert24HourTo12Hour = (time: any) => {
 // };
 
 export const checkWindowTimeExpires = (
-  windowEndTime: any,
-  currentTime: any,
-  isLastOrder: boolean = false,
-  isasap: any
+  windowEndTime: string,
+  currentTime: string,
+  isLastOrder: any,
+  isasap: boolean
 ) => {
   let [time, windowMeridian] = getCheckTimeArr(
     currentTime,
@@ -1144,10 +1166,16 @@ export const checkWindowTimeExpires = (
   const [currentHour, currentMinute, meridian] =
     convert24HourTo12Hour(currentTime);
 
-  const beginningTime = moment(`${currentHour}:${currentMinute}${meridian}`, "hh:mma");
+  const beginningTime = moment(
+    `${currentHour}:${currentMinute}${meridian}`,
+    "hh:mma"
+  );
 
   const safeMeridian = (windowMeridian || "").toLowerCase();
-  const endTime = moment(`${windowHour}:${windowMinute}${safeMeridian}`, "hh:mma");
+  const endTime = moment(
+    `${windowHour}:${windowMinute}${safeMeridian}`,
+    "hh:mma"
+  );
 
   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
 
@@ -1166,20 +1194,20 @@ export const tipWarningMessage =
   "Please note drivers may decline or cancel a delivery if the tip amount is less than 15%";
 
 export const getLocationFromUrl = (
-  locationUrl: any,
+  locationUrl: string,
   locationList: any,
-  defaultLocation: any
+  defaultLocation: DefaultLocation
 ) => {
   let locationDetail = {
     isChangeLocation: false,
-    location: null,
+    location: {},
   };
   if (locationUrl === defaultLocation?.locationURL?.trim()) {
     locationDetail.isChangeLocation = false;
     locationDetail.location = defaultLocation;
   } else if (locationUrl !== defaultLocation?.locationURL?.trim()) {
     let getUrlLocation = locationList?.find(
-      (location: any) => location?.locationURL === locationUrl
+      (location: DefaultLocation) => location?.locationURL === locationUrl
     );
     locationDetail.isChangeLocation = true;
     locationDetail.location = getUrlLocation;
@@ -1207,7 +1235,7 @@ export function getMenuItemdetailFormate(data: any) {
     };
     sizeDetail.push(sizeObj);
   });
-  const topping: any = [];
+  const topping: Topping[] = [];
   data?.PriceList?.forEach((size: any) => {
     let toppingObj = {
       subparameterId: size?.subparameterId,
@@ -1226,8 +1254,8 @@ export function getMenuItemdetailFormate(data: any) {
 
 export function getSizeBaseOptionList(
   PriceList: any,
-  subparameterId: any,
-  currencysymbol: any
+  subparameterId: number,
+  currencysymbol: string
 ) {
   function isUnique(item: any, index: any, array: any) {
     return (
@@ -1438,12 +1466,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1468,12 +1496,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1501,11 +1529,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-          ? 1
-          : parseInt(tc.halfpizzaprice) / 100)
+          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+            ? 1
+            : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1517,8 +1545,9 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1530,8 +1559,9 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1760,7 +1790,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-          data.subOptionToppingQuantity;
+            data.subOptionToppingQuantity;
       } else {
       }
     });

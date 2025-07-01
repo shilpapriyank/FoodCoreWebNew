@@ -214,8 +214,53 @@ export interface SelectedMenuItemDetail {
   price: string;
   quickorderallow: boolean;
   sortorder: number;
+  cartid: any;
 }
 
+export interface MenuItemsCommon {
+  menuitemId: number;
+  catId: number;
+  menuItemName: string;
+  menuitemslug: string;
+  description: string;
+  imgurl: string;
+  thumbimgurl: string;
+  mediumimgurl: string;
+  fullimgurl: string;
+  totallikes: any;
+  rewardpoints: number;
+  rank: number;
+  healthBenefitsDesc: any;
+  instock: boolean;
+  associateMenuitemId: number;
+  buttontext: string;
+  buttonlabel: string;
+  parentCategoryName: string;
+  MenuStausList: MenuStausList[];
+  PriceList: string;
+  isFavoriteMenu: boolean;
+  isTaxable: boolean;
+  IsActive: boolean;
+  menuItemStatus: any;
+  locationId: number;
+  menuItemPrice: number;
+  cardbackgroundcolor: string;
+  isdefaultprice: number;
+  typeid: number;
+  isopenpositem: boolean;
+  promotionMenuItem: string;
+  quickorderallow: boolean;
+  isWeightItem: boolean;
+  dependantMenuList: DependantMenuList[];
+  menuItemOriginalPrice: number;
+  price: string;
+  isregular: boolean;
+  currency: string;
+  menuitemstatus: string[];
+  sortorder: number;
+  originalPrice: number;
+  isMenuCategoryDiscountApplied: boolean;
+}
 
 // -----------old types---------------
 // export interface DependantMenuItem {
@@ -293,4 +338,3 @@ export interface SelectedMenuItemDetail {
 //   suboptionmaxselection: number;
 //   toppingValue: string;
 // }
-

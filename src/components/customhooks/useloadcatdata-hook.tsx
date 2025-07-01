@@ -1,29 +1,20 @@
-import React from "react";
-import { resolve } from "path";
-import { rejects } from "assert";
-import { useDispatch } from "react-redux";
 import { GetThemeDetails, ThemeObj } from "../common/utility";
 import { MainServices } from "../../../redux/main/main.services";
-import { MainTypes } from "../../../redux/main/main.type";
 import {
   getAllCategoryMenuItems,
   selectedCategory,
 } from "../../../redux/category/category.slice";
-
 import { useParams, useRouter } from "next/navigation";
-import { AppDispatch } from "../../../redux/store";
-import {
-  mainSlice,
-  setMainCategoryList,
-  updatePromotionCategoryData,
-} from "../../../redux/main/main.slice";
-import { MainCategory } from "@/types/mainservice-types/mainservice.type";
+import { mainSlice, setMainCategoryList } from "../../../redux/main/main.slice";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+import { useAppDispatch } from "../../../redux/hooks";
 
 const useLoadCatData = (customerId: number) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
   const { category } = params;
+
   const loadCatData = async ({
     newselectedRestaurant,
     isTableOrder,
@@ -46,7 +37,7 @@ const useLoadCatData = (customerId: number) => {
             customerId: customerId,
             categories: "",
             selectedCategoryUrl: "",
-          }) as any
+          })
         );
       } else {
         const catresponse = await MainServices.getMenuCategoryList(
@@ -59,7 +50,13 @@ const useLoadCatData = (customerId: number) => {
           //   type: MainTypes.GET_MENU_CATEGORY_DATA,
           //   payload: categoryresponse,
           // });
-          dispatch(setMainCategoryList(categoryresponse as MainCategory[]));
+          if (catresponse) {
+            dispatch(
+              setMainCategoryList(categoryresponse as MainCategoryList[])
+            );
+          } else {
+            dispatch(setMainCategoryList([]));
+          }
 
           //const firstCategory = catresponse[0];
           const firstCategory = { ...catresponse[0], catSelected: true };
@@ -67,7 +64,7 @@ const useLoadCatData = (customerId: number) => {
             dispatch(selectedCategory(firstCategory));
           }
           let promotioncategories = catresponse.find(
-            (x: any) => x.catName === "PROMOTION"
+            (x) => x.catName === "PROMOTION"
           );
           let promotionCatId: string = "0";
           if (promotioncategories) {
@@ -96,7 +93,7 @@ const useLoadCatData = (customerId: number) => {
             dispatch(mainSlice.actions.updatePromotionCategoryData([]));
           }
         } else {
-          dispatch(setMainCategoryList(catresponse as MainCategory[]));
+          dispatch(setMainCategoryList(catresponse as MainCategoryList[]));
         }
       }
       return new Promise((resolve, rejects) => {
@@ -106,7 +103,7 @@ const useLoadCatData = (customerId: number) => {
       const locationId =
         newselectedRestaurant?.defaultLocation?.locationId ||
         newselectedRestaurant.defaultlocationId;
-      let catresponse: any;
+      let catresponse;
       await MainServices.getMenuCategoryListPOS(
         newselectedRestaurant.restaurantId,
         locationId,
@@ -120,7 +117,7 @@ const useLoadCatData = (customerId: number) => {
           //   type: MainTypes.GET_MENU_CATEGORY_DATA,
           //   payload: categoryresponse,
           // });
-          dispatch(setMainCategoryList(categoryresponse as MainCategory[]));
+          dispatch(setMainCategoryList(categoryresponse as MainCategoryList[]));
 
           const firstCategory = { ...catresponse[0], catSelected: true };
           firstCategory.catSelected = true;
@@ -132,7 +129,7 @@ const useLoadCatData = (customerId: number) => {
           // }
 
           let promotioncategories = catresponse.find(
-            (x: any) => x.catName === "PROMOTION"
+            (x) => x.catName === "PROMOTION"
           );
           let promotionCatId = 0;
           if (promotioncategories) {
@@ -168,7 +165,11 @@ const useLoadCatData = (customerId: number) => {
           //   type: MainTypes.GET_MENU_CATEGORY_DATA,
           //   payload: catresponse,
           // });
-          dispatch(setMainCategoryList(catresponse as MainCategory[]));
+          if (catresponse) {
+            dispatch(setMainCategoryList(catresponse as MainCategoryList[]));
+          } else {
+            dispatch(setMainCategoryList([]));
+          }
         }
         return new Promise((resolve, rejects) => {
           resolve(true);

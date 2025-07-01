@@ -53,13 +53,15 @@ import CommonModal from "../../common/common-model.component";
 import DependentItemListComponent from "./dependentitems-list.component";
 import { setCartItem } from "../../../../../redux/cart/cart.slice";
 import { useParams, useRouter } from "next/navigation";
-import {
-  CategoryItem,
-  CategoryItemType,
-} from "@/types/category-types/category.services.type";
 import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
 import ScrollToTop from "@/components/common/scroll-to-top";
-import { MenuItemDetailList } from "@/types/menuitem-types/menuitem.type";
+import {
+  Category,
+  GetAllMenuCategoryItems,
+  GetMenuItemDetail,
+  GetSerachResult,
+} from "@/types/menuitem-types/menuitem.type";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -68,7 +70,7 @@ const CategoryMenuItems = ({
   errorMessage,
 }: {
   categoryslug: string;
-  menuItemsWithCat: CategoryItemType[];
+  menuItemsWithCat: any;
   children: ReactNode;
   errorMessage: string;
 }) => {
@@ -131,7 +133,7 @@ const CategoryMenuItems = ({
       ? ORDER_TYPE_ENUM.DELIVERY
       : ORDER_TYPE_ENUM.PICKUP;
   const [selectedCatItem, setselectedCatItem] = useState<
-    CategoryItemType[] | null
+    MainCategoryList[] | null
   >(null);
   const [updateId, setupdateId] = useState<string>("");
   const [openDependentList, setopenDependentList] = useState<boolean>(false);
@@ -179,9 +181,9 @@ const CategoryMenuItems = ({
     //check category slug and selected category url not same then select  categoryslug category
     if (selectCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
-        (cat: CategoryItem) => cat?.categoryslug === categoryUrl
+        (cat) => cat?.categoryslug === categoryUrl
       );
-      dispatch(selectedCategory(findedCat));
+      dispatch(selectedCategory(findedCat as MainCategoryList));
     }
   }, [
     categoryslug,
@@ -216,10 +218,10 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     //let selectedCat = {};
-    let selectedCat: CategoryItemType | undefined;
+    let selectedCat;
     if (categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
-        (cat: CategoryItem) => cat.categoryslug === categoryUrl
+        (cat: any) => cat.categoryslug === categoryUrl
       );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
@@ -228,7 +230,7 @@ const CategoryMenuItems = ({
       menuitemId !== undefined &&
       selectedCat?.menuitems?.length > 0
     ) {
-      var menuitemObj = selectedCat?.menuitems?.find((item) => {
+      var menuitemObj = selectedCat?.menuitems?.find((item: any) => {
         if (item.menuitemId === parsedMenuItemId) {
           return item;
         }
@@ -260,7 +262,7 @@ const CategoryMenuItems = ({
     }
   }, [menuItemsWithCat, menuitemId]);
 
-  const handleClickItem = (e: React.MouseEvent, item: MenuItemDetailList[]) => {
+  const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail[]) => {
     dispatch(setMenuItemDetailList(item));
 
     if (isSchoolProgramEnabled) {
@@ -272,7 +274,7 @@ const CategoryMenuItems = ({
 
   const handleClickItemSlider = (
     e: React.MouseEvent,
-    item: MenuItemDetailList[]
+    item: GetMenuItemDetail[]
   ) => {
     e.stopPropagation();
     setisBottomSlide(false);
