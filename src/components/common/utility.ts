@@ -34,7 +34,8 @@ import {
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
 import { DeliveryAddressInput } from "../../../redux/delivery-address/delivery-address.types";
-import { DeliveryAddressInfo } from "../default/common/dominos/helpers/types/utility-type";
+import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
+// import { DeliveryAddressInfo } from "../default/common/dominos/helpers/types/utility-type";
 
 export enum ORDER_TYPE_ENUM {
   PICKUP = "Pickup",
@@ -629,17 +630,17 @@ export const getAsapLaterOnState = (
   const orderState =
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
       ? {
-          timeWindow: deliveryWindow,
-          isAsap: isDeliveryAsap,
-          isLaterOn: isDeliveryPickupTime,
-          isOrderTypeDisable: isDeliveryOrderingDisable,
-        }
+        timeWindow: deliveryWindow,
+        isAsap: isDeliveryAsap,
+        isLaterOn: isDeliveryPickupTime,
+        isOrderTypeDisable: isDeliveryOrderingDisable,
+      }
       : {
-          timeWindow: pickupWindow,
-          isAsap: isTakeOutAsap,
-          isLaterOn: isTakeOutPickupTime,
-          isOrderTypeDisable: isTakeoutOrderingDisable,
-        };
+        timeWindow: pickupWindow,
+        isAsap: isTakeOutAsap,
+        isLaterOn: isTakeOutPickupTime,
+        isOrderTypeDisable: isTakeoutOrderingDisable,
+      };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 

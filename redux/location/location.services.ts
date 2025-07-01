@@ -98,6 +98,7 @@ export class LocationServices {
       restaurantId: restaurantId,
       locationId: locationId,
     });
+    console.log("[API Request] changeRestaurantLocation Payload:", data);
     responseclass = await handleAxiosPostAsync(
       data,
       location,
@@ -105,6 +106,8 @@ export class LocationServices {
       true,
       restaurantId
     );
+    console.log("[API Response] changeRestaurantLocation ResponseClass:", responseclass);
+    debugger;
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

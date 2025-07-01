@@ -191,12 +191,12 @@ const PickupDeliveryTimeSelectPopup: React.FC<
           const isValid = checkWindowTimeExpires(
             pickupEndTime,
             responseTime,
-            lastPickupTIme?.isLastOrder,
+            lastPickupTIme && typeof lastPickupTIme !== "boolean" ? lastPickupTIme.isLastOrder : undefined,
             isAsap
           );
           setisPickupWindowAvailable(isValid);
         }
-        if (deliveryEndTime.length > 0) {
+        if (deliveryEndTime && deliveryEndTime?.length > 0) {
           const isValid = checkWindowTimeExpires(
             deliveryEndTime,
             responseTime,
