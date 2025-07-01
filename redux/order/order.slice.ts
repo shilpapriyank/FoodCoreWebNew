@@ -1,5 +1,3 @@
-// src/store/slices/orderSlice.ts
-
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { OrderServices } from "./order.services";
 import {

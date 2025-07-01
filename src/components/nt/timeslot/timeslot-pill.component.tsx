@@ -23,7 +23,7 @@ export const TimeSlotPillComponent: React.FC<TimeSlotPillComponentProps> = ({
 
     return (
         <div className={`col-12 shadow p-2 border-bottom  border-light border-5  ${isDisable ? "cursor-nodrop opacity-50" : "cursor"}`} onClick={() => handleClickTimePill(time)}>
-            <div className="form-check  ">
+            <div className="form-check">
                 <div className="row">
                     <div className="col-12 position-relative">
                         <p className="form-check-label text-dark fw-semibold fs-6 time-pill" >

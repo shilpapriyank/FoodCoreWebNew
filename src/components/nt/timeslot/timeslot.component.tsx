@@ -41,7 +41,7 @@ import {
   TimeSlotPopupComponentProps,
 } from "@/types/timeslot-types/timeslot.types";
 import { AppDispatch, RootState } from "../../../../redux/store";
-import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
+// import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
 import { clearRedux } from "../../../../redux/clearredux/clearredux.slice";
 import { createSessionId } from "../../../../redux/session/session.slice";
@@ -125,7 +125,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const locationFullLink = `/${selectedTheme.url}/${dynamic}/${locationUrl}/`;
   const dispatch = useAppDispatch();
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
-    defaultLocation as AddressListItem,
+    defaultLocation,
     pickupordelivery as ORDER_TYPE_ENUM,
     restaurantWindowTime as RestaurantWindowTime | any
   );

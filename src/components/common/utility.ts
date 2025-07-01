@@ -11,9 +11,8 @@ import {
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
+import { AddressList } from "@/types/location-types/location.type";
 //import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
-import { DefaultLocationType } from "@/types/location-types/location.type";
-import { AddressListItem } from "@/types/restaurant-types/restaurant.type";
 
 export enum ORDER_TYPE_ENUM {
   PICKUP = "Pickup",
@@ -575,7 +574,7 @@ export interface RestaurantWindowTime {
 }
 
 export const getAsapLaterOnState = (
-  defaultLocation?: AddressListItem,
+  defaultLocation?: AddressList,
   pickupordelivery?: ORDER_TYPE_ENUM,
   restaurantWindowTime?: RestaurantWindowTime
 ): AsapLaterOnState => {
@@ -605,17 +604,17 @@ export const getAsapLaterOnState = (
   const orderState =
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
       ? {
-          timeWindow: deliveryWindow,
-          isAsap: isDeliveryAsap,
-          isLaterOn: isDeliveryPickupTime,
-          isOrderTypeDisable: isDeliveryOrderingDisable,
-        }
+        timeWindow: deliveryWindow,
+        isAsap: isDeliveryAsap,
+        isLaterOn: isDeliveryPickupTime,
+        isOrderTypeDisable: isDeliveryOrderingDisable,
+      }
       : {
-          timeWindow: pickupWindow,
-          isAsap: isTakeOutAsap,
-          isLaterOn: isTakeOutPickupTime,
-          isOrderTypeDisable: isTakeoutOrderingDisable,
-        };
+        timeWindow: pickupWindow,
+        isAsap: isTakeOutAsap,
+        isLaterOn: isTakeOutPickupTime,
+        isOrderTypeDisable: isTakeoutOrderingDisable,
+      };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 
