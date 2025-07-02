@@ -5,7 +5,7 @@ import Layout from "@/components/nt/layout/layout.component";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../redux/store";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { ORDER_TYPE_ENUM } from "../../../../components/common/utility";
+import { ORDER_TYPE_ENUM, ORDER_TYPE } from "../../../../components/common/utility";
 import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import LoadLocationDirectComponent from "../../../../components/nt/common/loadlocation-direct.component";
 import CategoryMenuItems from "../../../../components/nt/category/category-menuitems/category-menuItems.component";
@@ -62,6 +62,8 @@ export default function LocationPage() {
             : ORDER_TYPE_ENUM.PICKUP
         )
       );
+      // dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
+
     }
   }, []);
 

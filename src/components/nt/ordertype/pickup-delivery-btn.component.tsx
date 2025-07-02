@@ -39,11 +39,11 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
   const isTakeOutPickupTime = defaultLocation?.isTakeOutPickupTime;
   const isDeliveryPickupTime = defaultLocation?.isDeliveryPickupTime;
   const isDeliveryAsap = defaultLocation?.isDeliveryAsap;
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
-  const locationFullLink = `/${selectedTheme.url}/${
+  const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
+  const locationFullLink = `/${selectedTheme?.url}/${
     restaurantinfo?.restaurantURL
   }/${location?.trim()}/`;
-  const locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
+  const locationHrefLink = `/${selectedTheme?.url}/[dynamic]/[location]/`;
   // let locationFullLink = "/" + selectedTheme.url + "/" + restaurantinfo.restaurantURL + "/" + location.trim() + "/";
   // let locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
   const { isFutureOrder, futureDay } = useFutureOrder();
@@ -67,15 +67,15 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
           {defaultLocation.istakeaway === true && isEnablePickup ? (
             <>
               <a
-                onClick={() => handleChangeOrderType(ORDER_TYPE_ENUM.PICKUP)}
+                onClick={() => handleChangeOrderType(ORDER_TYPE.PICKUP.text)}
                 className={`btn-default  ${
-                  ORDER_TYPE_ENUM.PICKUP === selecteddelivery.pickupordelivery
+                  ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery
                     ? "active"
                     : ""
                 }`}
                 id="takeout-btn"
               >
-                <i className="fa fa-shopping-bag" /> {ORDER_TYPE_ENUM.PICKUP}
+                <i className="fa fa-shopping-bag" /> {ORDER_TYPE.PICKUP.text}
               </a>
             </>
           ) : (
@@ -91,15 +91,15 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
         <>
           {defaultLocation.isdelivery === true && isEnableDelivery ? (
             <a
-              onClick={() => handleChangeOrderType(ORDER_TYPE_ENUM.DELIVERY)}
+              onClick={() => handleChangeOrderType(ORDER_TYPE.DELIVERY.text)}
               className={`btn-default  ${
-                ORDER_TYPE_ENUM.DELIVERY === selecteddelivery.pickupordelivery
+                ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery
                   ? "active"
                   : ""
               }`}
               id="delivery-btn"
             >
-              <i className="fa fa-car" /> {ORDER_TYPE_ENUM.DELIVERY}
+              <i className="fa fa-car" /> {ORDER_TYPE.DELIVERY.text}
             </a>
           ) : (
             <a className="btn-default opacity-50 pe-none" id="delivery-btn">

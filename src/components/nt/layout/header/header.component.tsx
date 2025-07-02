@@ -62,14 +62,14 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
   const logoUrl: string =
     restaurantinfo?.logo ??
     "https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png";
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
   const isHomePage: boolean = page === "location";
   const themeUrl: string | undefined = selectedTheme?.url;
   const restaurantUrl: string | undefined = restaurantinfo?.restaurantURL;
   const locationSlug = restaurantinfo?.defaultLocation?.locationURL;
   const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype ?? false;
   const isSchoolProgramEnabled =
-    restaurantinfo?.defaultLocation?.schoolprogramenabled ?? false;
+   (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
   const orderTypeName: string = selecteddelivery?.pickupordelivery;
   const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
   const openTimeModelDefault =
@@ -147,7 +147,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         ToasterTypes.Success
       );
 
-      let routepath = `/${selectedTheme.url}/${params.dynamic}/${restaurantinfo?.defaultLocation.locationURL}`;
+      let routepath = `/${selectedTheme?.url}/${params.dynamic}/${restaurantinfo?.defaultLocation.locationURL}`;
       router.push(routepath);
     } else {
       handleNotify(
