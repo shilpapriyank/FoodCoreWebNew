@@ -5,7 +5,7 @@ import PickupDeliveryButton from "./pickup-delivery-btn.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { useDispatch } from "react-redux";
 import { useParams, useRouter } from "next/navigation";
-import { closeModal, GetThemeDetails, ORDER_TYPE_ENUM } from "../../common/utility";
+import { closeModal, GetThemeDetails, ORDER_TYPE_ENUM, ORDER_TYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import AddressList from "../common/adresslist.component";
 import { LocationServices } from "../../../../redux/location/location.services";
@@ -63,14 +63,14 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
-    orderTypeName === ORDER_TYPE_ENUM.PICKUP ? defaultLocation : "";
+    orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   const myDeliveryAddress = tempDeliveryAddress;
 
   const handleChangeOrderType = (orderType: ORDER_TYPE_ENUM) => {
     // console.log("Order Type changed to:", orderType);
     dispatch(setpickupordelivery(orderType));
-    if (ORDER_TYPE_ENUM.DELIVERY === orderType) {
+    if (ORDER_TYPE.DELIVERY.text === orderType) {
       if (userinfo === null) {
         handleToggleOrderTypeModal(false);
         handleToggleAddAddressModal(true);
@@ -82,97 +82,194 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     setSelectedLocationId(id);
   };
 
-  const handleClickConfirmChangeLocation = async (
-    lid: number
-  ): Promise<void> => {
-    dispatch(ChangeUrl(true));
-    LocationServices.changeRestaurantLocation(
-      restaurantinfo?.restaurantId as number,
-      lid
-    ).then((res: any) => {
-      console.log("Received location:", res)
-      if (!restaurantinfo) return;
-      if (res) {
-        Object.keys(restaurantinfo as GetAllRestaurantInfo).map((session) => {
-          if (session === "defaultLocation") {
-            Object.assign(restaurantinfo.defaultLocation, res);
-          }
-          if (session === "defaultlocationId") {
-            restaurantinfo.defaultlocationId = res?.locationId;
-          }
-        });
-        dispatch(restaurantsdetail(null));
-        router.push(
-          `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
-        );
-        dispatch(restaurantsdetail(restaurantinfo));
-        let oldLocationId = getLocationIdFromStorage();
-        if (oldLocationId !== restaurantinfo.defaultlocationId) {
-          dispatch(clearRedux(true as any));
-          let id = uuidv4();
-          dispatch(createSessionId(id));
-        }
-        if (userinfo && userinfo?.customerId) {
-          CustomerServices.checkCustomerRewardPointsLocationBase(
-            restaurantinfo.restaurantId,
-            userinfo.customerId,
-            0,
-            "0",
-            String(restaurantinfo?.defaultLocation.locationId)
-          ).then((res: ResponseModel | any) => {
-            if (res.status == 1) {
-              let rewards = {
-                rewardvalue: rewardvalue,
-                rewardamount: parseFloat(
-                  (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
-                ),
-                rewardPoint: res?.result?.totalrewardpoints,
-                totalRewardPoints: res?.result?.totalrewardpoints,
-                redeemPoint: 0,
-              };
-              dispatch(setrewardpoint(rewards));
-            }
-          });
-        }
-        setLocationIdInStorage(restaurantinfo.defaultlocationId);
-        dispatch(
-          refreshCategoryList({
-            newselectedRestaurant: restaurantinfo,
-            customerId,
-          }) as any
-        );
-        dispatch(
-          getSelectedRestaurantTime({
-            restaurantId: restaurantinfo.restaurantId,
-            locationId: lid,
-          }) as any
-        );
-        if (userinfo && userinfo?.customerId) {
-          deleteCartItemFromSessionId(
-            sessionid,
-            restaurantinfo.restaurantId,
-            restaurantinfo.defaultLocation.locationId
-          );
-          dispatch(emptycart() as any);
-        }
-        handleToggleOrderTypeModal(false);
-        dispatch(
-          setpickupordelivery(
-            restaurantinfo?.defaultLocation?.defaultordertype
-              ? ORDER_TYPE_ENUM.DELIVERY
-              : ORDER_TYPE_ENUM.PICKUP
-          )
-        );
-        handleToggleOrderTypeModal(false);
-        handleToggleTimingModal?.(true);
+  // const handleClickConfirmChangeLocation = async (
+  //   lid: number
+  // ): Promise<void> => {
+  //   dispatch(ChangeUrl(true));
+  //   LocationServices.changeRestaurantLocation(
+  //     restaurantinfo?.restaurantId as number,
+  //     lid
+  //   ).then((res: any) => {
+  //     console.log("Received location:", res)
+  //     if (!restaurantinfo) return;
+  //     if (res) {
+  //       // Object.keys(restaurantinfo as GetAllRestaurantInfo).map((session) => {
+  //       //   if (session === "defaultLocation") {
+  //       //     Object.assign(restaurantinfo.defaultLocation, res);
+  //       //   }
+  //       //   if (session === "defaultlocationId") {
+  //       //     restaurantinfo.defaultlocationId = res?.locationId;
+  //       //   }
+  //       // });
+  //       const updatedRestaurantInfo = {
+  //         ...restaurantinfo,
+  //         defaultlocationId: res?.locationId,
+  //         defaultLocation: {
+  //           ...restaurantinfo.defaultLocation,
+  //           ...res
+  //         }
+  //       };
 
-        dispatch(clearDeliveryRequestId());
-      }
-    });
-    LocationServices.changeRestaurantLocation(
-      restaurantinfo?.restaurantId as number,
-      lid
-    ).then((res: RestaurantCustomModel) => {
+  //       dispatch(restaurantsdetail(null));
+  //       router.push(
+  //         `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
+  //       );
+  //       dispatch(restaurantsdetail(restaurantinfo));
+  //       let oldLocationId = getLocationIdFromStorage();
+  //       if (oldLocationId !== restaurantinfo.defaultlocationId) {
+  //         dispatch(clearRedux(true as any));
+  //         let id = uuidv4();
+  //         dispatch(createSessionId(id));
+  //       }
+  //       if (userinfo && userinfo?.customerId) {
+  //         CustomerServices.checkCustomerRewardPointsLocationBase(
+  //           restaurantinfo.restaurantId,
+  //           userinfo.customerId,
+  //           0,
+  //           "0",
+  //           String(restaurantinfo?.defaultLocation.locationId)
+  //         ).then((res: ResponseModel | any) => {
+  //           if (res.status == 1) {
+  //             let rewards = {
+  //               rewardvalue: rewardvalue,
+  //               rewardamount: parseFloat(
+  //                 (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
+  //               ),
+  //               rewardPoint: res?.result?.totalrewardpoints,
+  //               totalRewardPoints: res?.result?.totalrewardpoints,
+  //               redeemPoint: 0,
+  //             };
+  //             dispatch(setrewardpoint(rewards));
+  //           }
+  //         });
+  //       }
+  //       setLocationIdInStorage(restaurantinfo.defaultlocationId);
+  //       dispatch(
+  //         refreshCategoryList({
+  //           newselectedRestaurant: restaurantinfo,
+  //           customerId,
+  //         }) as any
+  //       );
+  //       dispatch(
+  //         getSelectedRestaurantTime({
+  //           restaurantId: restaurantinfo.restaurantId,
+  //           locationId: lid,
+  //         }) as any
+  //       );
+  //       if (userinfo && userinfo?.customerId) {
+  //         deleteCartItemFromSessionId(
+  //           sessionid,
+  //           restaurantinfo.restaurantId,
+  //           restaurantinfo.defaultLocation.locationId
+  //         );
+  //         dispatch(emptycart() as any);
+  //       }
+  //       handleToggleOrderTypeModal(false);
+  //       dispatch(
+  //         setpickupordelivery(
+  //           restaurantinfo?.defaultLocation?.defaultordertype
+  //             ? ORDER_TYPE_ENUM.DELIVERY
+  //             : ORDER_TYPE_ENUM.PICKUP
+  //         )
+  //       );
+  //       handleToggleOrderTypeModal(false);
+  //       handleToggleTimingModal?.(true);
+
+  //       dispatch(clearDeliveryRequestId());
+  //     }
+  //   });
+  //   LocationServices.changeRestaurantLocation(
+  //     restaurantinfo?.restaurantId as number,
+  //     lid
+  //   ).then((res: RestaurantCustomModel) => {
+  //     if (!restaurantinfo || !res) return;
+
+  //     const updatedRestaurantInfo: GetAllRestaurantInfo = {
+  //       ...restaurantinfo,
+  //       defaultLocation: {
+  //         ...restaurantinfo.defaultLocation,
+  //         ...res,
+  //       },
+  //       defaultlocationId: res.locationId,
+  //     };
+
+  //     dispatch(restaurantsdetail(null));
+  //     router.push(`${locationFullLink}/${updatedRestaurantInfo.defaultLocation?.locationURL}`);
+  //     dispatch(restaurantsdetail(updatedRestaurantInfo));
+
+  //     let oldLocationId = getLocationIdFromStorage();
+  //     if (oldLocationId !== updatedRestaurantInfo.defaultlocationId) {
+  //       dispatch(clearRedux(true as any));
+  //       let id = uuidv4();
+  //       dispatch(createSessionId(id));
+  //     }
+
+  //     if (userinfo?.customerId) {
+  //       CustomerServices.checkCustomerRewardPointsLocationBase(
+  //         updatedRestaurantInfo.restaurantId,
+  //         userinfo.customerId,
+  //         0,
+  //         "0",
+  //         String(updatedRestaurantInfo.defaultLocation.locationId)
+  //       ).then((res: ResponseModel | any) => {
+  //         if (res.status === 1) {
+  //           let rewards = {
+  //             rewardvalue,
+  //             rewardamount: parseFloat((res.result.totalrewardpoints / rewardvalue).toFixed(2)),
+  //             rewardPoint: res.result.totalrewardpoints,
+  //             totalRewardPoints: res.result.totalrewardpoints,
+  //             redeemPoint: 0,
+  //           };
+  //           dispatch(setrewardpoint(rewards));
+  //         }
+  //       });
+  //     }
+
+  //     setLocationIdInStorage(updatedRestaurantInfo.defaultlocationId);
+
+  //     dispatch(refreshCategoryList({
+  //       newselectedRestaurant: updatedRestaurantInfo,
+  //       customerId,
+  //     }) as any);
+
+  //     dispatch(getSelectedRestaurantTime({
+  //       restaurantId: updatedRestaurantInfo.restaurantId,
+  //       locationId: lid,
+  //     }) as any);
+
+  //     if (userinfo?.customerId) {
+  //       deleteCartItemFromSessionId(
+  //         sessionid,
+  //         updatedRestaurantInfo.restaurantId,
+  //         updatedRestaurantInfo.defaultLocation.locationId
+  //       );
+  //       dispatch(emptycart() as any);
+  //     }
+
+  //     handleToggleOrderTypeModal(false);
+  //     dispatch(setpickupordelivery(
+  //       updatedRestaurantInfo.defaultLocation.defaultordertype
+  //         ? ORDER_TYPE_ENUM.DELIVERY
+  //         : ORDER_TYPE_ENUM.PICKUP
+  //     ));
+  //     handleToggleOrderTypeModal(false);
+  //     handleToggleTimingModal?.(true);
+
+  //     dispatch(clearDeliveryRequestId());
+  //   });
+
+  // };
+  const handleClickConfirmChangeLocation = async (lid: number): Promise<void> => {
+    dispatch(ChangeUrl(true));
+
+    try {
+      const res = await LocationServices.changeRestaurantLocation(
+        restaurantinfo?.restaurantId as number,
+        lid
+      );
+
+      console.log("Received location:", res);
+
       if (!restaurantinfo || !res) return;
 
       const updatedRestaurantInfo: GetAllRestaurantInfo = {
@@ -188,32 +285,31 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
       router.push(`${locationFullLink}/${updatedRestaurantInfo.defaultLocation?.locationURL}`);
       dispatch(restaurantsdetail(updatedRestaurantInfo));
 
-      let oldLocationId = getLocationIdFromStorage();
+      const oldLocationId = getLocationIdFromStorage();
       if (oldLocationId !== updatedRestaurantInfo.defaultlocationId) {
         dispatch(clearRedux(true as any));
-        let id = uuidv4();
-        dispatch(createSessionId(id));
+        dispatch(createSessionId(uuidv4()));
       }
 
       if (userinfo?.customerId) {
-        CustomerServices.checkCustomerRewardPointsLocationBase(
+        const rewardRes = await CustomerServices.checkCustomerRewardPointsLocationBase(
           updatedRestaurantInfo.restaurantId,
           userinfo.customerId,
           0,
           "0",
           String(updatedRestaurantInfo.defaultLocation.locationId)
-        ).then((res: ResponseModel | any) => {
-          if (res.status === 1) {
-            let rewards = {
-              rewardvalue,
-              rewardamount: parseFloat((res.result.totalrewardpoints / rewardvalue).toFixed(2)),
-              rewardPoint: res.result.totalrewardpoints,
-              totalRewardPoints: res.result.totalrewardpoints,
-              redeemPoint: 0,
-            };
-            dispatch(setrewardpoint(rewards));
-          }
-        });
+        );
+
+        if (rewardRes?.status === 1) {
+          const rewardPoints = rewardRes.result.totalrewardpoints;
+          dispatch(setrewardpoint({
+            rewardvalue,
+            rewardamount: parseFloat((rewardPoints / rewardvalue).toFixed(2)),
+            rewardPoint: rewardPoints,
+            totalRewardPoints: rewardPoints,
+            redeemPoint: 0,
+          }));
+        }
       }
 
       setLocationIdInStorage(updatedRestaurantInfo.defaultlocationId);
@@ -238,17 +334,20 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
       }
 
       handleToggleOrderTypeModal(false);
+
       dispatch(setpickupordelivery(
-        updatedRestaurantInfo.defaultLocation.defaultordertype
+        updatedRestaurantInfo.defaultLocation?.defaultordertype
           ? ORDER_TYPE_ENUM.DELIVERY
           : ORDER_TYPE_ENUM.PICKUP
       ));
+
       handleToggleOrderTypeModal(false);
       handleToggleTimingModal?.(true);
-
       dispatch(clearDeliveryRequestId());
-    });
 
+    } catch (error) {
+      console.error("Error in changing restaurant location:", error);
+    }
   };
 
   const handleClickConfirm = () => {
@@ -293,7 +392,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                     handleChangeOrderType={handleChangeOrderType}
                   />
                 </div>
-                {ORDER_TYPE_ENUM.PICKUP ===
+                {ORDER_TYPE.PICKUP.text ===
                   selecteddelivery.pickupordelivery && (
                     <div id="takeout" className="row">
                       <div className="col-lg-12 text-center col-md-12 col-12">
@@ -317,7 +416,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                               </button>
                             </li>
                           )}
-                          {ORDER_TYPE_ENUM.PICKUP ===
+                          {ORDER_TYPE.PICKUP.text ===
                             selecteddelivery.pickupordelivery && (
                               <li className="nav-item w-100">
                                 <button
@@ -383,7 +482,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                                 </div>
                               </div>
                             )}
-                            {ORDER_TYPE_ENUM.PICKUP ===
+                            {ORDER_TYPE.PICKUP.text ===
                               selecteddelivery.pickupordelivery && (
                                 <div className="row">
                                   <div className="col-lg-12 col-md-12 col-12">
@@ -399,7 +498,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                       </div>
                     </div>
                   )}
-                {ORDER_TYPE_ENUM.DELIVERY ===
+                {ORDER_TYPE.DELIVERY.text ===
                   selecteddelivery.pickupordelivery && (
                     <div id="delivery" className="row ">
                       <div className="col-lg-12 text-center col-md-12 col-12">

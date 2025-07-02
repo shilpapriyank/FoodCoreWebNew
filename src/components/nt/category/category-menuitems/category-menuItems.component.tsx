@@ -16,7 +16,7 @@ import { ToasterTypes } from "../../../default/helpers/toaster/toaster-types";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import {
   GetThemeDetails,
-  ORDER_TYPE_ENUM,
+  ORDER_TYPE,
   scrollToElementWithOffset,
   TOOLTIP_MSG,
 } from "@/components/common/utility";
@@ -127,9 +127,9 @@ const CategoryMenuItems = ({
       : parseInt(menuitemId?.[0] ?? "0");
   const [isBottomSlide, setisBottomSlide] = useState<boolean>(false);
   const ordertype =
-    selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-      ? ORDER_TYPE_ENUM.DELIVERY
-      : ORDER_TYPE_ENUM.PICKUP;
+    selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text
+      ? ORDER_TYPE.DELIVERY.value
+      : ORDER_TYPE.PICKUP.value;
   const [selectedCatItem, setselectedCatItem] = useState<
     MainCategoryList[] | null
   >(null);
@@ -179,7 +179,7 @@ const CategoryMenuItems = ({
     //check category slug and selected category url not same then select  categoryslug category
     if (selectCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
-        (cat) => cat?.categoryslug === categoryUrl
+        (cat: any) => cat?.categoryslug === categoryUrl
       );
       dispatch(selectedCategory(findedCat as MainCategoryList));
     }
@@ -262,7 +262,6 @@ const CategoryMenuItems = ({
 
   const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail) => {
     dispatch(setMenuItemDetailList(item));
-
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
       return;
@@ -533,8 +532,8 @@ const CategoryMenuItems = ({
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
-                                        (menu?.isregular === true ||
-                                          isRegular) ? (
+                                          (menu?.isregular === true ||
+                                            isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -550,7 +549,7 @@ const CategoryMenuItems = ({
                                                   </h3>
                                                 </a>
                                                 {menu.description.length <
-                                                100 ? (
+                                                  100 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -606,7 +605,7 @@ const CategoryMenuItems = ({
                                                 </a>
                                                 {/* <p>{fixedLengthString(menu.description)}</p> */}
                                                 {menu.description.length <
-                                                180 ? (
+                                                  180 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -675,11 +674,10 @@ const CategoryMenuItems = ({
                                               !menu.isFavoriteMenu
                                             );
                                           }}
-                                          className={`fa wishlist fa-heart-o ${
-                                            menu?.isFavoriteMenu == true
-                                              ? "active"
-                                              : ""
-                                          }`}
+                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
+                                            ? "active"
+                                            : ""
+                                            }`}
                                         />
                                       </div>
                                     </div>
@@ -726,9 +724,9 @@ const CategoryMenuItems = ({
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="Open item"
-                                        // onClick={(e) =>
-                                        //   handleClickItem(e, menu)
-                                        // }
+                                      // onClick={(e) =>
+                                      //   handleClickItem(e, menu)
+                                      // }
                                       ></a>
                                     </div>
                                     <div className="text">

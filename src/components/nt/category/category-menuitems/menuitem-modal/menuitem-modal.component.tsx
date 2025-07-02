@@ -140,10 +140,12 @@ const MenuItemModal = ({
       (x) => x.subparameterId == selectedsize?.subparameterId
     );
   let maincategoryList = main?.maincategoryList;
-  var ordertype =
-    deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-      ? ORDER_TYPE_ENUM.DELIVERY
-      : ORDER_TYPE_ENUM.PICKUP;
+  // var ordertype =
+  //   deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+  //     ? ORDER_TYPE_ENUM.DELIVERY
+  //     : ORDER_TYPE_ENUM.PICKUP;
+      var ordertype = deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text ? ORDER_TYPE.DELIVERY.value : ORDER_TYPE.PICKUP.value;
+
   let quantity = menuitem.selecteditemquantity;
   // let studentname = studentdata.studentname;
   //   const selectedItemDescription =

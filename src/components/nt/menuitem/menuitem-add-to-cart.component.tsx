@@ -1,5 +1,10 @@
-import React, { useState } from "react";
-import { GetThemeDetails, ORDERTYPE, TOOLTIP_MSG } from "../../common/utility";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  GetThemeDetails,
+  ORDER_TYPE_ENUM,
+  TOOLTIP_MSG,
+} from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch } from "../../../../redux/hooks";
@@ -246,7 +251,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
       } else if (
         deliveryaddressinfo &&
-        deliveryaddressinfo.pickupordelivery === ORDERTYPE.Delivery &&
+        deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
         locationSelected?.isDeliveryOrderingDisable === true
       ) {
         return <b className="red-text">{locationSelected?.orderingMessage}</b>;
