@@ -1,3 +1,4 @@
+// -------old types before above it defined ---------------
 export interface CartItem {
   availability: boolean;
   availabilityMessage: string | null;
@@ -51,7 +52,7 @@ export interface CartItem {
 }
 
 export interface CartTotal {
-  PromotionData: any; // Define if structure known
+  PromotionData: PromotionData; // Define if structure known
   cartCount: number;
   cartTaxList: any; // Define if structure known
   currencySymbol: string;
@@ -77,11 +78,35 @@ export interface CartTotal {
   cartitemcount: number;
 }
 
+export interface PromotionData {
+  promotionpercentage: number;
+  promotiontitle: any;
+  promotionruletype: number;
+  promotionpercentagecal: number;
+  promotionappliedto: number;
+}
+
+export interface CartOptionParam {
+  cartid: number;
+  suboptionId: number;
+  title: string;
+  price: number;
+  pizzaside: string;
+  quantity: number;
+  optionId: number;
+  optiontitle: string;
+  paidQty: number;
+  toppingquantity: number;
+}
+
+export interface GetCartItemsList {
+  cartDetails: CartDetails;
+}
+
 export interface CartDetails {
-  cartItemDetails: CartItem[];
-  cartOptionParams: any[]; // Add more specific typing if structure known
-  cartTotal: CartTotal;
-  cartitemcount: number;
+  cartItemDetails: CartItemDetail[];
+  cartOptionParams: CartOptionParam[]; // Add more specific typing if structure known
+  cartTotal: CartTotal[];
 }
 
 ///// getCartItemsCount service response after menuitem added to cart
@@ -95,11 +120,11 @@ export interface GetCartItems {
   cartDetails: CartDetails;
 }
 
-export interface CartDetails {
-  // cartItemDetails: CartItemDetail[];
-  //cartOptionParams: CartOptionParam[];
-  cartTotal: CartTotal;
-}
+// export interface CartDetails {
+//   // cartItemDetails: CartItemDetail[];
+//   //cartOptionParams: CartOptionParam[];
+//   cartTotal: CartTotal;
+// }
 
 export interface CartItemDetail {
   categoryname: string;
@@ -154,18 +179,6 @@ export interface CartItemDetail {
   categorytaxes: number;
 }
 
-export interface CartOptionParam {
-  cartid: number;
-  suboptionId: number;
-  title: string;
-  price: number;
-  pizzaside: string;
-  quantity: number;
-  optionId: number;
-  optiontitle: string;
-  paidQty: number;
-}
-
 export interface CartTotal {
   subTotal: number;
   reedemPoints: number;
@@ -189,5 +202,119 @@ export interface CartTotal {
   deliveryCharges: any;
   cartTaxList: any;
   isDiscountApplied: boolean;
-  PromotionData: any;
+  PromotionData: PromotionData;
 }
+
+// // ------new defined types ----------
+// ///getCartItems service types
+// export interface CartItems {
+//   cartDetails: CartDetails;
+// }
+
+// export interface CartDetails {
+//   cartItemDetails: CartItemDetail[];
+//   cartOptionParams: CartOptionParam[];
+//   cartTotal: CartTotal;
+// }
+
+// export interface CartItemDetail {
+//   categoryname: string;
+//   itemname: string;
+//   orderItemType: number;
+//   orderitemId: number;
+//   cartid: number;
+//   qty: number;
+//   subparameterid: number;
+//   price: number;
+//   unitprice: number;
+//   totalprice: number;
+//   rewardpoints: number;
+//   restaurantId: number;
+//   locationid: number;
+//   subparametername: string;
+//   rewardvalue: number;
+//   minorder: number;
+//   currencysymbol: string;
+//   istakeaway: number;
+//   isdelivery: number;
+//   iswaiting: number;
+//   isDiscountApply: number;
+//   imgname: string;
+//   imgUrl: string;
+//   menuitemid: number;
+//   taxPercentage: number;
+//   subParameters: any;
+//   subParameterPrice: number;
+//   systemAccessFee: number;
+//   hstapplied: boolean;
+//   pricetypeid: number;
+//   isdefaultprice: boolean;
+//   studentname: string;
+//   categorytakeoutavailable: boolean;
+//   categorydeliveryavailable: boolean;
+//   categoryisonlineavailable: boolean;
+//   categoryisposavailable: boolean;
+//   menuitemslug: string;
+//   categoryslug: string;
+//   dependentmenuitemid: number;
+//   promotionpercentage: number;
+//   promotiontitle: string;
+//   promotionruletype: number;
+//   promotionpercentagecal: number;
+//   isfreeitem: boolean;
+//   availability: boolean;
+//   availabilityMessage: any;
+//   categoryhstapplied: boolean;
+//   categorytaxes: number;
+// }
+
+// export interface CartOptionParam {
+//   cartid: number;
+//   suboptionId: number;
+//   title: string;
+//   price: number;
+//   pizzaside: string;
+//   quantity: number;
+//   optionId: number;
+//   optiontitle: string;
+//   paidQty: number;
+// }
+
+// export interface CartTotal {
+//   subTotal: number;
+//   reedemPoints: number;
+//   reedemAmount: number;
+//   discountAmount: number;
+//   deliveryAmount: number;
+//   subTotalWithDiscount: number;
+//   taxPercentage: number;
+//   totalTip: number;
+//   hstTotal: number;
+//   grandTotal: number;
+//   systemAccessFee: number;
+//   tipPercentage: number;
+//   tipAmount: number;
+//   cartCount: number;
+//   customerOrderCount: number;
+//   minOrderAmountForRewardPoint: string;
+//   discountPercentage: string;
+//   discountType: string;
+//   currencySymbol: string;
+//   deliveryCharges: any;
+//   cartTaxList: any;
+//   isDiscountApplied: boolean;
+//   PromotionData: PromotionData;
+// }
+
+// export interface PromotionData {
+//   promotionpercentage: number;
+//   promotiontitle: any;
+//   promotionruletype: number;
+//   promotionpercentagecal: number;
+//   promotionappliedto: number;
+// }
+
+// // ---------getCartItemsCount service types --------
+// export interface CartItemsCount {
+//   cartCount: number;
+// }

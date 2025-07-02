@@ -18,9 +18,7 @@ import {
 } from "@/types/mainservice-types/mainservice.type";
 import {
   CartDetails,
-  CartItem,
   CartItemDetail,
-  CartTotal,
 } from "@/types/cart-types/cartservice.type";
 import {
   GetAllMenuCategoryItems,
@@ -33,9 +31,8 @@ import {
   DefaultLocation,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
-import { DeliveryAddressInput } from "../../../redux/delivery-address/delivery-address.types";
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
-// import { DeliveryAddressInfo } from "../default/common/dominos/helpers/types/utility-type";
+import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 
 export enum ORDER_TYPE_ENUM {
   PICKUP = "Pickup",
@@ -302,7 +299,7 @@ export const themeDefaultStyleArray: ThemeDefautStyle[] = [
 
 //CHECK THE CARTITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
 export const checkCheckoutDisable = (
-  cartdata: CartDetails,
+  cartdata: CartDetails[],
   pickupordelivery: string,
   dtotal: any
 ): boolean => {
@@ -311,7 +308,7 @@ export const checkCheckoutDisable = (
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
   ) {
     //let cartItems = cartdata?.cartDetails?.cartItemDetails;
-    let cartItems: CartItem[] = cartdata?.cartItemDetails;
+    let cartItems = cartdata[0]?.cartItemDetails;
     let isAnyPickupItemNotAvailable = cartItems?.some(
       (item) => item?.categorytakeoutavailable === false
     );
@@ -324,7 +321,7 @@ export const checkCheckoutDisable = (
         isAnyPickupItemNotAvailable) ||
       (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
         isAnydeliveryItemNotAvailable) ||
-      checkMenuItemTimeAvailability(cartItems)
+      checkMenuItemTimeAvailability(cartItems as any)
     ) {
       return true;
     } else if (
@@ -341,8 +338,8 @@ export const checkCheckoutDisable = (
 };
 
 export const checkMenuItemTimeAvailability = (
-  cartItems: CartItem[]
-): boolean => {
+  cartItems: CartItemDetail[]
+) => {
   return cartItems?.some((item) => item.availability == false);
 };
 
@@ -384,14 +381,14 @@ export const checkMenuItemAvailability = (
 };
 // GET AVAILABLE CARTRELATIVE ITEMS
 export const getAvailableCartRelativeData = (
-  categoryList: GetAllMenuCategoryItems[],
+  categoryList: MainCategoryList[],
   pickupordelivery: string,
-  cartRelativeData: CartItemDetail[]
+  cartRelativeData: GetCategoriesRelativeItems[]
 ) => {
   if (cartRelativeData === undefined || cartRelativeData === null) {
     return undefined;
   }
-  if (pickupordelivery === "") {
+  if (cartRelativeData && pickupordelivery === "") {
     return cartRelativeData;
   }
   if (pickupordelivery === "Pickup") {
@@ -645,17 +642,17 @@ export const getAsapLaterOnState = (
   const orderState =
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
       ? {
-        timeWindow: deliveryWindow,
-        isAsap: isDeliveryAsap,
-        isLaterOn: isDeliveryPickupTime,
-        isOrderTypeDisable: isDeliveryOrderingDisable,
-      }
+          timeWindow: deliveryWindow,
+          isAsap: isDeliveryAsap,
+          isLaterOn: isDeliveryPickupTime,
+          isOrderTypeDisable: isDeliveryOrderingDisable,
+        }
       : {
-        timeWindow: pickupWindow,
-        isAsap: isTakeOutAsap,
-        isLaterOn: isTakeOutPickupTime,
-        isOrderTypeDisable: isTakeoutOrderingDisable,
-      };
+          timeWindow: pickupWindow,
+          isAsap: isTakeOutAsap,
+          isLaterOn: isTakeOutPickupTime,
+          isOrderTypeDisable: isTakeoutOrderingDisable,
+        };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 

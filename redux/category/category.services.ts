@@ -2,9 +2,7 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
-import {
-  GetCategoriesRelativeItems,
-} from "@/types/category-types/category.services.type";
+import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
@@ -49,7 +47,7 @@ export class CategoryServices {
     sessionId: string,
     locationId: number,
     restaurantId: number
-  ): Promise<GetCategoriesRelativeItems[] | null> {
+  ): Promise<GetCategoriesRelativeItems | null> {
     responseclass = new ResponseModel();
     const methodName = "getCategoryRelativesItems";
     const location = ENDPOINTS.GET_CATEGORIES_RELATIVE_ITEMS;
@@ -72,7 +70,7 @@ export class CategoryServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result as GetCategoriesRelativeItems[];
+      return responseclass.result as GetCategoriesRelativeItems;
     } else {
       return null;
     }

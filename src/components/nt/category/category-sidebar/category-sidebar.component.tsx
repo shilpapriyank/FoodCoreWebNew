@@ -20,7 +20,7 @@ const CategorySidebar: React.FC = () => {
   const location = searchParams.get("location");
   const [isOpenChangeLocation, setIsOpenChangeLocation] =
     useState<boolean>(false);
-  const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
 
@@ -56,7 +56,7 @@ const CategorySidebar: React.FC = () => {
         <div className="sidebar">
           {!isSchoolProgramEnabled && <OrderPreparationDetail />}
           <div className="card totalbox">
-             <OrderItemsList />
+            <OrderItemsList />
             {/*{cart?.cartitemcount > 0 && <RelatedItemsList />} */}
             {cart?.cartitemcount > 0 ? (
               <a className="btn-default w-100" onClick={handleClick}>

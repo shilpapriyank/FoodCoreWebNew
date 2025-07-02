@@ -31,7 +31,7 @@ export class MenuItemServices {
     menuitemId: number;
     cartsessionId: string;
     cartId: number;
-  }): Promise<GetMenuItemDetail[] | null> {
+  }): Promise<GetMenuItemDetail | null> {
     responseclass = new ResponseModel();
     const methodName = "getMenuItemList";
     const location = ENDPOINTS.GET_MENU_ITEMS_DETAILS;
@@ -56,9 +56,9 @@ export class MenuItemServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result as GetMenuItemDetail[];
+      return responseclass.result as GetMenuItemDetail;
     } else {
-      return [];
+      return null;
     }
   }
 
@@ -182,7 +182,7 @@ export class MenuItemServices {
   }: {
     orderobj: any;
     restaurantId: number;
-  }): Promise<AddToCart | null> {
+  }): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "addItemToCart";
     const location = ENDPOINTS.ADD_ITEM_TO_CART;

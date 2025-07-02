@@ -1,0 +1,219 @@
+import React, { useEffect, useState } from "react";
+import {
+  getAvailableCartRelativeData,
+  GetThemeDetails,
+  ORDERTYPE,
+} from "../../../common/utility";
+import useFutureOrder from "../../../customhooks/usefuture-order-hook";
+import useUtility from "../../../customhooks/utility-hook";
+import { useParams, usePathname, useRouter } from "next/navigation";
+// import MenuItemDetail from "../../menuitem/menuitem.component";
+import MenuItemModal from "../../category/category-menuitems/menuitem-modal/menuitem-modal.component";
+import { RelatedItem } from "./related-item";
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { useAppDispatch } from "../../../../../redux/hooks";
+import { CategoryServices } from "../../../../../redux/category/category.services";
+import { useQuery } from "@tanstack/react-query";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
+import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
+import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
+import {
+  selectedMenuItem,
+  setMenuItemDetailList,
+} from "../../../../../redux/menu-item/menu-item.slice";
+import { PAGES } from "../pages";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+
+export const RelatedItemsList = () => {
+  const {
+    restaurantinfo,
+    selecteddelivery,
+    sessionid,
+    rewardpoints,
+    main,
+    cart,
+  } = useReduxData();
+  let cartitemcount = cart?.cartitemcount;
+  const pickupordelivery = selecteddelivery.pickupordelivery;
+  let sessionId = sessionid;
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [openMenuItemModal, setopenMenuItemModal] = useState<boolean>(false);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
+  const params = useParams();
+  const { dynamic, location, id, category, index } = params;
+  let locationFullLink =
+    "/" +
+    selectedTheme?.url +
+    "/" +
+    restaurantinfo?.restaurantURL +
+    "/" +
+    restaurantinfo?.defaultLocation?.locationURL.trim() +
+    "/";
+  let locationHrefLink = `/${selectedTheme?.url}/[dynamic]/[location]/`;
+
+  // const { data, refetch } = useQuery<GetAllMenuCategoryItems[]>(
+  //   [
+  //     "getCategoryRelativesItemstOrders",
+  //     restaurantinfo?.restaurantId,
+  //     restaurantinfo?.defaultLocation.locationId,
+  //     sessionid,
+  //   ],
+  //   () =>
+  //     CategoryServices.getCategoryRelativesItems(
+  //       sessionid as string,
+  //       restaurantinfo?.defaultLocation.locationId as number,
+  //       restaurantinfo?.restaurantId as number
+  //     ),
+  //   // { staleTime: 0, refetchOnWindowFocus: false, enabled: cartitemcount > 0 }
+  //   {
+  //     staleTime: 0,
+  //     refetchOnWindowFocus: false,
+  //     enabled: cart?.cartitemcount > 0,
+  //   }
+  // );
+
+  const { data, refetch } = useQuery({
+    queryKey: [
+      "getCategoryRelativesItems",
+      restaurantinfo?.restaurantId,
+      restaurantinfo?.defaultLocation.locationId,
+      sessionid,
+    ],
+    queryFn: () =>
+      CategoryServices.getCategoryRelativesItems(
+        sessionid as string,
+        restaurantinfo?.defaultLocation.locationId as number,
+        restaurantinfo?.restaurantId as number
+      ),
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+    enabled: cart?.cartitemcount > 0,
+  });
+
+  const maincategoryList = main.maincategoryList;
+
+  let availableCartRelativeItems = getAvailableCartRelativeData(
+    maincategoryList!,
+    pickupordelivery,
+    data as any
+  );
+
+  var dcharges =
+    cart &&
+    pickupordelivery === ORDERTYPE.Delivery &&
+    cart.carttotal != undefined &&
+    cart.carttotal?.deliveryCharges &&
+    JSON.parse(cart.carttotal?.deliveryCharges);
+  var dtotal =
+    dcharges != undefined &&
+    pickupordelivery === ORDERTYPE.Delivery &&
+    dcharges?.DeliveryCharges &&
+    parseFloat(dcharges.DeliveryCharges);
+  let rewardvalue = rewardpoints?.rewardvalue;
+  const { recievingDate, enabletimeslot } = useFutureOrder();
+  const { isDisplayPrice } = useUtility();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    refetch();
+  }, [cartitemcount]);
+
+  const handleToggleMenuItem = (value: boolean) => {
+    setopenMenuItemModal(value);
+  };
+
+  const handleRelativeItemClick = (item: any) => {
+    if (item && item?.menuItemId !== undefined)
+      item.menuitemId = item.menuItemId;
+    delete item.menuItemId;
+    // dispatch({
+    //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
+    //   payload: {},
+    // });
+    dispatch(setMenuItemDetailList(item));
+    dispatch(selectedMenuItem(item));
+
+    setTimeout(() => {
+      // setisProductItemPopup(true);
+      setopenMenuItemModal(true);
+    }, 100);
+    //   }
+    // });
+  };
+
+  if (pathname.includes(PAGES.CHECKOUT) && data && cart?.cartitemcount > 0) {
+    return (
+      <div className="infobox">
+        <h3 className="heading">SUGGESTIONS</h3>
+        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1">
+          {availableCartRelativeItems?.map(
+            (item, outerIndex) =>
+              item !== undefined &&
+              item.items.length > 0 &&
+              item.items.map((relativeItem, innerIndex) => (
+                <React.Fragment key={`inner-${innerIndex}`}>
+                  <div className="cols" key={`outer-${outerIndex}`}>
+                    <RelatedItem
+                      relativeItem={relativeItem}
+                      index={innerIndex}
+                      isDisplayPrice={isDisplayPrice}
+                      handleRelativeItemClick={handleRelativeItemClick}
+                      defaultmenuitemimage={
+                        restaurantinfo?.defaultLocation?.defaultmenuitemimage
+                      }
+                    />
+                  </div>
+                </React.Fragment>
+              ))
+          )}
+        </div>
+        {openMenuItemModal && (
+          <MenuItemModal
+            isOpenModal={openMenuItemModal}
+            handleToggleMenuItem={handleToggleMenuItem}
+            handleToggleDependnt={handleToggleMenuItem}
+            isPreLoaded={false}
+          />
+        )}
+      </div>
+    );
+  } else if (data && cart?.cartitemcount > 0) {
+    return (
+      <>
+        <h3 className="heading">SUGGESTIONS</h3>
+        {/* <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1"> */}
+        {availableCartRelativeItems?.map(
+          (item, outerIndex) =>
+            item.items !== undefined &&
+            item.items.length > 0 &&
+            item.items.map((relativeItem, innerIndex) => {
+              return (
+                <React.Fragment key={`inner-${innerIndex}`}>
+                  {/* <div className="cols" key={`outer-${outerIndex}`}> */}
+                  <RelatedItem
+                    relativeItem={relativeItem}
+                    index={index}
+                    handleRelativeItemClick={handleRelativeItemClick}
+                    defaultmenuitemimage={
+                      restaurantinfo?.defaultLocation?.defaultmenuitemimage
+                    }
+                  />
+                  {/* </div> */}
+                </React.Fragment>
+              );
+            })
+        )}
+        <hr />
+        {/* </div> */}
+        {/* <MenuItemDetail /> */}
+        {openMenuItemModal && (
+          <MenuItemModal
+            isOpenModal={openMenuItemModal}
+            handleToggleMenuItem={handleToggleMenuItem}
+          />
+        )}
+      </>
+    );
+  }
+};

@@ -209,12 +209,14 @@ export interface SelectedMenuItemDetail {
   menuItemName: string;
   menuitemId: number;
   menuitemslug: string;
-  menuitemstatus: any[]; // If it's an array of status items, type it
+  menuitemstatus: MenuStausList[]; // If it's an array of status items, type it
   originalPrice: number;
   price: string;
   quickorderallow: boolean;
   sortorder: number;
   cartid: any;
+  dependedItemId: number;
+  qty: number;
 }
 
 export interface MenuItemsCommon {
