@@ -27,7 +27,7 @@ import {
   setMenuCategoryData,
   setMenuItemDetailList,
 } from "../../../../../../redux/menu-item/menu-item.slice";
-import { getDesc, getImagePath } from "@/components/nt/common/utility";
+import { getDesc, getImagePath, ORDER_TYPE } from "@/components/nt/common/utility";
 import { MenuItemServices } from "../../../../../../redux/menu-item/menu-item.services";
 import MenuItemFooter from "./menuitem-footer.component";
 import MenuItemSize from "./menuitem-size.component";
@@ -110,10 +110,10 @@ const MenuItemModal = ({
   const dependentId = menuitem?.dependentid ?? 0;
   const dependentIds = menuitem?.dependentitemids;
   let menuItemDetail = menuitem?.menuitemdetaillist;
-  console.log(
-    "selected menuitem detail from menuitem-modal compo",
-    menuitem?.selectedmenuitemdetail
-  );
+  // console.log(
+  //   "selected menuitem detail from menuitem-modal compo",
+  //   menuitem?.selectedmenuitemdetail
+  // );
   const deliveryaddressinfo = selecteddelivery;
   const selectedsize = menuItemDetail?.size.find(
     (x) => x.sizeselected === true

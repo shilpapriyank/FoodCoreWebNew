@@ -1,4 +1,4 @@
-import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -35,13 +35,14 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   menuitem: menuItemReducer,
   cart: cartReducer,
+  // favourite: favouriteReducer,
   register: registerReducer,
   userdetail: loginReducer,
   // location: locationReducer,
   todaytimming: timmingReducer,
-  selecteddelivery: selecteddeliveryReducer,
   order: orderReducer,
   deliveryaddress: deliveryaddressReducer,
+  selecteddelivery: selecteddeliveryReducer,
   session: sessionReducer,
   studentname: studentReducer,
   rewardpoints: rewardpointReducer,

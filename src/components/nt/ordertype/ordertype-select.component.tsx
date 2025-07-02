@@ -268,7 +268,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         lid
       );
 
-      console.log("Received location:", res);
+      //console.log("Received location:", res);
 
       if (!restaurantinfo || !res) return;
 
