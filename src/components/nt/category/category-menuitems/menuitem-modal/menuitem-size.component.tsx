@@ -7,7 +7,7 @@ const MenuItemSize = ({ selectedSizeClick, shareUrl }: any) => {
   const { menuitem, restaurantinfo, menuitemdetaillist } = useReduxData();
   // let studentname = studentdata
   const { isDisplayPrice } = useUtility();
-  const selctedItemSize = menuitemdetaillist[0].size;
+  const selctedItemSize = menuitemdetaillist?.size;
   return (
     <>
       <div

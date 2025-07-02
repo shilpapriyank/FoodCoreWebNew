@@ -1,16 +1,21 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CartServices } from "./cart.services";
-import { CartDetails } from "@/types/cart-types/cartservice.type";
+import {
+  CartDetails,
+  CartTotal,
+  GetCartItemsList,
+} from "@/types/cart-types/cartservice.type";
 import { actionAsyncStorage } from "next/dist/server/app-render/action-async-storage.external";
 import { CartTypes } from "./cart.type";
 
 // Define the cart item shape
 interface CartState {
-  cartitemdetail: {
-    cartDetails: CartDetails;
-  };
+  // cartitemdetail: {
+  //   cartDetails: CartDetails | null;
+  // };
+  cartitemdetail: GetCartItemsList | null;
   cartitemcount: number;
-  carttotal: string; // Can be CartTotal again depending on how you're storing it
+  carttotal: CartTotal | null; // Can be CartTotal again depending on how you're storing it
   deliverycharges: any;
   rewardpoints: any;
   transactionid: string | null;
@@ -22,39 +27,12 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  cartitemdetail: {
-    cartDetails: {
-      cartItemDetails: [],
-      cartOptionParams: [],
-      cartTotal: {
-        PromotionData: null,
-        cartCount: 0,
-        cartTaxList: null,
-        currencySymbol: "$",
-        customerOrderCount: 0,
-        deliveryAmount: 0,
-        deliveryCharges: null,
-        discountAmount: 0,
-        discountPercentage: "0",
-        discountType: "%",
-        grandTotal: 0,
-        hstTotal: 0,
-        isDiscountApplied: false,
-        minOrderAmountForRewardPoint: null,
-        reedemAmount: 0,
-        reedemPoints: 0,
-        subTotal: 0,
-        subTotalWithDiscount: 0,
-        systemAccessFee: 0,
-        taxPercentage: 0,
-        tipAmount: 0,
-        tipPercentage: 0,
-        totalTip: 0,
-      },
-    },
-  },
+  // cartitemdetail: {
+  //   cartDetails: null,
+  // },
+  cartitemdetail: null,
   cartitemcount: 0,
-  carttotal: "",
+  carttotal: null,
   deliverycharges: {},
   rewardpoints: {},
   transactionid: null,
@@ -111,14 +89,14 @@ export const getCartItem = createAsyncThunk(
       rewardpoints,
       redeemamount,
       deliveryaddressId,
-     // tippercent,
+      // tippercent,
       tipAmount,
       tipPercentage,
       ordertype,
       selectedTime,
-      requestId
-  });
-    return response;
+      requestId,
+    });
+    return response as GetCartItemsList;
   }
 );
 
@@ -135,82 +113,93 @@ export const getCartItem = createAsyncThunk(
 //     }
 // );
 
-
 export const deleteCartItem = createAsyncThunk(
-    'cart/deleteCartItem',
-    async (params: any) => {
-        const response = await CartServices.deleteCartItem(
-            params.cartsessionId,
-            params.cartId,
-            params.restaurantId,
-            params.locationId
-        );
-        return response;
-    }
+  "cart/deleteCartItem",
+  async (params: any) => {
+    const response = await CartServices.deleteCartItem(
+      params.cartsessionId,
+      params.cartId,
+      params.restaurantId,
+      params.locationId
+    );
+    return response;
+  }
 );
 
 export const updatequantity = createAsyncThunk(
-    'cart/updatequantity',
-    async (params: any) => {
-        const response = await CartServices.updatequantity(
-            params.cartsessionId,
-            params.cartId,
-            params.qty,
-            params.price,
-            params.locationId,
-            params.restaurantId
-        );
-        return response;
-    }
+  "cart/updatequantity",
+  async (params: any) => {
+    const response = await CartServices.updatequantity(
+      params.cartsessionId,
+      params.cartId,
+      params.qty,
+      params.price,
+      params.locationId,
+      params.restaurantId
+    );
+    return response;
+  }
 );
 
 export const cartcheckout = createAsyncThunk(
-    'cart/cartcheckout',
-    async ({ obj, restaurantId }: any) => {
-        const response = await CartServices.cartcheckout(obj, restaurantId);
-        return response;
-    }
+  "cart/cartcheckout",
+  async ({ obj, restaurantId }: any) => {
+    const response = await CartServices.cartcheckout(obj, restaurantId);
+    return response;
+  }
 );
 
-export const deleteCartItemFromSessionId = (cartsessionId: any, restaurantId: any, locationId: any) => {
-    // return (dispatch) => { 
-    if (cartsessionId) {
-        let response = CartServices.deleteCartItemFromSessionId(cartsessionId, restaurantId, locationId);
-    }
-}
+export const deleteCartItemFromSessionId = (
+  cartsessionId: any,
+  restaurantId: any,
+  locationId: any
+) => {
+  // return (dispatch) => {
+  if (cartsessionId) {
+    let response = CartServices.deleteCartItemFromSessionId(
+      cartsessionId,
+      restaurantId,
+      locationId
+    );
+  }
+};
 
-export const afterPaymentSuccess = (restaurantId : any, orderId: any,source: any) => {
-    // return (dispatch) => { 
-    if (orderId > 0) {
-        CartServices.afterPaymentSuccess(restaurantId, orderId,source);
-    }
-}
+export const afterPaymentSuccess = (
+  restaurantId: any,
+  orderId: any,
+  source: any
+) => {
+  // return (dispatch) => {
+  if (orderId > 0) {
+    CartServices.afterPaymentSuccess(restaurantId, orderId, source);
+  }
+};
 
 export const emptycart = () => {
-    return (dispatch: any) => {
-        dispatch({
-            type: CartTypes.CART_EMPTY,
-            payload: null
-        })
-    }
-}
+  return (dispatch: any) => {
+    dispatch({
+      type: CartTypes.CART_EMPTY,
+      payload: null,
+    });
+  };
+};
 
 export const orderinstruction = (message: any) => {
-    return (dispatch: any) => {
-        dispatch({
-            type: CartTypes.SET_ORDER_INSTRUCTION,
-            payload: message
-        })
-    }
-}
+  return (dispatch: any) => {
+    dispatch({
+      type: CartTypes.SET_ORDER_INSTRUCTION,
+      payload: message,
+    });
+  };
+};
 export const orderdeliveryinstruction = (message: any) => {
-    return (dispatch: any) => {
-        dispatch({
-            type: CartTypes.SET_ORDER_DELIVERY_INSTRUCTION,
-            payload: message
-        })
-    }
-}
+  return (dispatch: any) => {
+    dispatch({
+      type: CartTypes.SET_ORDER_DELIVERY_INSTRUCTION,
+      payload: message,
+    });
+  };
+};
 
 const cartSlice = createSlice({
   name: "cart",
@@ -257,11 +246,22 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getCartItem.fulfilled, (state, action) => {
-      if (action.payload?.cartDetails?.cartTotal) {
+    builder.addCase(
+      getCartItem.fulfilled,
+      (state, action: PayloadAction<GetCartItemsList>) => {
         state.cartitemdetail = action.payload;
       }
-    });
+    );
+    // builder.addCase(
+    //   getCartItem.fulfilled,
+    //   (state, action: PayloadAction<CartDetails | null>) => {
+    //     if (action.payload) {
+    //       state.cartitemdetail.cartDetails = action.payload;
+    //     } else {
+    //       state.cartitemdetail.cartDetails = null;
+    //     }
+    //   }
+    // );
   },
 });
 
@@ -282,4 +282,3 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
-

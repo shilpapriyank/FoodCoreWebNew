@@ -11,6 +11,7 @@ import {
   MainCategoryList,
   RestaurantWindowTimeNew,
 } from "@/types/mainservice-types/mainservice.type";
+import { AppDispatch, RootState } from "../store";
 
 interface MainState {
   maincategoryList: MainCategoryList[];
@@ -53,22 +54,85 @@ export const getSelectedRestaurantTime = createAsyncThunk<
   }
 );
 
-export const refreshCategoryList = createAsyncThunk(
-  "main/refreshCategoryList",
-  async (
-    {
-      newselectedRestaurant,
-      customerId,
-    }: {
-      newselectedRestaurant: any;
-      customerId: number;
-    },
-    { dispatch }
-  ) => {
-    const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
+// export const refreshCategoryList = createAsyncThunk(
+//   "main/refreshCategoryList",
+//   async (
+//     {
+//       newselectedRestaurant,
+//       customerId,
+//     }: {
+//       newselectedRestaurant: any;
+//       customerId: number;
+//     },
+//     { dispatch }
+//   ) => {
+//     const selectedTheme = GetThemeDetails(newselectedRestaurant.themetype as number);
 
-    if (selectedTheme.url === "nt") {
-      dispatch(
+//     if (selectedTheme?.url === "nt") {
+//       dispatch(
+//         getAllCategoryMenuItems({
+//           restaurantId: newselectedRestaurant.restaurantId,
+//           locationId: newselectedRestaurant.defaultlocationId,
+//           customerId,
+//           categories: "",
+//           selectedCategoryUrl: "",
+//         })
+//       );
+//     } else {
+//       const response = await MainServices.getMenuCategoryList(
+//         newselectedRestaurant.restaurantId,
+//         newselectedRestaurant.defaultlocationId
+//       );
+
+//       if (response?.length) {
+//         dispatch(setMainCategoryList(response));
+
+//         const firstCategory = { ...response[0], catSelected: true };
+//         dispatch(selectedCategory(firstCategory));
+
+//         dispatch(
+//           getCategoryItemList({
+//             restaurantId: newselectedRestaurant.restaurantId,
+//             categories: String(firstCategory.catId),
+//             customerId,
+//             locationId: newselectedRestaurant.defaultlocationId,
+//           })
+//         );
+
+//         const promotion = response.find((x) => x.catName === "PROMOTION");
+//         if (promotion) {
+//           const promoResponse = await MainServices.getPromotionCategoryList(
+//             newselectedRestaurant.restaurantId,
+//             String(promotion.catId),
+//             customerId,
+//             newselectedRestaurant.defaultlocationId
+//           );
+
+//           if (promoResponse) {
+//             dispatch(setPromotionCategoryList(promoResponse));
+//           }
+//         }
+//       } else {
+//         dispatch(updateMenuCategoryData([]));
+//         dispatch(updatePromotionCategoryData([]));
+//       }
+//     }
+//   }
+// );
+
+export const refreshCategoryList = createAsyncThunk<
+  void, // return type
+  { newselectedRestaurant: any; customerId: number }, // argument type
+  { dispatch: AppDispatch; state: RootState } // thunkAPI config
+>(
+  "main/refreshCategoryList",
+  async ({ newselectedRestaurant, customerId }, { dispatch }) => {
+    const selectedTheme = GetThemeDetails(
+      newselectedRestaurant.themetype as number
+    );
+
+    if (selectedTheme?.url === "nt") {
+      await dispatch(
         getAllCategoryMenuItems({
           restaurantId: newselectedRestaurant.restaurantId,
           locationId: newselectedRestaurant.defaultlocationId,
@@ -89,7 +153,7 @@ export const refreshCategoryList = createAsyncThunk(
         const firstCategory = { ...response[0], catSelected: true };
         dispatch(selectedCategory(firstCategory));
 
-        dispatch(
+        await dispatch(
           getCategoryItemList({
             restaurantId: newselectedRestaurant.restaurantId,
             categories: String(firstCategory.catId),

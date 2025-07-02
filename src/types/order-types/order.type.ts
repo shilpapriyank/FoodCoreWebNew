@@ -118,3 +118,87 @@ export type CheckTimeBySlotArgsTypes = {
   timeSlot: string;
   date: string;
 };
+
+
+
+
+
+
+// --------new defined types -------------------
+// getOrderDetailsInfo service types after order placed
+export interface Root {
+  result: Result
+  message: string
+  status: number
+}
+
+export interface Result {
+  orderDetailInfo: OrderDetailInfo
+}
+
+export interface OrderDetailInfo {
+  OrderDetails: OrderDetail[]
+  subOptions: any
+  OrderDetailCal: OrderDetailCal
+  optionList: any
+  locationId: number
+  locationname: string
+}
+
+export interface OrderDetail {
+  customerId: number
+  orderId: number
+  itemName: string
+  imgname: any
+  quantity: number
+  amount: number
+  netprice: number
+  subOptionList: string
+  subOptionListText: string
+  creationdate: any
+  orderno: number
+  orderdetailTotal: number
+  orderdetailId: number
+}
+
+export interface OrderDetailCal {
+  redeemPoints: number
+  redeemAmount: number
+  subTotal: number
+  discount: number
+  discountPer: number
+  deliveryCharges: number
+  TotalPreTax: number
+  hstTaxPer: number
+  hstTaxTotal: number
+  tip: number
+  total: number
+  date: string
+  orderNo: number
+  currencysymbol: string
+  preTaxAmount: number
+  calculatedTotal: number
+  orderId: number
+  grandTotal: number
+  cartTaxList: any
+  cardShowMessage: string
+  promotioncal: number
+  promotionruletype: number
+  promotionpercentage: number
+  promotiontitle: string
+  paymentMessage: any
+  orderStatus: string
+  note: string
+  stripeId: any
+  ordertype: number
+  orderTypeText: string
+  trackingurl: any
+  deliverystatus: any
+  deliverypartnername: any
+  systemAccessFee: number
+  deliverynote: string
+  isFutureOrder: boolean
+  timeSlot: string
+  futureDate: string
+  customertype: number
+}

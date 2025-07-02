@@ -8,6 +8,12 @@ import { ResponseModel } from "@/components/common/commonclass";
 import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { getDate, ORDER_TIME_TYPE } from "@/components/common/utility";
 import { ParseArgsConfig } from "util";
+import {
+  CartDetails,
+  CartTotal,
+  GetCartItems,
+  GetCartItemsList,
+} from "@/types/cart-types/cartservice.type";
 
 let responseclass = new ResponseModel();
 
@@ -40,7 +46,7 @@ export class CartServices {
     ordertype?: string;
     selectedTime: string;
     requestId: string;
-  }): Promise<any | null> {
+  }): Promise<GetCartItemsList | null> {
     responseclass = new ResponseModel();
     const methodName = "getCartItemList";
     const location = ENDPOINTS.GET_CART_ITEM;
@@ -78,7 +84,7 @@ export class CartServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result;
+      return responseclass.result as GetCartItemsList;
     } else {
       return null;
     }
@@ -122,7 +128,7 @@ export class CartServices {
     cartId: number,
     restaurantId: number,
     locationId: number
-  ): Promise<any | null> {
+  ): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "deleteCartItem";
     const location = ENDPOINTS.DELETE_CART_ITEM;
@@ -206,7 +212,7 @@ export class CartServices {
     price: string,
     locationId: number,
     restaurantId: number
-  ): Promise<any | null> {
+  ): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "updatequantity";
     const location = ENDPOINTS.UPDATE_QUANTITY;
@@ -264,7 +270,7 @@ export class CartServices {
     ordertimetype: number = ORDER_TIME_TYPE.ASAP.value,
     recievingDate: string = "",
     enableTimeSlot: boolean = false
-  ): Promise<any | null> {
+  ): Promise<CartTotal | null> {
     responseclass = new ResponseModel();
     const methodName = "carttotal";
     const location = ENDPOINTS.GET_CART_TOTAL;

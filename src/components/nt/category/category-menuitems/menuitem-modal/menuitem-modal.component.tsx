@@ -4,7 +4,6 @@ import {
   calculateNettotal,
   GetCurrency,
   GetThemeDetails,
-  ORDER_TYPE,
   ORDER_TYPE_ENUM,
 } from "../../../../common/utility";
 import handleNotify from "../../../../default/helpers/toaster/toaster-notify";
@@ -48,11 +47,16 @@ import { useAppDispatch } from "../../../../../../redux/hooks";
 import {
   GetMenuItemDetail,
   List,
+  SelectedMenuItemDetail,
   Size,
   Topping,
   Type,
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import {
+  CartDetails,
+  CartItemDetail,
+} from "@/types/cart-types/cartservice.type";
 
 const MenuItemModal = ({
   isOpenModal,
@@ -60,10 +64,10 @@ const MenuItemModal = ({
   handleToggleMenuItem,
   isPreLoaded = false,
 }: {
-  isOpenModal: boolean;
-  handleToggleDependnt: (isOpen: boolean) => void;
-  handleToggleMenuItem: (isOpen: boolean) => void;
-  isPreLoaded: boolean;
+  isOpenModal?: boolean;
+  handleToggleDependnt?: (value: boolean) => void;
+  handleToggleMenuItem: (value: boolean) => void;
+  isPreLoaded?: boolean;
 }) => {
   const {
     menuitem,
@@ -106,6 +110,10 @@ const MenuItemModal = ({
   const dependentId = menuitem?.dependentid ?? 0;
   const dependentIds = menuitem?.dependentitemids;
   let menuItemDetail = menuitem?.menuitemdetaillist;
+  console.log(
+    "selected menuitem detail from menuitem-modal compo",
+    menuitem?.selectedmenuitemdetail
+  );
   const deliveryaddressinfo = selecteddelivery;
   const selectedsize = menuItemDetail?.size.find(
     (x) => x.sizeselected === true
@@ -151,16 +159,14 @@ const MenuItemModal = ({
   );
   var selecetdtime = recievingTime + " " + (meredian ?? "");
   const menuItemId =
-    selectedmenuitemdetail[0]?.menuitemId ??
-    selectedmenuitemdetail[0]?.menuitemId;
+    selectedmenuitemdetail?.menuitemId ?? selectedmenuitemdetail?.menuitemId;
   const catSlug = maincategoryList?.find(
-    (cat) => cat?.catId === selectedmenuitemdetail?.[0]?.catId
+    (cat) => cat?.catId === selectedmenuitemdetail?.catId
   )?.categoryslug;
   let shareUrl = `${window.location.origin}/${
     selctedTheme?.url
   }/${dynamic}/${location}/${catSlug}?menuitemId=${
-    selectedmenuitemdetail?.[0]?.menuitemId ??
-    selectedmenuitemdetail?.[0]?.menuitemId
+    selectedmenuitemdetail?.menuitemId ?? selectedmenuitemdetail?.menuitemId
   }`;
   let rpoint = 0;
   const { width } = useWindowDimensions();
@@ -176,15 +182,9 @@ const MenuItemModal = ({
   }
 
   useEffect(() => {
-    // setcurrentQty(
-    //   selectedmenuitemdetail.qty !== undefined ? selectedmenuitemdetail.qty : 1
-    // );
     setcurrentQty(
-      menuitem?.selecteditemquantity !== undefined
-        ? menuitem?.selecteditemquantity
-        : 1
+      selectedmenuitemdetail?.qty !== undefined ? selectedmenuitemdetail.qty : 1
     );
-
     if (isPreLoaded === true) {
       setisLoad(true);
       return;
@@ -195,7 +195,7 @@ const MenuItemModal = ({
         restaurantId,
         locationId: defaultlocationId,
         customerId: customerId as number,
-        menuitemId: menuItemId,
+        menuitemId: menuItemId as number,
         cartsessionId: sessionId as string,
         cartId: 0,
       }).then((response) => {
@@ -205,8 +205,8 @@ const MenuItemModal = ({
           //     payload: response,
           //   });
 
-          dispatch(setMenuItemDetailList(response[0]));
-          dispatch(setMenuCategoryData(response[0]));
+          dispatch(setMenuItemDetailList(response));
+          dispatch(setMenuCategoryData(response));
           setisLoad(true);
         }
       });
@@ -339,9 +339,8 @@ const MenuItemModal = ({
   }, [lstcarttopping, quantity, selectedsize]);
 
   const addToCart = () => {
-    if (dependentId > 0) {
-      selectedmenuitemdetail[0].menuItemName =
-        menuItemDetail?.itemName as string;
+    if (selectedmenuitemdetail && dependentId > 0) {
+      selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName as string;
     }
     if (
       dependentId === 0 &&
@@ -471,7 +470,7 @@ const MenuItemModal = ({
             //     type: MenuItemTypes.ADD_ITEM_TO_CART,
             //     payload: response,
             //   });
-            dispatch(setCartItem(response));
+            dispatch(setCartItem(response as any));
             dispatch(
               getCartItemCount({
                 sessionId,
@@ -754,23 +753,24 @@ const MenuItemModal = ({
   const selectedFavoriteClick = (item: any) => {
     setcount(count + 1);
     let objdata = selectedmenuitemdetail;
-    objdata[0].isFavoriteMenu = item;
+    if (!objdata) return null;
+    objdata.isFavoriteMenu = item;
     dispatch(removeMenuItemForFavorite());
-    dispatch(selectedMenuItem(objdata as any));
+    dispatch(selectedMenuItem(objdata));
     if (item === true) {
       dispatch(
         addFavorite({
           customerId: userinfo?.customerId as number,
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: menuItemId,
-        }) as any
+          menuItemId: menuItemId as number,
+        })
       );
     } else {
       dispatch(
         deleteFavorite({
           customerId: userinfo?.customerId as number,
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: selectedmenuitemdetail[0].menuitemId,
+          menuItemId: selectedmenuitemdetail?.menuitemId as number,
         })
       );
     }
@@ -803,7 +803,7 @@ const MenuItemModal = ({
                       name={selectedItemName}
                       desc={selectedItemDescription}
                       shareUrl={shareUrl}
-                      isFavourite={selectedmenuitemdetail[0]?.isFavoriteMenu}
+                      isFavourite={selectedmenuitemdetail?.isFavoriteMenu}
                       img={itemImage}
                     />
                     <div className="row mt-3">

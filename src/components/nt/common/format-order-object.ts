@@ -12,8 +12,7 @@ export const FormatOrderObject = ({
 }: any) => {
   // let sessionid = useSelector(({ session }) => session?.sessionid);
   let selectedsize =
-    menuItemDetail != undefined &&
-    menuItemDetail.size != undefined &&
+    menuItemDetail && 
     menuItemDetail.size.length > 0 &&
     menuItemDetail.size.find((x: any) => x.sizeselected === true);
   let selectedtopping =

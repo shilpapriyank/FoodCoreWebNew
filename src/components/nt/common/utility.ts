@@ -3,6 +3,17 @@ export enum ViewTypeEnum {
   LIST = "list",
 }
 
+export const ORDER_TYPE = {
+  PICKUP: {
+    text: "Pickup",
+    value: 1,
+  },
+  DELIVERY: {
+    text: "Delivery",
+    value: 2,
+  },
+};
+
 export const getImagePath = (
   itemImage: string | null | undefined,
   defaultImage: string | null | undefined

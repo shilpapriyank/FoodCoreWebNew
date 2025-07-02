@@ -10,6 +10,7 @@ import { MenuItemTypes } from "./menuitem.type";
 import {
   Category,
   DependantMenuList,
+  GetAllMenuCategoryItems,
   GetMenuItemDetail,
   GetSerachResult,
   MenuItem,
@@ -27,7 +28,7 @@ type ThunkConfig = {
 
 // Types
 export interface MenuItemState {
-  selectedmenuitemdetail: SelectedMenuItemDetail[];
+  selectedmenuitemdetail: SelectedMenuItemDetail | null;
   // menuitemdetaillist: {
   //   menuItemId: number;
   //   itemName: string;
@@ -53,7 +54,7 @@ export interface MenuItemState {
 }
 
 const initialState: MenuItemState = {
-  selectedmenuitemdetail: [],
+  selectedmenuitemdetail: null,
   // menuitemdetaillist: {
   //   menuItemId: 0,
   //   itemName: "",
@@ -268,8 +269,11 @@ const menuItemSlice = createSlice({
     setMenuCategoryData: (state, action: PayloadAction<GetMenuItemDetail>) => {
       state.menuitemdetaillist = action.payload;
     },
-    selectedMenuItem: (state, action: PayloadAction<GetMenuItemDetail>) => {
-      state.menuitemdetaillist = action.payload;
+    selectedMenuItem: (
+      state,
+      action: PayloadAction<SelectedMenuItemDetail>
+    ) => {
+      state.selectedmenuitemdetail = action.payload;
     },
     setMenuItemDetailList: (
       state,
@@ -279,12 +283,12 @@ const menuItemSlice = createSlice({
     },
     setSelectedMenuItemDetailList: (
       state,
-      action: PayloadAction<SelectedMenuItemDetail[]>
+      action: PayloadAction<SelectedMenuItemDetail>
     ) => {
       state.selectedmenuitemdetail = action.payload;
     },
     removeMenuItemForFavorite: (state) => {
-      state.selectedmenuitemdetail = [];
+      state.selectedmenuitemdetail = null;
     },
     selectedItemSize: (state, action: PayloadAction<GetMenuItemDetail>) => {
       state.menuitemdetaillist = action.payload;
@@ -293,7 +297,7 @@ const menuItemSlice = createSlice({
       state.menuitemdetaillist = null;
     },
     removeMenuItemSelectedData: (state) => {
-      state.selectedmenuitemdetail = [];
+      state.selectedmenuitemdetail = null;
     },
     selecteditemquantity: (state, action: PayloadAction<number>) => {
       state.selecteditemquantity = action.payload;

@@ -23,11 +23,11 @@ import {
 import {
   addFavorite,
   deleteFavorite,
-  getMenuItemDetailes,
   selectedMenuItem,
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
+  setMenuCategoryData,
   setMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
@@ -40,10 +40,8 @@ import { useAppDispatch } from "../../../../../redux/hooks";
 import { displayViewUpdate } from "../../../../../redux/restaurants/restaurants.slice";
 import { getCartItemCount } from "../../../../../redux/tableorder/tableorder.slice";
 import { CartServices } from "../../../../../redux/cart/cart.services";
-import { CartTypes } from "../../../../../redux/cart/cart.type";
 import { PopOver } from "../../common/popover.component";
 import MenuItemAddToCart from "../../menuitem/menuitem-add-to-cart.component";
-import ShareitemComponent from "../../common/shareitem.component";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import MenuItemQuickOrder from "../../menuitem/menuitem-quick-order.component";
@@ -56,10 +54,10 @@ import { useParams, useRouter } from "next/navigation";
 import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
 import ScrollToTop from "@/components/common/scroll-to-top";
 import {
-  Category,
   GetAllMenuCategoryItems,
   GetMenuItemDetail,
-  GetSerachResult,
+  Menuitems,
+  SelectedMenuItemDetail,
 } from "@/types/menuitem-types/menuitem.type";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 
@@ -146,7 +144,7 @@ const CategoryMenuItems = ({
     number[]
   >([]);
   let menuItemDetail = menuitem.menuitemdetaillist;
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const [isStudentPopUp, setisStudentPopUp] = useState<boolean>(false);
   const isOrderingDisable = restaurantinfo?.defaultLocation?.isOrderingDisable;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
@@ -210,7 +208,7 @@ const CategoryMenuItems = ({
           //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
           //   payload: response,
           // });
-          dispatch(selectedMenuItem(response));
+          dispatch(setMenuItemDetailList(response));
         }
       });
     }
@@ -221,7 +219,7 @@ const CategoryMenuItems = ({
     let selectedCat;
     if (categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
-        (cat: any) => cat.categoryslug === categoryUrl
+        (cat: GetAllMenuCategoryItems) => cat.categoryslug === categoryUrl
       );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
@@ -262,7 +260,7 @@ const CategoryMenuItems = ({
     }
   }, [menuItemsWithCat, menuitemId]);
 
-  const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail[]) => {
+  const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail) => {
     dispatch(setMenuItemDetailList(item));
 
     if (isSchoolProgramEnabled) {
@@ -274,11 +272,11 @@ const CategoryMenuItems = ({
 
   const handleClickItemSlider = (
     e: React.MouseEvent,
-    item: GetMenuItemDetail[]
+    item: SelectedMenuItemDetail
   ) => {
     e.stopPropagation();
     setisBottomSlide(false);
-    dispatch(setMenuItemDetailList(item));
+    dispatch(setMenuItemDetailList(item as any));
     dispatch(selectedMenuItem(item));
     setopenMenuItemModal(true);
   };
@@ -313,7 +311,7 @@ const CategoryMenuItems = ({
           customerId: userinfo?.customerId ?? 0,
           restaurantId: restaurantinfo?.restaurantId as number,
           menuItemId: selecteditem.menuitemId,
-        }) as any
+        })
       );
     } else {
       setisFavourite((prev) => !prev);
@@ -324,7 +322,7 @@ const CategoryMenuItems = ({
           customerId: userinfo?.customerId ?? 0,
           restaurantId: restaurantinfo?.restaurantId as number,
           menuItemId: selecteditem.menuitemId,
-        }) as any
+        })
       );
     }
   };
@@ -386,13 +384,13 @@ const CategoryMenuItems = ({
             requestId: deliveryRequestId,
           }).then((response) => {
             if (response) {
-              if (response?.cartDetails && response?.cartDetails?.cartTotal) {
+              if (response) {
                 // dispatch({
                 //   type: CartTypes.CART_DATA,
                 //   payload: response,
                 // });
                 // handlUpdateQty()
-                dispatch(setCartItem(response?.cartDetails));
+                dispatch(setCartItem(response));
               }
             }
           });
@@ -519,7 +517,7 @@ const CategoryMenuItems = ({
                           <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
                             {category?.menuitems?.map(
                               (menu: any, index: any) => {
-                                let shareUrl = `${window.location.origin}/${selectedTheme.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
+                                let shareUrl = `${window.location.origin}/${selectedTheme?.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
                                 const isRegular =
                                   menu?.typeid === 0 &&
                                   menu?.isdefaultprice === 1;
@@ -818,8 +816,8 @@ const CategoryMenuItems = ({
             selectedDependentItems={selectedDependentItems}
             handleOnCheck={handleOnCheck}
             dependantMenuList={
-              menuItemDetail[0]?.dependantMenuList ??
-              menuItemDetail[0]?.dependantMenuList
+              menuItemDetail?.dependantMenuList ??
+              menuItemDetail?.dependantMenuList
             }
           />
         </CommonModal>
