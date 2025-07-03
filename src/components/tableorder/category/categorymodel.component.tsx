@@ -7,24 +7,25 @@ import { useRouter, useParams } from "next/navigation";
 import { CategoryTypes } from "../../../../redux/category/category.types";
 import { selectedCategory } from "../../../../redux/category/category.slice";
 import { PAGES } from "../common/pages";
-import { CategoryItemType } from "@/types/category-types/category.services.type";
 import { useAppDispatch } from "../../../../redux/hooks";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 
 const CategoryModalComponent: React.FC = () => {
   const { main, category, restaurantinfo, tableorder } = useReduxData();
   const selectedCatId = category.selectedcategorydetail?.catId;
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const closeBtn = useRef<HTMLButtonElement>(null);
   const params = useParams();
   const dynamic = params.dynamic;
   const tableno = params.tableno;
-  const locationFullLink = `/${selectedTheme.url}/${
+  const locationFullLink = `/${selectedTheme?.url}/${
     restaurantinfo?.restaurantURL
   }/${restaurantinfo?.defaultLocation?.locationURL.trim()}`;
 
-  const handleClickCat = useCallback((cat: CategoryItemType) => {
+  const handleClickCat = useCallback((cat: MainCategoryList) => {
     if (cat) {
       dispatch({
         type: CategoryTypes.CATEGORY_ITEM_LIST,
@@ -59,7 +60,7 @@ const CategoryModalComponent: React.FC = () => {
             <h3 className="title">Menu</h3>
             <div className="text">
               <ul className="menu-list-popup">
-                {main?.maincategoryList?.map((cat: CategoryItemType) => (
+                {main?.maincategoryList?.map((cat: MainCategoryList) => (
                   <li
                     key={cat.catId}
                     className={

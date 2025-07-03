@@ -27,7 +27,6 @@ import {
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
-  setMenuCategoryData,
   setMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
@@ -57,9 +56,10 @@ import {
   GetAllMenuCategoryItems,
   GetMenuItemDetail,
   Menuitems,
-  SelectedMenuItemDetail,
 } from "@/types/menuitem-types/menuitem.type";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
+import Login from "../../login-register/login.component";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -68,7 +68,7 @@ const CategoryMenuItems = ({
   errorMessage,
 }: {
   categoryslug: string;
-  menuItemsWithCat: any;
+  menuItemsWithCat: GetAllMenuCategoryItems[];
   children: ReactNode;
   errorMessage: string;
 }) => {
@@ -119,12 +119,6 @@ const CategoryMenuItems = ({
     index,
     menuitemId,
   } = params;
-  // const normalizedMenuItemId =
-  //   typeof menuitemId === "string" ? menuitemId : menuitemId?.[0] ?? "";
-  const parsedMenuItemId =
-    typeof menuitemId === "string"
-      ? parseInt(menuitemId)
-      : parseInt(menuitemId?.[0] ?? "0");
   const [isBottomSlide, setisBottomSlide] = useState<boolean>(false);
   const ordertype =
     selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -138,7 +132,7 @@ const CategoryMenuItems = ({
   let customerId = userinfo ? userinfo.customerId : 0;
   const selecetdtime = order?.checktime;
   const dependentIds = menuitem?.dependentitemids;
-  let selectedMenuItemDetail = menuitem.selectedmenuitemdetail;
+  let selectedMenuItemDetail = menuitem?.selectedmenuitemdetail;
   const dependentId = menuitem?.dependentid ?? 0;
   const [selectedDependentItems, setselectedDependentItems] = useState<
     number[]
@@ -179,7 +173,7 @@ const CategoryMenuItems = ({
     //check category slug and selected category url not same then select  categoryslug category
     if (selectCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
-        (cat: any) => cat?.categoryslug === categoryUrl
+        (cat) => cat?.categoryslug === categoryUrl
       );
       dispatch(selectedCategory(findedCat as MainCategoryList));
     }
@@ -194,6 +188,15 @@ const CategoryMenuItems = ({
       // console.log(dependentId)
       setopenMenuItemModal(true);
       //dispatch(selectedMenuItem())
+      // dispatch(
+      //   selectedMenuItem({
+      //     menuitemId: dependentId,
+      //     qty: 1,
+      //     dependedItemId:
+      //       selectedMenuItemDetail?.dependedItemId ??
+      //       selectedMenuItemDetail?.menuitemId,
+      //   })
+      // );
 
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
@@ -223,18 +226,14 @@ const CategoryMenuItems = ({
       );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
-    if (
-      selectedCat?.menuitems &&
-      menuitemId !== undefined &&
-      selectedCat?.menuitems?.length > 0
-    ) {
+    if (menuitemId && menuitemId !== undefined) {
       var menuitemObj = selectedCat?.menuitems?.find((item: any) => {
-        if (item.menuitemId === parsedMenuItemId) {
+        if (item?.menuitemId === menuitemId) {
           return item;
         }
       });
       if (menuitemObj) {
-        dispatch(selectedMenuItem(menuitemObj as any));
+        dispatch(selectedMenuItem(menuitemObj));
         if (
           menuitemObj.quickorderallow === true &&
           isOrderingDisable === false
@@ -269,10 +268,7 @@ const CategoryMenuItems = ({
     setopenMenuItemModal(true);
   };
 
-  const handleClickItemSlider = (
-    e: React.MouseEvent,
-    item: SelectedMenuItemDetail
-  ) => {
+  const handleClickItemSlider = (e: React.MouseEvent, item: Menuitems) => {
     e.stopPropagation();
     setisBottomSlide(false);
     dispatch(setMenuItemDetailList(item as any));
@@ -338,16 +334,14 @@ const CategoryMenuItems = ({
     else dispatch(displayViewUpdate(false));
   };
 
-  function quickOrderClick(item: any) {
+  function quickOrderClick(item: Menuitems) {
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&
-      cartItem?.some(
-        (cartitem) => cartitem.menuitemid === parseInt(item.menuitemId)
-      );
+      cartItem?.some((cartitem) => cartitem.menuitemid === item?.menuitemid);
     if (!checkItemExistInCart) {
       MenuItemServices.quickOrderaddToCart({
-        menuItemId: item.menuitemId,
+        menuItemId: item.menuitemid,
         cartsessionId: sessionid as string,
         restaurantId: restaurantinfo?.restaurantId as number,
         locationId: restaurantinfo?.defaultlocationId as number,
@@ -491,7 +485,7 @@ const CategoryMenuItems = ({
 
               <div className="col-lg-9 col-md-8 col-12 order-2 order-lg-1 order-md-1">
                 {menuItemsWithCat?.length > 0 &&
-                  menuItemsWithCat?.map((category: any, index: any) => {
+                  menuItemsWithCat?.map((category, index) => {
                     return (
                       <div key={`${category.catId}`}>
                         <div
@@ -532,8 +526,8 @@ const CategoryMenuItems = ({
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
-                                          (menu?.isregular === true ||
-                                            isRegular) ? (
+                                        (menu?.isregular === true ||
+                                          isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -549,7 +543,7 @@ const CategoryMenuItems = ({
                                                   </h3>
                                                 </a>
                                                 {menu.description.length <
-                                                  100 ? (
+                                                100 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -605,7 +599,7 @@ const CategoryMenuItems = ({
                                                 </a>
                                                 {/* <p>{fixedLengthString(menu.description)}</p> */}
                                                 {menu.description.length <
-                                                  180 ? (
+                                                180 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -674,10 +668,11 @@ const CategoryMenuItems = ({
                                               !menu.isFavoriteMenu
                                             );
                                           }}
-                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
-                                            ? "active"
-                                            : ""
-                                            }`}
+                                          className={`fa wishlist fa-heart-o ${
+                                            menu?.isFavoriteMenu == true
+                                              ? "active"
+                                              : ""
+                                          }`}
                                         />
                                       </div>
                                     </div>
@@ -724,9 +719,9 @@ const CategoryMenuItems = ({
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="Open item"
-                                      // onClick={(e) =>
-                                      //   handleClickItem(e, menu)
-                                      // }
+                                        // onClick={(e) =>
+                                        //   handleClickItem(e, menu)
+                                        // }
                                       ></a>
                                     </div>
                                     <div className="text">
@@ -777,21 +772,21 @@ const CategoryMenuItems = ({
       )}
       <ScrollToTop />
       {/* <MenuItemDetail /> */}
-      {/* {openMenuItemModal && (
+      {openMenuItemModal && (
         <MenuItemModal
           handleToggleDependnt={handleToggleDependnt}
           isOpenModal={openMenuItemModal}
           handleToggleMenuItem={handleToggleMenuItem}
         />
-      )} */}
-      {/* {openLoginModal && (
+      )}
+      {openLoginModal && (
         <Login
-          handleToggle={handleToggle}
+          // handleToggle={handleToggle}
           handleToggleAccountConfirm={() => handleToggleAccountConfirm(true)}
           isOpenModal={openLoginModal}
           handleOpenLoginModal={handleOpenLoginModal}
         />
-      )} */}
+      )}
       {isBottomSlide && (
         <BottomBash
           handleClickItem={handleClickItemSlider}

@@ -18,7 +18,6 @@ import {
   GetAllMenuCategoryItems,
   GetMenuItemDetail,
   List,
-  SelectedMenuItemDetail,
   Size,
   Topping,
   Type,

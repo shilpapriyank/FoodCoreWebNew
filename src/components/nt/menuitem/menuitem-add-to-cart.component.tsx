@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import {
   GetThemeDetails,
   ORDER_TYPE_ENUM,
@@ -9,7 +8,7 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { ORDER_TYPE } from "../common/utility";
-import { SelectedMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
+import { Menuitems } from "@/types/menuitem-types/menuitem.type";
 import {
   addItemToCart,
   selectedMenuItem,
@@ -28,8 +27,17 @@ import { getCartItemCount } from "../../../../redux/tableorder/tableorder.slice"
 import { CartServices } from "../../../../redux/cart/cart.services";
 import Popover from "../common/custompopover";
 import ShareitemComponent from "../common/shareitem.component";
+import { getAllCategoryMenuItems } from "../../../../redux/category/category.slice";
 
-const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
+const MenuItemAddToCart = ({
+  item,
+  handleToggleDependnt,
+  shareUrl,
+}: {
+  item: Menuitems;
+  handleToggleDependnt: (value: boolean) => void;
+  shareUrl: string;
+}) => {
   const {
     selecteddelivery,
     restaurantinfo,
@@ -67,7 +75,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
       ? ORDER_TYPE.DELIVERY.value
       : ORDER_TYPE.PICKUP.value;
   var itemRow = cartdata?.cartDetails?.cartItemDetails?.filter(
-    (items) => items.menuitemid === item.menuitemId
+    (items) => items.menuitemid === item.menuitemid
   );
   var selecetdtime = recievingTime + " " + meredian;
   let rpoint = 0;
@@ -94,13 +102,13 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
     const minusState = currentQty - 1;
     setcurrentQty(minusState);
   };
-  const addtocartclick = (item: SelectedMenuItemDetail) => {
+  const addtocartclick = (item: Menuitems) => {
     dispatch(selectedMenuItem(item));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
       locationId: restaurantinfo?.defaultlocationId as number,
       customerId: customerId,
-      menuitemId: item?.menuitemId,
+      menuitemId: item?.menuitemid,
       cartsessionId: String(cartsessionid),
       cartId: 0,
     }).then((response) => {
@@ -201,6 +209,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
                 //     router.push(`/${selectedTheme.url}/${dynamic}/${location}/cart`);
                 //   }, 1000);
                 if (
+                  dependentIds &&
                   menuItemDetail?.dependantMenuList?.length > 0 &&
                   ((dependentIds === undefined && dependentId === 0) ||
                     (dependentIds?.length === 0 && dependentId === 0))
@@ -263,7 +272,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
               data-toggle="tooltip"
               data-placement="left"
               title={TOOLTIP_MSG.ADDTOCART_BTN}
-              id={item.menuitemId}
+              id={String(item.menuitemid)}
               onClick={() => addtocartclick(item)}
             >
               Add to cart

@@ -45,7 +45,6 @@ export default async function RootLayout({
     const rawData = await RestaurantsServices.getRestaurantThemeType("fc");
     // Serialize the data to ensure it can be passed to client components
     restaurantData = serializeRestaurantData(rawData);
-
     themeType = GetThemeDetails(rawData?.themetype)?.name || "default";
   } catch (error) {
     console.error("Failed to fetch restaurant data:", error);

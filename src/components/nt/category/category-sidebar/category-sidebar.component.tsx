@@ -61,13 +61,13 @@ const CategorySidebar: React.FC = () => {
             {cart?.cartitemcount > 0 ? (
               <a className="btn-default w-100" onClick={handleClick}>
                 {" "}
-                Go To Cart
+                this is Go To Cart
                 <i className="fa fa-angle-right" />{" "}
               </a>
             ) : (
               <a className="btn-default w-100 greyColor">
                 {" "}
-                Go To Cart <i className="fa fa-angle-right" />{" "}
+                cart Go To Cart <i className="fa fa-angle-right" />{" "}
               </a>
             )}
           </div>

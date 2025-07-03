@@ -1431,7 +1431,7 @@ export function getMenuItemdetailFormate(data: any) {
     size: [],
     topping: [],
   };
-  const sizeDetail: any = [];
+  const sizeDetail: any[] = [];
   data?.PriceList?.forEach((size: any) => {
     let sizeObj = {
       currency: size.currencysymbol,

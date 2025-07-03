@@ -1,5 +1,7 @@
 ///getAllRestaurantInfo types
 
+import { ThemeType } from "../common-types/common.types";
+
 export interface GetAllRestaurantInfo {
   restaurantname: string;
   restaurantId: number;
@@ -191,5 +193,5 @@ export interface Seodetails {
 
 export interface GetRestaurantThemeType {
   seodetails: Seodetails;
-  themetype: number;
+  themetype: number | string;
 }

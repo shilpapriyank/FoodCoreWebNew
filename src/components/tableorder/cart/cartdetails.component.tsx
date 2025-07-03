@@ -58,11 +58,11 @@ const CartDetailsComponent: React.FC<CartDetailsProps> = ({ handleClose }) => {
     (document.querySelector(".edit-btn") as any)?.click();
 
     const response = await CategoryServices.getCategoryItemListPOS(
-      restaurantinfo?.restaurantId,
+      restaurantinfo?.restaurantId as number,
       true,
       editItem.catId,
       userinfo ? userinfo.customerId : 0,
-      restaurantinfo.defaultlocationId
+      restaurantinfo?.defaultlocationId as number
     );
 
     if (response) {
@@ -103,13 +103,13 @@ const CartDetailsComponent: React.FC<CartDetailsProps> = ({ handleClose }) => {
 
   const handleClickAddToKitchenCopy = () => {
     TableOrderServices.sendTablePushnotification(
-      restaurantinfo?.defaultlocationId,
-      restaurantinfo?.restaurantId,
+      String(restaurantinfo?.defaultlocationId),
+      restaurantinfo?.restaurantId as number,
       tableDetail?.tableno,
       `${tableDetail?.tableId}`,
       NotificationSettingTypes.POS,
-      (pushNotificationType as any).TABLE_SEND_TO_KITCHEN
-    ).then((res: any) => {
+      Number(pushNotificationType.TABLE_SEND_TO_KITCHEN)
+    ).then((res) => {
       if (res?.status === API_RESPONSE_STATUS.SUCCESS) {
         handleNotify(
           "Order sent to kitchen successfully!",
@@ -146,7 +146,7 @@ const CartDetailsComponent: React.FC<CartDetailsProps> = ({ handleClose }) => {
             Object.entries(cartData).map(([key, value]) => {
               const image = getImagePath(
                 (value as any)?.imgUrl,
-                restaurantinfo?.defaultLocation?.defaultmenuitemimage
+                restaurantinfo?.defaultLocation?.defaultmenuitemimage as string
               );
               return (
                 <CartItemComponent
@@ -158,7 +158,9 @@ const CartDetailsComponent: React.FC<CartDetailsProps> = ({ handleClose }) => {
                   removeCartItem={removeCartItem}
                   id={key}
                   item={value as any}
-                  currency={restaurantinfo?.defaultLocation?.currencysymbol}
+                  currency={String(
+                    restaurantinfo?.defaultLocation?.currencysymbol
+                  )}
                 />
               );
             })}
