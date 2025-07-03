@@ -1,4 +1,4 @@
-import { ORDER_TYPE_ENUM } from "@/components/common/utility";
+import { ORDER_TYPE } from "@/components/common/utility";
 import { AddressList } from "@/types/location-types/location.type";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 
@@ -12,19 +12,6 @@ interface Marker {
   zipcode: string;
   address1: string;
 }
-
-// export enum ORDER_TYPE_ENUM {
-//   PICKUP = "Pickup",
-//   DELIVERY = "Delivery",
-// }
-
-// const ORDERTYPE = {
-//   PICKUP: "Pickup",
-//   DELIVERY: "Delivery",
-// };
-
-//export type OrderType = (typeof ORDERTYPE)[keyof typeof ORDERTYPE];
-export type OrderType = `${ORDER_TYPE_ENUM}`;
 
 export const getLoactionMarker = (addressList: AddressList[]): Marker[] => {
   return addressList.map((item, index) => ({
@@ -157,7 +144,7 @@ export const orderDisable = (
     orderDisableObj.isorderdisable = true;
   } else {
     if (
-      deliveryaddressinfo?.pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+      deliveryaddressinfo?.pickupordelivery === ORDER_TYPE.PICKUP.text &&
       (location.isTakeoutOrderingDisable ||
         !restaurantinfo.istakeaway ||
         !location.istakeaway)
@@ -165,7 +152,7 @@ export const orderDisable = (
       orderDisableObj.errormessage = location.orderingMessage;
       orderDisableObj.isorderdisable = true;
     } else if (
-      deliveryaddressinfo?.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      deliveryaddressinfo?.pickupordelivery === ORDER_TYPE.DELIVERY.text &&
       (location.isDeliveryOrderingDisable ||
         !restaurantinfo.isdelivery ||
         !location.isdelivery)
@@ -245,20 +232,20 @@ export const checkTimeStatus = (
     (defaultLocation.isdelivery && deliveryWindow?.length > 0)
   ) {
     if (
-      orderType === ORDER_TYPE_ENUM.DELIVERY &&
+      orderType === ORDER_TYPE.DELIVERY.text &&
       defaultLocation.isdelivery &&
       deliveryWindow?.length > 0
     ) {
       return { isCheckTime: true };
-    } else if (orderType === ORDER_TYPE_ENUM.DELIVERY) {
+    } else if (orderType === ORDER_TYPE.DELIVERY.text) {
       return { isCheckTime: false, message: "" };
     } else if (
-      orderType === ORDER_TYPE_ENUM.PICKUP &&
+      orderType === ORDER_TYPE.PICKUP.text &&
       defaultLocation.istakeaway &&
       pickupWindow?.length > 0
     ) {
       return { isCheckTime: true };
-    } else if (orderType === ORDER_TYPE_ENUM.PICKUP) {
+    } else if (orderType === ORDER_TYPE.PICKUP.text) {
       return { isCheckTime: false, message: "Pickup Close" };
     }
   }

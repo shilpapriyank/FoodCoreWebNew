@@ -229,7 +229,7 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log("response from getCurrentTime", responseclass.result);
+      //console.log("response from getCurrentTime", responseclass.result);
       return responseclass.result;
     } else {
       return null;

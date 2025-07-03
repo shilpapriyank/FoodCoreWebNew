@@ -34,11 +34,11 @@ import {
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
 import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 
-export enum ORDER_TYPE_ENUM {
-  PICKUP = "Pickup",
-  DELIVERY = "Delivery",
-}
-export type OrderType = `${ORDER_TYPE_ENUM}`;
+// export enum ORDER_TYPE_ENUM {
+//   PICKUP = "Pickup",
+//   DELIVERY = "Delivery",
+// }
+// export type OrderType = `${ORDER_TYPE_ENUM}`;
 
 export const ORDER_TYPE = {
   PICKUP: {
@@ -49,12 +49,9 @@ export const ORDER_TYPE = {
     text: "Delivery",
     value: 2
   }
-}
+}as const;
 
-// export const ORDER_TYPE = {
-//   PICKUP: ORDER_TYPE_ENUM.PICKUP,
-//   DELIVERY: ORDER_TYPE_ENUM.DELIVERY,
-// };
+export type OrderType = typeof ORDER_TYPE[keyof typeof ORDER_TYPE]["value"];
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -304,8 +301,8 @@ export const checkCheckoutDisable = (
   dtotal: any
 ): boolean => {
   if (
-    pickupordelivery === ORDER_TYPE_ENUM.PICKUP ||
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+    pickupordelivery === ORDER_TYPE.PICKUP.text ||
+    pickupordelivery === ORDER_TYPE.DELIVERY.text
   ) {
     //let cartItems = cartdata?.cartDetails?.cartItemDetails;
     let cartItems = cartdata[0]?.cartItemDetails;
@@ -317,16 +314,16 @@ export const checkCheckoutDisable = (
     );
 
     if (
-      (pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+      (pickupordelivery === ORDER_TYPE.PICKUP.text &&
         isAnyPickupItemNotAvailable) ||
-      (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      (pickupordelivery === ORDER_TYPE.DELIVERY.text &&
         isAnydeliveryItemNotAvailable) ||
       checkMenuItemTimeAvailability(cartItems as any)
     ) {
       return true;
     } else if (
       dtotal !== undefined &&
-      pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      pickupordelivery === ORDER_TYPE.DELIVERY.text &&
       dtotal === 0
     ) {
       return true;
@@ -365,12 +362,12 @@ export const checkMenuItemAvailability = (
   //CHECK THE MENUITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
   let isItemAvailable = true;
   if (
-    pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+    pickupordelivery === ORDER_TYPE.PICKUP.text &&
     filteredCategory?.istakeoutavailable === false
   ) {
     isItemAvailable = false;
   } else if (
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     filteredCategory?.isdeliveryavailable === false
   ) {
     isItemAvailable = false;
@@ -410,7 +407,7 @@ export const getAvailableCartRelativeData = (
     });
     return AvailableCartRelativeItem;
   }
-  if (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY) {
+  if (pickupordelivery === ORDER_TYPE.DELIVERY.text) {
     //NEED TO CATEGORY LIST THAT INCLUDE isdeliveryavailable SO ITRATE OVER THE REDUX-CATEGORY LIST
     //GET THAT ITEM AND FILTER WITH CAT ID AND isdeliveryavailable SO DIRECTLY FIND THE CATEGORYLIST THAT IS isdeliveryavailable
     let categoryData = categoryList?.filter((category) => {
@@ -503,7 +500,7 @@ export const orderDisable = (
   } else {
     if (
       deliveryaddressinfo &&
-      deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+      deliveryaddressinfo.pickupordelivery === ORDER_TYPE.PICKUP.text &&
       (location.isTakeoutOrderingDisable === true ||
         restaurantinfo.istakeaway === false ||
         location.istakeaway === false)
@@ -512,7 +509,7 @@ export const orderDisable = (
       orderDisableObj.isorderdisable = true;
     } else if (
       deliveryaddressinfo &&
-      deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text &&
       (location.isDeliveryOrderingDisable === true ||
         restaurantinfo.isdelivery === false ||
         location.isdelivery === false)
@@ -536,68 +533,7 @@ export const checkCategoryExist = (
   } else {
     return false;
   }
-};
-
-//GET ASAP LATEORON CHECK FOR THE DELIVERY AND PICKUP BASE
-// export const getAsapLaterOnState = (
-//   defaultLocation: any,
-//   pickupordelivery: any,
-//   restaurantWindowTime: any
-// ) => {
-//   const pickupWindow = restaurantWindowTime?.pickupTime;
-//   const deliveryWindow = restaurantWindowTime?.deliveryTime;
-//   let enableDisableState: any = {};
-
-// export const getAsapLaterOnState = (
-//   defaultLocation: AddressListItem,
-//   pickupordelivery: ORDER_TYPE_ENUM,
-//   restaurantWindowTime?: RestaurantWindowTime
-// ): AsapLaterOnState => {
-//   const pickupWindow = restaurantWindowTime?.pickupTime;
-//   const deliveryWindow = restaurantWindowTime?.deliveryTime;
-
-//   const {
-//     isTakeOutAsap,
-//     isTakeOutPickupTime,
-//     isDeliveryAsap,
-//     isDeliveryPickupTime,
-//     isTakeoutOrderingDisable,
-//     isDeliveryOrderingDisable,
-//     isOrderingDisable,
-//   } = defaultLocation;
-
-//   const orderState =
-//     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-//       ? {
-//         timeWindow: deliveryWindow,
-//         isAsap: isDeliveryAsap,
-//         isLaterOn: isDeliveryPickupTime,
-//         isOrderTypeDisable: isDeliveryOrderingDisable,
-//       }
-//       : {
-//         timeWindow: pickupWindow,
-//         isAsap: isTakeOutAsap,
-//         isLaterOn: isTakeOutPickupTime,
-//         isOrderTypeDisable: isTakeoutOrderingDisable,
-//       };
-
-//   const isdisplay = orderState.isAsap || orderState.isLaterOn;
-
-//   const isDisableAsapLateron =
-//     !(
-//       isOrderingDisable === false &&
-//       orderState.isOrderTypeDisable === false &&
-//       orderState.timeWindow &&
-//       orderState.timeWindow.length > 0
-//     );
-
-//   return {
-//     isdisplay,
-//     isDisableAsapLateron,
-//     isAsap: orderState.isAsap,
-//     isLateron: orderState.isLaterOn,
-//   };
-// };
+}
 
 export interface AsapLaterOnState {
   isdisplay: boolean;
@@ -613,11 +549,11 @@ export interface RestaurantWindowTime {
 
 export const getAsapLaterOnState = (
   defaultLocation?: AddressList,
-  pickupordelivery?: ORDER_TYPE_ENUM | OrderType,
+  pickupordelivery?: OrderType,
   restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
-  // ✅ Fallback in case required inputs are not provided
-  if (!defaultLocation || !pickupordelivery) {
+  // ✅ Fallback for missing inputs
+  if (!defaultLocation || pickupordelivery === undefined) {
     return {
       isdisplay: false,
       isDisableAsapLateron: true,
@@ -640,19 +576,19 @@ export const getAsapLaterOnState = (
   } = defaultLocation;
 
   const orderState =
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+    pickupordelivery === ORDER_TYPE.DELIVERY.value
       ? {
-        timeWindow: deliveryWindow,
-        isAsap: isDeliveryAsap,
-        isLaterOn: isDeliveryPickupTime,
-        isOrderTypeDisable: isDeliveryOrderingDisable,
-      }
+          timeWindow: deliveryWindow,
+          isAsap: isDeliveryAsap,
+          isLaterOn: isDeliveryPickupTime,
+          isOrderTypeDisable: isDeliveryOrderingDisable,
+        }
       : {
-        timeWindow: pickupWindow,
-        isAsap: isTakeOutAsap,
-        isLaterOn: isTakeOutPickupTime,
-        isOrderTypeDisable: isTakeoutOrderingDisable,
-      };
+          timeWindow: pickupWindow,
+          isAsap: isTakeOutAsap,
+          isLaterOn: isTakeOutPickupTime,
+          isOrderTypeDisable: isTakeoutOrderingDisable,
+        };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 
@@ -734,19 +670,6 @@ export const onLoadSetDefaultFlag = (
   }
 };
 
-
-
-// export const ORDER_TYPE = {
-//   PICKUP: {
-//     text: ORDER_TYPE_ENUM.PICKUP,
-//     value: 1,
-//   },
-//   DELIVERY: {
-//     text: ORDER_TYPE_ENUM.DELIVERY,
-//     value: 2,
-//   },
-// };
-
 export const ORDER_TIME_TYPE: OrderTimeTypes = {
   ASAP: {
     text: "Asap",
@@ -765,11 +688,11 @@ export const getOrderTimeType = (text: string) => {
 export const getOrderType = (value: string) => {
   let orderTypeArray = [
     {
-      name: ORDER_TYPE_ENUM.PICKUP,
+      name: ORDER_TYPE.PICKUP.text,
       value: 1,
     },
     {
-      name: ORDER_TYPE_ENUM.DELIVERY,
+      name: ORDER_TYPE.DELIVERY.text,
       value: 2,
     },
   ];
@@ -814,7 +737,7 @@ export const handleSetDeliveryTypeError = (
 ) => {
   let errorMessage = "";
   if (
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     (deliveryaddressinfo?.length === 0 || deliveryaddressinfo === null) &&
     (carttotal?.cartCount > 0 || cart?.cartitemcount > 0)
   ) {
@@ -911,7 +834,7 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-        pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+        pickupordelivery === ORDER_TYPE.DELIVERY.text
         ? //pickupordelivery === ORDERTYPE.Delivery
         parseFloat(cart.carttotal.deliveryAmount)
         : 0,
@@ -934,7 +857,7 @@ export const bindPlaceOrderObject = (
     promotionData: promotionData,
     studentname: studentname,
     distance:
-      distance && pickupordelivery === ORDER_TYPE_ENUM.DELIVERY ? distance : 0,
+      distance && pickupordelivery === ORDER_TYPE.DELIVERY.text ? distance : 0,
     isFutureOrder: isFutureOrder,
     timeSlot: timeSlot,
     futureDate: futureDate,
@@ -980,185 +903,6 @@ export const calulateTotal = (cartdata: CartDetails) => {
   return parseFloat(total)?.toFixed(2);
 };
 
-// export const getCheckTimeArr = (
-//   orderTime: string,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   orderDate: string,
-//   isasap: boolean
-// ) => {
-//   console.log("🟡 getCheckTimeArr called with:");
-//   console.log("orderTime:", orderTime);
-//   console.log("orderDate:", orderDate);
-//   console.log("isasap:", isasap);
-//   console.log("restaurantinfo:", restaurantinfo);
-//   debugger
-//   let Time = [];
-//   if (
-//     (restaurantinfo?.defaultLocation?.deliveryService ===
-//       DELIVERYSERVICES.DOORDASH ||
-//       restaurantinfo?.defaultLocation?.deliveryService ===
-//       DELIVERYSERVICES.UBEREATS) &&
-//     !isasap
-//   ) {
-//     console.log("🔵 Case: Delivery service is DOORDASH or UBEREATS & not ASAP");
-//     let checkTime = orderTime;
-//     if (checkTime?.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     }
-//     if (checkTime?.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   } else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
-//     Time.push(orderTime);
-//     Time.push("");
-//     Time.push(orderDate);
-//   } else {
-//     let checkTime = orderTime;
-//     if (checkTime?.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     }
-//     if (checkTime?.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   }
-//   return Time;
-// };
-
-// export const getCheckTimeArr = (
-//   orderTime: string,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   orderDate: string = "",
-//   isasap: boolean
-// ): string[] => {
-//   const Time: string[] = [];
-
-//   console.log("🟡 getCheckTimeArr() called with:");
-//   console.log("orderTime:", orderTime);
-//   console.log("orderDate:", orderDate);
-//   console.log("isasap:", isasap);
-//   console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
-//   debugger;
-//   // 🔴 Defensive check — if orderTime is missing, log warning and return default values
-//   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
-//     console.warn("⚠️ Invalid or empty orderTime passed to getCheckTimeArr");
-//     return ["", "", orderDate];
-//   }
-
-//   let checkTime = orderTime.trim().toUpperCase(); // Normalize
-
-//   // ✅ Case 1: DoorDash or UberEats (with no ASAP)
-//   if (
-//     (restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.DOORDASH ||
-//       restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.UBEREATS) &&
-//     !isasap
-//   ) {
-//     if (checkTime.includes("AM")) {
-//       Time.push(checkTime.replace("AM", "").trim());
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       Time.push(checkTime.replace("PM", "").trim());
-//       Time.push("PM");
-//     } else {
-//       console.warn("⚠️ orderTime doesn't include AM/PM:", orderTime);
-//       Time.push(checkTime); // fallback
-//       Time.push(""); // meridian missing
-//     }
-//     Time.push("");
-//   }
-
-//   // ✅ Case 2: Time slot enabled (with no ASAP)
-//   else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
-//     Time.push(orderTime);
-//     Time.push("");
-//     Time.push(orderDate);
-//   }
-
-//   // ✅ Case 3: Default handling
-//   else {
-//     if (checkTime.includes("AM")) {
-//       Time.push(checkTime.replace("AM", "").trim());
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       Time.push(checkTime.replace("PM", "").trim());
-//       Time.push("PM");
-//     } else {
-//       console.warn("⚠️ orderTime doesn't include AM/PM:", orderTime);
-//       Time.push(checkTime); // fallback
-//       Time.push(""); // meridian missing
-//     }
-//     Time.push("");
-//   }
-
-//   return Time;
-// };
-
-// export const getCheckTimeArr = (
-//   orderTime: any,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   orderDate: string = "",
-//   isasap: boolean
-// ): string[] => {
-//   const Time: [] = [];
-
-//   console.log("🟡 getCheckTimeArr() called with:");
-//   console.log("orderTime:", orderTime);
-//   console.log("orderDate:", orderDate);
-//   console.log("isasap:", isasap);
-//   console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
-//   debugger;
-
-//   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
-//   console.warn("⚠️ Invalid or empty orderTime passed to getCheckTimeArr", { orderTime });
-//   return ["", "", orderDate];
-// }
-
-
-//   if (
-//     (restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.DOORDASH ||
-//      restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.UBEREATS) &&
-//     !isasap
-//   ) {
-//     let checkTime = orderTime;
-//     if (checkTime.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   } else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
-//     Time.push(orderTime);
-//     Time.push("");
-//     Time.push(orderDate);
-//   } else {
-//     let checkTime = orderTime;
-//     if (checkTime.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   }
-
-//   return Time;
-// };
 export const getCheckTimeArr = (
   orderTime: string,
   restaurantinfo: GetAllRestaurantInfo,
@@ -1167,11 +911,11 @@ export const getCheckTimeArr = (
 ): string[] => {
   const Time: string[] = [];
 
-  console.log("🟡 getCheckTimeArr() called with:");
-  console.log("orderTime:", orderTime);
-  console.log("orderDate:", orderDate);
-  console.log("isasap:", isasap);
-  console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
+  // console.log("🟡 getCheckTimeArr() called with:");
+  // console.log("orderTime:", orderTime);
+  // console.log("orderDate:", orderDate);
+  // console.log("isasap:", isasap);
+  // console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
 
   // ✅ Early return if orderTime is invalid
   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {

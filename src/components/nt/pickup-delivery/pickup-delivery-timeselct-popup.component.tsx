@@ -16,7 +16,7 @@ import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint
 import PickupdeliveryWindowTime from "./pickup/pickup-delivery-window.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
-import { DELIVERYSERVICES, GetThemeDetails,ORDER_TYPE, ORDER_TYPE_ENUM, checkWindowTimeExpires, getAsapLaterOnState } from "../../common/utility";
+import { DELIVERYSERVICES, GetThemeDetails,ORDER_TYPE, checkWindowTimeExpires, getAsapLaterOnState } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import handleNotify from "../../default/helpers/toaster/toaster-notify";
 import { ERRORMESSAGE } from "../../common/commonerrormessage";
@@ -134,7 +134,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     const [isTimeLoad, setisTimeLoad] = useState<boolean>(false);
     const customerId = userinfo?.customerId ?? 0;
     const [defaultLoactionId, setdefaultLoactionId] = useState<number | null>();
-    var ordertype = selecteddelivery.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY ? 2 : 1;
+    var ordertype = selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text ? 2 : 1;
     let selectedAddress = userinfo === null ? (deliveryaddress as any)?.tempDeliveryAddress : selecteddelivery?.selecteddeliveryaddress;
     const { deliveryService } = restaurantinfo?.defaultLocation as any;
     let hour;
@@ -412,8 +412,8 @@ const PickupDeliveryTimeSelectPopup: React.FC<
               dispatch(
                 setpickupordelivery(
                   res?.defaultordertype
-                    ? ORDER_TYPE_ENUM.DELIVERY
-                    : ORDER_TYPE_ENUM.PICKUP
+                    ? ORDER_TYPE.DELIVERY.text
+                    : ORDER_TYPE.PICKUP.text
                 )
               );
             }

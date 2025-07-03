@@ -1,4 +1,4 @@
-import { ORDER_TYPE_ENUM } from "@/components/common/utility";
+import { ORDER_TYPE } from "@/components/common/utility";
 import { SelectedDeliveryAddressType } from "@/types/selectdelivery-types/selectdelivery.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -22,7 +22,7 @@ const selecteddeliverySlice = createSlice({
     savechoosetime(state, action: PayloadAction<any>) {
       state.choosetime = action.payload;
     },
-    setpickupordelivery(state, action: PayloadAction<ORDER_TYPE_ENUM>) {
+    setpickupordelivery(state, action: PayloadAction<any>) {
       // console.log("🟢 setpickupordelivery reducer called:", action.payload);
       state.pickupordelivery = action.payload;
     },
@@ -34,11 +34,11 @@ const selecteddeliverySlice = createSlice({
     },
     cleardeliveryaddress(state) {
       state.choosetime = {};
-      state.pickupordelivery = ORDER_TYPE_ENUM.PICKUP;
+      state.pickupordelivery = ORDER_TYPE.PICKUP.text;
       state.selecteddeliveryaddress = null;
     },
     resetSelectedDelivery(state) {
-      state.pickupordelivery = ORDER_TYPE_ENUM.PICKUP;
+      state.pickupordelivery = ORDER_TYPE.PICKUP.text;
       state.selecteddeliveryaddress = null;
     },
   },

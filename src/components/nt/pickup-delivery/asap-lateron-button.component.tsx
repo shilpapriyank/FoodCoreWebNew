@@ -1,5 +1,5 @@
 import React from "react";
-import { ORDER_TYPE, ORDER_TYPE_ENUM, getAsapLaterOnState } from "../../common/utility";
+import { ORDER_TYPE, getAsapLaterOnState } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 // import { DefaultLocation } from "@/types/location-types/location.type";
@@ -48,7 +48,7 @@ export const AsapLateronButtonComponent: React.FC<AsapLateronButtonProps> = ({
 
   let asapLaterOnState = getAsapLaterOnState(
     defaultLocation as AddressList,
-    selecteddelivery?.pickupordelivery as ORDER_TYPE_ENUM,
+    selecteddelivery?.pickupordelivery as any,
     restaurantWindowTime as any
   );
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DeliveryConfirmationMessage, PickUpConfirmationMessage } from '@/components/helpers/static-message/pickupconfirmation2-message';
-import { ORDER_TYPE, ORDER_TYPE_ENUM } from '../../../common/utility';
+import { ORDER_TYPE } from '../../../common/utility';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 
 interface Props {

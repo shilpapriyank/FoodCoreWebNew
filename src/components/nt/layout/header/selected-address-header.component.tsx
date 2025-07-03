@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { ORDER_TYPE, ORDER_TYPE_ENUM } from "@/components/common/utility";
+import { ORDER_TYPE } from "@/components/common/utility";
 
 interface SelectedAddressHeaderProps {
   handleToggleOrderTypeModal: (value: boolean) => void;
