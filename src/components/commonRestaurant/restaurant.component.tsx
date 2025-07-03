@@ -44,12 +44,13 @@ import useFutureOrder from "../customhooks/usefuture-order-hook";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { logout } from "../../../redux/login/login.slice";
 import { useAppDispatch } from "../../../redux/hooks";
-import { ColorStyleType } from "@/types/common-types/common.types";
+import { ColorStyleType, ThemeType } from "@/types/common-types/common.types";
 import { AddressList } from "@/types/location-types/location.type";
 import {
   GetAllRestaurantInfo,
   Seodetails,
 } from "@/types/restaurant-types/restaurant.type";
+import { ParamValue } from "next/dist/server/request/params";
 
 interface Props {
   children: ReactNode;
@@ -98,7 +99,7 @@ const RestaurantComponent = ({
       ? metaDataRestaurant.imageurl
       : restaurantinfo?.logo;
 
-  let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  let selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
 
   const seoDefaultData = {
     title: `Online Ordering || ${restaurantname}`,
@@ -147,16 +148,16 @@ const RestaurantComponent = ({
     if (newselectedRestaurant?.defaultLocation === null) {
       handleSetThemeStyleDynamic(newselectedRestaurant);
       let selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
-      setthemeUrl(selectedTheme.url);
+      setthemeUrl((selectedTheme as ThemeType)?.url);
       dispatch(restaurantsdetail(newselectedRestaurant));
-      router.push(`/${selectedTheme.url}/${dynamic}/${PAGES.REST_CLOSE}`);
+      router.push(`/${selectedTheme?.url}/${dynamic}/${PAGES.REST_CLOSE}`);
       setisResturantClose(true);
     } else {
       handleSetThemeStyleDynamic(newselectedRestaurant);
       isSameRestaurant = newselectedRestaurant.restaurantId === restaurantId;
       const path = pathname.split("/");
       const tableOrderTheme = GetThemeDetails(201);
-      const isTableOrderTheme = path.includes(tableOrderTheme.url);
+      const isTableOrderTheme = path.includes((tableOrderTheme as ThemeType).url);
       if (!isSameRestaurant) {
         dispatch(clearRedux(true) as any);
         let rewardpoints = {
@@ -190,7 +191,7 @@ const RestaurantComponent = ({
       });
       if (loadCat) {
         if (isTableOrderTheme) {
-          newselectedRestaurant.themetype = tableOrderTheme.value;
+          newselectedRestaurant.themetype = (tableOrderTheme as ThemeType).value;
         }
         dispatch(restaurantsdetail(newselectedRestaurant));
         setSelectedRestaurant(newselectedRestaurant);
@@ -221,7 +222,7 @@ const RestaurantComponent = ({
   const handleInvalidRestaurant = (themetype: string) => {
     setisInvalidRestaurant(true);
     const selectedTheme = GetThemeDetailsByName(themetype);
-    setthemeUrl(selectedTheme.url);
+    setthemeUrl((selectedTheme as ThemeType).url);
   };
 
   useEffect(() => {
@@ -320,11 +321,11 @@ const RestaurantComponent = ({
   useEffect(() => {
     if (adresslist === true && pathname.includes(ThemeObj.FD123456)) {
       let addressList =
-        selectedTheme.name === ThemeObj.default
+        (selectedTheme as ThemeType).name === ThemeObj.default
           ? restaurantslocationlist?.addressList
           : restaurantslocationlistwithtime?.addressList;
       if (restaurantslocationlist?.addressList !== undefined) {
-        let linkLoacationurl = formatStringToURLWithBlankSpace(location);
+        let linkLoacationurl = formatStringToURLWithBlankSpace(location as any);
         addressList?.map((locations: AddressList) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL

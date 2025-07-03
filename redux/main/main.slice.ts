@@ -40,19 +40,43 @@ export const getMenuCategoryList = createAsyncThunk<
   return response as MainCategoryList[];
 });
 
+// export const getSelectedRestaurantTime = createAsyncThunk<
+//   RestaurantWindowTimeNew[], // Return type
+//   { restaurantId: number; locationId: number } // Arg type
+// >(
+//   MainTypes.GET_SELECTED_RESTAURANTTIME,
+//   async ({ restaurantId, locationId }) => {
+//     const response = await MainServices.getSelectedRestaurantWindowTime(
+//       restaurantId,
+//       locationId
+//     );
+//     return response as RestaurantWindowTimeNew[];
+//   }
+// );
+
 export const getSelectedRestaurantTime = createAsyncThunk<
-  RestaurantWindowTimeNew[], // Return type
-  { restaurantId: number; locationId: number } // Arg type
+  RestaurantWindowTimeNew[], // return type
+  { restaurantId: number; locationId: number } // argument type
 >(
-  MainTypes.GET_SELECTED_RESTAURANTTIME,
-  async ({ restaurantId, locationId }) => {
-    const response = await MainServices.getSelectedRestaurantWindowTime(
-      restaurantId,
-      locationId
-    );
-    return response as RestaurantWindowTimeNew[];
+  'main/GET_SELECTED_RESTAURANTTIME',
+  async ({ restaurantId, locationId }, thunkAPI) => {
+    try {
+      const response = await MainServices.getSelectedRestaurantWindowTime(
+        restaurantId,
+        locationId
+      );
+
+      if (!response) {
+        return thunkAPI.rejectWithValue('No response from API');
+      }
+
+      return response as RestaurantWindowTimeNew[];
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message || 'Failed to fetch restaurant time');
+    }
   }
 );
+
 
 // export const refreshCategoryList = createAsyncThunk(
 //   "main/refreshCategoryList",

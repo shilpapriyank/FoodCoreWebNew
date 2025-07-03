@@ -57,10 +57,10 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
   const dependentId = menuitem?.dependentid ?? 0;
   const cartdata = cart?.cartitemdetail && cart?.cartitemdetail;
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-  console.log(
-    "selected menuitem detail from menuitem-addto cartcompo",
-    menuitem?.selectedmenuitemdetail
-  );
+  // console.log(
+  //   "selected menuitem detail from menuitem-addto cartcompo",
+  //   menuitem?.selectedmenuitemdetail
+  // );
   const locationSelected = restaurantinfo?.defaultLocation;
   const ordertype =
     deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -157,7 +157,7 @@ const MenuItemAddToCart = ({ item, handleToggleDependnt, shareUrl }: any) => {
               //   payload: response,
               // });
               dispatch(addItemToCart(response));
-              console.log("add item to cart response from if", response);
+             // console.log("add item to cart response from if", response);
               if (response) {
                 dispatch(updateCartItemCount());
                 dispatch(
