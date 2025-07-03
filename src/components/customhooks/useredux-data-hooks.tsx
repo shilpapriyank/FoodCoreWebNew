@@ -3,6 +3,7 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
+import { GetAllRestaurantInfo, GetRestaurantThemeType } from "@/types/restaurant-types/restaurant.type";
 
 export const useReduxData = () => {
   const userinfo = useSelector(
@@ -19,6 +20,7 @@ export const useReduxData = () => {
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
   );
+  console.log("🔍 Redux restaurantinfo:", restaurantinfo);
 
   const restaurantinfodetail = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
@@ -75,12 +77,46 @@ export const useReduxData = () => {
   const addressList = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
   );
-  const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
-    order?.checktime,
-    restaurantinfo,
-    order?.futureOrderDay?.futureDate,
-    order.isasap
-  );
+  // const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
+  //   order.checktime,
+  //   restaurantinfo as GetAllRestaurantInfo,
+  //   order?.futureOrderDay?.futureDate ||"",
+  //   order?.isasap ?? false
+  // )
+  const orderTimeValid =
+  typeof order?.checktime === "string" && order.checktime.trim() !== "";
+
+const [recievingTime, meredian, recievingDate] =
+  orderTimeValid && restaurantinfo
+    ? getCheckTimeArr(
+        order.checktime,
+        restaurantinfo,
+        order?.futureOrderDay?.futureDate || "",
+        order?.isasap ?? false
+      )
+    : ["", "", order?.futureOrderDay?.futureDate || ""];
+
+
+//  const [recievingTime, meredian, recievingDate] =
+//   order?.checktime?.trim() && restaurantinfo
+//     ? getCheckTimeArr(
+//         order.checktime,
+//         restaurantinfo,
+//         order?.futureOrderDay?.futureDate || "",
+//         order?.isasap ?? false
+//       )
+//     : ["", "", order?.futureOrderDay?.futureDate || ""];
+
+  // const [recievingTime, meredian, recievingDate] =
+  // order?.checktime?.trim() && restaurantinfo
+  //   ? getCheckTimeArr(
+  //       order.checktime,
+  //       restaurantinfo,
+  //       order?.futureOrderDay?.futureDate || "",
+  //       order?.isasap ?? false
+  //     )
+  //   : ["", "", order?.futureOrderDay?.futureDate || ""];
+
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
   );

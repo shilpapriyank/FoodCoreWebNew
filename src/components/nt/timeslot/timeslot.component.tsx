@@ -49,7 +49,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const [selectedDate, setselectedDate] = useState<string>(order?.futureOrderDay?.futureDay ?? "");
   const pickupordelivery = selecteddelivery?.pickupordelivery;
   // const ordertype = pickupordelivery === ORDER_TYPE_ENUM.DELIVERY ? ORDER_TYPE_ENUM.DELIVERY : ORDER_TYPE_ENUM.PICKUP;
-      const ordertype = pickupordelivery === ORDER_TYPE.DELIVERY.text ? ORDER_TYPE.DELIVERY.value : ORDER_TYPE.PICKUP.value;
+  const ordertype = pickupordelivery === ORDER_TYPE.DELIVERY.text ? ORDER_TYPE.DELIVERY.value : ORDER_TYPE.PICKUP.value;
 
   const [timeSlots, settimeSlots] = useState<TimeSlot[]>([]);
   const [loadTimeslot, setLoadTimeslot] = useState<boolean>(false);
@@ -322,20 +322,27 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 <div className="row">
                   {dayCloseError === "" ? (
                     <>
-                      {" "}
-                      {asapLaterOnState.isAsap && selectedDate === "Today" && (
-                        <TimeSlotPillComponent
-                          time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
-                          id={"C"}
-                          label="As Soon As Possible"
-                          handleClickTimePill={handleClickAsap}
-                          isDisable={asapLaterOnState.isDisableAsapLateron}
-                          selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
-                        />
-                      )}
-                      {!loadTimeslot && loadSwipe ? (
+                      {(asapLaterOnState.isAsap && selectedDate === "Today") && (() => {
+                       // console.log("Rendering ASAP TimeSlotPillComponent");
+                        return (
+                          <TimeSlotPillComponent
+                            time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
+                            id={"C"}
+                            label="As Soon As Possible"
+                            handleClickTimePill={(time) => {
+                             // console.log("ASAP Pill Clicked");
+                              debugger;
+                              handleClickAsap(time);
+                            }}
+                            isDisable={asapLaterOnState.isDisableAsapLateron}
+                            selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
+                          />
+                        );
+                      })()}
+
+                      {(!loadTimeslot && loadSwipe) ?
                         <>
-                          {Array.isArray (timeSlots) && timeSlots?.map((time, index) => {
+                          {Array.isArray(timeSlots) && timeSlots?.map((time, index) => {
                             return <>{time.StartSlotNew !== null &&
                               <TimeSlotPillComponent
                                 time={time}
@@ -349,10 +356,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                             }
                             </>
                           })}
-                        </>
-                      ) : (
+                        </> :
                         <TimeSlotSkeletonComponent />
-                      )}
+                      }
                     </>
                   ) : (
                     <>

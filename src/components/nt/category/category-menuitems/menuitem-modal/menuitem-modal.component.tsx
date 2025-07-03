@@ -118,6 +118,11 @@ const MenuItemModal = ({
   const dependentId = menuitem?.dependentid ?? 0;
   const dependentIds = menuitem?.dependentitemids;
   let menuItemDetail = menuitem.menuitemdetaillist;
+  //let menuItemDetail = menuitem?.menuitemdetaillist;
+  // console.log(
+  //   "selected menuitem detail from menuitem-modal compo",
+  //   menuitem?.selectedmenuitemdetail
+  // );
   const deliveryaddressinfo = selecteddelivery;
   let selectedsize =
     menuItemDetail &&
