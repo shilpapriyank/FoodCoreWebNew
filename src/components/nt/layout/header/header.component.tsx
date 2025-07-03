@@ -16,7 +16,10 @@ import CommonModal from "../../common/common-model.component";
 import AccountConfirmation from "../../login-register/accountconfirmation.component";
 import { GetCurrency, GetThemeDetails } from "@/components/common/utility";
 import { logout } from "../../../../../redux/login/login.slice";
-import { clearSessionId, createSessionId } from "../../../../../redux/session/session.slice";
+import {
+  clearSessionId,
+  createSessionId,
+} from "../../../../../redux/session/session.slice";
 import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.slice";
 import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
@@ -34,13 +37,15 @@ import CartCounter from "../../common/cart-counter.component";
 import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
+import { ThemeType } from "@/types/common-types/common.types";
 
 interface HeaderProps {
   handleChangeAddress?: () => void;
   page?: string;
 }
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
-  const { restaurantinfo, selecteddelivery, order, userinfo, cart } = useReduxData();
+  const { restaurantinfo, selecteddelivery, order, userinfo, cart } =
+    useReduxData();
   const rewardAmount =
     userinfo?.totalRewardPoints && userinfo.rewardvalue
       ? parseFloat(
@@ -62,14 +67,14 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
   const logoUrl: string =
     restaurantinfo?.logo ??
     "https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png";
-  const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
-  const isHomePage: boolean = page === "location";
-  const themeUrl: string | undefined = selectedTheme?.url;
-  const restaurantUrl: string | undefined = restaurantinfo?.restaurantURL;
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
+  const isHomePage = page === "location";
+  const themeUrl = selectedTheme?.url;
+  const restaurantUrl = restaurantinfo?.restaurantURL;
   const locationSlug = restaurantinfo?.defaultLocation?.locationURL;
   const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype ?? false;
   const isSchoolProgramEnabled =
-   (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
+    (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
   const orderTypeName: string = selecteddelivery?.pickupordelivery;
   const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
   const openTimeModelDefault =
@@ -337,7 +342,18 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         }
         isOpenModal={modalState.openRewardModal}
       >
-        <h6 className='mt-2'>You have <span className='color-dynamic fs-5'>{userinfo?.totalRewardPoints}</span> reward points, worth <span className='color-dynamic fs-5'>{currencySymbol}{rewardAmount}</span>.</h6>
+        <h6 className="mt-2">
+          You have{" "}
+          <span className="color-dynamic fs-5">
+            {userinfo?.totalRewardPoints}
+          </span>{" "}
+          reward points, worth{" "}
+          <span className="color-dynamic fs-5">
+            {currencySymbol}
+            {rewardAmount}
+          </span>
+          .
+        </h6>
         <h6>You can use these points at checkout to save</h6>
       </CommonModal>
 

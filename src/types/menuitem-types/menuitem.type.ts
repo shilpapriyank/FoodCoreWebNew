@@ -12,7 +12,7 @@ export interface GetAllMenuCategoryItems {
 }
 
 export interface Menuitems {
-  menuitemId: number;
+  menuitemid: number;
   menuItemName: string;
   catId: number;
   description: string;
@@ -21,12 +21,14 @@ export interface Menuitems {
   isregular: boolean;
   currency: string;
   isFavoriteMenu: boolean;
-  menuitemstatus: string[];
+  menuitemstatus: MenuStausList[];
   sortorder: number;
   menuitemslug: string;
   originalPrice: number;
   isMenuCategoryDiscountApplied: boolean;
   quickorderallow: boolean;
+  qty: number;
+  dependedItemId: number;
 }
 
 ////getMenuItemDetail when click of add to cart menuitem this service called
@@ -214,9 +216,9 @@ export interface SelectedMenuItemDetail {
   price: string;
   quickorderallow: boolean;
   sortorder: number;
-  cartid: any;
-  dependedItemId: number;
-  qty: number;
+  // cartid: any;
+  // dependedItemId: number;
+  // qty: number;
 }
 
 export interface MenuItemsCommon {

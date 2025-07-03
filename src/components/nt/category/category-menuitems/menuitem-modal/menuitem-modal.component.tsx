@@ -27,7 +27,11 @@ import {
   setMenuCategoryData,
   setMenuItemDetailList,
 } from "../../../../../../redux/menu-item/menu-item.slice";
-import { getDesc, getImagePath } from "@/components/nt/common/utility";
+import {
+  getDesc,
+  getImagePath,
+  ORDER_TYPE,
+} from "@/components/nt/common/utility";
 import { MenuItemServices } from "../../../../../../redux/menu-item/menu-item.services";
 import MenuItemFooter from "./menuitem-footer.component";
 import MenuItemSize from "./menuitem-size.component";
@@ -84,6 +88,10 @@ const MenuItemModal = ({
   } = useReduxData();
   const dispatch = useAppDispatch();
   let selectedmenuitemdetail = menuitem.selectedmenuitemdetail;
+  console.log(
+    "selected menuitem detail from menuitem modal",
+    selectedmenuitemdetail
+  );
   const [minQty, setminQty] = useState<number>(1);
   //   const [currentQty, setcurrentQty] = useState<number>(
   //     selectedmenuitemdetail.qty !== undefined ? selectedmenuitemdetail.qty : 1
@@ -109,50 +117,36 @@ const MenuItemModal = ({
   const sessionId = sessionid;
   const dependentId = menuitem?.dependentid ?? 0;
   const dependentIds = menuitem?.dependentitemids;
-  let menuItemDetail = menuitem?.menuitemdetaillist;
-  console.log(
-    "selected menuitem detail from menuitem-modal compo",
-    menuitem?.selectedmenuitemdetail
-  );
+  let menuItemDetail = menuitem.menuitemdetaillist;
   const deliveryaddressinfo = selecteddelivery;
-  const selectedsize = menuItemDetail?.size.find(
-    (x) => x.sizeselected === true
-  );
-  const selectedtopping = menuItemDetail?.topping.find(
-    (x) => x.subparameterId === selectedsize?.subparameterId
-  );
-  //   let selectedsize =
-  //     menuItemDetail != undefined &&
-  //     menuItemDetail.size != undefined &&
-  //     menuItemDetail.size.filter((x) => x.sizeselected === true);
-  //   let selectedtopping =
-  //     menuItemDetail != undefined &&
-  //     menuItemDetail?.topping != undefined &&
-  //     menuItemDetail.topping.filter(
-  //       (x) => x.subparameterId == selectedsize?.subparameterId
-  //     );
-  let updateitemoptionincart = menuitem?.updateitemoptionincart;
+  let selectedsize =
+    menuItemDetail &&
+    menuItemDetail.size != undefined &&
+    menuItemDetail.size.filter((x) => x.sizeselected === true);
+  let selectedtopping =
+    menuItemDetail &&
+    selectedsize &&
+    menuItemDetail.topping.filter(
+      (x) => x.subparameterId == selectedsize[0].subparameterId
+    );
+  let updateitemoptionincart = menuitem.updateitemoptionincart;
   let selectedtoppings =
-    menuItemDetail != undefined &&
-    menuItemDetail?.topping != undefined &&
-    menuItemDetail?.topping.length > 0 &&
+    menuItemDetail &&
+    selectedsize &&
     menuItemDetail?.topping.find(
-      (x) => x.subparameterId == selectedsize?.subparameterId
+      (x) => x.subparameterId == selectedsize[0].subparameterId
     );
   let maincategoryList = main?.maincategoryList;
-  // var ordertype =
-  //   deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-  //     ? ORDER_TYPE_ENUM.DELIVERY
-  //     : ORDER_TYPE_ENUM.PICKUP;
-      var ordertype = deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text ? ORDER_TYPE.DELIVERY.value : ORDER_TYPE.PICKUP.value;
-
+  var ordertype =
+    deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
+      ? ORDER_TYPE.DELIVERY.value
+      : ORDER_TYPE.PICKUP.value;
   let quantity = menuitem.selecteditemquantity;
-  // let studentname = studentdata.studentname;
-  //   const selectedItemDescription =
-  //     selectedmenuitemdetail !== undefined && selectedmenuitemdetail.description
-  //       ? selectedmenuitemdetail?.description
-  //       : menuitem?.menuitemdetaillist?.description;
-  const selectedItemDescription = menuItemDetail?.description;
+  //let studentname = studentdata.studentname;
+  const selectedItemDescription =
+    selectedmenuitemdetail !== undefined && selectedmenuitemdetail?.description
+      ? selectedmenuitemdetail?.description
+      : menuitem?.menuitemdetaillist?.description;
   const selectedItemName =
     menuItemDetail?.itemName !== undefined && menuItemDetail?.itemName;
   let itemImage = getImagePath(
@@ -161,14 +155,14 @@ const MenuItemModal = ({
   );
   var selecetdtime = recievingTime + " " + (meredian ?? "");
   const menuItemId =
-    selectedmenuitemdetail?.menuitemId ?? selectedmenuitemdetail?.menuitemId;
+    selectedmenuitemdetail?.menuitemid ?? selectedmenuitemdetail?.menuitemid;
   const catSlug = maincategoryList?.find(
     (cat) => cat?.catId === selectedmenuitemdetail?.catId
   )?.categoryslug;
   let shareUrl = `${window.location.origin}/${
     selctedTheme?.url
   }/${dynamic}/${location}/${catSlug}?menuitemId=${
-    selectedmenuitemdetail?.menuitemId ?? selectedmenuitemdetail?.menuitemId
+    selectedmenuitemdetail?.menuitemid ?? selectedmenuitemdetail?.menuitemid
   }`;
   let rpoint = 0;
   const { width } = useWindowDimensions();
@@ -352,12 +346,12 @@ const MenuItemModal = ({
     ) {
       dispatch(setDipendentItemQty(0));
     }
-    let total = selectedsize && selectedsize?.price;
+    let total = selectedsize && selectedsize[0]?.price;
     // let nettotal = total * currentQty;
     //if (deliveryaddressinfo.pickupordelivery === "Pickup" || (deliveryaddressinfo.pickupordelivery === "Delivery")) {
     let selectedoption =
       selectedtopping &&
-      selectedtopping?.list.filter((x) => x.isCompulsory == true);
+      selectedtopping[0]?.list?.filter((x) => x.isCompulsory == true);
     //if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
     if (selectedmenuitemdetail) {
       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
@@ -631,9 +625,10 @@ const MenuItemModal = ({
         }
       }
     } else if (
-      menuItemDetail?.topping != undefined &&
+      menuItemDetail &&
+      menuItemDetail.topping &&
       menuItemDetail?.topping.length > 0 &&
-      selectedoption?.length === 0
+      selectedoption
     ) {
       let itemobj = FormatOrderObject({
         restaurantinfo,
@@ -772,7 +767,7 @@ const MenuItemModal = ({
         deleteFavorite({
           customerId: userinfo?.customerId as number,
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: selectedmenuitemdetail?.menuitemId as number,
+          menuItemId: selectedmenuitemdetail?.menuitemid as number,
         })
       );
     }

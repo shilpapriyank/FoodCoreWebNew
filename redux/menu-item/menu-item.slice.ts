@@ -14,6 +14,7 @@ import {
   GetMenuItemDetail,
   GetSerachResult,
   MenuItem,
+  Menuitems,
   MenuStausList,
   SelectedMenuItemDetail,
   Size,
@@ -28,7 +29,7 @@ type ThunkConfig = {
 
 // Types
 export interface MenuItemState {
-  selectedmenuitemdetail: SelectedMenuItemDetail | null;
+  selectedmenuitemdetail: Menuitems | null;
   // menuitemdetaillist: {
   //   menuItemId: number;
   //   itemName: string;
@@ -269,10 +270,7 @@ const menuItemSlice = createSlice({
     setMenuCategoryData: (state, action: PayloadAction<GetMenuItemDetail>) => {
       state.menuitemdetaillist = action.payload;
     },
-    selectedMenuItem: (
-      state,
-      action: PayloadAction<SelectedMenuItemDetail>
-    ) => {
+    selectedMenuItem: (state, action: PayloadAction<Menuitems>) => {
       state.selectedmenuitemdetail = action.payload;
     },
     setMenuItemDetailList: (
@@ -283,7 +281,7 @@ const menuItemSlice = createSlice({
     },
     setSelectedMenuItemDetailList: (
       state,
-      action: PayloadAction<SelectedMenuItemDetail>
+      action: PayloadAction<Menuitems>
     ) => {
       state.selectedmenuitemdetail = action.payload;
     },
