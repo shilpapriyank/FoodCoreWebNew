@@ -103,7 +103,7 @@ export type GetPaymentDetailsArgsTypes = {
 export type GenerateTimeSlotArgsTypes = {
   restaurantId: number;
   locationId: number;
-  ordertype: string;
+  ordertype: number;
   scheduleDateTime: string;
 };
 
