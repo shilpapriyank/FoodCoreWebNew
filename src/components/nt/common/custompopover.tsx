@@ -28,11 +28,7 @@ const Popover = ({ children, content, position = "bottom" }: any) => {
 
   return (
     <div className="popover-container">
-      <div
-        ref={triggerRef}
-        className="popover-trigger"
-        onClick={togglePopover}
-      >
+      <div ref={triggerRef} className="popover-trigger" onClick={togglePopover}>
         {children}
       </div>
       {isOpen && (

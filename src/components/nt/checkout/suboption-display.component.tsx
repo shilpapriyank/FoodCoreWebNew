@@ -1,5 +1,4 @@
 import React from "react";
-// import { CARTPAGEMESSAGE } from '../helpers/static-message/cart-message'
 import { convertOptionToStrList } from "../../common/utility";
 import { CARTPAGEMESSAGE } from "../helpers/static-message/cart-message";
 

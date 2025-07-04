@@ -17,7 +17,7 @@ import {
   GetSerachResult,
   Menuitems,
 } from "@/types/menuitem-types/menuitem.type";
-import { selectedCategory } from "../../../redux/category/category.slice";
+import { setSelectedCategory } from "../../../redux/category/category.slice";
 
 export const useSearchData = (searchtext: string) => {
   const dispatch = useAppDispatch();
@@ -85,7 +85,7 @@ export const useSearchData = (searchtext: string) => {
               router.push(
                 `/${selctedTheme?.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
               );
-              dispatch(selectedCategory(res?.categories[0]));
+              dispatch(setSelectedCategory(res?.categories[0]));
             } else {
               const newCatWithMenuItems = orderTypeCat?.map((cat) => {
                 const menuItems = avilableMenuItem?.filter(
@@ -103,7 +103,7 @@ export const useSearchData = (searchtext: string) => {
               router.push(
                 `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
               );
-              dispatch(selectedCategory(res.categories[0]));
+              dispatch(setSelectedCategory(res.categories[0]));
             }
           } else {
             seterrorMessage("Opps! No Items Found");

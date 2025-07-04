@@ -5,11 +5,11 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { GetThemeDetails } from "../../common/utility";
 import { useRouter, useParams } from "next/navigation";
 import { CategoryTypes } from "../../../../redux/category/category.types";
-import { selectedCategory } from "../../../../redux/category/category.slice";
 import { PAGES } from "../common/pages";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+import { setSelectedCategory } from "../../../../redux/category/category.slice";
 
 const CategoryModalComponent: React.FC = () => {
   const { main, category, restaurantinfo, tableorder } = useReduxData();
@@ -31,7 +31,7 @@ const CategoryModalComponent: React.FC = () => {
         type: CategoryTypes.CATEGORY_ITEM_LIST,
         payload: [],
       });
-      dispatch(selectedCategory(cat));
+      dispatch(setSelectedCategory(cat));
       router.push(
         `${locationFullLink}/${cat.categoryslug}?${PAGES.TABLENO}=${tableorder.tablenumber}`
       );

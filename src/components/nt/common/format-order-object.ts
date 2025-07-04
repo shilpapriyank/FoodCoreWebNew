@@ -12,7 +12,7 @@ export const FormatOrderObject = ({
 }: any) => {
   // let sessionid = useSelector(({ session }) => session?.sessionid);
   let selectedsize =
-    menuItemDetail && 
+    menuItemDetail &&
     menuItemDetail.size.length > 0 &&
     menuItemDetail.size.find((x: any) => x.sizeselected === true);
   let selectedtopping =
@@ -62,8 +62,8 @@ export const FormatOrderObject = ({
             ? objselectedItem.menuitemId
             : objselectedItem.menuitemid
         ),
-        restaurantId: parseInt(objrestaurant.restaurantId),
-        locationId: parseInt(objrestaurant.defaultlocationId),
+        restaurantId: objrestaurant?.restaurantId,
+        locationId: objrestaurant?.defaultlocationId,
         cartId:
           objselectedItem.cartid != undefined && objselectedItem.cartid != 0
             ? parseInt(objselectedItem.cartid)

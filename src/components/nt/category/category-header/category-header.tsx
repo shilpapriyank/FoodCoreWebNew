@@ -5,9 +5,9 @@ import { fixedLengthString, getImagePath } from "../../common/utility";
 import { useWindowDimensions } from "../../../customhooks/usewindowdimension-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useUtility from "@/components/customhooks/utility-hook";
-import { selectedCategory } from "../../../../../redux/category/category.slice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+import { setSelectedCategory } from "../../../../../redux/category/category.slice";
 
 const CategoryHeader = () => {
   const {
@@ -21,7 +21,7 @@ const CategoryHeader = () => {
   const router = useRouter();
   const params = useParams();
   const { dynamic, location, id, category, index } = params;
-  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const dispatch = useAppDispatch();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
   const searchdata = menuitem?.searchdata;
@@ -38,7 +38,7 @@ const CategoryHeader = () => {
     const selected = catWithSearch.find((x) => x.catId === catId);
     setSelectedCategoryId(catId);
     if (selected) {
-      dispatch(selectedCategory(selected));
+      dispatch(setSelectedCategory(selected));
     }
     router.push(`/${selctedTheme?.url}/${dynamic}/${location}/${slug}`);
   };

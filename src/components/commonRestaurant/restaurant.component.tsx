@@ -147,24 +147,26 @@ const RestaurantComponent = ({
     const newselectedRestaurant = response[0];
     if (newselectedRestaurant?.defaultLocation === null) {
       handleSetThemeStyleDynamic(newselectedRestaurant);
-      let selectedTheme = GetThemeDetails(newselectedRestaurant?.themetype);
-      setthemeUrl(selectedTheme?.url as string);
+      // let selectedTheme = GetThemeDetails(newselectedRestaurant?.themetype);
+      // setthemeUrl(selectedTheme?.url as string);
+      // dispatch(restaurantsdetail(newselectedRestaurant));
+      // router.push(
+      //   `/${selectedTheme?.url as string}/${dynamic}/${PAGES.REST_CLOSE}`
+      // );
+      let selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
+      setthemeUrl((selectedTheme as ThemeType)?.url);
       dispatch(restaurantsdetail(newselectedRestaurant));
-      router.push(
-        `/${selectedTheme?.url as string}/${dynamic}/${PAGES.REST_CLOSE}`
-      );
-//       let selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
-//       setthemeUrl((selectedTheme as ThemeType)?.url);
-//       dispatch(restaurantsdetail(newselectedRestaurant));
-//       router.push(`/${selectedTheme?.url}/${dynamic}/${PAGES.REST_CLOSE}`);
+      router.push(`/${selectedTheme?.url}/${dynamic}/${PAGES.REST_CLOSE}`);
       setisResturantClose(true);
     } else {
       handleSetThemeStyleDynamic(newselectedRestaurant);
       isSameRestaurant = newselectedRestaurant.restaurantId === restaurantId;
       const path = pathname.split("/");
       const tableOrderTheme = GetThemeDetails(201);
-      const isTableOrderTheme = path.includes(tableOrderTheme?.url as string);
-     // const isTableOrderTheme = path.includes((tableOrderTheme as ThemeType).url);
+      //const isTableOrderTheme = path.includes(tableOrderTheme?.url as string);
+      const isTableOrderTheme = path.includes(
+        (tableOrderTheme as ThemeType).url
+      );
       if (!isSameRestaurant) {
         dispatch(clearRedux(true) as any);
         let rewardpoints = {
@@ -231,7 +233,7 @@ const RestaurantComponent = ({
     setisInvalidRestaurant(true);
     const selectedTheme = GetThemeDetailsByName(themetype);
     setthemeUrl(selectedTheme?.url as string);
-   // setthemeUrl((selectedTheme as ThemeType).url);
+    // setthemeUrl((selectedTheme as ThemeType).url);
   };
 
   useEffect(() => {
@@ -337,11 +339,11 @@ const RestaurantComponent = ({
         let linkLoacationurl = formatStringToURLWithBlankSpace(
           location as string
         );
-      //   (selectedTheme as ThemeType).name === ThemeObj.default
-      //     ? restaurantslocationlist?.addressList
-      //     : restaurantslocationlistwithtime?.addressList;
-      // if (restaurantslocationlist?.addressList !== undefined) {
-      //   let linkLoacationurl = formatStringToURLWithBlankSpace(location as any);
+        //   (selectedTheme as ThemeType).name === ThemeObj.default
+        //     ? restaurantslocationlist?.addressList
+        //     : restaurantslocationlistwithtime?.addressList;
+        // if (restaurantslocationlist?.addressList !== undefined) {
+        //   let linkLoacationurl = formatStringToURLWithBlankSpace(location as any);
         addressList?.map((locations: AddressList) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL

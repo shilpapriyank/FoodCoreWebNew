@@ -3,7 +3,7 @@ import { MainServices } from "./main.services";
 import {
   getAllCategoryMenuItems,
   getCategoryItemList,
-  selectedCategory,
+  setSelectedCategory,
 } from "../category/category.slice";
 import { MainTypes } from "./main.type";
 import { GetThemeDetails } from "@/components/common/utility";
@@ -58,7 +58,7 @@ export const getSelectedRestaurantTime = createAsyncThunk<
   RestaurantWindowTimeNew[], // return type
   { restaurantId: number; locationId: number } // argument type
 >(
-  'main/GET_SELECTED_RESTAURANTTIME',
+  "main/GET_SELECTED_RESTAURANTTIME",
   async ({ restaurantId, locationId }, thunkAPI) => {
     try {
       const response = await MainServices.getSelectedRestaurantWindowTime(
@@ -67,16 +67,17 @@ export const getSelectedRestaurantTime = createAsyncThunk<
       );
 
       if (!response) {
-        return thunkAPI.rejectWithValue('No response from API');
+        return thunkAPI.rejectWithValue("No response from API");
       }
 
       return response as RestaurantWindowTimeNew[];
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message || 'Failed to fetch restaurant time');
+      return thunkAPI.rejectWithValue(
+        error.message || "Failed to fetch restaurant time"
+      );
     }
   }
 );
-
 
 // export const refreshCategoryList = createAsyncThunk(
 //   "main/refreshCategoryList",
@@ -175,7 +176,7 @@ export const refreshCategoryList = createAsyncThunk<
         dispatch(setMainCategoryList(response));
 
         const firstCategory = { ...response[0], catSelected: true };
-        dispatch(selectedCategory(firstCategory));
+        dispatch(setSelectedCategory(firstCategory));
 
         await dispatch(
           getCategoryItemList({

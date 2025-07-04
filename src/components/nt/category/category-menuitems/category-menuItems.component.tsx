@@ -32,8 +32,8 @@ import {
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
 import {
   removeCategoryList,
-  selectedCategory,
   setCategoryList,
+  setSelectedCategory,
 } from "../../../../../redux/category/category.slice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { displayViewUpdate } from "../../../../../redux/restaurants/restaurants.slice";
@@ -90,7 +90,7 @@ const CategoryMenuItems = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isFavourite, setisFavourite] = useState<boolean>(false);
   const categoryItemList = category.categoryitemlist;
-  const selectCategory = category?.selectedcategorydetail;
+  const selectedCategory = category?.selectedcategorydetail;
   const [openMenuItemModal, setopenMenuItemModal] = useState<boolean>(false);
   const itemsPerPage = 500; // Number of categories to load per page.
   const dispatch = useAppDispatch();
@@ -171,16 +171,20 @@ const CategoryMenuItems = ({
     }
 
     //check category slug and selected category url not same then select  categoryslug category
-    if (selectCategory?.categoryslug !== categoryUrl && categoryUrl) {
+    if (
+      category &&
+      selectedCategory?.categoryslug !== categoryUrl &&
+      categoryUrl
+    ) {
       const findedCat = catWithSearch?.find(
         (cat) => cat?.categoryslug === categoryUrl
       );
-      dispatch(selectedCategory(findedCat as MainCategoryList));
+      dispatch(setSelectedCategory(findedCat as MainCategoryList));
     }
   }, [
     categoryslug,
     restaurantinfo?.defaultlocationId,
-    selectCategory?.categoryslug,
+    selectedCategory?.categoryslug,
   ]);
 
   useEffect(() => {
@@ -188,15 +192,15 @@ const CategoryMenuItems = ({
       // console.log(dependentId)
       setopenMenuItemModal(true);
       //dispatch(selectedMenuItem())
-      // dispatch(
-      //   selectedMenuItem({
-      //     menuitemId: dependentId,
-      //     qty: 1,
-      //     dependedItemId:
-      //       selectedMenuItemDetail?.dependedItemId ??
-      //       selectedMenuItemDetail?.menuitemId,
-      //   })
-      // );
+      dispatch(
+        selectedMenuItem({
+          menuitemid: dependentId,
+          qty: 1,
+          dependedItemId:
+            selectedMenuItemDetail?.dependedItemId ??
+            selectedMenuItemDetail?.menuitemId,
+        } as any) as any
+      );
 
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
@@ -220,24 +224,21 @@ const CategoryMenuItems = ({
   useEffect(() => {
     //let selectedCat = {};
     let selectedCat;
-    if (categoryUrl) {
+    if (menuItemsWithCat && categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
         (cat: GetAllMenuCategoryItems) => cat.categoryslug === categoryUrl
       );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
-    if (menuitemId && menuitemId !== undefined) {
-      var menuitemObj = selectedCat?.menuitems?.find((item: any) => {
-        if (item?.menuitemId === menuitemId) {
+    if (menuitemId) {
+      var menuitemObj = selectedCat?.menuitems?.find((item: Menuitems) => {
+        if (item?.menuitemId === Number(menuitemId)) {
           return item;
         }
       });
       if (menuitemObj) {
         dispatch(selectedMenuItem(menuitemObj));
-        if (
-          menuitemObj.quickorderallow === true &&
-          isOrderingDisable === false
-        ) {
+        if (menuitemObj.quickorderallow && !isOrderingDisable) {
           quickOrderClick(menuitemObj);
         } else {
           if (!openMenuItemModal) {
@@ -287,38 +288,89 @@ const CategoryMenuItems = ({
   };
 
   const loginButton = document.querySelector(".login-btn") as HTMLButtonElement;
-  const selectedFavoriteClick = (selecteditem: any, item: any) => {
+
+  // const selectedFavoriteClick = (selecteditem: Menuitems, item: any) => {
+  //   debugger;
+  //   if (userinfo === null) {
+  //     loginButton?.click();
+  //     return;
+  //   }
+  //   selecteditem.isFavoriteMenu = item;
+  //   menuItemsWithCat.map((data: any) => {
+  //     if (data.menuitemid === selecteditem?.menuitemid) data = selecteditem;
+  //     else data = data;
+  //   });
+
+  //   if (item === true) {
+  //     setisFavourite((prev) => !prev);
+  //     dispatch(removeCategoryList());
+  //     dispatch(setCategoryList(menuItemsWithCat));
+  //     dispatch(
+  //       addFavorite({
+  //         customerId: userinfo?.customerId ?? 0,
+  //         restaurantId: restaurantinfo?.restaurantId as number,
+  //         menuItemId: selecteditem.menuitemid,
+  //       })
+  //     );
+  //   } else {
+  //     setisFavourite((prev) => !prev);
+  //     dispatch(removeCategoryList());
+  //     dispatch(setCategoryList(menuItemsWithCat));
+  //     dispatch(
+  //       deleteFavorite({
+  //         customerId: userinfo?.customerId ?? 0,
+  //         restaurantId: restaurantinfo?.restaurantId as number,
+  //         menuItemId: selecteditem.menuitemid,
+  //       })
+  //     );
+  //   }
+  // };
+
+  const selectedFavoriteClick = (selecteditem: any, item: boolean) => {
     if (userinfo === null) {
       loginButton?.click();
       return;
     }
-    selecteditem.isFavoriteMenu = item;
-    menuItemsWithCat.map((data: any) => {
-      if (data.menuitemId === selecteditem.menuitemId) data = selecteditem;
-      else data = data;
+
+    // Validate menuitemId before proceeding
+    if (!selecteditem?.menuitemId) {
+      console.error("Missing menuitemId. Cannot proceed with favorite toggle.");
+      return;
+    }
+
+    // Clone the selected item and update its favorite flag
+    const updatedItem = { ...selecteditem, isFavoriteMenu: item };
+
+    // Create a deep copy of menuItemsWithCat and update the specific item
+    const updatedCategories = menuItemsWithCat.map((category: any) => {
+      return {
+        ...category,
+        menuitems: category.menuitems.map((menuItem: any) =>
+          menuItem.menuitemId === updatedItem.menuitemId
+            ? updatedItem
+            : menuItem
+        ),
+      };
     });
-    if (item === true) {
-      setisFavourite((prev) => !prev);
-      dispatch(removeCategoryList());
-      dispatch(setCategoryList(menuItemsWithCat));
-      dispatch(
-        addFavorite({
-          customerId: userinfo?.customerId ?? 0,
-          restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: selecteditem.menuitemId,
-        })
-      );
+
+    // Toggle local state
+    setisFavourite((prev) => !prev);
+
+    // Dispatch updated categories to store
+    dispatch(removeCategoryList());
+    dispatch(setCategoryList(updatedCategories));
+
+    // Dispatch add/delete favorite action
+    const payload = {
+      customerId: userinfo?.customerId ?? 0,
+      restaurantId: restaurantinfo?.restaurantId as number,
+      menuItemId: updatedItem.menuitemId,
+    };
+
+    if (item) {
+      dispatch(addFavorite(payload));
     } else {
-      setisFavourite((prev) => !prev);
-      dispatch(removeCategoryList());
-      dispatch(setCategoryList(menuItemsWithCat));
-      dispatch(
-        deleteFavorite({
-          customerId: userinfo?.customerId ?? 0,
-          restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: selecteditem.menuitemId,
-        })
-      );
+      dispatch(deleteFavorite(payload));
     }
   };
 
@@ -338,10 +390,10 @@ const CategoryMenuItems = ({
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&
-      cartItem?.some((cartitem) => cartitem.menuitemid === item?.menuitemid);
+      cartItem?.some((cartitem) => cartitem.menuitemid === item?.menuitemId);
     if (!checkItemExistInCart) {
       MenuItemServices.quickOrderaddToCart({
-        menuItemId: item.menuitemid,
+        menuItemId: item.menuitemId,
         cartsessionId: sessionid as string,
         restaurantId: restaurantinfo?.restaurantId as number,
         locationId: restaurantinfo?.defaultlocationId as number,
@@ -521,7 +573,7 @@ const CategoryMenuItems = ({
                                 return (
                                   <div
                                     className="cols menu-item"
-                                    key={`${category.catId}-${menu.menuitemId}`}
+                                    key={`${category.catId}-${menu.menuitemId}-${index}`}
                                   >
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
@@ -693,7 +745,7 @@ const CategoryMenuItems = ({
                               return (
                                 <div
                                   className="cols menu-item"
-                                  key={`${category.catId}-${menu.menuitemId}`}
+                                  key={`${category.catId}-${menu.menuitemId}-${index}`}
                                 >
                                   <div className="card features itembox">
                                     <div className="img position-relative">

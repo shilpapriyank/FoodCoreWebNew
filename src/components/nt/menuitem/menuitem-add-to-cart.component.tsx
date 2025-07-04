@@ -74,7 +74,7 @@ const MenuItemAddToCart = ({
       ? ORDER_TYPE.DELIVERY.value
       : ORDER_TYPE.PICKUP.value;
   var itemRow = cartdata?.cartDetails?.cartItemDetails?.filter(
-    (items) => items.menuitemid === item.menuitemid
+    (items) => items.menuitemid === item.menuitemId
   );
   var selecetdtime = recievingTime + " " + meredian;
   let rpoint = 0;
@@ -107,7 +107,7 @@ const MenuItemAddToCart = ({
       restaurantId: restaurantinfo?.restaurantId as number,
       locationId: restaurantinfo?.defaultlocationId as number,
       customerId: customerId,
-      menuitemId: item?.menuitemid,
+      menuitemId: item?.menuitemId,
       cartsessionId: String(cartsessionid),
       cartId: 0,
     }).then((response) => {
@@ -154,7 +154,7 @@ const MenuItemAddToCart = ({
             ordertype,
             selecetdtime,
           });
-          if (itemobj != undefined) {
+          if (itemobj && itemobj != undefined) {
             MenuItemServices.addItemToCart({
               orderobj: itemobj,
               restaurantId: restaurantinfo?.restaurantId as number,
@@ -164,7 +164,7 @@ const MenuItemAddToCart = ({
               //   payload: response,
               // });
               dispatch(addItemToCart(response));
-             // console.log("add item to cart response from if", response);
+              // console.log("add item to cart response from if", response);
               if (response) {
                 dispatch(updateCartItemCount());
                 dispatch(
@@ -271,7 +271,7 @@ const MenuItemAddToCart = ({
               data-toggle="tooltip"
               data-placement="left"
               title={TOOLTIP_MSG.ADDTOCART_BTN}
-              id={String(item.menuitemid)}
+              id={String(item.menuitemId)}
               onClick={() => addtocartclick(item)}
             >
               Add to cart
