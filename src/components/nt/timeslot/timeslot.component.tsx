@@ -334,7 +334,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                   {dayCloseError === "" ? (
                     <>
                       {/* {(asapLaterOnState.isAsap && selectedDate === "Today") && (() => {
-                        debugger
                         console.log("🧪 asapLaterOnState.isAsap:", asapLaterOnState.isAsap);
                         console.log("🧪 selectedDate:", selectedDate);
 

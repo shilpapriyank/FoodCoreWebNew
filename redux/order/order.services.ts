@@ -482,7 +482,6 @@ export class OrderServices {
     ordertype,
     scheduleDateTime,
   }: GenerateTimeSlotArgsTypes) {
-    debugger
       console.log("🔍 Payload parameters:", {
     restaurantId,
     locationId,

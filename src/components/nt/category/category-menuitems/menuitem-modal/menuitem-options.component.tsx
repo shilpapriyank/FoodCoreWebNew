@@ -254,7 +254,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
     });
     if (menuItemDetail) {
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail));
+      dispatch(selectedItemSize(menuItemDetail.size));
       dispatch(updateitemoption());
     }
 
@@ -493,7 +493,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
       // }
 
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(menuItemDetail?.size as Size[]));
       dispatch(updateitemoption());
       setreLoad(Math.random);
     } else {
@@ -543,7 +543,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
       });
 
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(menuItemDetail?.size as Size[]));
       // handleNotify("Please choose only " + selectedoption[0].maxSelection + " toppings", ToasterPositions.TopRight, ToasterTypes.Error);
       if (subOptionCount > Number(selectedSubOption?.suboptionmaxselection)) {
         handleNotify(
@@ -753,7 +753,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
       });
 
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(menuItemDetail?.size as Size[]));
       dispatch(updateitemoption());
     } else {
       selectedtopping &&
@@ -783,7 +783,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
         else Object.assign(data, data);
       });
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(menuItemDetail?.size as Size[]));
       // handleNotify("Topping value is exceed " + selectedoption[0].maxSelection + " toppings", ToasterPositions.TopRight, ToasterTypes.Error);
       handleNotify(
         "Select max " + selectedoption?.maxSelection + " choices",
@@ -1010,7 +1010,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
       else data = data;
     });
     dispatch(removeMenuItem());
-    dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+    dispatch(selectedItemSize(menuItemDetail?.size as Size[]));
     dispatch(updateitemoption());
   };
 
