@@ -160,14 +160,14 @@ const MenuItemModal = ({
   );
   var selecetdtime = recievingTime + " " + (meredian ?? "");
   const menuItemId =
-    selectedmenuitemdetail?.menuitemid ?? selectedmenuitemdetail?.menuitemid;
+    selectedmenuitemdetail?.menuitemId ?? selectedmenuitemdetail?.menuitemId;
   const catSlug = maincategoryList?.find(
     (cat) => cat?.catId === selectedmenuitemdetail?.catId
   )?.categoryslug;
   let shareUrl = `${window.location.origin}/${
     selctedTheme?.url
   }/${dynamic}/${location}/${catSlug}?menuitemId=${
-    selectedmenuitemdetail?.menuitemid ?? selectedmenuitemdetail?.menuitemid
+    selectedmenuitemdetail?.menuitemId ?? selectedmenuitemdetail?.menuitemId
   }`;
   let rpoint = 0;
   const { width } = useWindowDimensions();
@@ -772,7 +772,7 @@ const MenuItemModal = ({
         deleteFavorite({
           customerId: userinfo?.customerId as number,
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: selectedmenuitemdetail?.menuitemid as number,
+          menuItemId: selectedmenuitemdetail?.menuitemId as number,
         })
       );
     }

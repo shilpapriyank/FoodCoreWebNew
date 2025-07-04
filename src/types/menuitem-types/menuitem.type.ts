@@ -12,7 +12,7 @@ export interface GetAllMenuCategoryItems {
 }
 
 export interface Menuitems {
-  menuitemid: number;
+  menuitemId: number;
   menuItemName: string;
   catId: number;
   description: string;

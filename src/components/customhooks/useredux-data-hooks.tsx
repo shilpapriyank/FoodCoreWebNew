@@ -3,7 +3,10 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
-import { GetAllRestaurantInfo, GetRestaurantThemeType } from "@/types/restaurant-types/restaurant.type";
+import {
+  GetAllRestaurantInfo,
+  GetRestaurantThemeType,
+} from "@/types/restaurant-types/restaurant.type";
 
 export const useReduxData = () => {
   const userinfo = useSelector(
@@ -20,7 +23,6 @@ export const useReduxData = () => {
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
   );
-  console.log("🔍 Redux restaurantinfo:", restaurantinfo);
 
   const restaurantinfodetail = useSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
@@ -84,28 +86,27 @@ export const useReduxData = () => {
   //   order?.isasap ?? false
   // )
   const orderTimeValid =
-  typeof order?.checktime === "string" && order.checktime.trim() !== "";
+    typeof order?.checktime === "string" && order.checktime.trim() !== "";
 
-const [recievingTime, meredian, recievingDate] =
-  orderTimeValid && restaurantinfo
-    ? getCheckTimeArr(
-        order.checktime,
-        restaurantinfo,
-        order?.futureOrderDay?.futureDate || "",
-        order?.isasap ?? false
-      )
-    : ["", "", order?.futureOrderDay?.futureDate || ""];
+  const [recievingTime, meredian, recievingDate] =
+    orderTimeValid && restaurantinfo
+      ? getCheckTimeArr(
+          order.checktime,
+          restaurantinfo,
+          order?.futureOrderDay?.futureDate || "",
+          order?.isasap ?? false
+        )
+      : ["", "", order?.futureOrderDay?.futureDate || ""];
 
-
-//  const [recievingTime, meredian, recievingDate] =
-//   order?.checktime?.trim() && restaurantinfo
-//     ? getCheckTimeArr(
-//         order.checktime,
-//         restaurantinfo,
-//         order?.futureOrderDay?.futureDate || "",
-//         order?.isasap ?? false
-//       )
-//     : ["", "", order?.futureOrderDay?.futureDate || ""];
+  //  const [recievingTime, meredian, recievingDate] =
+  //   order?.checktime?.trim() && restaurantinfo
+  //     ? getCheckTimeArr(
+  //         order.checktime,
+  //         restaurantinfo,
+  //         order?.futureOrderDay?.futureDate || "",
+  //         order?.isasap ?? false
+  //       )
+  //     : ["", "", order?.futureOrderDay?.futureDate || ""];
 
   // const [recievingTime, meredian, recievingDate] =
   // order?.checktime?.trim() && restaurantinfo
@@ -199,7 +200,7 @@ const [recievingTime, meredian, recievingDate] =
     addressList,
     menuitemdetaillist,
     selectedcategorydetail,
-    restaurantinfodetail
+    restaurantinfodetail,
     // studentdata,
     // cartItemsAmountTotal,
     // cartItemsQuantity,

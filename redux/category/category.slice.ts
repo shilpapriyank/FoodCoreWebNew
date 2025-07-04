@@ -140,7 +140,7 @@ export const getAllCategoryMenuItems = createAsyncThunk<
         (cat) => cat.categoryslug === params.selectedCategoryUrl
       ))
   ) {
-    dispatch(selectedCategory(categoryList[0]));
+    dispatch(setSelectedCategory(categoryList[0]));
   }
 
   return response ?? [];
@@ -150,7 +150,7 @@ const categorySlice = createSlice({
   name: "category",
   initialState,
   reducers: {
-    selectedCategory: (state, action: PayloadAction<MainCategoryList>) => {
+    setSelectedCategory: (state, action: PayloadAction<MainCategoryList>) => {
       state.selectedcategorydetail = action.payload;
     },
     removeCategoryList: (state) => {
@@ -190,7 +190,7 @@ const categorySlice = createSlice({
 });
 
 export const {
-  selectedCategory,
+  setSelectedCategory,
   removeCategoryList,
   setCategoryList,
   resetCategory,

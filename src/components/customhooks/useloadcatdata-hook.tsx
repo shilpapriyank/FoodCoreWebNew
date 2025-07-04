@@ -2,7 +2,7 @@ import { GetThemeDetails, ThemeObj } from "../common/utility";
 import { MainServices } from "../../../redux/main/main.services";
 import {
   getAllCategoryMenuItems,
-  selectedCategory,
+  setSelectedCategory,
 } from "../../../redux/category/category.slice";
 import { useParams, useRouter } from "next/navigation";
 import { mainSlice, setMainCategoryList } from "../../../redux/main/main.slice";
@@ -25,10 +25,10 @@ const useLoadCatData = (customerId: number) => {
     if (!isTableOrder) {
       const locationId =
         newselectedRestaurant?.defaultLocation?.locationId ||
-        newselectedRestaurant.defaultlocationId;
+        newselectedRestaurant?.defaultlocationId;
       if (
         ThemeObj.newtheme.toString() ===
-        GetThemeDetails(newselectedRestaurant.themetype).name
+        GetThemeDetails(newselectedRestaurant?.themetype)?.name
       ) {
         dispatch(
           getAllCategoryMenuItems({
@@ -61,7 +61,7 @@ const useLoadCatData = (customerId: number) => {
           //const firstCategory = catresponse[0];
           const firstCategory = { ...catresponse[0], catSelected: true };
           if (categoryitemlist.length === 0) {
-            dispatch(selectedCategory(firstCategory));
+            dispatch(setSelectedCategory(firstCategory));
           }
           let promotioncategories = catresponse.find(
             (x) => x.catName === "PROMOTION"
@@ -121,7 +121,7 @@ const useLoadCatData = (customerId: number) => {
 
           const firstCategory = { ...catresponse[0], catSelected: true };
           firstCategory.catSelected = true;
-          dispatch(selectedCategory(firstCategory));
+          dispatch(setSelectedCategory(firstCategory));
           // const firstCategory = catresponse[0];
           // firstCategory.catSelected = true;
           // if (categoryitemlist.length === 0) {

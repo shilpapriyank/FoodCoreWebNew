@@ -320,7 +320,7 @@ export const OrderItemsList = () => {
     });
 
     cdetail.cartDetails.cartItemDetails = dcart;
-
+    console.log("cart item from order-items-list", cdetail);
     dispatch(setCartItem(cdetail));
     CartServices.updatequantity(
       sessionId as string,

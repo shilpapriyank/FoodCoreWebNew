@@ -26,7 +26,6 @@ export class RestaurantsServices {
         locationURL: locationurl,
       },
     };
-    console.log("data from getRestaurantsList in restaurant service", data);
     responseclass = await handleAxiosPostAsync(
       data,
       location,
@@ -39,10 +38,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log(
-        "response from getRestaurantsList in restaurant service",
-        responseclass.result
-      );
       return responseclass.result as GetAllRestaurantInfo[] | null;
     } else {
       return null;
@@ -66,10 +61,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log(
-        "response from getRestaurantLocationList",
-        responseclass.result
-      );
       return responseclass.result as GetAllLocationInfoNew[] | null;
     } else {
       return null;
@@ -91,7 +82,6 @@ export class RestaurantsServices {
         locationId,
       },
     };
-    console.log("data from getHomepageBannerDetails", data);
     responseclass = await handleAxiosPostAsync(
       data,
       restaurantbannerurl,
@@ -103,10 +93,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log(
-        "response from getHomepageBannerDetails",
-        responseclass.result
-      );
       return responseclass.result;
     } else {
       return [];
@@ -115,7 +101,7 @@ export class RestaurantsServices {
 
   static async getRestaurantThemeType(
     restauranturl: string
-  ): Promise<GetRestaurantThemeType[] | null> {
+  ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantThemeType";
     const themetypeurl = ENDPOINTS.GET_THEME_TYPE;
@@ -124,7 +110,6 @@ export class RestaurantsServices {
         restaurantURL: restauranturl,
       },
     };
-    console.log("data from getRestaurantThemeType", data);
     responseclass = await handleAxiosPostAsync(
       data,
       themetypeurl,
@@ -136,7 +121,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log("response from getRestaurantThemeType", responseclass.result);
       return responseclass.result;
     } else {
       return null;
@@ -156,7 +140,6 @@ export class RestaurantsServices {
         restaurantId,
       },
     };
-    console.log("data from getPageContentRestaurant", data);
     responseclass = await handleAxiosPostAsync(
       data,
       getPageContent,
@@ -168,10 +151,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log(
-        "response from getPageContentRestaurant",
-        responseclass.result
-      );
       return responseclass.result;
     } else {
       return null;
@@ -187,7 +166,6 @@ export class RestaurantsServices {
     const data = {
       seoDetailRequest: metaDataObj,
     };
-    console.log("data from getMetadataDetails", data);
     responseclass = await handleAxiosPostAsync(
       data,
       getMetaDataDetail,
@@ -198,7 +176,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log("response from getMetadataDetails", responseclass.result);
       return responseclass.result;
     } else {
       return null;
@@ -217,7 +194,6 @@ export class RestaurantsServices {
       restaurantId,
       locationId,
     };
-    console.log("data from getCurrentTime", data);
     responseclass = await handleAxiosPostAsync(
       data,
       getCurrentTime,
@@ -229,7 +205,6 @@ export class RestaurantsServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      console.log("response from getCurrentTime", responseclass.result);
       return responseclass.result;
     } else {
       return null;

@@ -42,7 +42,7 @@ export class MenuItemServices {
         customerId: customerId != undefined ? customerId : 0,
         menuitemId: menuitemId,
         cartsessionId: cartsessionId != undefined ? cartsessionId : "",
-        cartId: cartId != undefined && cartId != 0 ? cartId : "",
+        cartId: cartId != undefined && cartId != 0 ? cartId : 0,
       },
     };
     responseclass = await handleAxiosPostAsync(
@@ -72,6 +72,7 @@ export class MenuItemServices {
     menuItemId: number;
   }): Promise<AddOrDeleteFavorite | null> {
     responseclass = new ResponseModel();
+    debugger
     const methodName = "addfavorite";
     const location = ENDPOINTS.ADD_FAVORITE;
     const data = {
@@ -86,6 +87,7 @@ export class MenuItemServices {
       true,
       restaurantId
     );
+    console.log("add favorite response", responseclass.result);
     if (
       responseclass.result &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
@@ -95,7 +97,7 @@ export class MenuItemServices {
         ToasterPositions.TopRight,
         ToasterTypes.Success
       );
-      return responseclass.result as AddOrDeleteFavorite;
+      return responseclass.result;
     } else if (responseclass.status === API_RESPONSE_STATUS.INVALID) {
       handleNotify(
         responseclass?.message ? responseclass.message : ERRORMESSAGE.TRYAGAIN,

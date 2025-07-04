@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ORDER_TYPE_ENUM, ORDERTYPE, TOOLTIP_MSG } from "../../common/utility";
+import { ORDER_TYPE_ENUM, TOOLTIP_MSG } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
 

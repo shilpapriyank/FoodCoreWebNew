@@ -642,17 +642,17 @@ export const getAsapLaterOnState = (
   const orderState =
     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
       ? {
-        timeWindow: deliveryWindow,
-        isAsap: isDeliveryAsap,
-        isLaterOn: isDeliveryPickupTime,
-        isOrderTypeDisable: isDeliveryOrderingDisable,
-      }
+          timeWindow: deliveryWindow,
+          isAsap: isDeliveryAsap,
+          isLaterOn: isDeliveryPickupTime,
+          isOrderTypeDisable: isDeliveryOrderingDisable,
+        }
       : {
-        timeWindow: pickupWindow,
-        isAsap: isTakeOutAsap,
-        isLaterOn: isTakeOutPickupTime,
-        isOrderTypeDisable: isTakeoutOrderingDisable,
-      };
+          timeWindow: pickupWindow,
+          isAsap: isTakeOutAsap,
+          isLaterOn: isTakeOutPickupTime,
+          isOrderTypeDisable: isTakeoutOrderingDisable,
+        };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 
@@ -980,250 +980,52 @@ export const calulateTotal = (cartdata: CartDetails) => {
   return parseFloat(total)?.toFixed(2);
 };
 
-// export const getCheckTimeArr = (
-//   orderTime: string,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   orderDate: string,
-//   isasap: boolean
-// ) => {
-//   console.log("🟡 getCheckTimeArr called with:");
-//   console.log("orderTime:", orderTime);
-//   console.log("orderDate:", orderDate);
-//   console.log("isasap:", isasap);
-//   console.log("restaurantinfo:", restaurantinfo);
-//   debugger
-//   let Time = [];
-//   if (
-//     (restaurantinfo?.defaultLocation?.deliveryService ===
-//       DELIVERYSERVICES.DOORDASH ||
-//       restaurantinfo?.defaultLocation?.deliveryService ===
-//       DELIVERYSERVICES.UBEREATS) &&
-//     !isasap
-//   ) {
-//     console.log("🔵 Case: Delivery service is DOORDASH or UBEREATS & not ASAP");
-//     let checkTime = orderTime;
-//     if (checkTime?.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     }
-//     if (checkTime?.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   } else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
-//     Time.push(orderTime);
-//     Time.push("");
-//     Time.push(orderDate);
-//   } else {
-//     let checkTime = orderTime;
-//     if (checkTime?.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     }
-//     if (checkTime?.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   }
-//   return Time;
-// };
-
-// export const getCheckTimeArr = (
-//   orderTime: string,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   orderDate: string = "",
-//   isasap: boolean
-// ): string[] => {
-//   const Time: string[] = [];
-
-//   console.log("🟡 getCheckTimeArr() called with:");
-//   console.log("orderTime:", orderTime);
-//   console.log("orderDate:", orderDate);
-//   console.log("isasap:", isasap);
-//   console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
-//   debugger;
-//   // 🔴 Defensive check — if orderTime is missing, log warning and return default values
-//   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
-//     console.warn("⚠️ Invalid or empty orderTime passed to getCheckTimeArr");
-//     return ["", "", orderDate];
-//   }
-
-//   let checkTime = orderTime.trim().toUpperCase(); // Normalize
-
-//   // ✅ Case 1: DoorDash or UberEats (with no ASAP)
-//   if (
-//     (restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.DOORDASH ||
-//       restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.UBEREATS) &&
-//     !isasap
-//   ) {
-//     if (checkTime.includes("AM")) {
-//       Time.push(checkTime.replace("AM", "").trim());
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       Time.push(checkTime.replace("PM", "").trim());
-//       Time.push("PM");
-//     } else {
-//       console.warn("⚠️ orderTime doesn't include AM/PM:", orderTime);
-//       Time.push(checkTime); // fallback
-//       Time.push(""); // meridian missing
-//     }
-//     Time.push("");
-//   }
-
-//   // ✅ Case 2: Time slot enabled (with no ASAP)
-//   else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
-//     Time.push(orderTime);
-//     Time.push("");
-//     Time.push(orderDate);
-//   }
-
-//   // ✅ Case 3: Default handling
-//   else {
-//     if (checkTime.includes("AM")) {
-//       Time.push(checkTime.replace("AM", "").trim());
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       Time.push(checkTime.replace("PM", "").trim());
-//       Time.push("PM");
-//     } else {
-//       console.warn("⚠️ orderTime doesn't include AM/PM:", orderTime);
-//       Time.push(checkTime); // fallback
-//       Time.push(""); // meridian missing
-//     }
-//     Time.push("");
-//   }
-
-//   return Time;
-// };
-
-// export const getCheckTimeArr = (
-//   orderTime: any,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   orderDate: string = "",
-//   isasap: boolean
-// ): string[] => {
-//   const Time: [] = [];
-
-//   console.log("🟡 getCheckTimeArr() called with:");
-//   console.log("orderTime:", orderTime);
-//   console.log("orderDate:", orderDate);
-//   console.log("isasap:", isasap);
-//   console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
-//   debugger;
-
-//   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
-//   console.warn("⚠️ Invalid or empty orderTime passed to getCheckTimeArr", { orderTime });
-//   return ["", "", orderDate];
-// }
-
-
-//   if (
-//     (restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.DOORDASH ||
-//      restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.UBEREATS) &&
-//     !isasap
-//   ) {
-//     let checkTime = orderTime;
-//     if (checkTime.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   } else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
-//     Time.push(orderTime);
-//     Time.push("");
-//     Time.push(orderDate);
-//   } else {
-//     let checkTime = orderTime;
-//     if (checkTime.includes("AM")) {
-//       checkTime = checkTime.replace("AM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("AM");
-//     } else if (checkTime.includes("PM")) {
-//       checkTime = checkTime.replace("PM", "").trim();
-//       Time.push(checkTime);
-//       Time.push("PM");
-//     }
-//     Time.push("");
-//   }
-
-//   return Time;
-// };
 export const getCheckTimeArr = (
   orderTime: string,
   restaurantinfo: GetAllRestaurantInfo,
-  orderDate: string = "",
+  orderDate: string,
   isasap: boolean
-): string[] => {
-  const Time: string[] = [];
-
-  console.log("🟡 getCheckTimeArr() called with:");
-  console.log("orderTime:", orderTime);
-  console.log("orderDate:", orderDate);
-  console.log("isasap:", isasap);
-  console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
-
-  // ✅ Early return if orderTime is invalid
-  if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
-    return ["", "", orderDate];
-  }
-
-  // ✅ Case 1: Third-party delivery (DoorDash / UberEats)
+) => {
+  let Time = [];
   if (
-    (restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.DOORDASH ||
-      restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.UBEREATS) &&
+    (restaurantinfo?.defaultLocation?.deliveryService ===
+      DELIVERYSERVICES.DOORDASH ||
+      restaurantinfo?.defaultLocation?.deliveryService ===
+      DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
-    if (checkTime.includes("AM")) {
+    if (checkTime?.includes("AM")) {
       checkTime = checkTime.replace("AM", "").trim();
       Time.push(checkTime);
       Time.push("AM");
-    } else if (checkTime.includes("PM")) {
+    }
+    if (checkTime?.includes("PM")) {
       checkTime = checkTime.replace("PM", "").trim();
       Time.push(checkTime);
       Time.push("PM");
     }
     Time.push("");
-  }
-
-  // ✅ Case 2: Time slot enabled
-  else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
+  } else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
     Time.push(orderTime);
     Time.push("");
     Time.push(orderDate);
-  }
-
-  // ✅ Case 3: Default (ASAP or unknown mode)
-  else {
+  } else {
     let checkTime = orderTime;
-    if (checkTime.includes("AM")) {
+    if (checkTime?.includes("AM")) {
       checkTime = checkTime.replace("AM", "").trim();
       Time.push(checkTime);
       Time.push("AM");
-    } else if (checkTime.includes("PM")) {
+    }
+    if (checkTime?.includes("PM")) {
       checkTime = checkTime.replace("PM", "").trim();
       Time.push(checkTime);
       Time.push("PM");
     }
     Time.push("");
   }
-
   return Time;
 };
-
-
-
 
 export const getVersion = () => {
   return "090";

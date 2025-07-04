@@ -67,7 +67,7 @@ const CategorySidebar: React.FC = () => {
             ) : (
               <a className="btn-default w-100 greyColor">
                 {" "}
-                cart Go To Cart <i className="fa fa-angle-right" />{" "}
+                Go To Cart <i className="fa fa-angle-right" />{" "}
               </a>
             )}
           </div>
