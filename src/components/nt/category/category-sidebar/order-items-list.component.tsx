@@ -35,6 +35,7 @@ import {
 import CartSuboptionDisplay from "../../checkout/suboption-display.component";
 
 export const OrderItemsList = () => {
+  debugger
   const {
     restaurantinfo,
     userinfo,

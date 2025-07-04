@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { GetThemeDetails } from "../../../common/utility";
 import useUtility from "../../../customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
@@ -9,15 +8,17 @@ import CommonModal from "../../common/common-model.component";
 import { OrderPreparationDetail } from "./order-preparation-detail.component";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import OrderItemsList from "./order-items-list.component";
+import { useParams, useRouter } from "next/navigation";
+import { RelatedItemsList } from "../../common/related-items/related-items-list";
 
 const CategorySidebar: React.FC = () => {
+  debugger;
   const dispatch = useAppDispatch();
   const { restaurantinfo, cart, restaurant } = useReduxData();
   const router = useRouter();
   const { isDisplayPrice, isRewardTip } = useUtility();
-  const searchParams = useSearchParams();
-  const dynamic = searchParams.get("dynamic");
-  const location = searchParams.get("location");
+  const params = useParams();
+  const { location, dynamic } = params;
   const [isOpenChangeLocation, setIsOpenChangeLocation] =
     useState<boolean>(false);
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
@@ -57,7 +58,7 @@ const CategorySidebar: React.FC = () => {
           {!isSchoolProgramEnabled && <OrderPreparationDetail />}
           <div className="card totalbox">
             <OrderItemsList />
-            {/*{cart?.cartitemcount > 0 && <RelatedItemsList />} */}
+            {cart?.cartitemcount > 0 && <RelatedItemsList />}
             {cart?.cartitemcount > 0 ? (
               <a className="btn-default w-100" onClick={handleClick}>
                 {" "}

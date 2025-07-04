@@ -107,7 +107,6 @@ export class LocationServices {
       restaurantId
     );
     //console.log("[API Response] changeRestaurantLocation ResponseClass:", responseclass);
-    // debugger;
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS

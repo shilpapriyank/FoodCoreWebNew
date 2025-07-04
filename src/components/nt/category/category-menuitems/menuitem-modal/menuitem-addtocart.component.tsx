@@ -7,8 +7,9 @@ const MenuItemAddCartBtn = ({
   currencySymbol,
   addToCart,
 }: any) => {
+  debugger;
   const { menuitem } = useReduxData();
-  let selectedmenuitemdetail = menuitem.selectedmenuitemdetail;
+  let selectedmenuitemdetail = menuitem?.selectedmenuitemdetail;
   const { isDisplayPrice, isRewardTip } = useUtility();
   return (
     <div className="col-lg-4 ms-auto p-0 col-md-5 col-6 ps-md-1 pb-1 pb-md-0 ps-1 ps-md-0">

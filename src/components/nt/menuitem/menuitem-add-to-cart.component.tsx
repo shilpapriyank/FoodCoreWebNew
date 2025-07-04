@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import {
-  GetThemeDetails,
-  TOOLTIP_MSG,
-} from "../../common/utility";
+import { GetThemeDetails, TOOLTIP_MSG } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { ORDER_TYPE } from "../common/utility";
-import { Menuitems } from "@/types/menuitem-types/menuitem.type";
+import {
+  GetMenuItemDetail,
+  Menuitems,
+} from "@/types/menuitem-types/menuitem.type";
 import {
   addItemToCart,
   selectedMenuItem,
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
+  setMenuCategoryData,
   setMenuItemDetailList,
 } from "../../../../redux/menu-item/menu-item.slice";
 import { MenuItemServices } from "../../../../redux/menu-item/menu-item.services";
@@ -26,7 +27,7 @@ import { getCartItemCount } from "../../../../redux/tableorder/tableorder.slice"
 import { CartServices } from "../../../../redux/cart/cart.services";
 import Popover from "../common/custompopover";
 import ShareitemComponent from "../common/shareitem.component";
-import { getAllCategoryMenuItems } from "../../../../redux/category/category.slice";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
 const MenuItemAddToCart = ({
   item,
@@ -101,7 +102,9 @@ const MenuItemAddToCart = ({
     const minusState = currentQty - 1;
     setcurrentQty(minusState);
   };
+
   const addtocartclick = (item: Menuitems) => {
+    debugger;
     dispatch(selectedMenuItem(item));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
@@ -113,19 +116,15 @@ const MenuItemAddToCart = ({
     }).then((response) => {
       if (response) {
         if (response) {
-          // dispatch({
-          //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-          //   payload: response,
-          // });
-          dispatch(setMenuItemDetailList(response));
+          dispatch(setMenuCategoryData(response));
         }
-        //save selected menu item with topping and size
-        // dispatch(getCategoryItemList(restaurantinfo.restaurantId, item.catId, customerId, restaurantinfo.defaultlocationId));
         let menuItemDetail = response;
         let selectedsize =
           menuItemDetail != undefined &&
           menuItemDetail.size != undefined &&
           menuItemDetail.size?.filter((x) => x.sizeselected == true);
+
+        console.log("selected size", selectedsize);
         let selectedtopping =
           selectedsize &&
           selectedsize.length > 0 &&
@@ -135,25 +134,34 @@ const MenuItemAddToCart = ({
           menuItemDetail.topping.filter(
             (x) => x.subparameterId == selectedsize[0].subparameterId
           );
+        console.log("selectedtopping", selectedtopping);
         let selectedoption =
           selectedtopping &&
-          selectedtopping[0].list?.filter((x) => x.isCompulsory == true);
-        const selecetdtime = order?.checktime;
-        let objselectedItem = item;
-        let total =
-          selectedsize != undefined && selectedsize && selectedsize[0].price;
-        if (menuItemDetail && menuItemDetail.topping.length > 0) {
+          selectedtopping[0]?.list?.filter((x) => x.isCompulsory == true);
+        console.log("selectedoption", selectedoption);
+        // 🛠 Fix: total is strictly number
+        let total: number =
+          selectedsize && selectedsize.length > 0 && selectedsize[0].price
+            ? selectedsize[0].price
+            : 0;
+        console.log("total", total);
+        if (
+          menuItemDetail.topping != undefined &&
+          menuItemDetail.topping.length > 0 &&
+          selectedoption
+        ) {
           let itemobj = FormatOrderObject({
-            restaurantinfo,
-            objselectedItem,
+            objrestaurant: restaurantinfo as GetAllRestaurantInfo,
+            objselectedItem: item,
             menuItemDetail,
-            customerId,
+            //customerId,
             total,
-            currentQty,
-            cartsessionid,
-            ordertype,
-            selecetdtime,
+            quantity: currentQty,
+            sessionid: cartsessionid as string,
+            orderType: ordertype,
+            selectedtime: selecetdtime,
           });
+          console.log("item object for add to cart", itemobj);
           if (itemobj && itemobj != undefined) {
             MenuItemServices.addItemToCart({
               orderobj: itemobj,
@@ -163,6 +171,10 @@ const MenuItemAddToCart = ({
               //   type: MenuItemTypes.ADD_ITEM_TO_CART,
               //   payload: response,
               // });
+              console.log(
+                "response of addItemToCart from menuitem add-to-cart",
+                response
+              );
               dispatch(addItemToCart(response));
               // console.log("add item to cart response from if", response);
               if (response) {
@@ -195,6 +207,10 @@ const MenuItemAddToCart = ({
                       response?.cartDetails &&
                       response?.cartDetails?.cartTotal
                     ) {
+                      console.log(
+                        "response of getCartItemList from menuitem add-to-cart",
+                        response
+                      );
                       // dispatch({
                       //   type: CartTypes.CART_DATA,
                       //   payload: response,
@@ -274,7 +290,7 @@ const MenuItemAddToCart = ({
               id={String(item.menuitemId)}
               onClick={() => addtocartclick(item)}
             >
-              Add to cart
+              this is new one Add to cart
             </a>
           </>
         );

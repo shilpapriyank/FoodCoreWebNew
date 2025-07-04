@@ -35,7 +35,7 @@ export interface MenuItemState {
   //   itemName: string;
   //   image: string;
   //   description: string;
-  //   isFavourite: boolean;
+  //   isFavourite: boolean;s
   //   size: Size[];
   //   topping: Topping[];
   //   MenuStausList: MenuStausList[];
@@ -270,6 +270,9 @@ const menuItemSlice = createSlice({
     setMenuCategoryData: (state, action: PayloadAction<GetMenuItemDetail>) => {
       state.menuitemdetaillist = action.payload;
     },
+    // setMenuCategoryData: (state, action: PayloadAction<Menuitems>) => {
+    //   state.selectedmenuitemdetail = action.payload;
+    // },
     selectedMenuItem: (state, action: PayloadAction<Menuitems>) => {
       state.selectedmenuitemdetail = action.payload;
     },
@@ -288,8 +291,13 @@ const menuItemSlice = createSlice({
     removeMenuItemForFavorite: (state) => {
       state.selectedmenuitemdetail = null;
     },
-    selectedItemSize: (state, action: PayloadAction<GetMenuItemDetail>) => {
-      state.menuitemdetaillist = action.payload;
+    // selectedItemSize: (state, action: PayloadAction<GetMenuItemDetail>) => {
+    //   state.menuitemdetaillist = action.payload;
+    // },
+    selectedItemSize: (state, action: PayloadAction<Size[]>) => {
+      if (state.menuitemdetaillist) {
+        state.menuitemdetaillist.size = action.payload;
+      }
     },
     removeMenuItem: (state) => {
       state.menuitemdetaillist = null;

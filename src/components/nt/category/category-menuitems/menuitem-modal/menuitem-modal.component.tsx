@@ -305,7 +305,7 @@ const MenuItemModal = ({
 
       menuItemDetail.size = lstsizedata;
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(menuItemDetail.size as Size[]));
     }
 
     setcount(count + 1);
@@ -350,7 +350,11 @@ const MenuItemModal = ({
     ) {
       dispatch(setDipendentItemQty(0));
     }
-    let total = selectedsize && selectedsize[0]?.price;
+    // let total = selectedsize && selectedsize[0]?.price;
+    let total: number =
+      selectedsize && selectedsize.length > 0 && selectedsize[0].price
+        ? selectedsize[0].price
+        : 0;
     // let nettotal = total * currentQty;
     //if (deliveryaddressinfo.pickupordelivery === "Pickup" || (deliveryaddressinfo.pickupordelivery === "Delivery")) {
     let selectedoption =
@@ -391,16 +395,16 @@ const MenuItemModal = ({
       //THIS CONDITION WILL EXECUTE WHEN ITEM UPDATE FROM CART PAGE
       if (isValidateItem) {
         let itemobj = FormatOrderObject({
-          restaurantinfo,
-          selectedmenuitemdetail,
-          menuItemDetail,
-          customerId,
-          total,
-          currentQty,
-          sessionId,
-          ordertype,
-          selecetdtime,
-          //studentname
+          objrestaurant: restaurantinfo as GetAllRestaurantInfo,
+          objselectedItem: selectedmenuitemdetail,
+          menuItemDetail: menuItemDetail as GetMenuItemDetail,
+          //customerId: Number(customerId),
+          total: total,
+          quantity: currentQty,
+          sessionid: sessionid as string,
+          orderType: ordertype,
+          selectedtime: selecetdtime,
+          studentname: "",
         });
         if (itemobj != undefined) {
           MenuItemServices.updateCartOrdersItem({
@@ -445,20 +449,21 @@ const MenuItemModal = ({
         }
       }
     } else if (
+      selectedmenuitemdetail &&
       menuItemDetail?.topping != undefined &&
       menuItemDetail?.topping.length === 0
     ) {
       let itemobj = FormatOrderObject({
-        restaurantinfo,
-        selectedmenuitemdetail,
-        menuItemDetail,
-        customerId,
-        total,
-        currentQty,
-        sessionId,
-        ordertype,
-        selecetdtime,
-        //studentname
+        objrestaurant: restaurantinfo as GetAllRestaurantInfo,
+        objselectedItem: selectedmenuitemdetail,
+        menuItemDetail: menuItemDetail,
+        //customerId: Number(customerId),
+        total: total,
+        quantity: currentQty,
+        sessionid: sessionid as string,
+        orderType: ordertype,
+        selectedtime: selecetdtime,
+        studentname: "",
       });
       if (itemobj != undefined) {
         MenuItemServices.addItemToCart({
@@ -541,16 +546,16 @@ const MenuItemModal = ({
         result.filter((x) => x.text == false).length === 0
       ) {
         let itemobj = FormatOrderObject({
-          restaurantinfo,
-          selectedmenuitemdetail,
-          menuItemDetail,
-          customerId,
-          total,
-          currentQty,
-          sessionId,
-          ordertype,
-          selecetdtime,
-          //studentname,
+          objrestaurant: restaurantinfo as GetAllRestaurantInfo,
+          objselectedItem: selectedmenuitemdetail!,
+          menuItemDetail: menuItemDetail as GetMenuItemDetail,
+          //customerId: Number(customerId),
+          total: total,
+          quantity: currentQty,
+          sessionid: sessionid as string,
+          orderType: ordertype,
+          selectedtime: selecetdtime,
+          studentname: "",
         });
         if (itemobj != undefined) {
           MenuItemServices.addItemToCart({
@@ -635,16 +640,16 @@ const MenuItemModal = ({
       selectedoption
     ) {
       let itemobj = FormatOrderObject({
-        restaurantinfo,
-        selectedmenuitemdetail,
-        menuItemDetail,
-        customerId,
-        total,
-        currentQty,
-        sessionId,
-        ordertype,
-        selecetdtime,
-        //studentname
+        objrestaurant: restaurantinfo as GetAllRestaurantInfo,
+        objselectedItem: selectedmenuitemdetail!,
+        menuItemDetail: menuItemDetail as GetMenuItemDetail,
+        //customerId: Number(customerId),
+        total: total,
+        quantity: currentQty,
+        sessionid: sessionid as string,
+        orderType: ordertype,
+        selectedtime: selecetdtime,
+        studentname: "",
       });
       if (itemobj != undefined) {
         MenuItemServices.addItemToCart({

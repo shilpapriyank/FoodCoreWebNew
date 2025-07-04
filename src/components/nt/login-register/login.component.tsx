@@ -196,7 +196,6 @@ const Login: React.FC<LoginProps> = ({
                 if ('customerDetails' in responsedata) {
                     const customer = responsedata?.customerDetails;
                     if (responsedata && customer) {
-                       // debugger
                        // console.log("Login Customer from logincomponent:", customer);
                         // dispatch({ type: LoginTypes.USER_DETAIL, payload: customer });
                         dispatch(setUserDetail(customer))
