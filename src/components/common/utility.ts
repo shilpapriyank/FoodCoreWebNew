@@ -34,27 +34,24 @@ import {
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
 import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 
-export enum ORDER_TYPE_ENUM {
-  PICKUP = "Pickup",
-  DELIVERY = "Delivery",
-}
-export type OrderType = `${ORDER_TYPE_ENUM}`;
+// export enum ORDER_TYPE_ENUM {
+//   PICKUP = "Pickup",
+//   DELIVERY = "Delivery",
+// }
+// export type OrderType = `${ORDER_TYPE_ENUM}`;
 
 export const ORDER_TYPE = {
   PICKUP: {
     text: "Pickup",
-    value: 1
+    value: 1,
   },
   DELIVERY: {
     text: "Delivery",
-    value: 2
-  }
-}
+    value: 2,
+  },
+} as const;
 
-// export const ORDER_TYPE = {
-//   PICKUP: ORDER_TYPE_ENUM.PICKUP,
-//   DELIVERY: ORDER_TYPE_ENUM.DELIVERY,
-// };
+export type OrderType = (typeof ORDER_TYPE)[keyof typeof ORDER_TYPE]["value"];
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -304,8 +301,8 @@ export const checkCheckoutDisable = (
   dtotal: any
 ): boolean => {
   if (
-    pickupordelivery === ORDER_TYPE_ENUM.PICKUP ||
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+    pickupordelivery === ORDER_TYPE.PICKUP.text ||
+    pickupordelivery === ORDER_TYPE.DELIVERY.text
   ) {
     //let cartItems = cartdata?.cartDetails?.cartItemDetails;
     let cartItems = cartdata[0]?.cartItemDetails;
@@ -317,16 +314,16 @@ export const checkCheckoutDisable = (
     );
 
     if (
-      (pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+      (pickupordelivery === ORDER_TYPE.PICKUP.text &&
         isAnyPickupItemNotAvailable) ||
-      (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      (pickupordelivery === ORDER_TYPE.DELIVERY.text &&
         isAnydeliveryItemNotAvailable) ||
       checkMenuItemTimeAvailability(cartItems as any)
     ) {
       return true;
     } else if (
       dtotal !== undefined &&
-      pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      pickupordelivery === ORDER_TYPE.DELIVERY.text &&
       dtotal === 0
     ) {
       return true;
@@ -337,9 +334,7 @@ export const checkCheckoutDisable = (
   return false;
 };
 
-export const checkMenuItemTimeAvailability = (
-  cartItems: CartItemDetail[]
-) => {
+export const checkMenuItemTimeAvailability = (cartItems: CartItemDetail[]) => {
   return cartItems?.some((item) => item.availability == false);
 };
 
@@ -365,12 +360,12 @@ export const checkMenuItemAvailability = (
   //CHECK THE MENUITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
   let isItemAvailable = true;
   if (
-    pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+    pickupordelivery === ORDER_TYPE.PICKUP.text &&
     filteredCategory?.istakeoutavailable === false
   ) {
     isItemAvailable = false;
   } else if (
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     filteredCategory?.isdeliveryavailable === false
   ) {
     isItemAvailable = false;
@@ -410,7 +405,7 @@ export const getAvailableCartRelativeData = (
     });
     return AvailableCartRelativeItem;
   }
-  if (pickupordelivery === ORDER_TYPE_ENUM.DELIVERY) {
+  if (pickupordelivery === ORDER_TYPE.DELIVERY.text) {
     //NEED TO CATEGORY LIST THAT INCLUDE isdeliveryavailable SO ITRATE OVER THE REDUX-CATEGORY LIST
     //GET THAT ITEM AND FILTER WITH CAT ID AND isdeliveryavailable SO DIRECTLY FIND THE CATEGORYLIST THAT IS isdeliveryavailable
     let categoryData = categoryList?.filter((category) => {
@@ -503,7 +498,7 @@ export const orderDisable = (
   } else {
     if (
       deliveryaddressinfo &&
-      deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.PICKUP &&
+      deliveryaddressinfo.pickupordelivery === ORDER_TYPE.PICKUP.text &&
       (location.isTakeoutOrderingDisable === true ||
         restaurantinfo.istakeaway === false ||
         location.istakeaway === false)
@@ -512,7 +507,7 @@ export const orderDisable = (
       orderDisableObj.isorderdisable = true;
     } else if (
       deliveryaddressinfo &&
-      deliveryaddressinfo.pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+      deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text &&
       (location.isDeliveryOrderingDisable === true ||
         restaurantinfo.isdelivery === false ||
         location.isdelivery === false)
@@ -538,67 +533,6 @@ export const checkCategoryExist = (
   }
 };
 
-//GET ASAP LATEORON CHECK FOR THE DELIVERY AND PICKUP BASE
-// export const getAsapLaterOnState = (
-//   defaultLocation: any,
-//   pickupordelivery: any,
-//   restaurantWindowTime: any
-// ) => {
-//   const pickupWindow = restaurantWindowTime?.pickupTime;
-//   const deliveryWindow = restaurantWindowTime?.deliveryTime;
-//   let enableDisableState: any = {};
-
-// export const getAsapLaterOnState = (
-//   defaultLocation: AddressListItem,
-//   pickupordelivery: ORDER_TYPE_ENUM,
-//   restaurantWindowTime?: RestaurantWindowTime
-// ): AsapLaterOnState => {
-//   const pickupWindow = restaurantWindowTime?.pickupTime;
-//   const deliveryWindow = restaurantWindowTime?.deliveryTime;
-
-//   const {
-//     isTakeOutAsap,
-//     isTakeOutPickupTime,
-//     isDeliveryAsap,
-//     isDeliveryPickupTime,
-//     isTakeoutOrderingDisable,
-//     isDeliveryOrderingDisable,
-//     isOrderingDisable,
-//   } = defaultLocation;
-
-//   const orderState =
-//     pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-//       ? {
-//         timeWindow: deliveryWindow,
-//         isAsap: isDeliveryAsap,
-//         isLaterOn: isDeliveryPickupTime,
-//         isOrderTypeDisable: isDeliveryOrderingDisable,
-//       }
-//       : {
-//         timeWindow: pickupWindow,
-//         isAsap: isTakeOutAsap,
-//         isLaterOn: isTakeOutPickupTime,
-//         isOrderTypeDisable: isTakeoutOrderingDisable,
-//       };
-
-//   const isdisplay = orderState.isAsap || orderState.isLaterOn;
-
-//   const isDisableAsapLateron =
-//     !(
-//       isOrderingDisable === false &&
-//       orderState.isOrderTypeDisable === false &&
-//       orderState.timeWindow &&
-//       orderState.timeWindow.length > 0
-//     );
-
-//   return {
-//     isdisplay,
-//     isDisableAsapLateron,
-//     isAsap: orderState.isAsap,
-//     isLateron: orderState.isLaterOn,
-//   };
-// };
-
 export interface AsapLaterOnState {
   isdisplay: boolean;
   isDisableAsapLateron: boolean;
@@ -613,11 +547,11 @@ export interface RestaurantWindowTime {
 
 export const getAsapLaterOnState = (
   defaultLocation?: AddressList,
-  pickupordelivery?: ORDER_TYPE_ENUM | OrderType,
+  pickupordelivery?: OrderType,
   restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
-  // ✅ Fallback in case required inputs are not provided
-  if (!defaultLocation || !pickupordelivery) {
+  // ✅ Fallback for missing inputs
+  if (!defaultLocation || pickupordelivery === undefined) {
     return {
       isdisplay: false,
       isDisableAsapLateron: true,
@@ -640,7 +574,7 @@ export const getAsapLaterOnState = (
   } = defaultLocation;
 
   const orderState =
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+    pickupordelivery === ORDER_TYPE.DELIVERY.value
       ? {
           timeWindow: deliveryWindow,
           isAsap: isDeliveryAsap,
@@ -734,19 +668,6 @@ export const onLoadSetDefaultFlag = (
   }
 };
 
-
-
-// export const ORDER_TYPE = {
-//   PICKUP: {
-//     text: ORDER_TYPE_ENUM.PICKUP,
-//     value: 1,
-//   },
-//   DELIVERY: {
-//     text: ORDER_TYPE_ENUM.DELIVERY,
-//     value: 2,
-//   },
-// };
-
 export const ORDER_TIME_TYPE: OrderTimeTypes = {
   ASAP: {
     text: "Asap",
@@ -765,11 +686,11 @@ export const getOrderTimeType = (text: string) => {
 export const getOrderType = (value: string) => {
   let orderTypeArray = [
     {
-      name: ORDER_TYPE_ENUM.PICKUP,
+      name: ORDER_TYPE.PICKUP.text,
       value: 1,
     },
     {
-      name: ORDER_TYPE_ENUM.DELIVERY,
+      name: ORDER_TYPE.DELIVERY.text,
       value: 2,
     },
   ];
@@ -814,7 +735,7 @@ export const handleSetDeliveryTypeError = (
 ) => {
   let errorMessage = "";
   if (
-    pickupordelivery === ORDER_TYPE_ENUM.DELIVERY &&
+    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     (deliveryaddressinfo?.length === 0 || deliveryaddressinfo === null) &&
     (carttotal?.cartCount > 0 || cart?.cartitemcount > 0)
   ) {
@@ -896,7 +817,7 @@ export const bindPlaceOrderObject = (
         : "",
     deliveryNote:
       cart?.orderdeliveryinstruction ||
-        cart?.orderdeliveryinstruction !== undefined
+      cart?.orderdeliveryinstruction !== undefined
         ? cart.orderdeliveryinstruction
         : "",
     preDiscountSubTotal:
@@ -911,9 +832,9 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-        pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
+      pickupordelivery === ORDER_TYPE.DELIVERY.text
         ? //pickupordelivery === ORDERTYPE.Delivery
-        parseFloat(cart.carttotal.deliveryAmount)
+          parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
@@ -934,7 +855,7 @@ export const bindPlaceOrderObject = (
     promotionData: promotionData,
     studentname: studentname,
     distance:
-      distance && pickupordelivery === ORDER_TYPE_ENUM.DELIVERY ? distance : 0,
+      distance && pickupordelivery === ORDER_TYPE.DELIVERY.text ? distance : 0,
     isFutureOrder: isFutureOrder,
     timeSlot: timeSlot,
     futureDate: futureDate,
@@ -985,13 +906,26 @@ export const getCheckTimeArr = (
   restaurantinfo: GetAllRestaurantInfo,
   orderDate: string,
   isasap: boolean
-) => {
-  let Time = [];
+): string[] => {
+  const Time: string[] = [];
+
+  // console.log("🟡 getCheckTimeArr() called with:");
+  // console.log("orderTime:", orderTime);
+  // console.log("orderDate:", orderDate);
+  // console.log("isasap:", isasap);
+  // console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
+
+  // ✅ Early return if orderTime is invalid
+  if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
+    return ["", "", orderDate];
+  }
+
+  // ✅ Case 1: Third-party delivery (DoorDash / UberEats)
   if (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
       restaurantinfo?.defaultLocation?.deliveryService ===
-      DELIVERYSERVICES.UBEREATS) &&
+        DELIVERYSERVICES.UBEREATS) &&
     !isasap
   ) {
     let checkTime = orderTime;
@@ -1476,12 +1410,12 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1506,12 +1440,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfPizzaPriceToppingPercentage === "" ||
+          (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-          ? 1
-          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            ? 1
+            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1539,11 +1473,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-        (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-          ? 1
-          : parseInt(tc.halfpizzaprice) / 100)
+          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+            ? 1
+            : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1555,8 +1489,9 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1568,8 +1503,9 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
-          }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
+          index === item.length - 1 ? "" : ","
+        }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1798,7 +1734,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-          data.subOptionToppingQuantity;
+            data.subOptionToppingQuantity;
       } else {
       }
     });

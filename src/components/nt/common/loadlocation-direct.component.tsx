@@ -5,7 +5,6 @@ import React, { Fragment, useEffect, useState } from "react";
 import {
   GetThemeDetails,
   ORDER_TYPE,
-  ORDER_TYPE_ENUM,
 } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
@@ -72,8 +71,8 @@ const LoadLocationDirectComponent = ({
       dispatch(
         setpickupordelivery(
           restaurantinfo?.defaultLocation?.defaultordertype
-            ? ORDER_TYPE_ENUM.DELIVERY
-            : ORDER_TYPE_ENUM.PICKUP
+            ? ORDER_TYPE.DELIVERY.text
+            : ORDER_TYPE.PICKUP.text
         )
       );
     }
@@ -176,8 +175,8 @@ const LoadLocationDirectComponent = ({
         dispatch(
           setpickupordelivery(
             res?.defaultordertype
-              ? ORDER_TYPE_ENUM.DELIVERY
-              : ORDER_TYPE_ENUM.PICKUP
+              ? ORDER_TYPE.DELIVERY.text
+              : ORDER_TYPE.PICKUP.text
           )
         );
         // dispatch(

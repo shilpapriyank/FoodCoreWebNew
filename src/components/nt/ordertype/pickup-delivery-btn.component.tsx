@@ -7,7 +7,6 @@ import {
   checkDisableWindow,
   GetThemeDetails,
   ORDER_TYPE,
-  ORDER_TYPE_ENUM,
 } from "../../common/utility";
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { useDispatch } from "react-redux";

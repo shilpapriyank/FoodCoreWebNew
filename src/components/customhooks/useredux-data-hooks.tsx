@@ -79,44 +79,14 @@ export const useReduxData = () => {
   const addressList = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
   );
-  // const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
-  //   order.checktime,
-  //   restaurantinfo as GetAllRestaurantInfo,
-  //   order?.futureOrderDay?.futureDate ||"",
-  //   order?.isasap ?? false
-  // )
+  const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
+    order.checktime,
+    restaurantinfo as GetAllRestaurantInfo,
+    order?.futureOrderDay?.futureDate || "",
+    order?.isasap ?? false
+  )
   const orderTimeValid =
     typeof order?.checktime === "string" && order.checktime.trim() !== "";
-
-  const [recievingTime, meredian, recievingDate] =
-    orderTimeValid && restaurantinfo
-      ? getCheckTimeArr(
-          order.checktime,
-          restaurantinfo,
-          order?.futureOrderDay?.futureDate || "",
-          order?.isasap ?? false
-        )
-      : ["", "", order?.futureOrderDay?.futureDate || ""];
-
-  //  const [recievingTime, meredian, recievingDate] =
-  //   order?.checktime?.trim() && restaurantinfo
-  //     ? getCheckTimeArr(
-  //         order.checktime,
-  //         restaurantinfo,
-  //         order?.futureOrderDay?.futureDate || "",
-  //         order?.isasap ?? false
-  //       )
-  //     : ["", "", order?.futureOrderDay?.futureDate || ""];
-
-  // const [recievingTime, meredian, recievingDate] =
-  // order?.checktime?.trim() && restaurantinfo
-  //   ? getCheckTimeArr(
-  //       order.checktime,
-  //       restaurantinfo,
-  //       order?.futureOrderDay?.futureDate || "",
-  //       order?.isasap ?? false
-  //     )
-  //   : ["", "", order?.futureOrderDay?.futureDate || ""];
 
   const restaurantlocation = useSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist

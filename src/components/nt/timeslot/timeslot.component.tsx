@@ -7,7 +7,7 @@ import { TimeSlotPillComponent } from "./timeslot-pill.component";
 import "swiper/swiper-bundle.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { OrderServices } from "../../../../redux/order/order.services";
-import { ORDER_TYPE_ENUM, ORDER_TYPE, GetThemeDetails, getAsapLaterOnState, orderDisable } from "../../common/utility";
+import { ORDER_TYPE, GetThemeDetails, getAsapLaterOnState, orderDisable } from "../../common/utility";
 import { emptyordertime, isasap, setFutureOrderDay, setordertime } from "../../../../redux/order/order.slice";
 import { useDispatch } from "react-redux";
 import { AsapLaterOnState, FutureOrderDay, OrderDisableData, TimeSlot, TimeSlotPopupComponentProps } from "@/types/timeslot-types/timeslot.types";
@@ -48,7 +48,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const { restaurantinfo, selecteddelivery, order, restaurant, main, userinfo, deliveryaddress, sessionid } = useReduxData();
   const [selectedDate, setselectedDate] = useState<string>(order?.futureOrderDay?.futureDay ?? "");
   const pickupordelivery = selecteddelivery?.pickupordelivery;
-  // const ordertype = pickupordelivery === ORDER_TYPE_ENUM.DELIVERY ? ORDER_TYPE_ENUM.DELIVERY : ORDER_TYPE_ENUM.PICKUP;
   const ordertype = pickupordelivery === ORDER_TYPE.DELIVERY.text ? ORDER_TYPE.DELIVERY.value : ORDER_TYPE.PICKUP.value;
 
   const [timeSlots, settimeSlots] = useState<TimeSlot[]>([]);
@@ -77,7 +76,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const locationFullLink = `/${selectedTheme?.url}/${dynamic}/${locationUrl}/`;
   const dispatch = useAppDispatch();
-  const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(defaultLocation, pickupordelivery as ORDER_TYPE_ENUM, restaurantWindowTime as RestaurantWindowTime | any);
+  const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(defaultLocation, pickupordelivery as any, restaurantWindowTime as RestaurantWindowTime | any);
   const orderDisableData: OrderDisableData = orderDisable(restaurantinfo as GetAllRestaurantInfo, selecteddelivery, restaurantWindowTime as RestaurantWindowTimeNew[] | any);
   const selectedDay: string = (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
   const [dayCloseError, setDayCloseError] = useState<string>("");
@@ -111,7 +110,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         if (oldLocationId !== restaurantinfo.defaultlocationId) {
           dispatch(clearRedux(false as any) as any);
           if (isPickup === true) {
-            dispatch(setpickupordelivery(ORDER_TYPE_ENUM.PICKUP));
+            dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
           }
           setLocationIdInStorage(restaurantinfo.defaultlocationId);
           let id = uuidv4();
@@ -181,12 +180,25 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       if (day?.futureDay !== selectedDay) {
         dispatch(emptyordertime());
       }
+      const locationId = restaurantinfo?.defaultLocation?.locationId;
+      const restaurantId = restaurantinfo?.restaurantId;
+      if (!restaurantId || !locationId) {
+        console.warn("❗ Missing restaurantId or locationId — API not called");
+        return;
+      }
       OrderServices.generateTimeSlot({
-        restaurantId: restaurantinfo?.restaurantId as number,
-        locationId: defaultLocation?.locationId as number,
-        ordertype: String(ordertype),
+        restaurantId,
+        locationId,
+        ordertype: Number(ordertype),
         scheduleDateTime: day?.futureDate ?? "",
       }).then((res: TimeSlot[]) => {
+        console.log("📞 generateTimeSlot called with:", {
+          restaurantId,
+          locationId,
+          ordertype: Number(ordertype),
+          scheduleDateTime: day?.futureDate ?? "",
+        });
+
         dispatch(isasap(false));
         settimeSlots(res);
         setLoadTimeslot(false);
@@ -312,53 +324,54 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               </div>
             )}
             <div
-              className={`modal-body ts-body ${dayCloseError !== "" ? "p-0 pb-2" : ""
-                }`}
-            >
+              className={`modal-body ts-body ${dayCloseError !== "" ? "p-0 pb-2" : ""}`}>
               <div className="time-slot">
-                <div className="row ">
-                  <div className="col-12 mb-2"></div>
+                <div className="row">
+                  <div className="col-12 mb-2">
+                  </div>
                 </div>
                 <div className="row">
                   {dayCloseError === "" ? (
                     <>
-                      {(asapLaterOnState.isAsap && selectedDate === "Today") && (() => {
-                       // console.log("Rendering ASAP TimeSlotPillComponent");
-                        return (
-                          <TimeSlotPillComponent
-                            time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
-                            id={"C"}
-                            label="As Soon As Possible"
-                            handleClickTimePill={(time) => {
-                             // console.log("ASAP Pill Clicked");
-                              debugger;
-                              handleClickAsap(time);
-                            }}
-                            isDisable={asapLaterOnState.isDisableAsapLateron}
-                            selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
-                          />
-                        );
-                      })()}
+                      {/* {(asapLaterOnState.isAsap && selectedDate === "Today") && (() => {
+                        debugger
+                        console.log("🧪 asapLaterOnState.isAsap:", asapLaterOnState.isAsap);
+                        console.log("🧪 selectedDate:", selectedDate);
 
-                      {(!loadTimeslot && loadSwipe) ?
-                        <>
-                          {Array.isArray(timeSlots) && timeSlots?.map((time, index) => {
-                            return <>{time.StartSlotNew !== null &&
-                              <TimeSlotPillComponent
-                                time={time}
-                                selectedTime={selectedTime || order.checktime}
-                                id={`slot-${index}`}
-                                // name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                                handleClickTimePill={handleClickTimePill}
-                                label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                                key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
-                              />
-                            }
-                            </>
-                          })}
-                        </> :
-                        <TimeSlotSkeletonComponent />
-                      }
+                        return ( */}
+                      <TimeSlotPillComponent
+                        time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
+                        id={"C"}
+                        name="ASAP - ASAP"
+                        label="As Soon As Possible"
+                        handleClickTimePill={(time) => {
+                          handleClickAsap(time);
+                        }}
+                        isDisable={asapLaterOnState.isDisableAsapLateron}
+                        selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
+                      />
+                      {/* );
+                      })()} */}
+
+                      {/* {(!loadTimeslot && loadSwipe) ? */}
+                      <>
+                        {Array.isArray(timeSlots) && timeSlots?.map((time, index) => {
+                          return <>{time.StartSlotNew !== null &&
+                            <TimeSlotPillComponent
+                              time={time}
+                              selectedTime={selectedTime || order.checktime}
+                              id={`slot-${index}`}
+                              name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                              handleClickTimePill={handleClickTimePill}
+                              label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                              key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
+                            />
+                          }
+                          </>
+                        })}
+                      </>
+                      <TimeSlotSkeletonComponent />
+                      {/* } */}
                     </>
                   ) : (
                     <>

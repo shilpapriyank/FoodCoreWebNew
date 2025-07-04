@@ -4,7 +4,6 @@ import {
   calculateNettotal,
   GetCurrency,
   GetThemeDetails,
-  ORDER_TYPE_ENUM,
 } from "../../../../common/utility";
 import handleNotify from "../../../../default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "../../../../default/helpers/toaster/toaster-positions";

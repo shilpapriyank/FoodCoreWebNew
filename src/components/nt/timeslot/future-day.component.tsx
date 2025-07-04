@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from "react";
 import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { ORDER_TYPE_ENUM,ORDER_TYPE } from "../../common/utility";
+import { ORDER_TYPE } from "../../common/utility";
 
 interface FutureDateType {
   deliveryStatus?: string;

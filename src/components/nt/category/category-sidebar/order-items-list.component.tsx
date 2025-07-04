@@ -3,7 +3,6 @@ import { getImagePath } from "../../common/utility";
 import {
   getDependentParentQty,
   ORDER_TYPE,
-  ORDER_TYPE_ENUM,
 } from "../../../common/utility";
 import useUtility from "../../../customhooks/utility-hook";
 import useFutureOrder from "../../../customhooks/usefuture-order-hook";
@@ -67,10 +66,6 @@ export const OrderItemsList = () => {
   const { update, location } = params;
   const locationFullLink = `/${params.location}/`;
   var carttotal = cart?.carttotal && cart.carttotal;
-  // const ordertype =
-  //   pickupordelivery === ORDER_TYPE_ENUM.DELIVERY
-  //     ? ORDER_TYPE_ENUM.DELIVERY
-  //     : ORDER_TYPE_ENUM.PICKUP;
   const ordertype =
     pickupordelivery === ORDER_TYPE.DELIVERY.text
       ? ORDER_TYPE.DELIVERY.value

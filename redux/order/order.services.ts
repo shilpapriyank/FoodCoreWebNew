@@ -6,6 +6,7 @@ import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+let responseclass = new ResponseModel();
 import {
   AddOrderArgsTypes,
   CardPayment,
@@ -21,7 +22,7 @@ import {
   PlaceOrderArgsTypes,
   RepeatOrderArgsTypes,
 } from "@/types/order-types/order.type";
-let responseclass = new ResponseModel();
+
 
 export class OrderServices {
   static async checkOrderTime({
@@ -31,7 +32,7 @@ export class OrderServices {
     recieving,
     flg,
     obj,
-    requestId,
+    requestId= "",
   }: CheckOrderTimeArgsTypes) {
     responseclass = new ResponseModel();
     const selectedAddress = {
@@ -62,17 +63,8 @@ export class OrderServices {
       },
     };
 
-    responseclass = await handleAxiosPostAsync(
-      data,
-      checktimeurl,
-      methodName,
-      true,
-      restaurantId
-    );
-    if (
-      responseclass.result != null &&
-      responseclass.status === API_RESPONSE_STATUS.SUCCESS
-    ) {
+    responseclass = await handleAxiosPostAsync(data, checktimeurl, methodName, true, restaurantId);
+    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
       return responseclass.result;
     } else {
       return responseclass;
@@ -490,13 +482,20 @@ export class OrderServices {
     ordertype,
     scheduleDateTime,
   }: GenerateTimeSlotArgsTypes) {
+    debugger
+      console.log("🔍 Payload parameters:", {
+    restaurantId,
+    locationId,
+    ordertype,
+    scheduleDateTime,
+  });
     responseclass = new ResponseModel();
     const methodName = "generateTimeSlot";
     const checktimeurl = ENDPOINTS.GENERATE_TIMESLOT;
     const data = {
       request: {
         restaurantId: restaurantId,
-        locationId: locationId,
+        locationId:locationId, //32
         orderType: ordertype,
         scheduleDateTime: scheduleDateTime,
       },
@@ -509,12 +508,10 @@ export class OrderServices {
       restaurantId
     );
 
-    if (
-      responseclass.result != null &&
-      responseclass.status === API_RESPONSE_STATUS.SUCCESS
-    ) {
+     if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
       return responseclass?.result;
-    } else if (responseclass.status === API_RESPONSE_STATUS.FAIL) {
+    }
+     else if (responseclass.status === API_RESPONSE_STATUS.FAIL) {
       handleNotify(
         responseclass.message,
         ToasterPositions.TopRight,
