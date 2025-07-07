@@ -95,7 +95,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
           </div>
         </div>
       </div>
-      {/* <div className="modal-backdrop fade show"></div> */}
+      {isOpenModal && <div className="modal-backdrop fade show"></div>}
     </>
   );
 };

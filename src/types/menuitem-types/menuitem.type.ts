@@ -29,6 +29,7 @@ export interface Menuitems {
   quickorderallow: boolean;
   qty: number;
   dependedItemId: number;
+  cartid: number;
 }
 
 ////getMenuItemDetail when click of add to cart menuitem this service called

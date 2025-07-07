@@ -416,7 +416,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                     </>
                   )}
                 </div>
-
               </div>
             </div>
             <div className="row modal-footer position-sticky sticky-bottom border-top-0 footer-top-shadow">
