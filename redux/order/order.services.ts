@@ -350,7 +350,7 @@ export class OrderServices {
     locationId,
     ordertype,
     obj,
-    requestId,
+    requestId = "",
   }: GetOrderTimingArgsTypes) {
     responseclass = new ResponseModel();
     const methodName = "getOrderTiming";
@@ -482,7 +482,7 @@ export class OrderServices {
     ordertype,
     scheduleDateTime,
   }: GenerateTimeSlotArgsTypes) {
-    debugger
+   // debugger
       console.log("🔍 Payload parameters:", {
     restaurantId,
     locationId,

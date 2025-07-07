@@ -98,7 +98,6 @@ export class LocationServices {
       restaurantId: restaurantId,
       locationId: locationId,
     });
-    console.log("[API Request] changeRestaurantLocation Payload:", data);
     responseclass = await handleAxiosPostAsync(
       data,
       location,

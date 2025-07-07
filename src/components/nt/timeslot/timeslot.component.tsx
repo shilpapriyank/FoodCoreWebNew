@@ -7,7 +7,7 @@ import { TimeSlotPillComponent } from "./timeslot-pill.component";
 import "swiper/swiper-bundle.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { OrderServices } from "../../../../redux/order/order.services";
-import { ORDER_TYPE, GetThemeDetails, getAsapLaterOnState, orderDisable } from "../../common/utility";
+import { ORDER_TYPE, GetThemeDetails, getAsapLaterOnState, orderDisable, OrderType } from "../../common/utility";
 import { emptyordertime, isasap, setFutureOrderDay, setordertime } from "../../../../redux/order/order.slice";
 import { useDispatch } from "react-redux";
 import { AsapLaterOnState, FutureOrderDay, OrderDisableData, TimeSlot, TimeSlotPopupComponentProps } from "@/types/timeslot-types/timeslot.types";
@@ -28,8 +28,9 @@ import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint
 import { v4 as uuidv4 } from "uuid";
 import { PAGES } from "../common/pages";
 import FutureDayComponent from "./future-day.component";
-import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { DefaultLocation, GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
+import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 
 const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   futureDateList,
@@ -76,7 +77,10 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const locationFullLink = `/${selectedTheme?.url}/${dynamic}/${locationUrl}/`;
   const dispatch = useAppDispatch();
-  const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(defaultLocation, pickupordelivery as any, restaurantWindowTime as RestaurantWindowTime | any);
+  const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(restaurantinfo?.defaultLocation as any,
+    // pickupordelivery as OrderType | any,
+    selecteddelivery?.pickupordelivery as OrderType | any,
+     restaurantWindowTime as RestaurantWindowTime | any);
   const orderDisableData: OrderDisableData = orderDisable(restaurantinfo as GetAllRestaurantInfo, selecteddelivery, restaurantWindowTime as RestaurantWindowTimeNew[] | any);
   const selectedDay: string = (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
   const [dayCloseError, setDayCloseError] = useState<string>("");
@@ -198,7 +202,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
           ordertype: Number(ordertype),
           scheduleDateTime: day?.futureDate ?? "",
         });
-
         dispatch(isasap(false));
         settimeSlots(res);
         setLoadTimeslot(false);
@@ -216,7 +219,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       restaurantId: restaurantinfo?.restaurantId as number,
       locationId: defaultLocation?.locationId as number,
       ordertype: String(ordertype),
-      obj: selectedAddress,
+      obj: selectedAddress as DeliveryAddressInput,
       requestId: "",
     }).then((gettimeresponse) => {
       setTimeout(() => {
@@ -230,7 +233,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               recievingTime: time[0],
               recieving: time[1],
               flg: ordertype as any,
-              obj: selectedAddress,
+              obj: selectedAddress as DeliveryAddressInput,
               requestId: requestID as any,
             }).then((response) => {
               if (response.result.message && response.result.message.length > 0 && response.result.status !== "success") {
@@ -330,59 +333,90 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                   <div className="col-12 mb-2">
                   </div>
                 </div>
-                <div className="row">
-                  {dayCloseError === "" ? (
-                    <>
-                      {/* {(asapLaterOnState.isAsap && selectedDate === "Today") && (() => {
-                        debugger
-                        console.log("🧪 asapLaterOnState.isAsap:", asapLaterOnState.isAsap);
-                        console.log("🧪 selectedDate:", selectedDate);
-
-                        return ( */}
-                      <TimeSlotPillComponent
-                        time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
-                        id={"C"}
-                        name="ASAP - ASAP"
-                        label="As Soon As Possible"
-                        handleClickTimePill={(time) => {
-                          handleClickAsap(time);
-                        }}
-                        isDisable={asapLaterOnState.isDisableAsapLateron}
-                        selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
-                      />
-                      {/* );
-                      })()} */}
-
-                      {/* {(!loadTimeslot && loadSwipe) ? */}
-                      <>
-                        {Array.isArray(timeSlots) && timeSlots?.map((time, index) => {
-                          return <>{time.StartSlotNew !== null &&
-                            <TimeSlotPillComponent
-                              time={time}
-                              selectedTime={selectedTime || order.checktime}
-                              id={`slot-${index}`}
-                              name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                              handleClickTimePill={handleClickTimePill}
-                              label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                              key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
-                            />
-                          }
-                          </>
-                        })}
-                      </>
+                {/* <div className="row">
+                  {dayCloseError === '' ? <>  {
+                     (asapLaterOnState.isAsap && selectedDate === "Today") &&
+                    <TimeSlotPillComponent
+                      time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
+                      id={"C"}
+                      name="ASAP - ASAP"
+                      label="As Soon As Possible"
+                      handleClickTimePill={handleClickAsap}
+                      isDisable={asapLaterOnState.isDisableAsapLateron}
+                      selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
+                    />
+                  }
+                    {(!loadTimeslot && loadSwipe) ? <>
+                      {timeSlots && timeSlots?.map((time, index) => {
+                        return <>{time.StartSlotNew !== null &&
+                          <TimeSlotPillComponent
+                            time={time}
+                            selectedTime={selectedTime || order.checktime}
+                            name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                            id={`slot-${index}`}
+                            handleClickTimePill={handleClickTimePill}
+                            label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                            key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
+                          />
+                        }
+                        </>
+                      })}
+                    </> :
                       <TimeSlotSkeletonComponent />
-                      {/* } */}
+                    }
+                  </> : <>{<p className='red-text text-center p-0'>{dayCloseError}</p>}</>}
+                </div> */}
+                <div className="row">
+                  {dayCloseError === '' ? (
+                    <>
+                      {console.log("✅ dayCloseError is empty")}
+                      {console.log("asapLaterOnState.isAsap:", asapLaterOnState.isAsap)}
+                      {console.log("selectedDate:", selectedDate)}
+
+                      {(asapLaterOnState.isAsap && selectedDate === "Today") && (
+                        <>
+                          {console.log("✅ Showing ASAP TimeSlotPillComponent")}
+                          <TimeSlotPillComponent
+                            time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
+                            id={"C"}
+                            name="ASAP - ASAP"
+                            label="As Soon As Possible"
+                            handleClickTimePill={handleClickAsap}
+                            isDisable={asapLaterOnState.isDisableAsapLateron}
+                            selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
+                          />
+                        </>
+                      )}
+
+                      {(!loadTimeslot && loadSwipe) ? (
+                        <>
+                          {Array.isArray(timeSlots) && timeSlots?.map((time, index) => {
+                            return (
+                              time.StartSlotNew !== null && (
+                                <TimeSlotPillComponent
+                                  key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
+                                  time={time}
+                                  selectedTime={selectedTime || order.checktime}
+                                  name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                                  id={`slot-${index}`}
+                                  handleClickTimePill={handleClickTimePill}
+                                  label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                                />
+                              )
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <TimeSlotSkeletonComponent />
+                      )}
                     </>
                   ) : (
                     <>
-                      {
-                        <p className="red-text text-center p-0">
-                          {dayCloseError}
-                        </p>
-                      }
+                      <p className="red-text text-center p-0">{dayCloseError}</p>
                     </>
                   )}
                 </div>
+
               </div>
             </div>
             <div className="row modal-footer position-sticky sticky-bottom border-top-0 footer-top-shadow">

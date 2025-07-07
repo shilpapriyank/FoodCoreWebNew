@@ -72,7 +72,7 @@ export class MenuItemServices {
     menuItemId: number;
   }): Promise<AddOrDeleteFavorite | null> {
     responseclass = new ResponseModel();
-    debugger
+    //debugger
     const methodName = "addfavorite";
     const location = ENDPOINTS.ADD_FAVORITE;
     const data = {
