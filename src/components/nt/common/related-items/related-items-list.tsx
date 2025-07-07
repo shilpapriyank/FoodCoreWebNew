@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  getAvailableCartRelativeData,
-  GetThemeDetails,
-  ORDERTYPE,
-} from "../../../common/utility";
 import useFutureOrder from "../../../customhooks/usefuture-order-hook";
 import useUtility from "../../../customhooks/utility-hook";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -23,8 +18,14 @@ import {
 } from "../../../../../redux/menu-item/menu-item.slice";
 import { PAGES } from "../pages";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
+import {
+  getAvailableCartRelativeData,
+  GetThemeDetails,
+} from "@/components/common/utility";
+import { ORDER_TYPE } from "../utility";
 
 export const RelatedItemsList = () => {
+  debugger;
   const {
     restaurantinfo,
     selecteddelivery,
@@ -101,13 +102,13 @@ export const RelatedItemsList = () => {
 
   var dcharges =
     cart &&
-    pickupordelivery === ORDERTYPE.Delivery &&
+    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     cart.carttotal != undefined &&
     cart.carttotal?.deliveryCharges &&
     JSON.parse(cart.carttotal?.deliveryCharges);
   var dtotal =
     dcharges != undefined &&
-    pickupordelivery === ORDERTYPE.Delivery &&
+    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     dcharges?.DeliveryCharges &&
     parseFloat(dcharges.DeliveryCharges);
   let rewardvalue = rewardpoints?.rewardvalue;

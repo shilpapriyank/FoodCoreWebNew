@@ -156,6 +156,7 @@ const CategoryMenuItems = ({
   if (rewardpoint?.rewardvalue && rpoint > 0) {
     ramount = rpoint / rewardpoint.rewardvalue;
   }
+
   useEffect(() => {
     if (categoryslug) {
       const targetElement = document.getElementById(categoryslug);
@@ -169,13 +170,7 @@ const CategoryMenuItems = ({
         }, 1000);
       }
     }
-
-    //check category slug and selected category url not same then select  categoryslug category
-    if (
-      category &&
-      selectedCategory?.categoryslug !== categoryUrl &&
-      categoryUrl
-    ) {
+    if (selectedCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
         (cat) => cat?.categoryslug === categoryUrl
       );
@@ -189,19 +184,8 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
-      // console.log(dependentId)
+      console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
-      //dispatch(selectedMenuItem())
-      dispatch(
-        selectedMenuItem({
-          menuitemid: dependentId,
-          qty: 1,
-          dependedItemId:
-            selectedMenuItemDetail?.dependedItemId ??
-            selectedMenuItemDetail?.menuitemId,
-        } as any) as any
-      );
-
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
         locationId: restaurantinfo?.defaultlocationId as number,
@@ -211,6 +195,7 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
+          console.log("response of dependentId condi", response);
           // dispatch({
           //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
           //   payload: response,
@@ -237,6 +222,7 @@ const CategoryMenuItems = ({
         }
       });
       if (menuitemObj) {
+        console.log("selected menuitem object", menuitemObj);
         dispatch(selectedMenuItem(menuitemObj));
         if (menuitemObj.quickorderallow && !isOrderingDisable) {
           quickOrderClick(menuitemObj);
@@ -290,7 +276,6 @@ const CategoryMenuItems = ({
   const loginButton = document.querySelector(".login-btn") as HTMLButtonElement;
 
   // const selectedFavoriteClick = (selecteditem: Menuitems, item: any) => {
-  //   debugger;
   //   if (userinfo === null) {
   //     loginButton?.click();
   //     return;
@@ -361,27 +346,33 @@ const CategoryMenuItems = ({
     dispatch(setCategoryList(updatedCategories));
 
     // Dispatch add/delete favorite action
-    const payload = {
-      customerId: userinfo?.customerId ?? 0,
-      restaurantId: restaurantinfo?.restaurantId as number,
-      menuItemId: updatedItem.menuitemId,
-    };
+    // const payload = {
+    //   customerId: userinfo?.customerId ?? 0,
+    //   restaurantId: restaurantinfo?.restaurantId as number,
+    //   menuItemId: updatedItem.menuitemId,
+    // };
 
     if (item) {
-      dispatch(addFavorite(payload));
+      dispatch(
+        addFavorite({
+          customerId: userinfo?.customerId ?? 0,
+          restaurantId: restaurantinfo?.restaurantId as number,
+          menuItemId: updatedItem.menuitemId,
+        })
+      );
     } else {
-      dispatch(deleteFavorite(payload));
+      dispatch(
+        deleteFavorite({
+          customerId: userinfo?.customerId ?? 0,
+          restaurantId: restaurantinfo?.restaurantId as number,
+          menuItemId: updatedItem.menuitemId,
+        })
+      );
     }
   };
 
   const handleClickView = (type: ViewTypeEnum) => {
     setViewType(type);
-    // Object.entries(restaurantinfo.defaultLocation).map(([key,value])=>{
-    //   if(key=='displaylistview')
-    //   {
-    //     restaurantinfo.defaultLocation.displaylistview=true
-    //   }
-    // })
     if (type === ViewTypeEnum.LIST) dispatch(displayViewUpdate(true));
     else dispatch(displayViewUpdate(false));
   };
@@ -673,6 +664,7 @@ const CategoryMenuItems = ({
                                                   </span>
                                                 )}
                                                 <br />
+                                                {/* ////pluse icon addto cart click */}
                                                 <a
                                                   className="fa plusbutton fa-plus icon-plus-list-view mt-1"
                                                   data-toggle="tooltip"
