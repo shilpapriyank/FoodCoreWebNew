@@ -18,9 +18,9 @@ export interface DefaultLocation {
   isOrderingDisable: boolean;
 }
 
-export interface AsapLaterOnState {
-  isdisplay: boolean;
-  isDisableAsapLateron: boolean;
-  isAsap: boolean;
-  isLateron: boolean;
-}
+// export interface AsapLaterOnState {
+//   isdisplay: boolean;
+//   isDisableAsapLateron: boolean;
+//   isAsap: boolean;
+//   isLateron: boolean;
+// }

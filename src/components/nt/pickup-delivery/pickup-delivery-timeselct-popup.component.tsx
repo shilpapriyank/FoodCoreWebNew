@@ -16,7 +16,7 @@ import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint
 import PickupdeliveryWindowTime from "./pickup/pickup-delivery-window.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
-import { DELIVERYSERVICES, GetThemeDetails,ORDER_TYPE, checkWindowTimeExpires, getAsapLaterOnState } from "../../common/utility";
+import { DELIVERYSERVICES, GetThemeDetails, ORDER_TYPE, OrderType, checkWindowTimeExpires, getAsapLaterOnState } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import handleNotify from "../../default/helpers/toaster/toaster-notify";
 import { ERRORMESSAGE } from "../../common/commonerrormessage";
@@ -26,6 +26,10 @@ import { RestaurantsServices } from "../../../../redux/restaurants/restaurants.s
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
+import { RestaurantWindowTime, RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
+import { DefaultLocation, GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { AddressList } from "@/types/location-types/location.type";
+import { AsapLaterOnState } from "@/types/timeslot-types/timeslot.types";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
@@ -93,7 +97,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         : ""
       : "";
     const defaultLocation = addressList?.find(
-      (location: any) => location.locationId === locationId
+      (location: AddressList) => location.locationId === locationId
     );
     const pickupWindow = defaultLocation?.pickupTime;
     const deliveryWindow = defaultLocation?.deliveryTime;
@@ -130,23 +134,29 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     const [selectedDate, setselectedDate] = useState<string>(order?.futureOrderDay.futureDay ?? "");
     const [Hour, setHour] = useState<string>("");
     const [Minute, setMinute] = useState<string>("");
-    const [Meridiem, setMeridiem] = useState<any>();
+    const [Meridiem, setMeridiem] = useState<string>();
     const [isTimeLoad, setisTimeLoad] = useState<boolean>(false);
     const customerId = userinfo?.customerId ?? 0;
     const [defaultLoactionId, setdefaultLoactionId] = useState<number | null>();
     var ordertype = selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text ? 2 : 1;
     let selectedAddress = userinfo === null ? (deliveryaddress as any)?.tempDeliveryAddress : selecteddelivery?.selecteddeliveryaddress;
-    const { deliveryService } = restaurantinfo?.defaultLocation as any;
+    const { deliveryService } = restaurantinfo?.defaultLocation as DefaultLocation;
     let hour;
     let minute;
     let meridiem;
     load = true;
     const restaurantWindowTime = main.restaurantWindowTime;
-    let asapLaterOnState = getAsapLaterOnState(
-      restaurantinfo?.defaultLocation as any,
-      selecteddelivery?.pickupordelivery as any,
-      restaurantWindowTime as any
-    );
+    // let asapLaterOnState = getAsapLaterOnState(
+    //   restaurantinfo?.defaultLocation as any,
+    //   selecteddelivery?.pickupordelivery as any,
+    //   restaurantWindowTime as RestaurantWindowTimeNew | any
+    // );
+  const asapLaterOnState: AsapLaterOnState =
+    getAsapLaterOnState(
+        restaurantinfo?.defaultLocation as any,
+        selecteddelivery?.pickupordelivery as OrderType | any,
+        restaurantWindowTime as RestaurantWindowTimeNew | any);
+
     const redirectPrevPage = searchParams.get("redirectcart") === "true";
     const { deliveryRequestId } = order;
     const defaultRequestId = "";
@@ -181,7 +191,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
 
     useEffect(() => {
       let date = new Date();
-      setcurrentDate(date as any);
+      setcurrentDate(date as Date);
       RestaurantsServices.getCurrentTime(
         restaurantinfo?.restaurantId as number,
         restaurantinfo?.defaultlocationId as number
@@ -389,15 +399,15 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       handlesave(hour, minute, meridiem);
     };
 
-    const handleClick = async (lid: any, locationUrl: any, isPickup: any) => {
+    const handleClick = async (lid: any, locationUrl: any, isPickup: boolean) => {
       LocationServices.changeRestaurantLocation(
         restaurantinfo?.restaurantId as number,
         lid
       ).then((res) => {
         if (res) {
-          Object.keys(restaurantinfo as any).map((session: any) => {
+          Object.keys(restaurantinfo as GetAllRestaurantInfo).map((session: string) => {
             if (session && session === "defaultLocation") {
-              Object.assign(restaurantinfo?.defaultLocation as any, res);
+              Object.assign(restaurantinfo?.defaultLocation as DefaultLocation, res);
             }
             if (session && restaurantinfo && session === "defaultlocationId") {
               restaurantinfo.defaultlocationId = res.locationId;
@@ -554,7 +564,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                     pickupWindow={pickupWindow}
                     deliveryWindow={pickupWindow}
                     isTakeOutAsap={isTakeOutAsap as boolean}
-                    defaultLocation={defaultLocation as string | any}
+                    defaultLocation={defaultLocation as AddressList}
                     activeButtonClass={activeButtonClass}
                     isDeliveryWindowAvailable={isDeliveryWindowAvailable}
                     isPickupWindowAvailable={isPickupWindowAvailable}

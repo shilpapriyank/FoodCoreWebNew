@@ -94,8 +94,6 @@ export const useReduxData = () => {
   const defaultLocation = useSelector(
     (state: RootState) => state.restaurant.restaurantdetail?.defaultLocation
   );
-
-  // const defaultLocation = useSelector((state: RootState) => state.restaurant.restaurantdetail?.defaultLocation);
   const tableorder = useSelector(
     (state: RootState) => state.tableorder,
     shallowEqual

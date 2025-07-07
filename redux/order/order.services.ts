@@ -350,7 +350,7 @@ export class OrderServices {
     locationId,
     ordertype,
     obj,
-    requestId,
+    requestId = "",
   }: GetOrderTimingArgsTypes) {
     responseclass = new ResponseModel();
     const methodName = "getOrderTiming";

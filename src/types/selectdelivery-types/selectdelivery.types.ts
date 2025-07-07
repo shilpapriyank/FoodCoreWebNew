@@ -17,12 +17,12 @@ export interface SelectedDeliveryAddressType {
   zipcode: string;
 }
 
-
-
-// // Types
-// export interface ChooseTime {
-//   [key: string]: any;
-// }
+export interface ChooseTime {
+  selectedDate: string;
+  selectedTimeSlot: string;
+  isAsap: boolean;
+  isLaterOn: boolean;
+}
 
 // export interface DeliveryAddress {
 //   address1?: string;
