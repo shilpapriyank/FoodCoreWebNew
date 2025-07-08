@@ -1,16 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { DeliveryAddressServices } from "./delivery-address.services";
 import { DeliveryAddressTypes } from "./delivery-address.type";
-import { DeliveryAddressInput } from "./delivery-address.types";
-
-interface DeliveryAddressState {
-  deliveryaddressdata: DeliveryAddressInput[] |null;
-  updatedAddress: boolean | { isAddressUpdated: boolean };
-  choosetime: Record<string, any>;
-  registeraddress: Record<string, any>;
-  addressId: Record<string, any>;
-  tempDeliveryAddress: any | null;
-}
+import { DeliveryAddressInput, DeliveryAddressState } from "./delivery-address.types";
 
 const initialState: DeliveryAddressState = {
   deliveryaddressdata: null,

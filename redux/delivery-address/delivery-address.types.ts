@@ -34,10 +34,18 @@ export interface GetAddressResponse {
 
 export interface DeliveryAddressState {
     deliveryaddressdata: DeliveryAddressInput[] | null;
-    updatedAddress: boolean;
+    updatedAddress: boolean | { isAddressUpdated: boolean };
     choosetime: Record<string, any>;
-    registeraddress: DeliveryAddressInput;
-    addressId: DeliveryAddressInput;
+    registeraddress: Record<string, any>
+    addressId:  Record<string, any>
     tempDeliveryAddress: DeliveryAddressInput | null;
-
 }
+
+// interface DeliveryAddressState {
+//   deliveryaddressdata: DeliveryAddressInput[] |null;
+//   updatedAddress: boolean | { isAddressUpdated: boolean };
+//   choosetime: Record<string, any>;
+//   registeraddress: Record<string, any>;
+//   addressId: Record<string, any>;
+//   tempDeliveryAddress: any | null;
+// }
