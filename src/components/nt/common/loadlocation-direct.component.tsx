@@ -1,11 +1,8 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import React, { Fragment, useEffect, useState } from "react";
-import {
-  GetThemeDetails,
-  ORDER_TYPE,
-} from "../../common/utility";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { GetThemeDetails, ORDER_TYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
@@ -33,8 +30,7 @@ import {
   setintialrewardpoints,
   setrewardpoint,
 } from "../../../../redux/rewardpoint/rewardpoint.slice";
-import { AppDispatch } from "../../../../redux/store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../../redux/hooks";
 // import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
@@ -50,7 +46,7 @@ const LoadLocationDirectComponent = ({
     selecteddelivery,
     categoryItemsList,
   } = useReduxData();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
   const { dynamic, location } = params;
@@ -62,11 +58,13 @@ const LoadLocationDirectComponent = ({
   let ischangeurl = restaurant?.ischangeurl;
   const [isLoadAddress, setisLoadAddress] = useState<boolean>(false);
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
+  const hasFetchedLocations = useRef(false);
+
   useEffect(() => {
+    if (hasFetchedLocations.current) return;
     if (
       selecteddelivery?.pickupordelivery === null ||
-      Object.keys(selecteddelivery?.pickupordelivery).length === 0 ||
-      selecteddelivery?.pickupordelivery === null
+      Object.keys(selecteddelivery?.pickupordelivery).length === 0
     ) {
       dispatch(
         setpickupordelivery(
@@ -81,8 +79,7 @@ const LoadLocationDirectComponent = ({
       addressList &&
       addressList?.length > 0 &&
       addressList?.some(
-        (location: any) =>
-          location.locationId === restaurantinfo?.defaultlocationId
+        (location) => location.locationId === restaurantinfo?.defaultlocationId
       );
     let isLoadAddressList = !isAddressListSameRestaurant;
     isLoadAddressList = addressList?.length !== 0 ? false : isLoadAddressList;
@@ -90,6 +87,7 @@ const LoadLocationDirectComponent = ({
       location !== restaurantinfo?.defaultLocation.locationURL ||
       isLoadAddressList
     ) {
+      hasFetchedLocations.current = true;
       dispatch(restaurantAllLocation(restaurantinfo?.restaurantId as number));
       LocationServices.getAllLoaction(
         restaurantinfo?.restaurantId as number
@@ -106,14 +104,15 @@ const LoadLocationDirectComponent = ({
         getSelectedRestaurantTime({
           restaurantId: restaurantinfo?.restaurantId as number,
           locationId: restaurantinfo?.locationId as number,
-        }) as any
+        })
       );
     } else {
       setisLoadAddress(true);
     }
   }, [
-    restaurantinfo?.defaultLocation?.restaurantId,
+    restaurantinfo?.defaultLocation?.locationURL,
     addressList !== undefined,
+    isLoadAddress,
   ]);
 
   //SELECT THE LOCATION IF USER PUT THE DIRECT LINK IN THE URL WITH LOCATION OPEN THAT LOCATION
@@ -124,11 +123,11 @@ const LoadLocationDirectComponent = ({
       isLoadAddress
     ) {
       let isLocationExist =
-        addressList?.filter((item: any) => item.locationURL === location)
-          .length !== 0;
+        addressList?.filter((item) => item.locationURL === location).length !==
+        0;
       if (isLocationExist) {
         let urlLocation = addressList?.find(
-          (item: any) => item.locationURL === location
+          (item) => item.locationURL === location
         );
         handleClickChangeLocation(urlLocation?.locationId);
       } else {
@@ -242,7 +241,7 @@ const LoadLocationDirectComponent = ({
             customerId: 0,
             categories: "",
             selectedCategoryUrl: "",
-          }) as any
+          })
         );
         router.push(`/${selctedTheme?.url}/${dynamic}/${res?.locationURL}`);
       }

@@ -60,6 +60,7 @@ import {
   CartDetails,
   CartItemDetail,
 } from "@/types/cart-types/cartservice.type";
+import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 
 const MenuItemModal = ({
   isOpenModal,
@@ -87,10 +88,6 @@ const MenuItemModal = ({
   } = useReduxData();
   const dispatch = useAppDispatch();
   let selectedmenuitemdetail = menuitem.selectedmenuitemdetail;
-  console.log(
-    "selected menuitem detail from menuitem modal",
-    selectedmenuitemdetail
-  );
   const [minQty, setminQty] = useState<number>(1);
   //   const [currentQty, setcurrentQty] = useState<number>(
   //     selectedmenuitemdetail.qty !== undefined ? selectedmenuitemdetail.qty : 1
@@ -766,17 +763,17 @@ const MenuItemModal = ({
     if (item === true) {
       dispatch(
         addFavorite({
-          customerId: userinfo?.customerId as number,
+          customerId: String(userinfo?.customerId),
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: menuItemId as number,
+          menuItemId: String(menuItemId),
         })
       );
     } else {
       dispatch(
         deleteFavorite({
-          customerId: userinfo?.customerId as number,
+          customerId: String(userinfo?.customerId),
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: selectedmenuitemdetail?.menuitemId as number,
+          menuItemId: String(selectedmenuitemdetail?.menuitemId),
         })
       );
     }
@@ -874,6 +871,7 @@ const MenuItemModal = ({
         </div>
       </div>
       <div className="modal-backdrop fade show"></div>
+      <ToastNotify />
     </>
   );
 };

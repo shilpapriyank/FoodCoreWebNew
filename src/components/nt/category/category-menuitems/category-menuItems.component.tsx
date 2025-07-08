@@ -60,6 +60,7 @@ import {
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
 import Login from "../../login-register/login.component";
+import ToastNotify from "../../helpers/toastnotify/toast-notify.component";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -184,7 +185,6 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
-      console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
@@ -195,7 +195,6 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          console.log("response of dependentId condi", response);
           // dispatch({
           //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
           //   payload: response,
@@ -222,7 +221,6 @@ const CategoryMenuItems = ({
         }
       });
       if (menuitemObj) {
-        console.log("selected menuitem object", menuitemObj);
         dispatch(selectedMenuItem(menuitemObj));
         if (menuitemObj.quickorderallow && !isOrderingDisable) {
           quickOrderClick(menuitemObj);
@@ -340,32 +338,25 @@ const CategoryMenuItems = ({
 
     // Toggle local state
     setisFavourite((prev) => !prev);
-
     // Dispatch updated categories to store
     dispatch(removeCategoryList());
+    dispatch(addFavorite(updatedItem));
     dispatch(setCategoryList(updatedCategories));
-
-    // Dispatch add/delete favorite action
-    // const payload = {
-    //   customerId: userinfo?.customerId ?? 0,
-    //   restaurantId: restaurantinfo?.restaurantId as number,
-    //   menuItemId: updatedItem.menuitemId,
-    // };
 
     if (item) {
       dispatch(
         addFavorite({
-          customerId: userinfo?.customerId ?? 0,
+          customerId: String(userinfo?.customerId),
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: updatedItem.menuitemId,
+          menuItemId: String(updatedItem.menuitemId),
         })
       );
     } else {
       dispatch(
         deleteFavorite({
-          customerId: userinfo?.customerId ?? 0,
+          customerId: String(userinfo?.customerId),
           restaurantId: restaurantinfo?.restaurantId as number,
-          menuItemId: updatedItem.menuitemId,
+          menuItemId: String(updatedItem.menuitemId),
         })
       );
     }
@@ -814,6 +805,7 @@ const CategoryMenuItems = ({
           </div>
         </section>
       )}
+      <ToastNotify />
       <ScrollToTop />
       {/* <MenuItemDetail /> */}
       {openMenuItemModal && (

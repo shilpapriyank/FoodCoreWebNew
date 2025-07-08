@@ -482,12 +482,6 @@ export class OrderServices {
     ordertype,
     scheduleDateTime,
   }: GenerateTimeSlotArgsTypes) {
-      console.log("🔍 Payload parameters:", {
-    restaurantId,
-    locationId,
-    ordertype,
-    scheduleDateTime,
-  });
     responseclass = new ResponseModel();
     const methodName = "generateTimeSlot";
     const checktimeurl = ENDPOINTS.GENERATE_TIMESLOT;

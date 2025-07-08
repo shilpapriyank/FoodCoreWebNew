@@ -40,8 +40,6 @@ export const FormatOrderObject = ({
   selectedtime: string;
   studentname?: string;
 }) => {
-  debugger;
-  console.log("object restaurant from formate order object", objrestaurant);
   const selectedsize = menuItemDetail?.size?.find(
     (x) => x.sizeselected === true
   );

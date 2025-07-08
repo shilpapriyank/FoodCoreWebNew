@@ -5,15 +5,10 @@ import ShareitemComponent from "@/components/nt/common/shareitem.component";
 import { selectedItemSize } from "../../../../../../redux/menu-item/menu-item.slice";
 
 const MenuItemSize = ({ selectedSizeClick, shareUrl }: any) => {
-  debugger;
   const { menuitem, restaurantinfo, menuitemdetaillist } = useReduxData();
   // let studentname = studentdata
   const { isDisplayPrice } = useUtility();
   const selctedItemSize = menuitemdetaillist?.size;
-  console.log(
-    "selected Item size from MenuitemSize component",
-    selectedItemSize
-  );
   return (
     <>
       <div

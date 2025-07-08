@@ -1,4 +1,5 @@
 "use client";
+import RestaurantComponent from "@/components/commonRestaurant/restaurant.component";
 import Footer from "@/components/nt/layout/footer/footer.component";
 import Header from "@/components/nt/layout/header/header.component";
 import React, { ReactNode } from "react";

@@ -7,7 +7,6 @@ const MenuItemAddCartBtn = ({
   currencySymbol,
   addToCart,
 }: any) => {
-  debugger;
   const { menuitem } = useReduxData();
   let selectedmenuitemdetail = menuitem?.selectedmenuitemdetail;
   const { isDisplayPrice, isRewardTip } = useUtility();

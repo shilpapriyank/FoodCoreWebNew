@@ -161,9 +161,9 @@ export const addFavorite = createAsyncThunk(
     restaurantId,
     menuItemId,
   }: {
-    customerId: number;
+    customerId: string;
     restaurantId: number;
-    menuItemId: number;
+    menuItemId: string;
   }) => {
     const response = await MenuItemServices.addfavorite({
       customerId,
@@ -184,9 +184,9 @@ export const deleteFavorite = createAsyncThunk(
     restaurantId,
     menuItemId,
   }: {
-    customerId: number;
+    customerId: string;
     restaurantId: number;
-    menuItemId: number;
+    menuItemId: string;
   }) => {
     const response = await MenuItemServices.deletefavorite({
       customerId,

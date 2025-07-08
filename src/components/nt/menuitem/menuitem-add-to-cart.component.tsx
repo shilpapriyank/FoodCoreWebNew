@@ -104,7 +104,6 @@ const MenuItemAddToCart = ({
   };
 
   const addtocartclick = (item: Menuitems) => {
-    debugger;
     dispatch(selectedMenuItem(item));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
@@ -116,6 +115,7 @@ const MenuItemAddToCart = ({
     }).then((response) => {
       if (response) {
         if (response) {
+          console.log("add to cart click getMenuitemList response", response);
           dispatch(setMenuCategoryData(response));
         }
         let menuItemDetail = response;
@@ -124,7 +124,6 @@ const MenuItemAddToCart = ({
           menuItemDetail.size != undefined &&
           menuItemDetail.size?.filter((x) => x.sizeselected == true);
 
-        console.log("selected size", selectedsize);
         let selectedtopping =
           selectedsize &&
           selectedsize.length > 0 &&
@@ -134,17 +133,14 @@ const MenuItemAddToCart = ({
           menuItemDetail.topping.filter(
             (x) => x.subparameterId == selectedsize[0].subparameterId
           );
-        console.log("selectedtopping", selectedtopping);
         let selectedoption =
           selectedtopping &&
           selectedtopping[0]?.list?.filter((x) => x.isCompulsory == true);
-        console.log("selectedoption", selectedoption);
         // 🛠 Fix: total is strictly number
         let total: number =
           selectedsize && selectedsize.length > 0 && selectedsize[0].price
             ? selectedsize[0].price
             : 0;
-        console.log("total", total);
         if (
           menuItemDetail.topping != undefined &&
           menuItemDetail.topping.length > 0 &&
@@ -161,7 +157,6 @@ const MenuItemAddToCart = ({
             orderType: ordertype,
             selectedtime: selecetdtime,
           });
-          console.log("item object for add to cart", itemobj);
           if (itemobj && itemobj != undefined) {
             MenuItemServices.addItemToCart({
               orderobj: itemobj,
@@ -171,10 +166,6 @@ const MenuItemAddToCart = ({
               //   type: MenuItemTypes.ADD_ITEM_TO_CART,
               //   payload: response,
               // });
-              console.log(
-                "response of addItemToCart from menuitem add-to-cart",
-                response
-              );
               dispatch(addItemToCart(response));
               // console.log("add item to cart response from if", response);
               if (response) {
@@ -207,10 +198,6 @@ const MenuItemAddToCart = ({
                       response?.cartDetails &&
                       response?.cartDetails?.cartTotal
                     ) {
-                      console.log(
-                        "response of getCartItemList from menuitem add-to-cart",
-                        response
-                      );
                       // dispatch({
                       //   type: CartTypes.CART_DATA,
                       //   payload: response,

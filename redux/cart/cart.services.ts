@@ -47,7 +47,6 @@ export class CartServices {
     selectedTime: string;
     requestId: string;
   }): Promise<GetCartItemsList | null> {
-    debugger;
     responseclass = new ResponseModel();
     const methodName = "getCartItemList";
     const location = ENDPOINTS.GET_CART_ITEM;

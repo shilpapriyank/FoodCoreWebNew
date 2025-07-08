@@ -8,6 +8,9 @@ import { useParams, useRouter } from "next/navigation";
 import { mainSlice, setMainCategoryList } from "../../../redux/main/main.slice";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { useAppDispatch } from "../../../redux/hooks";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
+import { ThemeType } from "@/types/common-types/common.types";
 
 const useLoadCatData = (customerId: number) => {
   const dispatch = useAppDispatch();
@@ -165,7 +168,7 @@ const useLoadCatData = (customerId: number) => {
           //   type: MainTypes.GET_MENU_CATEGORY_DATA,
           //   payload: catresponse,
           // });
-          if (catresponse) {
+          if (catresponse && catresponse !== null) {
             dispatch(setMainCategoryList(catresponse as MainCategoryList[]));
           } else {
             dispatch(setMainCategoryList([]));

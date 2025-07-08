@@ -63,7 +63,6 @@ export default function LocationPage() {
         )
       );
       // dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
-
     }
   }, []);
 
