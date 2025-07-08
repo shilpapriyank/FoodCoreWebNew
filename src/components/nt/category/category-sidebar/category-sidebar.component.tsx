@@ -12,7 +12,6 @@ import { useParams, useRouter } from "next/navigation";
 import { RelatedItemsList } from "../../common/related-items/related-items-list";
 
 const CategorySidebar: React.FC = () => {
-  debugger;
   const dispatch = useAppDispatch();
   const { restaurantinfo, cart, restaurant } = useReduxData();
   const router = useRouter();

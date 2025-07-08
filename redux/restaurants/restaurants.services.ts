@@ -3,10 +3,7 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import { GetAllLocationInfoNew } from "@/types/location-types/location.type";
-import {
-  GetAllRestaurantInfo,
-  GetRestaurantThemeType,
-} from "@/types/restaurant-types/restaurant.type";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
 let responseclass = new ResponseModel();
 

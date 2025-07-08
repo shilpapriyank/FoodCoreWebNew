@@ -1,9 +1,5 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import {
-  GetThemeDetails,
-  ORDER_TYPE,
-  ThemeObj,
-} from "../common/utility";
+import { GetThemeDetails, ORDER_TYPE, ThemeObj } from "../common/utility";
 import { useAppDispatch } from "../../../redux/hooks";
 import { useReduxData } from "./useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
@@ -12,11 +8,6 @@ import {
   setSearchText,
 } from "../../../redux/menu-item/menu-item.slice";
 import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
-import {
-  GetAllMenuCategoryItems,
-  GetSerachResult,
-  Menuitems,
-} from "@/types/menuitem-types/menuitem.type";
 import { setSelectedCategory } from "../../../redux/category/category.slice";
 
 export const useSearchData = (searchtext: string) => {
@@ -34,7 +25,7 @@ export const useSearchData = (searchtext: string) => {
       ? "Opps! No Items Found"
       : ""
   );
-  const selctedTheme = GetThemeDetails(restaurantinfo!.themetype);
+  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
 
   const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { useEffect, useState, ReactNode, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -63,6 +63,7 @@ const RestaurantComponent = ({
   metaDataRestaurant,
   themetype,
 }: Props) => {
+  const hasFetchedRestaurant = useRef(false);
   const { restaurant, cart, metadata, category, userinfo, order, sessionid } =
     useReduxData();
   const customerId: number = userinfo ? userinfo.customerId : 0;
@@ -209,7 +210,7 @@ const RestaurantComponent = ({
           getSelectedRestaurantTime({
             restaurantId: newselectedRestaurant.restaurantId,
             locationId: newselectedRestaurant.defaultlocationId,
-          }) as any
+          })
         );
 
         if (
@@ -236,9 +237,15 @@ const RestaurantComponent = ({
     // setthemeUrl((selectedTheme as ThemeType).url);
   };
 
+  //this use effect call same api more than on time
   useEffect(() => {
     if (pathname !== "/home" && !pathname.includes(ThemeObj.FD123456)) {
-      if (dynamic && typeof dynamic === "string") {
+      if (
+        dynamic &&
+        typeof dynamic === "string" &&
+        !hasFetchedRestaurant.current
+      ) {
+        hasFetchedRestaurant.current = true;
         const restauranturl = dynamic.toLowerCase().replace(/ /g, "-");
         const locationurl =
           location?.toString().toLowerCase().replace(/ /g, "-") || "";
@@ -259,7 +266,7 @@ const RestaurantComponent = ({
     if (pathname.includes(ThemeObj.FD123456)) {
       setloadPaymentScreen(true);
     }
-  }, [dynamic]);
+  }, [dynamic, pathname]); ///removed dependencies [dynamic, pathname]
 
   // const fetchData = async () => {
   //   try {
@@ -327,7 +334,7 @@ const RestaurantComponent = ({
         dispatch(createSessionId(id));
       }
     }
-  }, [restaurantinfo]);
+  }, [restaurantinfo]); ///removed dependencies [restaurantinfo]
 
   useEffect(() => {
     if (adresslist === true && pathname.includes(ThemeObj.FD123456)) {
@@ -354,14 +361,14 @@ const RestaurantComponent = ({
         });
       }
     }
-  }, [adresslist]);
+  }, [adresslist]); ///removed dependencies adresslist
 
   useEffect(() => {
     if (appVersion !== getVersion() && !pathname.includes(ThemeObj.FD123456)) {
       clearCache();
       dispatch(setAppVersion(getVersion()));
     }
-  }, [appVersion]);
+  }, [appVersion]); ///removed dependencies appVersions
 
   return (
     <>

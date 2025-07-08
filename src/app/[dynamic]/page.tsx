@@ -14,12 +14,12 @@ const DynamicPage = () => {
   const dynamic = params.dynamic as string | undefined;
   const location = params?.location as string;
   const theme = params?.theme as string;
-  const { restaurantinfo } = useReduxData()
+  const { restaurantinfo } = useReduxData();
 
   useEffect(() => {
     let routepath = "";
     // let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
-    let selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    let selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
 
     if (selectedTheme?.name === ThemeObj.dominos) {
       routepath = `/${selectedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation?.locationURL}`;

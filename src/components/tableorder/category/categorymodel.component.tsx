@@ -12,7 +12,6 @@ import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { setSelectedCategory } from "../../../../redux/category/category.slice";
 
 const CategoryModalComponent: React.FC = () => {
-  debugger;
   const { main, category, restaurantinfo, tableorder } = useReduxData();
   const selectedCatId = category.selectedcategorydetail?.catId;
   const dispatch = useAppDispatch();

@@ -67,9 +67,9 @@ export class MenuItemServices {
     restaurantId,
     menuItemId,
   }: {
-    customerId: number;
+    customerId: string;
     restaurantId: number;
-    menuItemId: number;
+    menuItemId: string;
   }): Promise<AddOrDeleteFavorite | null> {
     responseclass = new ResponseModel();
     const methodName = "addfavorite";
@@ -86,7 +86,6 @@ export class MenuItemServices {
       true,
       restaurantId
     );
-    console.log("add favorite response", responseclass.result);
     if (
       responseclass.result &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
@@ -125,9 +124,9 @@ export class MenuItemServices {
     restaurantId,
     menuItemId,
   }: {
-    customerId: number;
+    customerId: string;
     restaurantId: number;
-    menuItemId: number;
+    menuItemId: string;
   }): Promise<AddOrDeleteFavorite | null> {
     responseclass = new ResponseModel();
     const methodName = "deletefavorite";
@@ -184,7 +183,6 @@ export class MenuItemServices {
     orderobj: any;
     restaurantId: number;
   }): Promise<any> {
-    debugger
     responseclass = new ResponseModel();
     const methodName = "addItemToCart";
     const location = ENDPOINTS.ADD_ITEM_TO_CART;

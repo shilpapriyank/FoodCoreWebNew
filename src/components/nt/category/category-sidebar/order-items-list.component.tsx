@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { getImagePath } from "../../common/utility";
-import {
-  getDependentParentQty,
-  ORDER_TYPE,
-} from "../../../common/utility";
+import { getDependentParentQty, ORDER_TYPE } from "../../../common/utility";
 import useUtility from "../../../customhooks/utility-hook";
 import useFutureOrder from "../../../customhooks/usefuture-order-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
@@ -35,7 +32,6 @@ import {
 import CartSuboptionDisplay from "../../checkout/suboption-display.component";
 
 export const OrderItemsList = () => {
-  debugger
   const {
     restaurantinfo,
     userinfo,
@@ -116,7 +112,7 @@ export const OrderItemsList = () => {
         requestId: order?.deliveryRequestId,
       }).then((response) => {
         if (response) {
-          if (response?.cartDetails && response?.cartDetails?.cartTotal) {
+          if (response?.cartDetails) {
             // dispatch({
             //   type: CartTypes.CART_DATA,
             //   payload: response,
@@ -316,7 +312,6 @@ export const OrderItemsList = () => {
     });
 
     cdetail.cartDetails.cartItemDetails = dcart;
-    console.log("cart item from order-items-list", cdetail);
     dispatch(setCartItem(cdetail));
     CartServices.updatequantity(
       sessionId as string,

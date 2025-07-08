@@ -1,6 +1,7 @@
 // store/features/favorite/favoriteSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { FavouritesServices } from "./favourites.services";
+import { Menuitems } from "@/types/menuitem-types/menuitem.type";
 
 // Define the type for a single favorite item (customize based on actual shape)
 export interface FavoriteItem {
@@ -11,7 +12,7 @@ export interface FavoriteItem {
 
 // State type
 interface FavoriteState {
-  favouritesitemlist: FavoriteItem[];
+  favouritesitemlist: Menuitems[];
 }
 
 // Initial state
@@ -36,7 +37,7 @@ export const getFavoritesList = createAsyncThunk(
         customerId,
         locationId
       );
-      return response as FavoriteItem[];
+      return response as Menuitems[];
     } catch (error: any) {
       return thunkAPI.rejectWithValue("Failed to fetch favorites.");
     }
@@ -62,7 +63,7 @@ const favoriteSlice = createSlice({
     builder
       .addCase(
         getFavoritesList.fulfilled,
-        (state, action: PayloadAction<FavoriteItem[]>) => {
+        (state, action: PayloadAction<Menuitems[]>) => {
           state.favouritesitemlist = action.payload;
         }
       )
