@@ -247,12 +247,12 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         ordertype: Number(ordertype),
         scheduleDateTime: day?.futureDate ?? "",
       }).then((res: TimeSlot[]) => {
-        console.log("📞 generateTimeSlot called with:", {
-          restaurantId,
-          locationId,
-          ordertype: Number(ordertype),
-          scheduleDateTime: day?.futureDate ?? "",
-        });
+        // console.log("📞 generateTimeSlot called with:", {
+        //   restaurantId,
+        //   locationId,
+        //   ordertype: Number(ordertype),
+        //   scheduleDateTime: day?.futureDate ?? "",
+        // });
         dispatch(isasap(false));
         settimeSlots(res);
         setLoadTimeslot(false);
@@ -429,13 +429,13 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 <div className="row">
                   {dayCloseError === '' ? (
                     <>
-                      {console.log("✅ dayCloseError is empty")}
+                      {/* {console.log("✅ dayCloseError is empty")}
                       {console.log("asapLaterOnState.isAsap:", asapLaterOnState.isAsap)}
-                      {console.log("selectedDate:", selectedDate)}
+                      {console.log("selectedDate:", selectedDate)} */}
 
                       {(asapLaterOnState.isAsap && selectedDate === "Today") && (
                         <>
-                          {console.log("✅ Showing ASAP TimeSlotPillComponent")}
+                          {/* {console.log("✅ Showing ASAP TimeSlotPillComponent")} */}
                           <TimeSlotPillComponent
                             time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
                             id={"C"}

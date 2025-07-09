@@ -31,8 +31,8 @@ import {
   DefaultLocation,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
-import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
 import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
+import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
 
 // export enum ORDER_TYPE_ENUM {
 //   PICKUP = "Pickup",
@@ -550,11 +550,11 @@ export const getAsapLaterOnState = (
   pickupordelivery?: OrderType,
   restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
-  debugger;
-  console.log("🧪 Running getAsapLaterOnState...");
-  console.log("➡️ defaultLocation:", defaultLocation);
-  console.log("➡️ pickupordelivery:", pickupordelivery);
-  console.log("➡️ restaurantWindowTime:", restaurantWindowTime);
+  //debugger;
+  // console.log("🧪 Running getAsapLaterOnState...");
+  // console.log("➡️ defaultLocation:", defaultLocation);
+  // console.log("➡️ pickupordelivery:", pickupordelivery);
+  // console.log("➡️ restaurantWindowTime:", restaurantWindowTime);
   if (!defaultLocation || pickupordelivery === undefined) {
     return {
       isdisplay: false,
@@ -576,13 +576,13 @@ export const getAsapLaterOnState = (
     isDeliveryOrderingDisable,
     isOrderingDisable,
   } = defaultLocation;
-  console.log("🧩 isTakeOutAsap:", defaultLocation?.isTakeOutAsap);
-  console.log("🧩 isTakeOutPickupTime:", defaultLocation?.isTakeOutPickupTime);
-  console.log("🧩 isDeliveryAsap:", defaultLocation?.isDeliveryAsap);
-  console.log("🧩 isDeliveryPickupTime:", defaultLocation?.isDeliveryPickupTime);
-  console.log("🧩 isTakeoutOrderingDisable:", defaultLocation?.isTakeoutOrderingDisable);
-  console.log("🧩 isDeliveryOrderingDisable:", defaultLocation?.isDeliveryOrderingDisable);
-  console.log("🧩 isOrderingDisable:", defaultLocation?.isOrderingDisable);
+  // console.log("🧩 isTakeOutAsap:", defaultLocation?.isTakeOutAsap);
+  // console.log("🧩 isTakeOutPickupTime:", defaultLocation?.isTakeOutPickupTime);
+  // console.log("🧩 isDeliveryAsap:", defaultLocation?.isDeliveryAsap);
+  // console.log("🧩 isDeliveryPickupTime:", defaultLocation?.isDeliveryPickupTime);
+  // console.log("🧩 isTakeoutOrderingDisable:", defaultLocation?.isTakeoutOrderingDisable);
+  // console.log("🧩 isDeliveryOrderingDisable:", defaultLocation?.isDeliveryOrderingDisable);
+  // console.log("🧩 isOrderingDisable:", defaultLocation?.isOrderingDisable);
 
   const orderState =
     pickupordelivery === ORDER_TYPE.DELIVERY.value

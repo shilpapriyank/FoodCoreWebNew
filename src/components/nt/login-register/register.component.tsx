@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useState, FormEvent, useEffect } from "react";
-import { useParams, useRouter } from 'next/navigation';
+import React, { useState, useEffect } from "react";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { RegisterServices } from "../../../../redux/register/register.services";
+import { useParams } from 'next/navigation';
+import { convertSecondToMinute } from "../common/utility";
+import { allRegex, countryData, formatePhoneNumber, getCountryList, GetThemeDetails, onLoadSetDefaultFlag, setUserExpiryTime, unFormatePhoneNumber } from "@/components/common/utility";
 import { useDispatch } from 'react-redux';
 import { registerAddress } from "../../../../redux/delivery-address/delivery-address.slice";
 import { ToasterPositions } from '../../default/helpers/toaster/toaster-positions';
 import { ToasterTypes } from '../../default/helpers/toaster/toaster-types';
 import { CheckPhoneRequestModel, CustomerServices } from "../../../../redux/customer/customer.services";
+import { RegisterServices } from "../../../../redux/register/register.services";
 import { LoginServices } from "../../../../redux/login/login.services";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
 import { selecteddeliveryaddress } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
@@ -19,13 +21,12 @@ import { DeliveryAddressTypes } from "../../../../redux/delivery-address/deliver
 import handleNotify from '../../default/helpers/toaster/toaster-notify';
 import useUtility from '../../customhooks/utility-hook';
 import { AppDispatch } from "../../../../redux/store";
-import { allRegex, countryData, formatePhoneNumber, getCountryList, GetThemeDetails, onLoadSetDefaultFlag, setUserExpiryTime, unFormatePhoneNumber } from "@/components/common/utility";
 import OtpVerificationComponent from "./otpverification.component";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/bootstrap.css';
 import { OTPVerificationSettingParams } from "@/types/register-types/register.types";
-import { convertSecondToMinute } from "../common/utility";
 import { setUserDetail } from "../../../../redux/login/login.slice";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 
 interface RegisterProps {
@@ -50,7 +51,7 @@ const Register: React.FC<RegisterProps> = ({
     handleToggleAddAddressModal
 }) => {
     const { restaurantinfo, deliveryaddress } = useReduxData();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     // let otpTime = convertSecondToMinute(parseInt(process.env.NEXT_PUBLIC_OTP_DURATION))
     const otpDurationEnv = process.env.NEXT_PUBLIC_OTP_DURATION;
     const otpDuration = otpDurationEnv ? parseInt(otpDurationEnv, 10) : 0;
@@ -78,14 +79,14 @@ const Register: React.FC<RegisterProps> = ({
     const [second, setsecond] = useState<number>(0)
     const [minutes, setMinutes] = useState<number>(0);
     const [isOtpSecond, setisOtpSecond] = useState<boolean>(false)
-    const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    const selctedTheme = GetThemeDetails(restaurantinfo!.themetype);
     const [isOtpModal, setisOtpModal] = useState<boolean>(false)
     const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
     const { isBusinessNameRequired } = useUtility()
     const locationId = restaurantinfo?.defaultLocation?.locationId
     const params = useParams();
     const dynamic = params.dynamic;
-    const location = params.location; var restaurantUrl = selctedTheme.url + "/" + dynamic;
+    const location = params.location; var restaurantUrl = selctedTheme?.url + "/" + dynamic;
     const [values, setValues] = useState({
         firstname: "",
         lastname: "",
@@ -139,8 +140,8 @@ const Register: React.FC<RegisterProps> = ({
             };
 
             RegisterServices.getOTPVerificationSetting(payload).then((response) => {
-                if (response) {
-                    setOTPDetail(response as string | any);
+                if (response && response != null) {
+                    setOTPDetail(response as any);
                 }
             });
         }
@@ -549,6 +550,7 @@ const Register: React.FC<RegisterProps> = ({
             }
         }
     }
+
     const handleAutocompleteOff = (e: any) => {
         e.target.setAttribute("autoComplete", "off")
     }
@@ -560,9 +562,15 @@ const Register: React.FC<RegisterProps> = ({
         handleOpenLoginModal(true)
     }
 
+    console.log("calling from register component")
+    //
     return (
         <>
-            <div className={`modal modal-your-order loginmodal fade ${(isOpenModal && !openAdressModal && !isOtpModal) ? 'show d-block' : ''}`} id="exampleModal-register" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className=
+            {`modal modal-your-order loginmodal fade
+                       ${(isOpenModal && !openAdressModal && !isOtpModal) ? 'show d-block' : ''}        
+                             `}
+                id="exampleModal-register" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered ru-model">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">Register</h5>
@@ -760,6 +768,7 @@ const Register: React.FC<RegisterProps> = ({
                 />}
             <div className="modal-backdrop fade show"></div>
         </>
+        // <h1>This is a register form</h1>
     );
 };
 

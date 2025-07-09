@@ -84,7 +84,8 @@ export const useReduxData = () => {
     restaurantinfo as GetAllRestaurantInfo,
     order?.futureOrderDay?.futureDate || "",
     order?.isasap ?? false
-  )
+  );
+  
   const orderTimeValid =
     typeof order?.checktime === "string" && order.checktime.trim() !== "";
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import {
@@ -21,8 +20,8 @@ import useUtility from '../../customhooks/utility-hook';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 import { ButtonLoader } from '@/components/common/buttonloader.component';
 import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
-import { AppDispatch } from '../../../../redux/store';
 import { setUserDetail } from '../../../../redux/login/login.slice';
+import { useAppDispatch } from '../../../../redux/hooks';
 
 interface LoginProps {
     isOpenModal: boolean;
@@ -37,7 +36,7 @@ const Login: React.FC<LoginProps> = ({
     handleOpenLoginModal,
     handleToggleAccountConfirm
 }) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const { restaurantinfo, deliveryaddress, userinfo } = useReduxData();
     const restaurantinformation = restaurantinfo;
     let tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
@@ -62,11 +61,11 @@ const Login: React.FC<LoginProps> = ({
     // const [dialCode, setDialCode] = useState(locationCountryData.countryCode);
     //const [dialCode, setDialCode] = useState<'+1' | '+91'>('+1');
     const [dialCode, setDialCode] = useState<string>('+1');
-
-    const locationId = restaurantinfo?.defaultLocation?.locationId;
     const restaurantId = restaurantinfo?.restaurantId;
     const { isBusinessNameRequired } = useUtility();
     const b2b = restaurantinfo?.defaultLocation?.b2btype;
+    const locationId = restaurantinfo?.defaultLocation?.locationId;
+
 
     useEffect(() => {
         setuserName("");
@@ -182,7 +181,6 @@ const Login: React.FC<LoginProps> = ({
             let usernames = userName
                 .replace(/(\(\d{3}\))(\s\d{3})(\-\d{4})/, formatedusername)
                 .slice(0, 10);
-
             usernames = usernames.slice(0, 10);
             setisDisable(true);
 
@@ -193,10 +191,12 @@ const Login: React.FC<LoginProps> = ({
                 dialCode: dialCode,
                 locationid: locationId as number,
             }).then((responsedata) => {
-                if ('customerDetails' in responsedata) {
+               // debugger
+                if (responsedata !== null && responsedata.customerDetails !== null && responsedata.customerDetails !== undefined) {
+
                     const customer = responsedata?.customerDetails;
                     if (responsedata && customer) {
-                       // console.log("Login Customer from logincomponent:", customer);
+                        console.log("Login Customer from logincomponent:", customer);
                         // dispatch({ type: LoginTypes.USER_DETAIL, payload: customer });
                         dispatch(setUserDetail(customer))
                         setUserExpiryTime();
@@ -206,14 +206,11 @@ const Login: React.FC<LoginProps> = ({
                             handleOpenLoginModal(false);
                             handleToggle?.(true, "openVerifyPhone");
                         } else {
-                            if (!customer.isVerified) {
+                            if (!responsedata.customerDetails.isVerified) {
                                 handleOpenLoginModal(false);
                                 handleToggleAccountConfirm(true);
                             } else {
-                                if (
-                                    restaurantinformation?.defaultLocation?.enableRewardPoint &&
-                                    customer.customertype !== CUSTOMER_TYPE.SUBSCRIBE
-                                ) {
+                                if (restaurantinformation?.defaultLocation?.enableRewardPoint && responsedata?.customerDetails?.customertype !== CUSTOMER_TYPE.SUBSCRIBE) {
                                     setLoadRewardPoint(true);
                                     setTimeout(() => {
                                         handleToggle?.(true, "openRewardModal");
@@ -221,8 +218,8 @@ const Login: React.FC<LoginProps> = ({
                                 }
                             }
                         }
-
-                        dispatch(setintialrewardpoints(customer));
+// dispatch(setintialrewardpoints(customer));
+                        dispatch(setintialrewardpoints(responsedata.customerDetails));
 
                         if (tempDeliveryAddress !== null && restaurantinformation) {
                             tempDeliveryAddress.customerId = customer.customerId;
@@ -234,7 +231,8 @@ const Login: React.FC<LoginProps> = ({
                             ).then((res) => {
                                 if (res) {
                                     tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
-                                    dispatch(selecteddeliveryaddress(tempDeliveryAddress));
+                                   // dispatch(selecteddeliveryaddress(tempDeliveryAddress));
+                                    dispatch(selecteddeliveryaddress(tempDeliveryAddress as any));
 
                                     dispatch({
                                         type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
@@ -245,15 +243,14 @@ const Login: React.FC<LoginProps> = ({
                                 dispatch(AddTempDeliveryAddress(null));
                             });
                         }
-
-                        if (customer.isVerified) {
-                            handleOpenLoginModal(false);
+                        if (responsedata.customerDetails.isVerified) {
+                            handleOpenLoginModal(false)
                         }
                     }
                 } else {
-                    setSubmitting(false);
-                    setisDisable(false);
-                    setErrorMessage("error");
+                    setSubmitting(false)
+                    setisDisable(false)
+                    setErrorMessage(responsedata.message);
                 }
             });
         }
@@ -308,28 +305,23 @@ const Login: React.FC<LoginProps> = ({
         setErrorMessage("");
     };
     const handleClickRegister = () => {
-        // 👇 Blur any focused element inside the login modal
-        if (document.activeElement instanceof HTMLElement) {
-           // console.log("Blurring focused element:", document.activeElement);
-            document.activeElement.blur();
-        }
-       // console.log("Closing login modal");
-        handleOpenLoginModal(false);
-        setTimeout(() => {
-          //  console.log("Opening register modal");
-            handleToggle?.(true, 'openRegisterModal');
-        }, 100); // A small delay allows the DOM to clean up properly
-    };
+        debugger
+        console.log("handleClickRegister from login")
+        handleOpenLoginModal(false)
+        handleToggle?.(true, 'openRegisterModal')
+    }
+
     const handleClickForgotPass = () => {
-       // console.log("Forgot Password clicked!");
+        // console.log("Forgot Password clicked!");
         handleOpenLoginModal(false);
-       // console.log("Login modal closed");
+        // console.log("Login modal closed");
         handleToggle?.(true, 'openForgotPassModal');
-      //  console.log("Attempted to open forgot password modal");
+        //  console.log("Attempted to open forgot password modal");
     };
     return (
         <>
-            <div className={`modal modal-your-order loginmodal fade ${isOpenModal ? 'show d-block' : ''}`} id="exampleModal-login" tabIndex={-1} aria-labelledby="exampleModalLabel"
+            <div className={`modal modal-your-order loginmodal fade 
+            ${isOpenModal ? 'show d-block' : ''}`} id="exampleModal-login" tabIndex={-1} aria-labelledby="exampleModalLabel"
                 aria-hidden="true"
             >
                 <div className="modal-dialog modal-dialog-centered">
@@ -350,10 +342,7 @@ const Login: React.FC<LoginProps> = ({
                                         {!(b2b && !isBusinessNameRequired) &&
                                             <p className="fs-14">
                                                 Don&apos;t have one?{" "}
-                                                <a className="color-green" onClick={() => {
-                                                   // console.log("Create button clicked!");
-                                                    handleClickRegister();
-                                                }}>
+                                                <a className="color-green" onClick={handleClickRegister}>
                                                     CREATE ONE <i className="fa fa-arrow-right" />
                                                 </a>
                                             </p>
