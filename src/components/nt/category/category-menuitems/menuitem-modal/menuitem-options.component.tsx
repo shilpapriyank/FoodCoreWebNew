@@ -162,7 +162,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
           return subOption;
         }
       });
-      console.log(updateWithPaidTopping);
+      //console.log(updateWithPaidTopping);
       let freeCount = selectedoption?.freeToppingsCount;
       const sortedsuboptionBasedSeqNo = updateWithPaidTopping?.sort(
         (a, b) => b.sequenceNumber - a.sequenceNumber
@@ -422,7 +422,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
       const topRecord = lstdefault.reduce((max, subOption) =>
         subOption.sequenceNumber > max.sequenceNumber ? subOption : max
       );
-      console.log(topRecord);
+     // console.log(topRecord);
       updateWithPaidTopping = lstdefault?.map((subOption) => {
         if (item.suboptionId === subOption.suboptionId) {
           subOption.sequenceNumber = topRecord?.sequenceNumber + 1;
@@ -648,7 +648,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
     const isExtraPaidTopping = !(
       finalcount <= Number(selectedoption?.freeToppingsCount)
     );
-    console.log(isExtraPaidTopping);
+    //console.log(isExtraPaidTopping);
     //var isMaxSelectZero =  parseInt(selectedoption[0].maxSelection) == 0 ? true : false;
     //var checkCount = isMaxSelectZero == false ? finalcount <= parseInt(selectedoption[0].maxSelection) ? true : false : true;
     let updateWithPaidTopping: Type[] = [];

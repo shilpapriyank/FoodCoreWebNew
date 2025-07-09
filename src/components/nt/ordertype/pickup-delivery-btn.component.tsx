@@ -11,6 +11,7 @@ import {
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../redux/store";
+import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
 
 type PickupDeliveryButtonProps = {
   handleChangeOrderType: (type: any) => void;
@@ -20,9 +21,10 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
   handleChangeOrderType,
 }) => {
   const { restaurantinfo, selecteddelivery, main } = useReduxData();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   let location = restaurantinfo?.defaultLocation?.locationURL;
-  const restaurantWindowTime = main.restaurantWindowTime as any;
+  const restaurantWindowTime = (main.restaurantWindowTime?.[0] ?? null) as RestaurantWindowTimeNew;
+  //const restaurantWindowTime = main.restaurantWindowTime as RestaurantWindowTimeNew;
   const pickupWindow =
     restaurantWindowTime &&
     restaurantWindowTime.pickupTime &&
@@ -39,9 +41,8 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
   const isDeliveryPickupTime = defaultLocation?.isDeliveryPickupTime;
   const isDeliveryAsap = defaultLocation?.isDeliveryAsap;
   const selectedTheme = GetThemeDetails(restaurantinfo!.themetype);
-  const locationFullLink = `/${selectedTheme?.url}/${
-    restaurantinfo?.restaurantURL
-  }/${location?.trim()}/`;
+  const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL
+    }/${location?.trim()}/`;
   const locationHrefLink = `/${selectedTheme?.url}/[dynamic]/[location]/`;
   // let locationFullLink = "/" + selectedTheme.url + "/" + restaurantinfo.restaurantURL + "/" + location.trim() + "/";
   // let locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
@@ -67,11 +68,10 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
             <>
               <a
                 onClick={() => handleChangeOrderType(ORDER_TYPE.PICKUP.text)}
-                className={`btn-default  ${
-                  ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery
+                className={`btn-default  ${ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery
                     ? "active"
                     : ""
-                }`}
+                  }`}
                 id="takeout-btn"
               >
                 <i className="fa fa-shopping-bag" /> {ORDER_TYPE.PICKUP.text}
@@ -91,11 +91,10 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
           {defaultLocation.isdelivery === true && isEnableDelivery ? (
             <a
               onClick={() => handleChangeOrderType(ORDER_TYPE.DELIVERY.text)}
-              className={`btn-default  ${
-                ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery
+              className={`btn-default  ${ORDER_TYPE.DELIVERY.text === selecteddelivery.pickupordelivery
                   ? "active"
                   : ""
-              }`}
+                }`}
               id="delivery-btn"
             >
               <i className="fa fa-car" /> {ORDER_TYPE.DELIVERY.text}
