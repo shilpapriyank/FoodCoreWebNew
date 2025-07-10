@@ -3,10 +3,7 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
-import {
-  GetAllRestaurantInfo,
-  GetRestaurantThemeType,
-} from "@/types/restaurant-types/restaurant.type";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
 export const useReduxData = () => {
   const userinfo = useSelector(
