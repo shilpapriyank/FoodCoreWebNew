@@ -398,7 +398,7 @@ const MenuItemModal = ({
                   deliveryaddressId: 0,
                   tipPercentage: 0,
                   tipAmount: 0,
-                  ordertype: String(ordertype),
+                  ordertype: Number(ordertype),
                   selectedTime: order?.checktime,
                   requestId: order?.deliveryRequestId,
                 })
@@ -460,7 +460,7 @@ const MenuItemModal = ({
                 deliveryaddressId: 0,
                 tipPercentage: 0,
                 tipAmount: 0,
-                ordertype: String(ordertype),
+                ordertype: Number(ordertype),
                 selectedTime: order?.checktime,
                 requestId: order?.deliveryRequestId,
               })
@@ -547,7 +547,7 @@ const MenuItemModal = ({
                   deliveryaddressId: 0,
                   tipPercentage: 0,
                   tipAmount: 0,
-                  ordertype: String(ordertype),
+                  ordertype: Number(ordertype),
                   selectedTime: order?.checktime,
                   requestId: order?.deliveryRequestId,
                 })
@@ -638,7 +638,7 @@ const MenuItemModal = ({
                 deliveryaddressId: 0,
                 tipPercentage: 0,
                 tipAmount: 0,
-                ordertype: String(ordertype),
+                ordertype: Number(ordertype),
                 selectedTime: order?.checktime,
                 requestId: order?.deliveryRequestId,
               })

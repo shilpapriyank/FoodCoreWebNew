@@ -62,7 +62,6 @@ export type RepeatOrderArgsTypes = {
   orderId: number;
   orderDetailId: number;
   isFullOrder: boolean;
-  //customerId: number;
   cartsessionid: string;
 };
 
@@ -74,7 +73,7 @@ export type PlaceOrderArgsTypes = {
 export type GetOrderTimeArgsTypes = {
   restaurantId: number;
   locationId: number;
-  ordertype: string;
+  ordertype: number;
 };
 
 export type AddOrderArgsTypes = {
@@ -85,9 +84,9 @@ export type AddOrderArgsTypes = {
 export type GetOrderTimingArgsTypes = {
   restaurantId: number;
   locationId: number;
-  ordertype: string;
+  ordertype: number;
   obj: OrderAddress;
-  requestId: string;
+  requestId?: string;
 };
 
 export type GetOrderDeliveryServiceDetailsArgsTypes = {

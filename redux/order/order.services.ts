@@ -32,7 +32,7 @@ export class OrderServices {
     recieving,
     flg,
     obj,
-    requestId= "",
+    requestId = "",
   }: CheckOrderTimeArgsTypes) {
     responseclass = new ResponseModel();
     const selectedAddress = {
@@ -63,7 +63,13 @@ export class OrderServices {
       },
     };
 
-    responseclass = await handleAxiosPostAsync(data, checktimeurl, methodName, true, restaurantId);
+    responseclass = await handleAxiosPostAsync(
+      data,
+      checktimeurl,
+      methodName,
+      true,
+      restaurantId
+    );
     if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
       return responseclass.result;
     } else {
@@ -112,7 +118,6 @@ export class OrderServices {
     orderId,
     orderDetailId,
     isFullOrder,
-    //customerId,
     cartsessionid,
   }: RepeatOrderArgsTypes) {
     responseclass = new ResponseModel();
@@ -169,7 +174,7 @@ export class OrderServices {
   }: {
     restaurantId: number;
     locationId: number;
-    ordertype: string;
+    ordertype: number;
   }) {
     responseclass = new ResponseModel();
     const methodName = "getOrderTime";
@@ -306,7 +311,6 @@ export class OrderServices {
       cardPayment: {
         restaurantId: cardPayment.restaurantId,
         locationId: cardPayment.locationId,
-        // ordertype: ordertype,
         paymentIntentId: cardPayment.paymentIntentId,
         orderId: cardPayment.orderId,
         paymentMethodId: cardPayment.paymentMethodId,
@@ -352,10 +356,13 @@ export class OrderServices {
     obj,
     requestId = "",
   }: GetOrderTimingArgsTypes) {
+    debugger
+    console.log("loactionId from order services:", locationId)
     responseclass = new ResponseModel();
     const methodName = "getOrderTiming";
     const checktimeurl = ENDPOINTS.GET_TIMING;
-    const selectedAddress = 
+
+    const selectedAddress =
     {
       deliveryAddressId: obj?.deliveryaddressId ?? 0,
       restaurantId: restaurantId,
@@ -371,7 +378,7 @@ export class OrderServices {
       country: obj?.country,
       requestId,
     };
-    
+
     const data = {
       request: {
         ...selectedAddress,
@@ -490,7 +497,7 @@ export class OrderServices {
     const data = {
       request: {
         restaurantId: restaurantId,
-        locationId:locationId, //32
+        locationId: locationId, //32
         orderType: ordertype,
         scheduleDateTime: scheduleDateTime,
       },
@@ -503,10 +510,10 @@ export class OrderServices {
       restaurantId
     );
 
-     if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
       return responseclass?.result;
     }
-     else if (responseclass.status === API_RESPONSE_STATUS.FAIL) {
+    else if (responseclass.status === API_RESPONSE_STATUS.FAIL) {
       handleNotify(
         responseclass.message,
         ToasterPositions.TopRight,
@@ -525,7 +532,7 @@ export class OrderServices {
     recieving,
     flg,
     obj,
-    requestId,
+    requestId = "",
     timeSlot,
     date,
   }: CheckTimeBySlotArgsTypes) {
@@ -533,7 +540,7 @@ export class OrderServices {
     const selectedAddress = {
       deliveryAddressId: obj?.deliveryaddressId ?? 0,
       restaurantId: restaurantId,
-      locationId: locationId,
+      locationId: locationId as number,
       address1: obj?.address1,
       address2: obj?.address2,
       landmark: obj?.landmark,

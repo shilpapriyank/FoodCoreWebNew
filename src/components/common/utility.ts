@@ -794,7 +794,7 @@ export const handleSetDeliveryTypeError = (
 export const bindPlaceOrderObject = (
   rewardpoints: any,
   cart: any,
-  ordertype: string,
+  ordertype: number,
   sessionid: number,
   userinfo: any,
   deliveryaddressId: number,
