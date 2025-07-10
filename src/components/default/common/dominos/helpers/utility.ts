@@ -216,7 +216,7 @@ export const getImagePath = (
 export const checkTimeStatus = (
   defaultLocation: any,
   restaurantWindowTime: any,
-  orderType: string
+  orderType: string | number
 ) => {
   const pickupWindow =
     restaurantWindowTime &&

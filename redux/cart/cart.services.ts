@@ -43,7 +43,7 @@ export class CartServices {
     deliveryaddressId?: number;
     tipPercentage?: number;
     tipAmount?: number;
-    ordertype?: string;
+    ordertype?: number;
     selectedTime: string;
     requestId: string;
   }): Promise<GetCartItemsList | null> {
@@ -263,7 +263,7 @@ export class CartServices {
     tipPercentage?: string,
     tipAmount?: string,
     deliveryaddressId?: any,
-    ordertype?: string,
+    ordertype?: number,
     requestId?: string,
     recievingTime: string = "",
     recievingMeridian: string = "",

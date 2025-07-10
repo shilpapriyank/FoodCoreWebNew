@@ -387,7 +387,7 @@ const CategoryMenuItems = ({
             deliveryaddressId: 0,
             tipPercentage: 0,
             tipAmount: 0,
-            ordertype: String(ordertype),
+            ordertype: Number(ordertype),
             selectedTime: selecetdtime,
             requestId: deliveryRequestId,
           }).then((response) => {

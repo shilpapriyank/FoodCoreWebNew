@@ -113,7 +113,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const locationFullLink = `/${selectedTheme?.url}/${dynamic}/${locationUrl}/`;
   const dispatch = useAppDispatch();
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(restaurantinfo?.defaultLocation as any,
-    // pickupordelivery as OrderType | any,
     selecteddelivery?.pickupordelivery as OrderType | any,
     restaurantWindowTime as RestaurantWindowTime | any);
   const orderDisableData: OrderDisableData = orderDisable(restaurantinfo as GetAllRestaurantInfo, selecteddelivery, restaurantWindowTime as RestaurantWindowTimeNew[] | any);
@@ -261,9 +260,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
 
   const handleTimeClick = (time: any): void => {
     OrderServices.getOrderTiming({
-      restaurantId: restaurantinfo?.restaurantId as number,
-      locationId: defaultLocation?.locationId as number,
-      ordertype: String(ordertype),
+      restaurantId: Number(restaurantinfo?.restaurantId),
+      locationId: Number(defaultLocation?.locationId),
+      ordertype: Number(ordertype),
       obj: selectedAddress as DeliveryAddressInput,
       requestId: "",
     }).then((gettimeresponse) => {
@@ -348,8 +347,8 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         >
           <div className="modal-content pb-0">
             <h5 className="modal-title" id="login-modal-Label">{`Schedule ${ordertype === ORDER_TYPE.DELIVERY.value
-                ? ORDER_TYPE.DELIVERY.text
-                : ORDER_TYPE.PICKUP.text
+              ? ORDER_TYPE.DELIVERY.text
+              : ORDER_TYPE.PICKUP.text
               }`}</h5>
             <a
               className="btn-close close-time "

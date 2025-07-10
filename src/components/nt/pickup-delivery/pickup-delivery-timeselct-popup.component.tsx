@@ -146,13 +146,8 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     let meridiem;
     load = true;
     const restaurantWindowTime = main.restaurantWindowTime;
-    // let asapLaterOnState = getAsapLaterOnState(
-    //   restaurantinfo?.defaultLocation as any,
-    //   selecteddelivery?.pickupordelivery as any,
-    //   restaurantWindowTime as RestaurantWindowTimeNew | any
-    // );
-  const asapLaterOnState: AsapLaterOnState =
-    getAsapLaterOnState(
+    const asapLaterOnState: AsapLaterOnState =
+      getAsapLaterOnState(
         restaurantinfo?.defaultLocation as any,
         selecteddelivery?.pickupordelivery as OrderType | any,
         restaurantWindowTime as RestaurantWindowTimeNew | any);
@@ -259,9 +254,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       }
     };
     const handleAsapClick = () => {
-      if (
-        // ordertype ===
-        ORDER_TYPE.DELIVERY.value &&
+      if (ordertype === ORDER_TYPE.DELIVERY.value &&
         deliveryService === DELIVERYSERVICES.UBEREATS &&
         selectedAddress === null
       ) {
@@ -282,7 +275,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       OrderServices.getOrderTiming({
         restaurantId: Number(restaurantinfo?.restaurantId),
         locationId: Number(defaultLocation?.locationId),
-        ordertype: ordertype.toString(),
+        ordertype: ordertype,
         obj: selectedAddress,
         requestId: id,
       }).then((gettimeresponse) => {
@@ -312,7 +305,6 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                 }
                 if (response.result != undefined && response.result !== null) {
                   if (response.result?.status === "success") {
-                    // props.clickOk(false)
                     let newtime = time[0] + " " + time[1];
                     setOrderTime(newtime);
                     dispatch(setordertime(newtime));
@@ -331,7 +323,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     };
     const handleLaterOnClick = () => {
       if (
-        // ordertype ===
+         ordertype ===
         ORDER_TYPE.DELIVERY.value &&
         deliveryService === DELIVERYSERVICES.UBEREATS &&
         selectedAddress === null
@@ -362,7 +354,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       OrderServices.getOrderTiming({
         restaurantId: Number(restaurantinfo?.restaurantId),
         locationId: Number(defaultLocation?.locationId),
-        ordertype: ordertype.toString(),
+        ordertype: ordertype,
         obj: selectedAddress,
         requestId: defaultRequestId,
       }).then((gettimeresponse) => {

@@ -21,7 +21,7 @@ interface FutureDayComponentProps {
   handleClickDate: (day: FutureDateType, isClose?: boolean) => void;
   selectedDate: string;
   order: OrderStateType;
-  ordertype: any;
+  ordertype:number;
 }
 
 const FutureDayComponent: React.FC<FutureDayComponentProps> = ({

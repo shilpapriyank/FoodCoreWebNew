@@ -107,7 +107,7 @@ export const OrderItemsList = () => {
         deliveryaddressId: deliveryId,
         tipPercentage: Number(carttotal?.tipPercentage),
         tipAmount: carttotal?.tipAmount,
-        ordertype: String(ordertype),
+        ordertype: Number(ordertype),
         selectedTime: selectedtime,
         requestId: order?.deliveryRequestId,
       }).then((response) => {
@@ -239,7 +239,7 @@ export const OrderItemsList = () => {
             deliveryaddressId: deliveryaddressinfo?.deliveryaddressId,
             tipPercentage: Number(carttotal?.tipPercentage),
             tipAmount: carttotal?.tipAmount,
-            ordertype: String(ordertype),
+            ordertype: Number(ordertype),
             selectedTime: selectedtime,
             requestId: order?.deliveryRequestId,
           }).then((response) => {
