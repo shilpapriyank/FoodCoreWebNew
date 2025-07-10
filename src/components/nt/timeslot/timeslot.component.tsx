@@ -115,7 +115,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(restaurantinfo?.defaultLocation as any,
     // pickupordelivery as OrderType | any,
     selecteddelivery?.pickupordelivery as OrderType | any,
-     restaurantWindowTime as RestaurantWindowTime | any);
+    restaurantWindowTime as RestaurantWindowTime | any);
   const orderDisableData: OrderDisableData = orderDisable(restaurantinfo as GetAllRestaurantInfo, selecteddelivery, restaurantWindowTime as RestaurantWindowTimeNew[] | any);
   const selectedDay: string = (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
   const [dayCloseError, setDayCloseError] = useState<string>("");
@@ -247,12 +247,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         ordertype: Number(ordertype),
         scheduleDateTime: day?.futureDate ?? "",
       }).then((res: TimeSlot[]) => {
-        // console.log("📞 generateTimeSlot called with:", {
-        //   restaurantId,
-        //   locationId,
-        //   ordertype: Number(ordertype),
-        //   scheduleDateTime: day?.futureDate ?? "",
-        // });
         dispatch(isasap(false));
         settimeSlots(res);
         setLoadTimeslot(false);
@@ -341,25 +335,22 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   return (
     <>
       <div
-        className={`modal fade modal-your-order address-modal ${
-          isOpenModal ? "show d-block" : ""
-        }`}
+        className={`modal fade modal-your-order address-modal ${isOpenModal ? "show d-block" : ""
+          }`}
         style={{ display: "block" }}
         id="order-time-modal"
         aria-labelledby="order-time-modal-Label"
         aria-hidden="true"
       >
         <div
-          className={`modal-dialog modal-dialog-centered ${
-            true ? "modal-dialog-scrollable" : ""
-          }`}
+          className={`modal-dialog modal-dialog-centered ${true ? "modal-dialog-scrollable" : ""
+            }`}
         >
           <div className="modal-content pb-0">
-            <h5 className="modal-title" id="login-modal-Label">{`Schedule ${
-              ordertype === ORDER_TYPE.DELIVERY.value
+            <h5 className="modal-title" id="login-modal-Label">{`Schedule ${ordertype === ORDER_TYPE.DELIVERY.value
                 ? ORDER_TYPE.DELIVERY.text
                 : ORDER_TYPE.PICKUP.text
-            }`}</h5>
+              }`}</h5>
             <a
               className="btn-close close-time "
               id="close-modal "
@@ -385,9 +376,8 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               </div>
             )}
             <div
-              className={`modal-body ts-body ${
-                dayCloseError !== "" ? "p-0 pb-2" : ""
-              }`}
+              className={`modal-body ts-body ${dayCloseError !== "" ? "p-0 pb-2" : ""
+                }`}
             >
               <div className="time-slot">
                 <div className="row">
@@ -429,10 +419,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 <div className="row">
                   {dayCloseError === '' ? (
                     <>
-                      {/* {console.log("✅ dayCloseError is empty")}
-                      {console.log("asapLaterOnState.isAsap:", asapLaterOnState.isAsap)}
-                      {console.log("selectedDate:", selectedDate)} */}
-
                       {(asapLaterOnState.isAsap && selectedDate === "Today") && (
                         <>
                           {/* {console.log("✅ Showing ASAP TimeSlotPillComponent")} */}
@@ -481,7 +467,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
             <div className="row modal-footer position-sticky sticky-bottom border-top-0 footer-top-shadow">
               {order.isasap && asapTime !== "" && dayCloseError === "" && (
                 <h6 className="text-center fs-5">
-                  {}
+                  { }
                   {selectedDay},&nbsp;
                   {(order?.futureOrderDay as any)?.futureDate}, {asapTime}
                 </h6>
@@ -491,7 +477,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 timeOrErrorMessage === "" &&
                 dayCloseError === "" && (
                   <h6 className="text-center fs-5">
-                    {}
+                    { }
                     {selectedDay},&nbsp;
                     {(order?.futureOrderDay as any)?.futureDate},{" "}
                     {selectedTime || order?.checktime}
@@ -510,7 +496,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 )}
               <div className="d-grid gap-2 col-md-6 col-12 mx-auto mt-2">
                 {(selectedTime === "" && order?.checktime === "") ||
-                dayCloseError !== "" ? (
+                  dayCloseError !== "" ? (
                   <ButtonComponent
                     classname=" btn-default btn-orange opacity-50 no-drop"
                     textName="Schedule"

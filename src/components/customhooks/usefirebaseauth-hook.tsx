@@ -1,10 +1,9 @@
 import * as firebase from 'firebase/app';
-import { initializeApp, getApps } from 'firebase/app';
+import { useReduxData } from './useredux-data-hooks';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import handleNotify from '../default/helpers/toaster/toaster-notify';
 import { ToasterPositions } from '../default/helpers/toaster/toaster-positions';
 import { ToasterTypes } from '../default/helpers/toaster/toaster-types';
-import { useReduxData } from './useredux-data-hooks';
 
 // Extend window object to include recaptchaVerifier and confirmationResult
 declare global {
@@ -17,11 +16,10 @@ declare global {
 
 const useFireBaseAuth = () => {
     const { restaurantinfo } = useReduxData();
-
     const apiKey: string | undefined = restaurantinfo?.firebaseConfig?.apikey;
     const authDomain: string | undefined = restaurantinfo?.firebaseConfig?.authdomain;
 
-    // Initialize Firebase App
+    //INTIALIZE THE FIREBASE APP
     function intializeFirebaseApp(): void {
         if (!firebase.getApps().length) {
             const app = firebase.initializeApp({
@@ -39,9 +37,10 @@ const useFireBaseAuth = () => {
         auth.languageCode = 'en';
 
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            size: 'invisible',
-            callback: (response: any) => {
-                // reCAPTCHA solved
+            'size': 'invisible',
+            'callback': (response: any) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                // ...
             },
             'expired-callback': () => {
                 // reCAPTCHA expired
@@ -55,11 +54,11 @@ const useFireBaseAuth = () => {
 
             const $ = (window as any).$; // jQuery from global (assumes it's available)
             if ($) {
-                $('#recaptcha-container').css('transform', 'scale(0.77)');
-                $('#recaptcha-container').css('-webkit-transform', 'scale(0.77)');
-                $('#recaptcha-container').css('transform-origin', '0 0');
-                $('#recaptcha-container').css('-webkit-transform-origin', '0 0');
-                $('#recaptcha-container #rc-anchor-container').css('width', '250px');
+                $("#recaptcha-container").css('transform', 'scale(' + 0.77 + ')');
+                $("#recaptcha-container").css('-webkit-transform', 'scale(' + 0.77 + ')');
+                $("#recaptcha-container").css('transform-origin', '0 0');
+                $("#recaptcha-container").css('-webkit-transform-origin', '0 0');
+                $("#recaptcha-container #rc-anchor-container").css('width', '250px');
             }
         }, 500);
     }

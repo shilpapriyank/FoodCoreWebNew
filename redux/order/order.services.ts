@@ -355,7 +355,8 @@ export class OrderServices {
     responseclass = new ResponseModel();
     const methodName = "getOrderTiming";
     const checktimeurl = ENDPOINTS.GET_TIMING;
-    const selectedAddress = {
+    const selectedAddress = 
+    {
       deliveryAddressId: obj?.deliveryaddressId ?? 0,
       restaurantId: restaurantId,
       locationId: locationId,
@@ -370,6 +371,7 @@ export class OrderServices {
       country: obj?.country,
       requestId,
     };
+    
     const data = {
       request: {
         ...selectedAddress,

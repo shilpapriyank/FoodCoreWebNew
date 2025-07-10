@@ -15,7 +15,7 @@ import { LoginServices } from "../../../../redux/login/login.services";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
 import { selecteddeliveryaddress } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
-import useFireBaseAuth from "@/components/customhooks/userfirebaseauth-hook";
+import useFireBaseAuth from "@/components/customhooks/usefirebaseauth-hook";
 import { UserDetailsErrormessage } from "@/components/helpers/static-message/userdetails-message";
 import { DeliveryAddressTypes } from "../../../../redux/delivery-address/delivery-address.type";
 import handleNotify from '../../default/helpers/toaster/toaster-notify';
@@ -27,7 +27,6 @@ import 'react-phone-input-2/lib/bootstrap.css';
 import { OTPVerificationSettingParams } from "@/types/register-types/register.types";
 import { setUserDetail } from "../../../../redux/login/login.slice";
 import { useAppDispatch } from "../../../../redux/hooks";
-
 
 interface RegisterProps {
     isOpenModal: boolean;
@@ -427,10 +426,16 @@ const Register: React.FC<RegisterProps> = ({
             };
         }
 
-        const checkPhoneRequestModel: CheckPhoneRequestModel = {
+        // const checkPhoneRequestModel: CheckPhoneRequestModel = {
+        //     restaurantId: restaurantinfo?.restaurantId as number,
+        //     phoneNumber: `${dialCode}${unFormatePhoneNumber(values.phone)}`,
+        //     unPhormatedPhone: dialCode,
+        // };
+         const checkPhoneRequestModel :CheckPhoneRequestModel = {
             restaurantId: restaurantinfo?.restaurantId as number,
-            phoneNumber: `${dialCode}${unFormatePhoneNumber(values.phone)}`
-        };
+            phone: unPhormatedPhone,
+            unPhormatedPhone: dialCode
+        }
 
         setErrorMessage(null);
 
@@ -562,25 +567,13 @@ const Register: React.FC<RegisterProps> = ({
         handleOpenLoginModal(true)
     }
 
-    console.log("calling from register component")
-    //
     return (
         <>
-            <div className=
-            {`modal modal-your-order loginmodal fade
-                       ${(isOpenModal && !openAdressModal && !isOtpModal) ? 'show d-block' : ''}        
-                             `}
-                id="exampleModal-register" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className={`modal modal-your-order loginmodal fade ${(isOpenModal && !openAdressModal && !isOtpModal) ? 'show d-block' : ''}`} id="exampleModal-register" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered ru-model">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">Register</h5>
-                        {!(b2b && isBusinessNameRequired) &&
-                            <button type="button"
-                                className="btn-close"
-                                onClick={() => handleToggle
-                                    (false, 'openRegisterModal')}
-                                aria-label="Close"
-                            />}
+                        {!(b2b && isBusinessNameRequired) && <button type="button" className="btn-close" onClick={() => handleToggle(false, 'openRegisterModal')} aria-label="Close" />}
                         <form onSubmit={handleSubmit}>
                             <div className="modal-body">
                                 <div className="row mt-2">
@@ -648,31 +641,32 @@ const Register: React.FC<RegisterProps> = ({
                                         <label>Code</label>
                                         <br />
                                         <PhoneInput
-                                            country={dialCode ? dialCode.replace('+', '') : 'us'} // 'us' as default
-                                            value={values.phone}
-                                            onChange={(phone, countryData, event, formattedValue) => {
-                                                setDialCode('+' + (countryData as any).dialCode);
-                                                setValues(prev => ({
-                                                    ...prev,
-                                                    phone: phone
-                                                }));
+                                            country={'us'}
+                                            value={dialCode || '+1'}
+                                            onChange={(value: string, data: { dialCode: string }) => {
+                                                setDialCode('+' + data.dialCode);
+                                                setErrorMessage(null);
+                                                setSubmitting(false);
                                             }}
-                                            onlyCountries={getCountryList().map((c: any) => c.iso2)} // assuming your countries have iso2 codes
-                                            preferredCountries={[]} // no preferred countries
-                                            enableSearch={true}
+                                            onlyCountries={getCountryList()}
+                                            preferredCountries={[]}
+                                            enableAreaCodes={false}
+                                            enableSearch
+                                            disableSearchIcon
                                             inputProps={{
                                                 name: 'phone',
                                                 required: true,
-                                                className: 'codeinput form-control register-country',
                                                 autoFocus: false,
                                                 readOnly: true,
-                                                style: { caretColor: "transparent" }
+                                                id: `x${Math.random()}`,
+                                                style: { caretColor: 'transparent' },
                                             }}
-                                            containerClass="dialCode form-control"
-                                            disableDropdown={false}
-                                            disableCountryCode={false}
-                                            disableSearchIcon={true}
+                                            containerClass="intl-tel-input"
+                                            inputClass="codeinput form-control register-country"
+                                            buttonClass=""
+                                            dropdownClass="country-list"
                                         />
+
                                     </div>
                                     <div className="col-lg-4 col-md-4 col-8">
                                         <label>Phone Number</label>
@@ -719,7 +713,7 @@ const Register: React.FC<RegisterProps> = ({
                                             <div className="error-text text-danger fs-12 mt-2 mb-2">Passwords do not match.</div>
                                         )}
                                     </div>
-                                    {restaurantinfo?.smsapigateway === 1 && restaurantinfo?.enableotpauthentication === true && (
+                                    {restaurantinfo?.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true && (
                                         <div className="col-lg-12 col-sm-12 col-xs-12 d-flex justify-content-end mt-2">
                                             <div style={{ width: "32% !important", border: "none !important" }} id="recaptcha-container"></div>
                                         </div>
@@ -729,7 +723,6 @@ const Register: React.FC<RegisterProps> = ({
                                     </div>}
                                 </div>
                             </div>
-
                             <div className="modal-footer">
                                 <div className="row w-100 ms-auto me-auto">
                                     <div className="col-lg-6 text-center col-md-6 col-12">
@@ -768,7 +761,6 @@ const Register: React.FC<RegisterProps> = ({
                 />}
             <div className="modal-backdrop fade show"></div>
         </>
-        // <h1>This is a register form</h1>
     );
 };
 
