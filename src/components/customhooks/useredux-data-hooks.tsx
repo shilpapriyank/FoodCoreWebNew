@@ -85,7 +85,6 @@ export const useReduxData = () => {
     order?.futureOrderDay?.futureDate || "",
     order?.isasap ?? false
   );
-  
   const orderTimeValid =
     typeof order?.checktime === "string" && order.checktime.trim() !== "";
 

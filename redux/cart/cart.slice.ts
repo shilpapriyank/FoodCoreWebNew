@@ -72,7 +72,7 @@ export const getCartItem = createAsyncThunk(
       deliveryaddressId?: number;
       tipPercentage?: number;
       tipAmount?: number;
-      ordertype?: string;
+      ordertype?: number;
       selectedTime: string;
       requestId: string;
     },

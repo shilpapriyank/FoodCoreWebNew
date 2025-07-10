@@ -67,7 +67,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   const myDeliveryAddress = tempDeliveryAddress;
 
-  const handleChangeOrderType = (orderType: any) => {
+  const handleChangeOrderType = (orderType: string) => {
     dispatch(setpickupordelivery(orderType));
     if (ORDER_TYPE.DELIVERY.text === orderType) {
       if (userinfo === null) {
