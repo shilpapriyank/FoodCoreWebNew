@@ -373,7 +373,6 @@ export class CustomerServices {
   static async checkExistingCustomerPhoneNumber(
     checkPhoneRequestModel: CheckPhoneRequestModel
   ) {
-    debugger
     responseclass = new ResponseModel();
     const methodName = "updateVerifiedPhoneNumber";
     const endPoint = ENDPOINTS.CHECK_EXIST_CUSTOMER_PHONE_NUMBER;

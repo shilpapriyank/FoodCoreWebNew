@@ -266,7 +266,6 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail) => {
-    debugger;
     dispatch(selectedMenuItem(item as any));
     dispatch(setMenuItemDetailList(item));
     if (isSchoolProgramEnabled) {

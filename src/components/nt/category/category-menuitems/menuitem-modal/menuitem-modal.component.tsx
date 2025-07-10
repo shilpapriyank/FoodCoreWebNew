@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 import {
   calculateNettotal,
   GetCurrency,
@@ -48,18 +47,14 @@ import MenuItemQty from "./menuitem-qty.component";
 import MenuItemSkeletonComponent from "@/components/nt/skeleton/menuitem-skeleton.component";
 import { useAppDispatch } from "../../../../../../redux/hooks";
 import {
+  DependantMenuList,
   GetMenuItemDetail,
   List,
-  SelectedMenuItemDetail,
   Size,
   Topping,
   Type,
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-import {
-  CartDetails,
-  CartItemDetail,
-} from "@/types/cart-types/cartservice.type";
 import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 
 const MenuItemModal = ({
@@ -89,53 +84,44 @@ const MenuItemModal = ({
   const dispatch = useAppDispatch();
   let selectedmenuitemdetail = menuitem.selectedmenuitemdetail;
   const [minQty, setminQty] = useState<number>(1);
-  //   const [currentQty, setcurrentQty] = useState<number>(
-  //     selectedmenuitemdetail.qty !== undefined ? selectedmenuitemdetail.qty : 1
-  //   );
   const [currentQty, setcurrentQty] = useState<number>(
-    menuitem.selecteditemquantity !== undefined
-      ? menuitem.selecteditemquantity
-      : 1
+    selectedmenuitemdetail?.qty ? selectedmenuitemdetail.qty : 1
   );
   const [isLoad, setisLoad] = useState<boolean>(false);
   const [isCollpase, setisCollpase] = useState<boolean>(true);
   const currencySymbol = GetCurrency();
-  const [lstcarttopping, setlstcarttopping] = useState<Topping[]>([]);
+  const [lstcarttopping, setlstcarttopping] = useState<Type[]>([]);
   const [count, setcount] = useState<number>(0);
   const [refreshTopping, setrefreshTopping] = useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
   const { dynamic, location, category } = params;
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-  const customerId = userinfo?.customerId;
+  const customerId = userinfo ? userinfo.customerId : 0;
   const { restaurantId, defaultlocationId } =
     restaurantinfo as GetAllRestaurantInfo;
   const sessionId = sessionid;
   const dependentId = menuitem?.dependentid ?? 0;
   const dependentIds = menuitem?.dependentitemids;
   let menuItemDetail = menuitem.menuitemdetaillist;
-  //let menuItemDetail = menuitem?.menuitemdetaillist;
-  // console.log(
-  //   "selected menuitem detail from menuitem-modal compo",
-  //   menuitem?.selectedmenuitemdetail
-  // );
   const deliveryaddressinfo = selecteddelivery;
   let selectedsize =
     menuItemDetail &&
-    menuItemDetail.size != undefined &&
+    menuItemDetail.size &&
     menuItemDetail.size.filter((x) => x.sizeselected === true);
   let selectedtopping =
     menuItemDetail &&
-    selectedsize &&
+    menuItemDetail.topping &&
     menuItemDetail.topping.filter(
-      (x) => x.subparameterId == selectedsize[0].subparameterId
+      (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let updateitemoptionincart = menuitem.updateitemoptionincart;
   let selectedtoppings =
     menuItemDetail &&
-    selectedsize &&
+    menuItemDetail.topping &&
+    menuItemDetail.topping.length > 0 &&
     menuItemDetail?.topping.find(
-      (x) => x.subparameterId == selectedsize[0].subparameterId
+      (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let maincategoryList = main?.maincategoryList;
   var ordertype =
@@ -186,7 +172,7 @@ const MenuItemModal = ({
       setisLoad(true);
       return;
     }
-    // getMenuItemDetailes(restaurantinfo.restaurantId,restaurantinfo.defaultlocationId,0,selectedmenuitemdetail.menuitemId,sessionId,0)
+
     if (dependentId === 0) {
       MenuItemServices.getMenuItemList({
         restaurantId,
@@ -197,18 +183,12 @@ const MenuItemModal = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          //   dispatch({
-          //     type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-          //     payload: response,
-          //   });
-
           dispatch(setMenuItemDetailList(response));
           dispatch(setMenuCategoryData(response));
           setisLoad(true);
         }
       });
     }
-    selectedItemDescription;
     if (dependentId > 0) {
       setisLoad(true);
     }
@@ -216,23 +196,21 @@ const MenuItemModal = ({
 
   useEffect(() => {
     dispatch(selecteditemquantity(currentQty));
-    //dispatch(getCartItemCount(sessionId, restaurantinfo.defaultlocationId, restaurantinfo.restaurantId, customerId));
   }, [currentQty]);
 
   useEffect(() => {
-    //let selectedTopping = menuItemDetail.topping;
     let selectedToppingLength =
       selectedtoppings &&
-      selectedtoppings?.list.filter((item) => item?.optionselected === true)
+      selectedtoppings?.list?.filter((item) => item.optionselected === true)
         .length;
     let lstcarttoppingNew = [];
     if (selectedtoppings && selectedtoppings?.list) {
       selectedtoppings?.list != undefined &&
         selectedtoppings?.list.length > 0 &&
-        selectedtoppings?.list.map((lsttop: any) => {
+        selectedtoppings?.list.map((lsttop) => {
           lsttop.type != undefined &&
             lsttop.type.length > 0 &&
-            lsttop.type.map((type: any) => {
+            lsttop.type.map((type) => {
               if (type.subOptionselected === true) {
                 lstcarttoppingNew.push(type);
                 setlstcarttopping(lstcarttoppingNew);
@@ -244,11 +222,12 @@ const MenuItemModal = ({
     if (Array.isArray(selectedToppingLength && selectedToppingLength > 0)) {
       let selectedtop =
         selectedtoppings &&
-        selectedtoppings?.list.filter((item) => item.optionselected === true);
+        selectedtoppings?.list.find((item) => item.optionselected === true);
       let selectedToppintypeLength =
         selectedtop &&
-        selectedtop[0]?.type.filter((item) => item.subOptionselected === true)
+        selectedtop?.type.filter((item) => item.subOptionselected === true)
           .length;
+
       if (selectedToppintypeLength === 0 && lstcarttoppingNew.length === 0) {
         setlstcarttopping([]);
       }
@@ -262,52 +241,49 @@ const MenuItemModal = ({
     setrefreshTopping(!refreshTopping);
   };
 
-  //   const selectedSizeClick = (item: List) => {
-  //     setlstcarttopping([]);
-  //     setisCollpase(true);
-
-  //     if (item) {
-  //       let lstsizedata: Size[] = [];
-  //       menuItemDetail?.size?.forEach((data) => {
-  //         if (data?.type === item?.type) {
-  //           data.sizeselected = true;
-  //         } else data.sizeselected = false;
-
-  //         lstsizedata.push(data);
-  //       });
-  //       menuItemDetail.size = lstsizedata;
-  //       dispatch(removeMenuItem());
-  //       dispatch(selectedItemSize(menuItemDetail as any));
-  //     }
-  //     setcount(count + 1);
-  //     handleRefreshTopping();
-  //   };
-
-  const selectedSizeClick = (item: List) => {
+  const selectedSizeClick = (item: Size) => {
     setlstcarttopping([]);
     setisCollpase(true);
 
-    if (item && menuItemDetail) {
+    if (item && item != undefined && menuItemDetail) {
       let lstsizedata: Size[] = [];
-
-      menuItemDetail.size?.forEach((data) => {
-        // Compare item.type with one of the entries in data.type array
-        const isMatch = Array.isArray(data.type)
-          ? data.type.some((t) => t.name === item.type)
-          : false;
-
-        data.sizeselected = isMatch;
+      menuItemDetail?.size.map((data) => {
+        if (data.type === item.type) data.sizeselected = true;
+        else data.sizeselected = false;
         lstsizedata.push(data);
       });
-
       menuItemDetail.size = lstsizedata;
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail.size as Size[]));
+      dispatch(selectedItemSize(menuItemDetail.size));
     }
-
     setcount(count + 1);
     handleRefreshTopping();
   };
+
+  // const selectedSizeClick = (item: Size) => {
+  //   setlstcarttopping([]);
+  //   setisCollpase(true);
+
+  //   if (item && item != undefined) {
+  //     let lstsizedata: Size[] = [];
+  //     menuItemDetail?.size?.forEach((data) => {
+  //       // Compare item.type with one of the entries in data.type array
+  //       const isMatch = Array.isArray(data.type)
+  //         ? data.type.some((t) => t.name === item.type)
+  //         : false;
+
+  //       data.sizeselected = isMatch;
+  //       lstsizedata.push(data);
+  //     });
+
+  //     menuItemDetail.size = lstsizedata;
+  //     dispatch(removeMenuItem());
+  //     dispatch(selectedItemSize(menuItemDetail.size as Size[]));
+  //   }
+
+  //   setcount(count + 1);
+  //   handleRefreshTopping();
+  // };
 
   const increment = () => {
     const plusState = currentQty + 1;
@@ -329,14 +305,14 @@ const MenuItemModal = ({
   const memorisedNetTotal = useMemo(() => {
     return calculateNettotal(
       lstcarttopping,
-      selectedsize,
+      selectedsize as Size[],
       quantity,
-      menuItemDetail
+      menuItemDetail as GetMenuItemDetail
     );
   }, [lstcarttopping, quantity, selectedsize]);
 
   const addToCart = () => {
-    if (selectedmenuitemdetail && dependentId > 0) {
+    if (dependentId > 0 && selectedmenuitemdetail) {
       selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName as string;
     }
     if (
@@ -348,34 +324,34 @@ const MenuItemModal = ({
       dispatch(setDipendentItemQty(0));
     }
     // let total = selectedsize && selectedsize[0]?.price;
-    let total: number =
-      selectedsize && selectedsize.length > 0 && selectedsize[0].price
-        ? selectedsize[0].price
-        : 0;
-    // let nettotal = total * currentQty;
-    //if (deliveryaddressinfo.pickupordelivery === "Pickup" || (deliveryaddressinfo.pickupordelivery === "Delivery")) {
+    let total =
+      selectedsize &&
+      selectedsize != undefined &&
+      selectedsize.length > 0 &&
+      selectedsize[0].price;
+
     let selectedoption =
       selectedtopping &&
-      selectedtopping[0]?.list?.filter((x) => x.isCompulsory == true);
-    //if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
-    if (selectedmenuitemdetail) {
+      selectedtopping?.length > 0 &&
+      selectedtopping?.[0].list.filter((x) => x.isCompulsory == true);
+    if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
       var isValidateItem = true;
       //test
       if (
         menuItemDetail &&
+        menuItemDetail.topping != undefined &&
+        menuItemDetail.topping.length > 0 &&
         selectedoption &&
-        menuItemDetail?.topping.length > 0 &&
-        selectedoption?.length > 0
+        selectedoption.length > 0
       ) {
         let result = [];
         for (var i = 0; i < selectedoption.length; i++) {
           if (
             selectedoption[i].type != undefined &&
             selectedoption[i].type.length > 0 &&
-            selectedoption[i].type.filter(
-              (x: any) => x.subOptionselected === true
-            ).length === 0
+            selectedoption[i].type.filter((x) => x.subOptionselected === true)
+              .length === 0
           ) {
             handleNotify(
               "Please select atleast one item in " + selectedoption[i].name,
@@ -395,8 +371,8 @@ const MenuItemModal = ({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
           objselectedItem: selectedmenuitemdetail,
           menuItemDetail: menuItemDetail as GetMenuItemDetail,
-          //customerId: Number(customerId),
-          total: total,
+          customerId: Number(customerId),
+          total: total as number,
           quantity: currentQty,
           sessionid: sessionid as string,
           orderType: ordertype,
@@ -404,6 +380,7 @@ const MenuItemModal = ({
           studentname: "",
         });
         if (itemobj != undefined) {
+          console.log("itemobject", itemobj);
           MenuItemServices.updateCartOrdersItem({
             orderobj: itemobj,
             restaurantId: restaurantId,
@@ -435,12 +412,6 @@ const MenuItemModal = ({
                 })
               );
               handleToggleMenuItem(false);
-              //TODO:
-              // setTimeout(() => {
-              //     var randomval = Math.floor(1000 + Math.random() * 9000);
-
-              //     router.push(`/${selectedTheme.url}/${dynamic}/${location}/cart?update=${randomval}`);
-              // }, 1000);
             }
           });
         }
@@ -454,8 +425,8 @@ const MenuItemModal = ({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail,
         menuItemDetail: menuItemDetail,
-        //customerId: Number(customerId),
-        total: total,
+        customerId: Number(customerId),
+        total: total as number,
         quantity: currentQty,
         sessionid: sessionid as string,
         orderType: ordertype,
@@ -468,11 +439,7 @@ const MenuItemModal = ({
           restaurantId: restaurantId,
         }).then((response) => {
           if (response) {
-            //   dispatch({
-            //     type: MenuItemTypes.ADD_ITEM_TO_CART,
-            //     payload: response,
-            //   });
-            dispatch(setCartItem(response as any));
+            dispatch(setCartItem(response));
             dispatch(
               getCartItemCount({
                 sessionId,
@@ -523,9 +490,8 @@ const MenuItemModal = ({
         if (
           selectedoption[i].type != undefined &&
           selectedoption[i].type.length > 0 &&
-          selectedoption[i].type.filter(
-            (x: any) => x.subOptionselected === true
-          ).length === 0
+          selectedoption[i].type.filter((x) => x.subOptionselected === true)
+            .length === 0
         ) {
           handleNotify(
             "Please select atleast one item in " + selectedoption[i].name,
@@ -546,8 +512,8 @@ const MenuItemModal = ({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
           objselectedItem: selectedmenuitemdetail!,
           menuItemDetail: menuItemDetail as GetMenuItemDetail,
-          //customerId: Number(customerId),
-          total: total,
+          customerId: Number(customerId),
+          total: total as number,
           quantity: currentQty,
           sessionid: sessionid as string,
           orderType: ordertype,
@@ -560,10 +526,6 @@ const MenuItemModal = ({
             restaurantId: restaurantId,
           }).then((response) => {
             if (response) {
-              //   dispatch({
-              //     type: MenuItemTypes.ADD_ITEM_TO_CART,
-              //     payload: response,
-              //   });
               dispatch(setCartItem(response));
               dispatch(
                 getCartItemCount({
@@ -591,11 +553,8 @@ const MenuItemModal = ({
                 })
               );
 
-              // dispatch(updateCartItemCount());
-
               //TO DO:HANDLE THE DEPENDET ITEM POPUP
               handleToggleMenuItem(false);
-              // console.log(menuItemDetail?.dependantMenuList.length)
               if (
                 menuItemDetail?.dependantMenuList?.length > 0 &&
                 ((dependentIds === undefined && dependentId === 0) ||
@@ -614,12 +573,15 @@ const MenuItemModal = ({
                   let dependentItemList =
                     dependentIds?.length > 0
                       ? dependentIds
-                      : menuItemDetail?.dependantMenuList?.map(
-                          (item) => item?.DependantMenuItemId
-                        );
+                      : menuItemDetail?.dependantMenuList;
                   let removefirst = dependentItemList?.shift();
                   let remainingList = dependentItemList;
-                  //dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+
+                  if (typeof removefirst === "number") {
+                    dispatch(setDipendentId(removefirst));
+                  } else if (removefirst && typeof removefirst === "object") {
+                    dispatch(setDipendentId(removefirst.DependantMenuItemId));
+                  }
                   dispatch(setDipendentIds(remainingList));
                 } else {
                   dispatch(setDipendentId(0));
@@ -640,8 +602,8 @@ const MenuItemModal = ({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail!,
         menuItemDetail: menuItemDetail as GetMenuItemDetail,
-        //customerId: Number(customerId),
-        total: total,
+        customerId: Number(customerId),
+        total: total as number,
         quantity: currentQty,
         sessionid: sessionid as string,
         orderType: ordertype,
@@ -654,10 +616,6 @@ const MenuItemModal = ({
           restaurantId: restaurantId,
         }).then((response) => {
           if (response) {
-            // dispatch({
-            //   type: MenuItemTypes.ADD_ITEM_TO_CART,
-            //   payload: response,
-            // });
             dispatch(setCartItem(response));
             dispatch(
               getCartItemCount({
@@ -686,9 +644,6 @@ const MenuItemModal = ({
               })
             );
 
-            // dispatch(updateCartItemCount());
-            // dispatch(getCartItemCount(sessionId, restaurantinfo.defaultlocationId, restaurantinfo.restaurantId, customerId));
-
             if (
               menuItemDetail?.dependantMenuList?.length > 0 &&
               ((dependentIds === undefined && dependentId === 0) ||
@@ -707,16 +662,15 @@ const MenuItemModal = ({
                 let dependentItemList =
                   dependentIds?.length > 0
                     ? dependentIds
-                    : menuItemDetail?.dependantMenuList?.map(
-                        (item) => item?.DependantMenuItemId
-                      );
+                    : menuItemDetail?.dependantMenuList;
                 let removefirst = dependentItemList?.shift();
                 let remainingList = dependentItemList;
-                //dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+                if (typeof removefirst === "number") {
+                  dispatch(setDipendentId(removefirst));
+                } else if (removefirst && typeof removefirst === "object") {
+                  dispatch(setDipendentId(removefirst.DependantMenuItemId));
+                }
                 dispatch(setDipendentIds(remainingList));
-                // if (remainingList.length === 0 && removefirst?.DependantMenuItemId > 0) {
-
-                // }
               } else {
                 dispatch(setDipendentId(0));
                 dispatch(setDipendentItemQty(0));
@@ -730,30 +684,36 @@ const MenuItemModal = ({
 
   const handleClickSkip = () => {
     handleToggleMenuItem(false);
-    if (
-      // (menuItemDetail?.dependantMenuList.length > 0 && menuItemDetail?.dependantMenuList !== null)
-      dependentIds?.length > 0
-    ) {
-      dispatch({
-        type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-        payload: {},
-      });
+    if (dependentIds?.length > 0) {
+      dispatch(
+        getMenuItemDetailes({
+          restaurantId: restaurantinfo?.restaurantId as number,
+          locationId: restaurantinfo?.defaultlocationId as number,
+          customerId: userinfo ? userinfo.customerId : 0,
+          menuitemId: menuItemDetail?.menuItemId as number,
+          cartsessionId: sessionId as string,
+          cartId: 0,
+        })
+      );
       let dependentItemList =
         dependentIds?.length > 0
           ? dependentIds
-          : menuItemDetail?.dependantMenuList?.map(
-              (item) => item?.DependantMenuItemId
-            );
+          : menuItemDetail?.dependantMenuList;
       let removefirst = dependentItemList?.shift();
       let remainingList = dependentItemList;
-      //dispatch(setDipendentId(removefirst?.DependantMenuItemId));
-      dispatch(setDipendentIds(remainingList as any));
+      if (typeof removefirst === "number") {
+        dispatch(setDipendentId(removefirst));
+      } else if (removefirst && typeof removefirst === "object") {
+        dispatch(setDipendentId(removefirst.DependantMenuItemId));
+      }
+      dispatch(setDipendentIds(remainingList as DependantMenuList[]));
     } else {
       dispatch(setDipendentItemQty(0));
       dispatch(setDipendentId(0));
     }
   };
-  const selectedFavoriteClick = (item: any) => {
+
+  const selectedFavoriteClick = (item: boolean) => {
     setcount(count + 1);
     let objdata = selectedmenuitemdetail;
     if (!objdata) return null;
@@ -804,10 +764,12 @@ const MenuItemModal = ({
                     <MenuItemInfo
                       selectedSizeClick={selectedSizeClick}
                       selectedFavoriteClick={selectedFavoriteClick}
-                      name={selectedItemName}
-                      desc={selectedItemDescription}
+                      name={selectedItemName as string}
+                      desc={selectedItemDescription as string}
                       shareUrl={shareUrl}
-                      isFavourite={selectedmenuitemdetail?.isFavoriteMenu}
+                      isFavourite={
+                        selectedmenuitemdetail?.isFavoriteMenu as boolean
+                      }
                       img={itemImage}
                     />
                     <div className="row mt-3">
@@ -821,10 +783,7 @@ const MenuItemModal = ({
                         <div className="d-block d-md-none">
                           <h1>Description</h1>
                           <p> {getDesc(selectedItemDescription as string)}</p>
-                          {/* <p >  {selectedItemDescription}</p> */}
                         </div>
-                        {/* <div className="accordion" id="toppings-accordion">
-                                                    <div className="row"> */}
                         {isLoad && (
                           <MenuItemOptions
                             isLoad={isLoad}
@@ -832,8 +791,6 @@ const MenuItemModal = ({
                             isExpand={isPreLoaded}
                           />
                         )}
-                        {/* </div>
-                                                </div> */}
                       </div>
                     </div>
                   </div>
