@@ -551,10 +551,7 @@ export const getAsapLaterOnState = (
   restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
   //debugger;
-  // console.log("🧪 Running getAsapLaterOnState...");
   // console.log("➡️ defaultLocation:", defaultLocation);
-  // console.log("➡️ pickupordelivery:", pickupordelivery);
-  // console.log("➡️ restaurantWindowTime:", restaurantWindowTime);
   if (!defaultLocation || pickupordelivery === undefined) {
     return {
       isdisplay: false,
@@ -576,13 +573,6 @@ export const getAsapLaterOnState = (
     isDeliveryOrderingDisable,
     isOrderingDisable,
   } = defaultLocation;
-  // console.log("🧩 isTakeOutAsap:", defaultLocation?.isTakeOutAsap);
-  // console.log("🧩 isTakeOutPickupTime:", defaultLocation?.isTakeOutPickupTime);
-  // console.log("🧩 isDeliveryAsap:", defaultLocation?.isDeliveryAsap);
-  // console.log("🧩 isDeliveryPickupTime:", defaultLocation?.isDeliveryPickupTime);
-  // console.log("🧩 isTakeoutOrderingDisable:", defaultLocation?.isTakeoutOrderingDisable);
-  // console.log("🧩 isDeliveryOrderingDisable:", defaultLocation?.isDeliveryOrderingDisable);
-  // console.log("🧩 isOrderingDisable:", defaultLocation?.isOrderingDisable);
 
   const orderState =
     pickupordelivery === ORDER_TYPE.DELIVERY.value
@@ -919,12 +909,6 @@ export const getCheckTimeArr = (
   isasap: boolean
 ): string[] => {
   const Time: string[] = [];
-
-  // console.log("🟡 getCheckTimeArr() called with:");
-  // console.log("orderTime:", orderTime);
-  // console.log("orderDate:", orderDate);
-  // console.log("isasap:", isasap);
-  // console.log("restaurantinfo:", restaurantinfo?.defaultLocation);
 
   // ✅ Early return if orderTime is invalid
   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {

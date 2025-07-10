@@ -23,7 +23,6 @@ const selecteddeliverySlice = createSlice({
       state.choosetime = action.payload;
     },
     setpickupordelivery(state, action: PayloadAction<any>) {
-      // console.log("🟢 setpickupordelivery reducer called:", action.payload);
       state.pickupordelivery = action.payload;
     },
     selecteddeliveryaddress(

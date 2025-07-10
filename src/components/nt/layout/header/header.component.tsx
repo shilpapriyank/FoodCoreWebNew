@@ -38,55 +38,54 @@ import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { ThemeType } from "@/types/common-types/common.types";
+import { useAppDispatch } from "../../../../../redux/hooks";
+import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
 
 interface HeaderProps {
   handleChangeAddress?: () => void;
   page?: string;
 }
 const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
-  const { restaurantinfo, selecteddelivery, order, userinfo, cart } =
-    useReduxData();
+  const {
+    restaurantinfo,
+    selecteddelivery,
+    order,
+    userinfo,
+    cart
+  } = useReduxData();
   const rewardAmount =
     userinfo?.totalRewardPoints && userinfo.rewardvalue
       ? parseFloat(
-          (userinfo.totalRewardPoints / userinfo.rewardvalue).toString()
-        ).toFixed(2)
+        (userinfo?.totalRewardPoints / userinfo?.rewardvalue).toString()
+      ).toFixed(2)
       : "0";
-
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const pathname: string = usePathname();
   const currencySymbol = GetCurrency();
+  const router = useRouter();
+  const logoUrl: string = restaurantinfo?.logo ?? "https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png";       //
   const params: Record<string, string> = useParams();
-  const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
-  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
-  const [isOpenOrderTypeModal, setisOpenOrderTypeModal] =
-    useState<boolean>(false);
-  const [openAccountConfirmModal, setopenAccountConfirmModal] =
-    useState<boolean>(false);
-  const logoUrl: string =
-    restaurantinfo?.logo ??
-    "https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/Resources/RestaurantLogo/14.png";
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-  const isHomePage = page === "location";
   const themeUrl = selectedTheme?.url;
   const restaurantUrl = restaurantinfo?.restaurantURL;
   const locationSlug = restaurantinfo?.defaultLocation?.locationURL;
+  const locationFullLink: string = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
   const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype ?? false;
-  const isSchoolProgramEnabled =
-    (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
-  const orderTypeName: string = selecteddelivery?.pickupordelivery;
-  const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
-  const openTimeModelDefault =
-    pathname.includes(PAGES.CHECKOUT) &&
-    order?.checktime === "" &&
-    !b2b &&
-    !isSchoolProgramEnabled;
   const openLoginDefault = b2b && userinfo === null;
+  const pathname: string = usePathname();
+  const [isOpenOrderTypeModal, setisOpenOrderTypeModal] = useState<boolean>(false);
+  const isSchoolProgramEnabled = (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
+  const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
+  const openTimeModelDefault = pathname.includes(PAGES.CHECKOUT) && order?.checktime === "" && !b2b && !isSchoolProgramEnabled;
+  const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
   const [opentimingModal, setopentimingModal] = useState(openTimeModelDefault);
+  const isHomePage = page === "location";
+  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+  const [openAccountConfirmModal, setopenAccountConfirmModal] = useState<boolean>(false);
   const { width } = useWindowDimensions();
   const isMobile: boolean = width < 768;
-  const locationFullLink: string = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
+  const orderTypeName: string = selecteddelivery?.pickupordelivery;
+
+  const dispatch = useAppDispatch();
+  let cartcount = cart.cartitemcount
   useEffect(() => {
     if (b2b && userinfo === null && openLoginModal === false) {
       setOpenLoginModal(true);
@@ -122,18 +121,21 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
   const handleToggleAccountConfirm = (value: boolean) => {
     setopenAccountConfirmModal(value);
   };
-  const handleToggle = (value: boolean, keyName?: string) => {
-    //add keyName
-    if (keyName) {
-      console.log(keyName);
-    }
+  const handleToggle = (value: boolean, key?: string) => {
+    if (!key) return;
+    setModalState((pre) => (
+      {
+        ...pre,
+        [key]: value
+      }
+    ))
   };
 
   const handleLogOutclick = useCallback(() => {
     if (userinfo !== undefined && userinfo !== null) {
       dispatch(logout());
       dispatch(clearSessionId());
-      //dispatch(clearRedux(true, true));
+      dispatch(clearRedux(true, true));
       //CREATE SESSIONID AFTER THE LOGOUT
       let rewardpoints = {
         rewardvalue: 0,
@@ -146,20 +148,11 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
       dispatch(setrewardpoint(rewardpoints));
       let id = uuidv4();
       dispatch(createSessionId(id));
-      handleNotify(
-        "logout successfully!",
-        ToasterPositions.TopRight,
-        ToasterTypes.Success
-      );
-
+      handleNotify("logout successfully!", ToasterPositions.TopRight, ToasterTypes.Success);
       let routepath = `/${selectedTheme?.url}/${params.dynamic}/${restaurantinfo?.defaultLocation.locationURL}`;
       router.push(routepath);
     } else {
-      handleNotify(
-        "please login first, before logout!",
-        ToasterPositions.TopRight,
-        ToasterTypes.Info
-      );
+      handleNotify("please login first, before logout!", ToasterPositions.TopRight, ToasterTypes.Info);
     }
   }, [userinfo]);
 
@@ -177,9 +170,8 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
               {isHomePage ? (
                 <>
                   <a
-                    className={`logo  d-md-block ${
-                      userinfo === null ? "d-none" : ""
-                    }`}
+                    className={`logo  d-md-block ${userinfo === null ? "d-none" : ""
+                      }`}
                   >
                     <span className="head-arrow">
                       <i className="fa fa-angle-left" />{" "}
@@ -217,94 +209,94 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                 pathname.includes(PAGES.PAYMENT) ||
                 pathname.includes(PAGES.CREATE_NEW_PASS)
               ) && (
-                <form>
-                  <div className="align-form">
-                    <div className="d-flex justify-content-center mb-2 mb-md-0">
-                      {restaurantinfo?.ioslink && (
-                        <a
-                          className="cursor_pointer app-icon px-1"
-                          href={restaurantinfo?.ioslink}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <img src="/nt/img/app_store.png" />
-                        </a>
-                      )}
-                      {restaurantinfo?.androidlink && (
-                        <a
-                          className="cursor_pointer app-icon px-1"
-                          href={restaurantinfo?.androidlink}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <img src="/nt/img/android.png" />
-                        </a>
-                      )}
-                    </div>
-                    <SelectedAddressHeader
-                      b2b={b2b}
-                      handleToggleOrderTypeModal={handleToggleOrderTypeModal}
-                    />
-                    {!b2b && !isSchoolProgramEnabled && (
-                      <>
-                        {" "}
-                        {orderTypeName !== "" && (
-                          <label className="d-none d-md-block">
-                            {orderTypeName} time
-                          </label>
-                        )}
-                        <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
-                          {orderTypeName !== "" && (
-                            <span className="d-md-none text-dark me-1">
-                              {orderTypeName} time
-                            </span>
-                          )}
-                          {isFutureOrder && (
-                            <span className="btn-default ">
-                              {futureDay?.futureDay}
-                            </span>
-                          )}
-                          &nbsp;
-                          <span
-                            className="text btn-default  "
-                            onClick={() => handleToggleTimingModal(true)}
+                  <form>
+                    <div className="align-form">
+                      <div className="d-flex justify-content-center mb-2 mb-md-0">
+                        {restaurantinfo?.ioslink && (
+                          <a
+                            className="cursor_pointer app-icon px-1"
+                            href={restaurantinfo?.ioslink}
+                            target="_blank"
+                            rel="noreferrer"
                           >
-                            {order.isasap ? "Asap" : "Later"}{" "}
-                          </span>
-                          &nbsp;
-                          {order.checktime !== "" && (
+                            <img src="/nt/img/app_store.png" />
+                          </a>
+                        )}
+                        {restaurantinfo?.androidlink && (
+                          <a
+                            className="cursor_pointer app-icon px-1"
+                            href={restaurantinfo?.androidlink}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <img src="/nt/img/android.png" />
+                          </a>
+                        )}
+                      </div>
+                      <SelectedAddressHeader
+                        b2b={b2b}
+                        handleToggleOrderTypeModal={handleToggleOrderTypeModal}
+                      />
+                      {!b2b && !isSchoolProgramEnabled && (
+                        <>
+                          {" "}
+                          {orderTypeName !== "" && (
+                            <label className="d-none d-md-block">
+                              {orderTypeName} time
+                            </label>
+                          )}
+                          <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
+                            {orderTypeName !== "" && (
+                              <span className="d-md-none text-dark me-1">
+                                {orderTypeName} time
+                              </span>
+                            )}
+                            {isFutureOrder && (
+                              <span className="btn-default ">
+                                {futureDay?.futureDay}
+                              </span>
+                            )}
+                            &nbsp;
                             <span
-                              className="btn-default"
+                              className="text btn-default  "
                               onClick={() => handleToggleTimingModal(true)}
                             >
-                              {" "}
-                              {order.checktime}
+                              {order.isasap ? "Asap" : "Later"}{" "}
                             </span>
-                          )}
-                          {userinfo === null && (
-                            <span
-                              className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
-                              onClick={() => handleOpenLoginModal(true)}
-                            >
-                              Login
-                            </span>
-                          )}
+                            &nbsp;
+                            {order.checktime !== "" && (
+                              <span
+                                className="btn-default"
+                                onClick={() => handleToggleTimingModal(true)}
+                              >
+                                {" "}
+                                {order.checktime}
+                              </span>
+                            )}
+                            {userinfo === null && (
+                              <span
+                                className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
+                                onClick={() => handleOpenLoginModal(true)}
+                              >
+                                Login
+                              </span>
+                            )}
+                          </h6>
+                        </>
+                      )}
+                      {isSchoolProgramEnabled && userinfo === null && (
+                        <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
+                          <span
+                            className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
+                            onClick={() => handleOpenLoginModal(true)}
+                          >
+                            Login
+                          </span>
                         </h6>
-                      </>
-                    )}
-                    {isSchoolProgramEnabled && userinfo === null && (
-                      <h6 className="align-center mt-2 color-dynamic  cursor-pointer pointer-cursor ">
-                        <span
-                          className="btn btn-sm btn-default d-none d-md-block login-btn d-md-none ms-1"
-                          onClick={() => handleOpenLoginModal(true)}
-                        >
-                          Login
-                        </span>
-                      </h6>
-                    )}
-                  </div>
-                </form>
-              )}
+                      )}
+                    </div>
+                  </form>
+                )}
             </div>
             <div className="col-lg-2 col-md-12 text-md-end col-12 d-none d-md-block">
               <UserDropdown
@@ -381,7 +373,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           locationId={restaurantinfo?.defaultlocationId as number}
           isload={false}
           locationUrl={restaurantinfo?.restaurantURL ?? ""}
-          clearMeaage={() => {}}
+          clearMeaage={() => { }}
         />
       )}
       {enabletimeslot && opentimingModal && (

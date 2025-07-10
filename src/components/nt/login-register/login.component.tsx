@@ -29,7 +29,6 @@ interface LoginProps {
     handleOpenLoginModal: (open: boolean) => void;
     handleToggleAccountConfirm: (value: boolean) => void;
 }
-
 const Login: React.FC<LoginProps> = ({
     isOpenModal,
     handleToggle,
@@ -40,7 +39,6 @@ const Login: React.FC<LoginProps> = ({
     const { restaurantinfo, deliveryaddress, userinfo } = useReduxData();
     const restaurantinformation = restaurantinfo;
     let tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
-
     const [userName, setuserName] = useState<string>('');
     const [password, setpassword] = useState<string>('');
     const [errorusername, setErrorUsername] = useState<string>('');
@@ -56,23 +54,18 @@ const Login: React.FC<LoginProps> = ({
     const [isRegiStaration, setisRegiStaration] = useState<boolean>(false);
     const [isLoadFlage, setisLoadFlage] = useState<boolean>(false);
     const locationCountry = restaurantinfo?.defaultLocation?.countryName?.toLowerCase();
-    //let locationCountryData = countryData[locationCountry || 'usa'];
     const locationCountryData = countryData[locationCountry as keyof typeof countryData];
-    // const [dialCode, setDialCode] = useState(locationCountryData.countryCode);
-    //const [dialCode, setDialCode] = useState<'+1' | '+91'>('+1');
     const [dialCode, setDialCode] = useState<string>('+1');
     const restaurantId = restaurantinfo?.restaurantId;
     const { isBusinessNameRequired } = useUtility();
     const b2b = restaurantinfo?.defaultLocation?.b2btype;
     const locationId = restaurantinfo?.defaultLocation?.locationId;
 
-
     useEffect(() => {
         setuserName("");
         setpassword("");
         setisDisable(false);
     }, [userinfo]);
-
     let defaultflag = document.querySelector(".iti-flag")
     let countryList = document.querySelector(".country-list")
     useEffect(() => {
@@ -102,74 +95,6 @@ const Login: React.FC<LoginProps> = ({
             return true;
         }
     };
-    // const handleSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     const restaurantId = restaurantinformation?.restaurantId;
-    //     if (validateForm(e)) {
-    //         const formatedusername = unFormatePhoneNumber(userName);
-    //         let usernames = userName.replace(/(\(\d{3}\))(\s\d{3})(\-\d{4})/, formatedusername).slice(0, 10);
-    //         usernames = usernames.slice(0, 10);
-    //         setisDisable(true);
-
-    //         LoginServices.getLoginUserDetails({
-    //             username: usernames,
-    //             password: password,
-    //             restaurantId: restaurantId,
-    //             dialCode: dialCode,
-    //             locationid: locationId,
-    //         }).then((responsedata) => {
-    //             if (responsedata !== null && responsedata.customerDetails !== null && responsedata.customerDetails !== undefined) {
-
-    //                 dispatch({ type: LoginTypes.USER_DETAIL, payload: responsedata.customerDetails });
-    //                 setUserExpiryTime()
-    //                 if (responsedata.customerDetails) {
-    //                     if (restaurantinformation?.enableotpauthentication === true && restaurantinfo?.deliveryServicePartnerEnable === true && !responsedata.customerDetails?.isVerifiedPhone) {
-    //                         setphoneVerify(true)
-    //                         handleOpenLoginModal(false)
-    //                         handleToggle?.(true, 'openVerifyPhone')
-    //                     }
-    //                     else {
-    //                         if (!responsedata.customerDetails.isVerified) {
-    //                             handleOpenLoginModal(false)
-    //                             handleToggleAccountConfirm(true)
-    //                         } else {
-    //                             if (restaurantinformation?.defaultLocation?.enableRewardPoint && responsedata?.customerDetails?.customertype !== CUSTOMER_TYPE.SUBSCRIBE) {
-    //                                 setLoadRewardPoint(true)
-    //                                 setTimeout(() => {
-    //                                     handleToggle?.(true, 'openRewardModal')
-    //                                 }, 500);
-    //                             }
-    //                         }
-    //                     }
-    //                     dispatch(setintialrewardpoints(responsedata.customerDetails));
-    //                     if (tempDeliveryAddress !== null) {
-    //                         tempDeliveryAddress.customerId = responsedata.customerDetails.customerId;
-    //                         DeliveryAddressServices.addDeliveryAddress(tempDeliveryAddress, restaurantinformation.restaurantId, restaurantinformation.defaultlocationId)
-    //                             .then((res) => {
-    //                                 if (res) {
-    //                                     tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
-    //                                     dispatch(selecteddeliveryaddress(tempDeliveryAddress));
-    //                                     let addressId = { customerAddressId: tempDeliveryAddress.deliveryaddressId, };
-    //                                     dispatch({
-    //                                         type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
-    //                                         payload: addressId,
-    //                                     });
-    //                                 }
-    //                                 dispatch(AddTempDeliveryAddress(null))
-    //                             });
-    //                     }
-    //                     if (responsedata.customerDetails.isVerified) {
-    //                         handleOpenLoginModal(false)
-    //                     }
-    //                 }
-    //             } else {
-    //                 setSubmitting(false)
-    //                 setisDisable(false)
-    //                 setErrorMessage(responsedata.message);
-    //             }
-    //         });
-    //     }
-    // };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -191,13 +116,12 @@ const Login: React.FC<LoginProps> = ({
                 dialCode: dialCode,
                 locationid: locationId as number,
             }).then((responsedata) => {
-               // debugger
+                // debugger
                 if (responsedata !== null && responsedata.customerDetails !== null && responsedata.customerDetails !== undefined) {
 
                     const customer = responsedata?.customerDetails;
                     if (responsedata && customer) {
                         console.log("Login Customer from logincomponent:", customer);
-                        // dispatch({ type: LoginTypes.USER_DETAIL, payload: customer });
                         dispatch(setUserDetail(customer))
                         setUserExpiryTime();
 
@@ -205,6 +129,7 @@ const Login: React.FC<LoginProps> = ({
                             setphoneVerify(true);
                             handleOpenLoginModal(false);
                             handleToggle?.(true, "openVerifyPhone");
+                            
                         } else {
                             if (!responsedata.customerDetails.isVerified) {
                                 handleOpenLoginModal(false);
@@ -218,7 +143,7 @@ const Login: React.FC<LoginProps> = ({
                                 }
                             }
                         }
-// dispatch(setintialrewardpoints(customer));
+                        dispatch(setintialrewardpoints(customer));
                         dispatch(setintialrewardpoints(responsedata.customerDetails));
 
                         if (tempDeliveryAddress !== null && restaurantinformation) {
@@ -231,7 +156,6 @@ const Login: React.FC<LoginProps> = ({
                             ).then((res) => {
                                 if (res) {
                                     tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
-                                   // dispatch(selecteddeliveryaddress(tempDeliveryAddress));
                                     dispatch(selecteddeliveryaddress(tempDeliveryAddress as any));
 
                                     dispatch({
@@ -305,18 +229,13 @@ const Login: React.FC<LoginProps> = ({
         setErrorMessage("");
     };
     const handleClickRegister = () => {
-        debugger
-        console.log("handleClickRegister from login")
         handleOpenLoginModal(false)
         handleToggle?.(true, 'openRegisterModal')
     }
 
     const handleClickForgotPass = () => {
-        // console.log("Forgot Password clicked!");
         handleOpenLoginModal(false);
-        // console.log("Login modal closed");
         handleToggle?.(true, 'openForgotPassModal');
-        //  console.log("Attempted to open forgot password modal");
     };
     return (
         <>

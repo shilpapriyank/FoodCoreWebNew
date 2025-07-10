@@ -47,7 +47,8 @@ export interface UpdatePhoneModel {
 
 export interface CheckPhoneRequestModel {
   restaurantId: number;
-  phoneNumber: string;
+  phone: string;
+  unPhormatedPhone: string;
 }
 
 export class CustomerServices {
@@ -372,26 +373,25 @@ export class CustomerServices {
   static async checkExistingCustomerPhoneNumber(
     checkPhoneRequestModel: CheckPhoneRequestModel
   ) {
+    debugger
     responseclass = new ResponseModel();
-    const methodName = "checkExistingCustomerPhoneNumber";
+    const methodName = "updateVerifiedPhoneNumber";
     const endPoint = ENDPOINTS.CHECK_EXIST_CUSTOMER_PHONE_NUMBER;
     const data = {
-      checkPhoneRequestModel,
-    };
+      checkPhoneRequestModel
+    }
     responseclass = await handleAxiosPostAsync(
       data,
       endPoint,
       methodName,
       true,
-      checkPhoneRequestModel.restaurantId
+      checkPhoneRequestModel?.restaurantId
     );
-    if (
-      responseclass.result != null &&
-      responseclass.status === API_RESPONSE_STATUS.SUCCESS
-    ) {
+    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
       return responseclass;
     } else {
       return responseclass;
     }
   }
+ 
 }

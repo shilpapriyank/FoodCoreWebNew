@@ -15,7 +15,7 @@ import { RegisterServices } from "../../../../redux/register/register.services";
 import CommonModal from "../common/common-model.component";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css"; // Use this, NOT intl-tel-input
-import useFireBaseAuth from "@/components/customhooks/userfirebaseauth-hook";
+import useFireBaseAuth from "@/components/customhooks/usefirebaseauth-hook";
 import OtpVerificationComponent from "./otpverification.component";
 import { convertSecondToMinute } from "../common/utility";
 

@@ -227,7 +227,6 @@ const MenuItemOptions = ({ isExpand }: any) => {
         return sub;
       });
     }
-    // console.log("sortedsuboptionBasedSeqNo", sortedsuboptionBasedSeqNo)
     let lstobj = {
       optionselected: selectedoption?.optionselected,
       subparameterId: selectedoption?.subparameterId,

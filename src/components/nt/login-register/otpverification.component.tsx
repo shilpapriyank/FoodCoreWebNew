@@ -93,7 +93,7 @@ const OtpVerificationComponent: React.FC<Props> = ({
   const [minutes, setMinutes] = useState<number>(otpTime.minute);
   const [seconds, setSeconds] = useState<number>(otpTime.second);
   const [otp, setOtp] = useState<any>("");
-  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selctedTheme = GetThemeDetails(restaurantinfo!.themetype);
   const unPhormatedPhone = unFormatePhoneNumber(userModel.phone);
   userModel.phone = unFormatePhoneNumber(userModel.phone);
   let addressmodel = null;
@@ -239,7 +239,7 @@ const OtpVerificationComponent: React.FC<Props> = ({
   };
 
   const registerUser = () => {
-    var restaurantUrl = selctedTheme.url + "/" + dynamic + "/" + location;
+    var restaurantUrl = selctedTheme?.url + "/" + dynamic + "/" + location;
     var requesturl =
       window.location.origin + "/" + restaurantUrl + "/confirmation?code=";
     RegisterServices.registerUserWithAddress(
@@ -398,7 +398,6 @@ const OtpVerificationComponent: React.FC<Props> = ({
             );
             registerUser();
           } else {
-           // console.log("successfully verified");
             handleClickValidateOTP(true);
           }
         })
