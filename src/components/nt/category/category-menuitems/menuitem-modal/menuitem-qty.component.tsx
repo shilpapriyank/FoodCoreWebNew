@@ -1,6 +1,16 @@
 import React from "react";
 
-const MenuItemQty = ({ increment, decrement, currentQty }: any) => {
+interface MenuItemQtyProps {
+  increment: () => void;
+  decrement: () => void;
+  currentQty: number;
+}
+
+const MenuItemQty = ({
+  increment,
+  decrement,
+  currentQty,
+}: MenuItemQtyProps) => {
   return (
     <div className="col-lg-4 p-0 col-md-5 col-6 pb-1 pb-md-0 label-bg mb-1 mb-md-0">
       <div className="quantity qty-container side-qty-btn ">
@@ -9,7 +19,7 @@ const MenuItemQty = ({ increment, decrement, currentQty }: any) => {
           type="button"
           onClick={decrement}
         >
-          <i className="fa fa-minus" />
+          <i className="fa fa-minus">minus</i>
         </button>
         <input
           type="text"
@@ -18,8 +28,12 @@ const MenuItemQty = ({ increment, decrement, currentQty }: any) => {
           readOnly
           className="input-qty quantity__input"
         />
-        <button className="qty-btn-plus btn-light quantity__plus" type="button">
-          <i className="fa fa-plus" onClick={increment} />
+        <button
+          className="qty-btn-plus btn-light quantity__plus"
+          type="button"
+          onClick={increment} // ✅ move onClick here
+        >
+          <i className="fa fa-plus">plus</i>
         </button>
       </div>
     </div>
