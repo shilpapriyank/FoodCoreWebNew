@@ -28,7 +28,7 @@ export interface Menuitems {
   isMenuCategoryDiscountApplied: boolean;
   quickorderallow: boolean;
   qty: number;
-  dependedItemId: number;
+  dependedItemId?: number;
   cartid: number;
 }
 

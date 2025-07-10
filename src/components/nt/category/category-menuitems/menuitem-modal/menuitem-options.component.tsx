@@ -13,10 +13,7 @@ import SubToppingRequiredWarning from "./subtop-reqwarning.component";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useAppDispatch } from "../../../../../../redux/hooks";
 import { leftRightArray } from "@/components/nt/common/utility";
-import { DefaultLocation } from "@/types/restaurant-types/restaurant.type";
 import {
-  GetAllMenuCategoryItems,
-  GetMenuItemDetail,
   List,
   Size,
   Topping,
@@ -29,21 +26,24 @@ import {
   updateitemoption,
 } from "../../../../../../redux/menu-item/menu-item.slice";
 
-const MenuItemOptions = ({ isExpand }: any) => {
+const MenuItemOptions = ({
+  isExpand,
+  isLoad,
+  count,
+}: {
+  isExpand: boolean;
+  isLoad: boolean;
+  count: number;
+}) => {
   const { menuitem } = useReduxData();
   const dispatch = useAppDispatch();
-  // let updateitemoptionincart = useSelector(({ updateitemoptionincart }) => updateitemoptionincart, shallowEqual);
   let menuItemDetail = menuitem.menuitemdetaillist;
-  // let selectedsize =
-  //   menuItemDetail != undefined &&
-  //   menuItemDetail?.size != undefined &&
-  //   menuItemDetail?.size.find((x) => x.sizeselected === true);
-  let selectedsize = menuItemDetail?.size.find((x) => x.sizeselected === true);
+  let selectedsize = menuItemDetail?.size?.find((x) => x.sizeselected === true);
   let selectedtopping = menuItemDetail?.topping?.find(
     (x) => x.subparameterId === selectedsize?.subparameterId
   );
   let itemoptions = leftRightArray(selectedtopping);
-  const [isExpandAll, setisExpandAll] = useState(
+  const [isExpandAll, setisExpandAll] = useState<boolean>(
     isExpand == true ? true : false
   );
   const [isOnLoadExpand, setisOnLoadExpand] = useState(isExpand ?? false);
@@ -78,27 +78,23 @@ const MenuItemOptions = ({ isExpand }: any) => {
       )
     ) {
       isFreeCountCalculation = false;
-      // handleOnChangeRemoveSubOptionOld(item, optionId, selection, isRadioButton, e)
-      // return;
     }
     //UPDATE THE SELCTED OPPTION STATUS:-item.subOptionselected TRUE OR FALSE
     let lstdefault: Type[] = [];
-    let selectedoption =
-      selectedtopping &&
-      selectedtopping?.list.find(
-        (x) =>
-          x.optionId == optionId &&
-          x.subparameterId == selectedsize?.subparameterId
-      );
+    let selectedoption = selectedtopping?.list.find(
+      (x) =>
+        x.optionId === optionId &&
+        x.subparameterId === selectedsize?.subparameterId
+    );
     let tdata = selectedoption?.type;
 
-    const newArray = tdata?.map((a) => Object.assign({}, a));
+    // const newArray = tdata?.map((a) => Object.assign({}, a));
+    const newArray = tdata?.map((a) => ({ ...a }));
 
-    tdata?.map((data) => {
+    tdata?.forEach((data) => {
       // HANDLING FOR THE CHECKBOX ON CHECK THE SUB-OPTION
       if (selection === "deselectall") {
         data.subOptionselected = false;
-        data.subOptionToppingQuantity = 0;
         data.subOptionToppingQuantity = 0;
         data.sequenceNumber = 0;
         data.pizzaside = "";
@@ -120,19 +116,24 @@ const MenuItemOptions = ({ isExpand }: any) => {
 
     //TODO:REMOVE FROM ISEXTRA
     let finalcount = calculateFinalCount(lstdefault, selectedoption);
-    var isMaxSelectZero = selectedoption?.freeToppingsCount == 0 ? true : false;
-    var checkCount =
-      isMaxSelectZero == false
-        ? finalcount <= parseInt(selectedoption?.freeToppingsCount as any)
-          ? true
-          : false
-        : true;
+    // var isMaxSelectZero = selectedoption?.freeToppingsCount == 0 ? true : false;
+    // var checkCount =
+    //   isMaxSelectZero == false
+    //     ? finalcount <= parseInt(selectedoption?.freeToppingsCount as any)
+    //       ? true
+    //       : false
+    //     : true;
+    var isMaxSelectZero = selectedoption?.freeToppingsCount === 0;
+    var checkCount = isMaxSelectZero
+      ? true
+      : finalcount <= (selectedoption?.freeToppingsCount || 0);
     //TODO:CHECKCOUNT IS FALSE THEN MAKE isExtraPaidTopping TRUE for that update the lstdefault array based on on
 
     // TODO:CHECK THE ALL TOPPING ARE PAID THEN AND FREECOUNT IS AVAILABLE THEN CONVERT PAID TO FREE BASED ON SEQUENCE
 
     // TASK END
-    let updateWithPaidTopping;
+    let updateWithPaidTopping: Type[] = [];
+
     if (isFreeCountCalculation) {
       updateWithPaidTopping = lstdefault?.map((subOption) => {
         if (item.suboptionId === subOption.suboptionId) {
@@ -309,6 +310,8 @@ const MenuItemOptions = ({ isExpand }: any) => {
     // let isAnotherSubOptionSelected=false
     tdata?.map((data) => {
       //IF OPTION IS NO SELCTED  THEN SELECT THE OTION
+      const updatedData = { ...data };
+      const updatedItem = { ...item };
       if (item.name === data.name && item.subOptionselected === false) {
         let selectionTypeTopizzaSide =
           selection === "select"
@@ -318,10 +321,15 @@ const MenuItemOptions = ({ isExpand }: any) => {
             : selection === "deselect"
             ? ""
             : selection;
-        item.subOptionselected = true;
-        data.subOptionselected = true;
-        data.subOptionToppingQuantity = 1;
-        data.pizzaside = selectionTypeTopizzaSide;
+        updatedItem.subOptionselected = true;
+        updatedData.subOptionselected = true;
+        updatedData.subOptionToppingQuantity = 1;
+        updatedData.pizzaside = selectionTypeTopizzaSide;
+        lstdefault.push(updatedData);
+        //item.subOptionselected = true;
+        //data.subOptionselected = true;
+        //data.subOptionToppingQuantity = 1;
+        //data.pizzaside = selectionTypeTopizzaSide;
       }
       //IF OPTION IS SELECTED THEN DESELECT FOR RADIO BUTTON ONLY
       else if (data.subOptionselected === true && isRadioButton === true) {
@@ -344,6 +352,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
           data.subOptionselected = isSelect;
           data.subOptionToppingQuantity = isSelect ? 1 : 0;
           data.pizzaside = isSelect ? selection : "";
+          lstdefault.push({ ...data });
         }
       }
       //CHECK FOR THE HALF PIZZA SELECTION ONLY FOR THE CHECKBOX (FUNCTIONALITY FOR THE CHNAGE PIZZA SIDE)
@@ -421,28 +430,53 @@ const MenuItemOptions = ({ isExpand }: any) => {
       const topRecord = lstdefault.reduce((max, subOption) =>
         subOption.sequenceNumber > max.sequenceNumber ? subOption : max
       );
-     // console.log(topRecord);
-      updateWithPaidTopping = lstdefault?.map((subOption) => {
-        if (item.suboptionId === subOption.suboptionId) {
-          subOption.sequenceNumber = topRecord?.sequenceNumber + 1;
-          subOption.isExtraPaidTopping = !checkCount;
-          if (subOption.isExtraPaidTopping) {
-            subOption.paidQty =
-              subOption.paidQty + 1 > subOption?.subOptionToppingQuantity
-                ? subOption.paidQty
-                : subOption.paidQty + 1;
-          } else {
-            subOption.paidQty = 0;
-          }
-          return subOption;
-        } else {
-          // subOption.isExtraPaidTopping = !checkCount
-          if (!subOption.isExtraPaidTopping) {
-            subOption.paidQty = 0;
-          }
+      console.log(topRecord);
+      // updateWithPaidTopping = lstdefault?.map((subOption) => {
+      //   if (item.suboptionId && item.suboptionId === subOption.suboptionId) {
+      //     subOption.sequenceNumber = topRecord?.sequenceNumber + 1;
+      //     subOption.isExtraPaidTopping = !checkCount;
+      //     if (subOption.isExtraPaidTopping) {
+      //       subOption.paidQty =
+      //         subOption.paidQty + 1 > subOption?.subOptionToppingQuantity
+      //           ? subOption.paidQty
+      //           : subOption.paidQty + 1;
+      //     } else {
+      //       subOption.paidQty = 0;
+      //     }
+      //     return subOption;
+      //   } else {
+      //     // subOption.isExtraPaidTopping = !checkCount
+      //     if (!subOption.isExtraPaidTopping) {
+      //       subOption.paidQty = 0;
+      //     }
 
-          return subOption;
+      //     return subOption;
+      //   }
+      // });
+
+      updateWithPaidTopping = lstdefault?.map((subOption) => {
+        const clonedSubOption = { ...subOption }; // Shallow clone
+
+        if (item.suboptionId && item.suboptionId === subOption.suboptionId) {
+          clonedSubOption.sequenceNumber = topRecord?.sequenceNumber + 1;
+          clonedSubOption.isExtraPaidTopping = !checkCount;
+
+          if (clonedSubOption.isExtraPaidTopping) {
+            clonedSubOption.paidQty =
+              clonedSubOption.paidQty + 1 >
+              clonedSubOption?.subOptionToppingQuantity
+                ? clonedSubOption.paidQty
+                : clonedSubOption.paidQty + 1;
+          } else {
+            clonedSubOption.paidQty = 0;
+          }
+        } else {
+          if (!clonedSubOption.isExtraPaidTopping) {
+            clonedSubOption.paidQty = 0;
+          }
         }
+
+        return clonedSubOption;
       });
     }
     const isValidMaxSelection = isFreeCountCalculation
@@ -1044,7 +1078,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
                     lstoption.push(data);
                 });
               return (
-                <div className="col-lg-6 col-md-6 col-12">
+                <div className="col-lg-6 col-md-6 col-12" key={item.optionId}>
                   <div className="card mb-2 accordion-item">
                     <OptionHeader
                       remainCount={remainCount}
@@ -1069,8 +1103,9 @@ const MenuItemOptions = ({ isExpand }: any) => {
                     >
                       <div className="row">
                         <SubToppingRequiredWarning
+                          key={item.optionId}
                           item={item}
-                          handleOnChangeRemoveSubOption={
+                          handleOnChangeRemoveSubOption={() =>
                             handleOnChangeRemoveSubOption
                           }
                         />
@@ -1089,39 +1124,38 @@ const MenuItemOptions = ({ isExpand }: any) => {
                                       (x) => x.defaultSelection != null
                                     );
                                   return (
-                                    <>
-                                      <li
-                                        className={`nav-item ${
+                                    <li
+                                      key={`${item.optionId}-${subcat.suboptioncategoryname}`}
+                                      className={`nav-item ${
+                                        defaultselected &&
+                                        defaultselected?.defaultSelection ===
+                                          subcat?.suboptioncategoryname
+                                          ? "active"
+                                          : ""
+                                      }`}
+                                    >
+                                      {" "}
+                                      <a
+                                        className={`nav-link fs-14 ${
                                           defaultselected &&
-                                          defaultselected?.defaultSelection ===
-                                            subcat?.suboptioncategoryname
-                                            ? "active"
-                                            : ""
+                                          defaultselected?.suboptioncategoryname ===
+                                            subcat?.suboptioncategoryname &&
+                                          defaultselected?.defaultSelection !==
+                                            "all"
+                                            ? "active border-color-dynamic border-none subcat-active"
+                                            : "subcat-inactive"
                                         }`}
+                                        onClick={() =>
+                                          selectedOptionClick(
+                                            lstoption,
+                                            item,
+                                            subcat
+                                          )
+                                        }
                                       >
-                                        {" "}
-                                        <a
-                                          className={`nav-link fs-14 ${
-                                            defaultselected &&
-                                            defaultselected?.suboptioncategoryname ===
-                                              subcat?.suboptioncategoryname &&
-                                            defaultselected?.defaultSelection !==
-                                              "all"
-                                              ? "active border-color-dynamic border-none subcat-active"
-                                              : "subcat-inactive"
-                                          }`}
-                                          onClick={() =>
-                                            selectedOptionClick(
-                                              lstoption,
-                                              item,
-                                              subcat
-                                            )
-                                          }
-                                        >
-                                          {subcat?.suboptioncategoryname}
-                                        </a>
-                                      </li>
-                                    </>
+                                        {subcat?.suboptioncategoryname}
+                                      </a>
+                                    </li>
                                   );
                                 })}
 
@@ -1156,7 +1190,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
                               type?.suboptioncategoryname ||
                             defaultselected?.defaultSelection === "all";
                           return (
-                            <>
+                            <React.Fragment key={index}>
                               {isInSuboptionCat ? (
                                 <SubTopping
                                   lstoption={lstoption}
@@ -1177,7 +1211,7 @@ const MenuItemOptions = ({ isExpand }: any) => {
                               ) : (
                                 <></>
                               )}
-                            </>
+                            </React.Fragment>
                           );
                         })}
                       </div>

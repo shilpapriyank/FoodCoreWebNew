@@ -171,11 +171,13 @@ const CategoryMenuItems = ({
         }, 1000);
       }
     }
+
+    //check category slug and selected category url not same then select  categoryslug category
     if (selectedCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
         (cat) => cat?.categoryslug === categoryUrl
       );
-      dispatch(setSelectedCategory(findedCat as MainCategoryList));
+      //dispatch(setSelectedCategory(findedCat as MainCategoryList));
     }
   }, [
     categoryslug,
@@ -185,7 +187,20 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
+      console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
+      if (selectedMenuItemDetail) {
+        dispatch(
+          selectedMenuItem({
+            ...selectedMenuItemDetail,
+            dependedItemId:
+              selectedMenuItemDetail?.dependedItemId ??
+              selectedMenuItemDetail?.menuitemId ??
+              0,
+            qty: 1,
+          })
+        );
+      }
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
         locationId: restaurantinfo?.defaultlocationId as number,
@@ -195,10 +210,10 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          // dispatch({
-          //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-          //   payload: response,
-          // });
+          console.log(
+            "response of getMenuItemList in dependentId condi",
+            response
+          );
           dispatch(setMenuItemDetailList(response));
         }
       });
@@ -210,26 +225,32 @@ const CategoryMenuItems = ({
     let selectedCat;
     if (menuItemsWithCat && categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
-        (cat: GetAllMenuCategoryItems) => cat.categoryslug === categoryUrl
+        (cat) => cat.categoryslug === categoryUrl
+      );
+      console.log(
+        "selected category from useEffect of category menuitems for test",
+        selectedCat
       );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
-    if (menuitemId) {
-      var menuitemObj = selectedCat?.menuitems?.find((item: Menuitems) => {
-        if (item?.menuitemId === Number(menuitemId)) {
-          return item;
+    if (menuitemId !== undefined && menuitemId.length > 0) {
+      var menuitemObj = selectedCat?.menuitems?.find(
+        (item: Menuitems, index) => {
+          if (item?.menuitemId === Number(menuitemId)) {
+            return item;
+          }
         }
-      });
+      );
       if (menuitemObj) {
         dispatch(selectedMenuItem(menuitemObj));
-        if (menuitemObj.quickorderallow && !isOrderingDisable) {
+        if (
+          menuitemObj.quickorderallow === true &&
+          isOrderingDisable === false
+        ) {
           quickOrderClick(menuitemObj);
         } else {
           if (!openMenuItemModal) {
             setopenMenuItemModal(true);
-            // let menuitempopup = document.getElementById('modal-open-custom');
-            // if (menuitempopup !== null)
-            //   menuitempopup.click();
           }
         }
       }
@@ -245,6 +266,8 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail) => {
+    debugger;
+    dispatch(selectedMenuItem(item as any));
     dispatch(setMenuItemDetailList(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
@@ -253,11 +276,14 @@ const CategoryMenuItems = ({
     setopenMenuItemModal(true);
   };
 
-  const handleClickItemSlider = (e: React.MouseEvent, item: Menuitems) => {
+  const handleClickItemSlider = (
+    e: React.MouseEvent,
+    item: GetMenuItemDetail
+  ) => {
     e.stopPropagation();
     setisBottomSlide(false);
-    dispatch(setMenuItemDetailList(item as any));
-    dispatch(selectedMenuItem(item));
+    dispatch(setMenuItemDetailList(item));
+    dispatch(selectedMenuItem(item as any));
     setopenMenuItemModal(true);
   };
 
@@ -273,80 +299,34 @@ const CategoryMenuItems = ({
 
   const loginButton = document.querySelector(".login-btn") as HTMLButtonElement;
 
-  // const selectedFavoriteClick = (selecteditem: Menuitems, item: any) => {
-  //   if (userinfo === null) {
-  //     loginButton?.click();
-  //     return;
-  //   }
-  //   selecteditem.isFavoriteMenu = item;
-  //   menuItemsWithCat.map((data: any) => {
-  //     if (data.menuitemid === selecteditem?.menuitemid) data = selecteditem;
-  //     else data = data;
-  //   });
-
-  //   if (item === true) {
-  //     setisFavourite((prev) => !prev);
-  //     dispatch(removeCategoryList());
-  //     dispatch(setCategoryList(menuItemsWithCat));
-  //     dispatch(
-  //       addFavorite({
-  //         customerId: userinfo?.customerId ?? 0,
-  //         restaurantId: restaurantinfo?.restaurantId as number,
-  //         menuItemId: selecteditem.menuitemid,
-  //       })
-  //     );
-  //   } else {
-  //     setisFavourite((prev) => !prev);
-  //     dispatch(removeCategoryList());
-  //     dispatch(setCategoryList(menuItemsWithCat));
-  //     dispatch(
-  //       deleteFavorite({
-  //         customerId: userinfo?.customerId ?? 0,
-  //         restaurantId: restaurantinfo?.restaurantId as number,
-  //         menuItemId: selecteditem.menuitemid,
-  //       })
-  //     );
-  //   }
-  // };
-
-  const selectedFavoriteClick = (selecteditem: any, item: boolean) => {
+  const selectedFavoriteClick = (selecteditem: Menuitems, item: boolean) => {
     if (userinfo === null) {
       loginButton?.click();
       return;
     }
 
-    // Validate menuitemId before proceeding
-    if (!selecteditem?.menuitemId) {
-      console.error("Missing menuitemId. Cannot proceed with favorite toggle.");
-      return;
-    }
+    const updatedItem = {
+      ...selecteditem,
+      isFavoriteMenu: item,
+    };
 
-    // Clone the selected item and update its favorite flag
-    const updatedItem = { ...selecteditem, isFavoriteMenu: item };
+    //Deep update the item inside menuItemsWithCat without mutating original array
+    const updatedMenuItemsWithCat = menuItemsWithCat.map((category) => ({
+      ...category,
+      menuitems: category.menuitems.map((menuitem) =>
+        menuitem.menuitemId === updatedItem.menuitemId ? updatedItem : menuitem
+      ),
+    }));
 
-    // Create a deep copy of menuItemsWithCat and update the specific item
-    const updatedCategories = menuItemsWithCat.map((category: any) => {
-      return {
-        ...category,
-        menuitems: category.menuitems.map((menuItem: any) =>
-          menuItem.menuitemId === updatedItem.menuitemId
-            ? updatedItem
-            : menuItem
-        ),
-      };
-    });
-
-    // Toggle local state
+    // Update Redux state
     setisFavourite((prev) => !prev);
-    // Dispatch updated categories to store
-    dispatch(removeCategoryList());
-    dispatch(addFavorite(updatedItem));
-    dispatch(setCategoryList(updatedCategories));
+    // dispatch(removeCategoryList());
+    dispatch(setCategoryList(updatedMenuItemsWithCat));
 
-    if (item) {
+    if (item === true) {
       dispatch(
         addFavorite({
-          customerId: String(userinfo?.customerId),
+          customerId: String(userinfo?.customerId ?? 0),
           restaurantId: restaurantinfo?.restaurantId as number,
           menuItemId: String(updatedItem.menuitemId),
         })
@@ -354,7 +334,7 @@ const CategoryMenuItems = ({
     } else {
       dispatch(
         deleteFavorite({
-          customerId: String(userinfo?.customerId),
+          customerId: String(userinfo?.customerId ?? 0),
           restaurantId: restaurantinfo?.restaurantId as number,
           menuItemId: String(updatedItem.menuitemId),
         })
@@ -381,6 +361,7 @@ const CategoryMenuItems = ({
         locationId: restaurantinfo?.defaultlocationId as number,
       }).then((res) => {
         if (res) {
+          console.log("quick order click response in cat menuitem", res);
           handleNotify(
             "Item added succesfully",
             ToasterPositions.TopRight,
@@ -397,7 +378,7 @@ const CategoryMenuItems = ({
           //modalPopUpCloseClick();
           CartServices.getCartItemList({
             cartsessionId: sessionid as string,
-            locationId: restaurantinfo?.locationId as number,
+            locationId: restaurantinfo?.defaultlocationId as number,
             restaurantId: restaurantinfo?.restaurantId as number,
             cartId: 0,
             customerId: userinfo ? userinfo?.customerId : 0,
@@ -411,12 +392,7 @@ const CategoryMenuItems = ({
             requestId: deliveryRequestId,
           }).then((response) => {
             if (response) {
-              if (response) {
-                // dispatch({
-                //   type: CartTypes.CART_DATA,
-                //   payload: response,
-                // });
-                // handlUpdateQty()
+              if (response?.cartDetails && response?.cartDetails?.cartTotal) {
                 dispatch(setCartItem(response));
               }
             }

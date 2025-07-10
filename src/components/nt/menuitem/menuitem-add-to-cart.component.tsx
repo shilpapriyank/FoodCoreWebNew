@@ -104,7 +104,7 @@ const MenuItemAddToCart = ({
   };
 
   const addtocartclick = (item: Menuitems) => {
-    dispatch(selectedMenuItem(item));
+    dispatch(selectedMenuItem(item as any));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
       locationId: restaurantinfo?.defaultlocationId as number,
@@ -148,7 +148,7 @@ const MenuItemAddToCart = ({
         ) {
           let itemobj = FormatOrderObject({
             objrestaurant: restaurantinfo as GetAllRestaurantInfo,
-            objselectedItem: item,
+            objselectedItem: item as any,
             menuItemDetail,
             //customerId,
             total,

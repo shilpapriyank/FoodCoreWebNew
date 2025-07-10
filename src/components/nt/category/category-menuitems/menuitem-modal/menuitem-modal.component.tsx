@@ -786,8 +786,9 @@ const MenuItemModal = ({
         }`}
         id="exampleModal"
         tabIndex={-1}
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+        role="dialog"
+        //aria-labelledby="exampleModalLabel"
+        //aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className={`modal-content ${dependentId > 0 ? "pt-5" : ""}`}>
