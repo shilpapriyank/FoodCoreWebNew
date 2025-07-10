@@ -1,32 +1,32 @@
 "use client";
 
-import React, { useState, FormEvent, useEffect } from "react";
-import { useParams, useRouter } from 'next/navigation';
+import React, { useState, useEffect } from "react";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { RegisterServices } from "../../../../redux/register/register.services";
+import { useParams } from 'next/navigation';
+import { convertSecondToMinute } from "../common/utility";
+import { allRegex, countryData, formatePhoneNumber, getCountryList, GetThemeDetails, onLoadSetDefaultFlag, setUserExpiryTime, unFormatePhoneNumber } from "@/components/common/utility";
 import { useDispatch } from 'react-redux';
 import { registerAddress } from "../../../../redux/delivery-address/delivery-address.slice";
 import { ToasterPositions } from '../../default/helpers/toaster/toaster-positions';
 import { ToasterTypes } from '../../default/helpers/toaster/toaster-types';
 import { CheckPhoneRequestModel, CustomerServices } from "../../../../redux/customer/customer.services";
+import { RegisterServices } from "../../../../redux/register/register.services";
 import { LoginServices } from "../../../../redux/login/login.services";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
 import { selecteddeliveryaddress } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint.slice";
-import useFireBaseAuth from "@/components/customhooks/userfirebaseauth-hook";
+import useFireBaseAuth from "@/components/customhooks/usefirebaseauth-hook";
 import { UserDetailsErrormessage } from "@/components/helpers/static-message/userdetails-message";
 import { DeliveryAddressTypes } from "../../../../redux/delivery-address/delivery-address.type";
 import handleNotify from '../../default/helpers/toaster/toaster-notify';
 import useUtility from '../../customhooks/utility-hook';
 import { AppDispatch } from "../../../../redux/store";
-import { allRegex, countryData, formatePhoneNumber, getCountryList, GetThemeDetails, onLoadSetDefaultFlag, setUserExpiryTime, unFormatePhoneNumber } from "@/components/common/utility";
 import OtpVerificationComponent from "./otpverification.component";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/bootstrap.css';
 import { OTPVerificationSettingParams } from "@/types/register-types/register.types";
-import { convertSecondToMinute } from "../common/utility";
 import { setUserDetail } from "../../../../redux/login/login.slice";
-
+import { useAppDispatch } from "../../../../redux/hooks";
 
 interface RegisterProps {
     isOpenModal: boolean;
@@ -50,7 +50,7 @@ const Register: React.FC<RegisterProps> = ({
     handleToggleAddAddressModal
 }) => {
     const { restaurantinfo, deliveryaddress } = useReduxData();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     // let otpTime = convertSecondToMinute(parseInt(process.env.NEXT_PUBLIC_OTP_DURATION))
     const otpDurationEnv = process.env.NEXT_PUBLIC_OTP_DURATION;
     const otpDuration = otpDurationEnv ? parseInt(otpDurationEnv, 10) : 0;
@@ -78,14 +78,14 @@ const Register: React.FC<RegisterProps> = ({
     const [second, setsecond] = useState<number>(0)
     const [minutes, setMinutes] = useState<number>(0);
     const [isOtpSecond, setisOtpSecond] = useState<boolean>(false)
-    const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    const selctedTheme = GetThemeDetails(restaurantinfo!.themetype);
     const [isOtpModal, setisOtpModal] = useState<boolean>(false)
     const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
     const { isBusinessNameRequired } = useUtility()
     const locationId = restaurantinfo?.defaultLocation?.locationId
     const params = useParams();
     const dynamic = params.dynamic;
-    const location = params.location; var restaurantUrl = selctedTheme.url + "/" + dynamic;
+    const location = params.location; var restaurantUrl = selctedTheme?.url + "/" + dynamic;
     const [values, setValues] = useState({
         firstname: "",
         lastname: "",
@@ -139,8 +139,8 @@ const Register: React.FC<RegisterProps> = ({
             };
 
             RegisterServices.getOTPVerificationSetting(payload).then((response) => {
-                if (response) {
-                    setOTPDetail(response as string | any);
+                if (response && response != null) {
+                    setOTPDetail(response as any);
                 }
             });
         }
@@ -426,10 +426,16 @@ const Register: React.FC<RegisterProps> = ({
             };
         }
 
-        const checkPhoneRequestModel: CheckPhoneRequestModel = {
+        // const checkPhoneRequestModel: CheckPhoneRequestModel = {
+        //     restaurantId: restaurantinfo?.restaurantId as number,
+        //     phoneNumber: `${dialCode}${unFormatePhoneNumber(values.phone)}`,
+        //     unPhormatedPhone: dialCode,
+        // };
+         const checkPhoneRequestModel :CheckPhoneRequestModel = {
             restaurantId: restaurantinfo?.restaurantId as number,
-            phoneNumber: `${dialCode}${unFormatePhoneNumber(values.phone)}`
-        };
+            phone: unPhormatedPhone,
+            unPhormatedPhone: dialCode
+        }
 
         setErrorMessage(null);
 
@@ -549,6 +555,7 @@ const Register: React.FC<RegisterProps> = ({
             }
         }
     }
+
     const handleAutocompleteOff = (e: any) => {
         e.target.setAttribute("autoComplete", "off")
     }
@@ -566,13 +573,7 @@ const Register: React.FC<RegisterProps> = ({
                 <div className="modal-dialog modal-dialog-centered ru-model">
                     <div className="modal-content">
                         <h5 className="modal-title fs-5" id="staticBackdropLabel">Register</h5>
-                        {!(b2b && isBusinessNameRequired) &&
-                            <button type="button"
-                                className="btn-close"
-                                onClick={() => handleToggle
-                                    (false, 'openRegisterModal')}
-                                aria-label="Close"
-                            />}
+                        {!(b2b && isBusinessNameRequired) && <button type="button" className="btn-close" onClick={() => handleToggle(false, 'openRegisterModal')} aria-label="Close" />}
                         <form onSubmit={handleSubmit}>
                             <div className="modal-body">
                                 <div className="row mt-2">
@@ -640,31 +641,32 @@ const Register: React.FC<RegisterProps> = ({
                                         <label>Code</label>
                                         <br />
                                         <PhoneInput
-                                            country={dialCode ? dialCode.replace('+', '') : 'us'} // 'us' as default
-                                            value={values.phone}
-                                            onChange={(phone, countryData, event, formattedValue) => {
-                                                setDialCode('+' + (countryData as any).dialCode);
-                                                setValues(prev => ({
-                                                    ...prev,
-                                                    phone: phone
-                                                }));
+                                            country={'us'}
+                                            value={dialCode || '+1'}
+                                            onChange={(value: string, data: { dialCode: string }) => {
+                                                setDialCode('+' + data.dialCode);
+                                                setErrorMessage(null);
+                                                setSubmitting(false);
                                             }}
-                                            onlyCountries={getCountryList().map((c: any) => c.iso2)} // assuming your countries have iso2 codes
-                                            preferredCountries={[]} // no preferred countries
-                                            enableSearch={true}
+                                            onlyCountries={getCountryList()}
+                                            preferredCountries={[]}
+                                            enableAreaCodes={false}
+                                            enableSearch
+                                            disableSearchIcon
                                             inputProps={{
                                                 name: 'phone',
                                                 required: true,
-                                                className: 'codeinput form-control register-country',
                                                 autoFocus: false,
                                                 readOnly: true,
-                                                style: { caretColor: "transparent" }
+                                                id: `x${Math.random()}`,
+                                                style: { caretColor: 'transparent' },
                                             }}
-                                            containerClass="dialCode form-control"
-                                            disableDropdown={false}
-                                            disableCountryCode={false}
-                                            disableSearchIcon={true}
+                                            containerClass="intl-tel-input"
+                                            inputClass="codeinput form-control register-country"
+                                            buttonClass=""
+                                            dropdownClass="country-list"
                                         />
+
                                     </div>
                                     <div className="col-lg-4 col-md-4 col-8">
                                         <label>Phone Number</label>
@@ -711,7 +713,7 @@ const Register: React.FC<RegisterProps> = ({
                                             <div className="error-text text-danger fs-12 mt-2 mb-2">Passwords do not match.</div>
                                         )}
                                     </div>
-                                    {restaurantinfo?.smsapigateway === 1 && restaurantinfo?.enableotpauthentication === true && (
+                                    {restaurantinfo?.smsapigateway === 1 && restaurantinfo.enableotpauthentication === true && (
                                         <div className="col-lg-12 col-sm-12 col-xs-12 d-flex justify-content-end mt-2">
                                             <div style={{ width: "32% !important", border: "none !important" }} id="recaptcha-container"></div>
                                         </div>
@@ -721,7 +723,6 @@ const Register: React.FC<RegisterProps> = ({
                                     </div>}
                                 </div>
                             </div>
-
                             <div className="modal-footer">
                                 <div className="row w-100 ms-auto me-auto">
                                     <div className="col-lg-6 text-center col-md-6 col-12">

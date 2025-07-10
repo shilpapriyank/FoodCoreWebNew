@@ -41,7 +41,6 @@ export const AsapLateronButtonComponent: React.FC<AsapLateronButtonProps> = ({
     selecteddelivery?.pickupordelivery as any,
     restaurantWindowTime as RestaurantWindowTime | any
   );
-  // console.log("✅ asapLaterOnState:", asapLaterOnState);
 
   return (
     <div className="row my-4">

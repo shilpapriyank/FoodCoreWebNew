@@ -163,7 +163,7 @@ const MenuItemOptions = ({
           return subOption;
         }
       });
-      console.log(updateWithPaidTopping);
+      //console.log(updateWithPaidTopping);
       let freeCount = selectedoption?.freeToppingsCount;
       const sortedsuboptionBasedSeqNo = updateWithPaidTopping?.sort(
         (a, b) => b.sequenceNumber - a.sequenceNumber
@@ -228,7 +228,6 @@ const MenuItemOptions = ({
         return sub;
       });
     }
-    // console.log("sortedsuboptionBasedSeqNo", sortedsuboptionBasedSeqNo)
     let lstobj = {
       optionselected: selectedoption?.optionselected,
       subparameterId: selectedoption?.subparameterId,
@@ -682,7 +681,7 @@ const MenuItemOptions = ({
     const isExtraPaidTopping = !(
       finalcount <= Number(selectedoption?.freeToppingsCount)
     );
-    console.log(isExtraPaidTopping);
+    //console.log(isExtraPaidTopping);
     //var isMaxSelectZero =  parseInt(selectedoption[0].maxSelection) == 0 ? true : false;
     //var checkCount = isMaxSelectZero == false ? finalcount <= parseInt(selectedoption[0].maxSelection) ? true : false : true;
     let updateWithPaidTopping: Type[] = [];

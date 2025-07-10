@@ -68,7 +68,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const myDeliveryAddress = tempDeliveryAddress;
 
   const handleChangeOrderType = (orderType: any) => {
-    // console.log("Order Type changed to:", orderType);
     dispatch(setpickupordelivery(orderType));
     if (ORDER_TYPE.DELIVERY.text === orderType) {
       if (userinfo === null) {
@@ -90,8 +89,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         restaurantinfo?.restaurantId as number,
         lid
       );
-
-      //console.log("Received location:", res);
 
       if (!restaurantinfo || !res) return;
 

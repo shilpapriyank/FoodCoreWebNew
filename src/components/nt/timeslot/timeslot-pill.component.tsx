@@ -24,11 +24,7 @@ export const TimeSlotPillComponent: React.FC<TimeSlotPillComponentProps> = ({
 
     return (
         <div className={`col-12 shadow p-2 border-bottom  border-light border-5  ${isDisable ? "cursor-nodrop opacity-50" : "cursor"}`}
-            onClick={() => {
-                //console.log("Selected Time Slot:", `${time.StartSlotNew} - ${time.EndSlotNew}`);
-                handleClickTimePill(time)
-            }}
-        >
+            onClick={() => { handleClickTimePill(time) }}>
             <div className="form-check">
                 <div className="row">
                     <div className="col-12 position-relative">
