@@ -22,6 +22,7 @@ import {
 } from "@/types/cart-types/cartservice.type";
 import {
   GetAllMenuCategoryItems,
+  GetMenuItemDetail,
   List,
   Size,
   Topping,
@@ -1694,36 +1695,41 @@ export const groupOption = (items: any) => {
   // Convert grouped object to array if needed
   return Object.values(groupedOptions);
 };
+
 export const calculateNettotal = (
-  lstcarttopping: any,
-  selectedsize: any,
-  quantity: any,
-  menuItemDetail: any
+  lstcarttopping: Type[],
+  selectedsize: Size[],
+  quantity: number,
+  menuItemDetail: GetMenuItemDetail
 ) => {
   const selectedTopping =
     menuItemDetail &&
     Object.keys(menuItemDetail).length > 0 &&
     menuItemDetail?.topping?.find(
-      (size: any) => size?.subparameterId === selectedsize?.[0]?.subparameterId
+      (size) => size?.subparameterId === selectedsize?.[0]?.subparameterId
     );
   let fsum = 0;
 
   if (lstcarttopping && lstcarttopping.length > 0) {
-    lstcarttopping.forEach((data: any) => {
-      const selectedOption = selectedTopping?.list?.find(
-        (option: any) => option?.optionId === data?.optionId
-      );
-      const paidQty = parseInt(data.paidQty) || 0; // Only this many need to be paid
+    lstcarttopping.forEach((data) => {
+      const selectedOption =
+        selectedTopping &&
+        selectedTopping?.list?.find(
+          (option) => option?.optionId === data?.optionId
+        );
+      const paidQty = data.paidQty || 0; // Only this many need to be paid
       if (paidQty > 0) {
         const unitPrice =
           data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
-            : parseFloat(data.price);
+            : data.price;
 
         fsum += unitPrice * paidQty; // only charge for paidQty
       } else if (
-        (paidQty === 0 && selectedOption.freeToppingsCount === 0) ||
-        !selectedOption?.multipleSelectStatus
+        (paidQty === 0 &&
+          selectedOption &&
+          selectedOption?.freeToppingsCount === 0) ||
+        (selectedOption && !selectedOption?.multipleSelectStatus)
       ) {
         fsum =
           fsum +
@@ -1742,14 +1748,4 @@ export const calculateNettotal = (
   let nettotal = total * quantity;
 
   return nettotal;
-
-  // let fsum = 0;
-  //     lstcarttopping != undefined && lstcarttopping.length > 0 &&
-  //     lstcarttopping.map((data) => {
-  //             fsum = fsum + ((data.pizzaside === "L" || data.pizzaside === "R") ? parseFloat((data.price * 0.5).toFixed(2)) : data.price) * data.subOptionToppingQuantity;
-  //         });
-  //     let total = selectedsize != undefined && selectedsize.length > 0 ?
-  //         selectedsize[0].price + fsum : 0;
-  //     let nettotal = total * quantity;
-  //     return nettotal;
 };

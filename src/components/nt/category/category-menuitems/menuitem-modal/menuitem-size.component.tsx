@@ -2,9 +2,15 @@ import React from "react";
 import useUtility from "../../../../customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import ShareitemComponent from "@/components/nt/common/shareitem.component";
-import { selectedItemSize } from "../../../../../../redux/menu-item/menu-item.slice";
+import { Size } from "@/types/menuitem-types/menuitem.type";
 
-const MenuItemSize = ({ selectedSizeClick, shareUrl }: any) => {
+const MenuItemSize = ({
+  selectedSizeClick,
+  shareUrl,
+}: {
+  selectedSizeClick: (item: Size) => void;
+  shareUrl: string;
+}) => {
   const { menuitem, restaurantinfo, menuitemdetaillist } = useReduxData();
   // let studentname = studentdata
   const { isDisplayPrice } = useUtility();
@@ -20,6 +26,10 @@ const MenuItemSize = ({ selectedSizeClick, shareUrl }: any) => {
         <ShareitemComponent
           linkClass="fs-4 mt-1 ms-1 pointer-cursor"
           url={shareUrl}
+          title="Share this item"
+          description="Check out this delicious item!"
+          size={32}
+          isHrLine={false}
         />
       </div>
       <h3 className="text-start">Size</h3>
@@ -30,7 +40,7 @@ const MenuItemSize = ({ selectedSizeClick, shareUrl }: any) => {
           return (
             <a
               onClick={() => {
-                selectedSizeClick?.(item);
+                selectedSizeClick(item);
               }}
               key={index}
             >

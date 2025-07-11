@@ -4,6 +4,7 @@ import { useWindowDimensions } from "../../../../customhooks/usewindowdimension-
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { Zoomable } from "@/components/common/zoomimage";
 import MenuItemSize from "./menuitem-size.component";
+import { Size } from "@/types/menuitem-types/menuitem.type";
 
 const MenuItemInfo = ({
   name,
@@ -13,25 +14,27 @@ const MenuItemInfo = ({
   isFavourite,
   selectedSizeClick,
   selectedFavoriteClick,
-}: any) => {
+}: {
+  name: string;
+  img: string;
+  desc: string;
+  shareUrl: string;
+  isFavourite: boolean;
+  selectedSizeClick: (item: Size) => void;
+  selectedFavoriteClick: (item: boolean) => void;
+}) => {
   const { restaurantinfo } = useReduxData();
-  const zoomableRef = useRef<HTMLDivElement | null>(null);
   const defaultLocation = restaurantinfo?.defaultLocation;
-  let zoom = document.querySelector(".zoomable");
+  let zoom: HTMLElement | null = document.querySelector(".zoomable");
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
-  //   useEffect(() => {
-  //     zoom = document.querySelector(".zoomable");
-  //     if (zoom) {
-  //       let z = new Zoomable(zoom);
-  //     }
-  //   }, [zoom]);
 
   useEffect(() => {
-    if (zoomableRef.current) {
-      new Zoomable(zoomableRef.current);
+    zoom = document.querySelector(".zoomable");
+    if (zoom) {
+      let z = new Zoomable(zoom);
     }
-  }, []);
+  }, [zoom]);
 
   return (
     <div className="row">

@@ -89,7 +89,7 @@ export interface PromotionData {
 export interface CartOptionParam {
   cartid: number;
   suboptionId: number;
-  title: string;
+  Title: string;
   price: number;
   pizzaside: string;
   quantity: number;
