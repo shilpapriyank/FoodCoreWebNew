@@ -5,6 +5,30 @@ import SubToppingPrice from "./subtopping-price.component";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CheckBox from "@/components/common/checkbox.component";
 import RadioButton from "@/components/common/radiobutton.component";
+import { List, Type } from "@/types/menuitem-types/menuitem.type";
+
+interface SubToppingProps {
+  type: Type;
+  index: number;
+  item: List;
+  handleOnChangeRemoveSubOption: (
+    item: Type,
+    optionId: number,
+    selection: string,
+    isRadioButton: boolean,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  handleOnChangeSubOption: (
+    item: Type,
+    optionId: number,
+    selection: string,
+    isRadioButton: boolean,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  isDisplayPrice: boolean;
+  increment: (optionId: number, data: Type) => void;
+  decrement: (optionId: number, data: Type, isRadioButton: boolean) => void;
+}
 
 const SubTopping = ({
   type,
@@ -15,7 +39,8 @@ const SubTopping = ({
   isDisplayPrice,
   increment,
   decrement,
-}: any) => {
+}: SubToppingProps) => {
+  //debugger
   const { restaurantinfo } = useReduxData();
   const redioClass = restaurantinfo?.isSchoolProgramEnabled
     ? "fs-15-radio"
@@ -66,7 +91,7 @@ const SubTopping = ({
             {item?.isHalfPizza && (
               <PizzaSlice
                 optionId={item.optionId}
-                handleOnChangeSubOption={handleOnChangeSubOption}
+                handleOnChangeSubOption={() => handleOnChangeSubOption}
                 type={type}
               />
             )}

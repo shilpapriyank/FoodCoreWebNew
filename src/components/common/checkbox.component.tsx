@@ -23,7 +23,7 @@ const CheckBox = ({
   classInputName,
   handleOnChangeSubOption,
   disabled,
-}: any) => {
+}: CheckBoxProps) => {
   return (
     <>
       <input

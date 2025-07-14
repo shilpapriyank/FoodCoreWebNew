@@ -1,11 +1,6 @@
 import { Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
 
-// interface PizzaSliceType {
-//   pizzaside?: "L" | "F" | "R";
-//   [key: string]: any;
-// }
-
 interface PizzaSliceProps {
   type: Type;
   handleOnChangeSubOption: (
@@ -24,7 +19,7 @@ const PizzaSlice = ({
   handleOnChangeSubOption,
   isRadioButton = false,
   optionId,
-}: any) => {
+}: PizzaSliceProps) => {
   return (
     <div className="sun">
       <a

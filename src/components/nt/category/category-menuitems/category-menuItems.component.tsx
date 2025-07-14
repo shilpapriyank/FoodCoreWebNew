@@ -187,18 +187,27 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
-      console.log("dependentId", dependentId);
+      //console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
       if (selectedMenuItemDetail) {
+        // dispatch(
+        //   selectedMenuItem({
+        //     ...selectedMenuItemDetail,
+        //     dependedItemId:
+        //       selectedMenuItemDetail?.dependedItemId ??
+        //       selectedMenuItemDetail?.menuitemId ??
+        //       0,
+        //     qty: 1,
+        //   })
+        // );
         dispatch(
           selectedMenuItem({
-            ...selectedMenuItemDetail,
+            menuitemId: dependentId,
+            qty: 1,
             dependedItemId:
               selectedMenuItemDetail?.dependedItemId ??
-              selectedMenuItemDetail?.menuitemId ??
-              0,
-            qty: 1,
-          })
+              selectedMenuItemDetail?.menuitemId,
+          } as any) as any
         );
       }
       MenuItemServices.getMenuItemList({
@@ -210,10 +219,10 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          console.log(
-            "response of getMenuItemList in dependentId condi",
-            response
-          );
+          // console.log(
+          //   "response of getMenuItemList in dependentId condi",
+          //   response
+          // );
           dispatch(setMenuItemDetailList(response));
         }
       });
@@ -223,19 +232,25 @@ const CategoryMenuItems = ({
   useEffect(() => {
     //let selectedCat = {};
     let selectedCat;
-    if (menuItemsWithCat && categoryUrl) {
+    if (categoryUrl) {
       selectedCat = menuItemsWithCat?.find(
         (cat) => cat.categoryslug === categoryUrl
       );
-      console.log(
-        "selected category from useEffect of category menuitems for test",
-        selectedCat
-      );
+      //console.log("menuItemsWithCat", menuItemsWithCat);
+      // console.log(
+      //   "selected category from useEffect of category menuitems for test",
+      //   selectedCat
+      // );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
-    if (menuitemId !== undefined && menuitemId.length > 0) {
-      var menuitemObj = selectedCat?.menuitems?.find(
-        (item: Menuitems, index) => {
+    if (
+      menuitemId !== undefined &&
+      menuitemId.length > 0 &&
+      selectedCat &&
+      selectedCat?.menuitems.length > 0
+    ) {
+      var menuitemObj = selectedCat?.menuitems.find(
+        (item: Menuitems, index: number) => {
           if (item?.menuitemId === Number(menuitemId)) {
             return item;
           }
@@ -266,8 +281,9 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail) => {
-    dispatch(selectedMenuItem(item as any));
+   // debugger;
     dispatch(setMenuItemDetailList(item));
+    dispatch(selectedMenuItem(item as any));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
       return;
@@ -360,7 +376,7 @@ const CategoryMenuItems = ({
         locationId: restaurantinfo?.defaultlocationId as number,
       }).then((res) => {
         if (res) {
-          console.log("quick order click response in cat menuitem", res);
+          //console.log("quick order click response in cat menuitem", res);
           handleNotify(
             "Item added succesfully",
             ToasterPositions.TopRight,
@@ -410,7 +426,7 @@ const CategoryMenuItems = ({
   const handleClickSeaAll = (item: any) => {
     handleToggleBottomSlide(true);
     const selectedItem = menuItemsWithCat?.find(
-      (catMenu: any) => catMenu.catId === item?.catId
+      (catMenu) => catMenu.catId === item?.catId
     );
     setselectedCatItem(selectedItem as any);
   };
@@ -590,7 +606,7 @@ const CategoryMenuItems = ({
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
-                                                <p>this is static item</p>
+  
                                                 <a
                                                   className=""
                                                   data-menuitemid={

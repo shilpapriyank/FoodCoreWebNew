@@ -1,4 +1,15 @@
+import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
+
+interface OptionHeaderProps {
+  isOnLoadExpand: boolean;
+  remainCount: number;
+  item: List;
+  selectedtypecount: Type;
+  iscompletecheck: boolean;
+  index: number;
+  isOpenFirst: boolean;
+}
 
 const OptionHeader = ({
   isOnLoadExpand,
@@ -8,14 +19,14 @@ const OptionHeader = ({
   iscompletecheck,
   index,
   isOpenFirst,
-}: any) => {
+}: OptionHeaderProps) => {
   return (
     <div className="card-header accordion-header" id="accordionCrust">
       <button
         className={`accordion-button ${
           (isOnLoadExpand === true &&
             item?.optionselected === true &&
-            selectedtypecount.length > 0) ||
+            selectedtypecount) ||
           (!isOnLoadExpand && index === 0 && isOpenFirst)
             ? ""
             : "collapsed"

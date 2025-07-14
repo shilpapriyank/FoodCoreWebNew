@@ -1392,14 +1392,15 @@ export const NotificationSettingTypes = {
 };
 
 export const calculateFinalCount = (
-  subOptionList: any,
-  selectedOption: any
+  subOptionList: Type[],
+  selectedOption: List
 ) => {
+  //debugger;
+ // console.log("subOptionList from calculateFinalCount", subOptionList);
+  //console.log("selectedOption from calculateFinalCount", selectedOption);
   let finalcount = 0;
-  var toppingcount = subOptionList?.filter(
-    (x: any) => x.subOptionselected === true
-  );
-  toppingcount?.map((tc: any) => {
+  var toppingcount = subOptionList?.filter((x) => x.subOptionselected === true);
+  toppingcount?.map((tc) => {
     var topvalue =
       tc.toppingValue === "" || parseInt(tc.toppingValue) === 0
         ? 1
@@ -1408,19 +1409,20 @@ export const calculateFinalCount = (
       selectedOption.isHalfPizza === true &&
       (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
-          parseInt(tc.halfPizzaPriceToppingPercentage) === 0
+          (tc?.halfPizzaPriceToppingPercentage ||
+          tc.halfPizzaPriceToppingPercentage === 0
             ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            : tc.halfPizzaPriceToppingPercentage / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
+  //console.log("final count from calculate final count", finalcount);
   return finalcount;
 };
 
 export const calculateFinalCountWithPaid = (
-  subOptionList: any,
-  selectedOption: any
+  subOptionList: Type[],
+  selectedOption: List
 ) => {
   let finalcount = 0;
 
@@ -1455,8 +1457,8 @@ export const calculateFinalCountWithPaid = (
 };
 
 export const calculateFinalCountTable = (
-  subOptionList: any,
-  selectedOption: any
+  subOptionList: Type[],
+  selectedOption: List
 ) => {
   let finalcount = 0;
   var toppingcount = subOptionList?.filter(

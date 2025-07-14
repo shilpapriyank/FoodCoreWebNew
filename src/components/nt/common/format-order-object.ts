@@ -29,8 +29,8 @@ export const FormatOrderObject = ({
   selectedtime: string;
   studentname?: string;
 }) => {
-  console.log("objselectedItem from FormatOrderObject", objselectedItem);
-  console.log("menuItemDetail from FormatOrderObject", menuItemDetail);
+ // console.log("objselectedItem from FormatOrderObject", objselectedItem);
+  //console.log("menuItemDetail from FormatOrderObject", menuItemDetail);
   const selectedsize = menuItemDetail?.size?.find(
     (x) => x.sizeselected === true
   );
@@ -72,7 +72,7 @@ export const FormatOrderObject = ({
     });
   });
 
-  console.log("lstcarttopping from formate order object", lstcarttopping);
+  //console.log("lstcarttopping from formate order object", lstcarttopping);
 
   const objorder = {
     cart: [
@@ -109,7 +109,7 @@ export const FormatOrderObject = ({
     selectedDate: currentdate,
   };
 
-  console.log("objorder from format order obj ", objorder);
+  //console.log("objorder from format order obj ", objorder);
   return objorder;
 };
 

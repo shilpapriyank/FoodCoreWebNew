@@ -380,7 +380,7 @@ const MenuItemModal = ({
           studentname: "",
         });
         if (itemobj != undefined) {
-          console.log("itemobject", itemobj);
+        //  console.log("itemobject", itemobj);
           MenuItemServices.updateCartOrdersItem({
             orderobj: itemobj,
             restaurantId: restaurantId,

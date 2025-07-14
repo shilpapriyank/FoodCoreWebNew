@@ -27,7 +27,7 @@ const SubToppingQty = ({
   isRadioButton,
   option,
   handleOnChangeSubOption,
-}: any) => {
+}: SubToppingQtyProps) => {
   const qty = type.subOptionToppingQuantity;
 
   return (
