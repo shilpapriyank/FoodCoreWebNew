@@ -11,7 +11,7 @@ const SubToppingPrice = ({
   type,
   isDisplayPrice,
   isExtraPaidTopping,
-}: any) => {
+}: SubToppingPriceProps) => {
   return (
     <>
       {type?.price !== undefined &&

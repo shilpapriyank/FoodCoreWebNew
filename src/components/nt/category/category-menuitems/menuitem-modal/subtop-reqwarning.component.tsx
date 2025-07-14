@@ -1,9 +1,19 @@
+import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
+
+interface SubToppingRequiredWarningProps {
+  item: List;
+  handleOnChangeRemoveSubOption: (
+    item: Type,
+    optionId: number,
+    selection: string
+  ) => void;
+}
 
 const SubToppingRequiredWarning = ({
   item,
   handleOnChangeRemoveSubOption,
-}: any) => {
+}: SubToppingRequiredWarningProps) => {
   return (
     <div className="d-flex justify-content-between">
       <div>
@@ -18,7 +28,11 @@ const SubToppingRequiredWarning = ({
           <a
             className="cursor float-end change-right"
             onClick={() =>
-              handleOnChangeRemoveSubOption({}, item.optionId, "deselectall")
+              handleOnChangeRemoveSubOption(
+                item as any,
+                item.optionId,
+                "deselectall"
+              )
             }
           >
             DeSelect

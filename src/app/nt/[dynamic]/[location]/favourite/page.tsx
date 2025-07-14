@@ -42,7 +42,7 @@ const FavouritePage = () => {
         setisProductItemPopup(true);
       }
     },
-    [dispatch]
+    []
   );
 
   const selectedFavoriteClick = useCallback(
@@ -55,7 +55,7 @@ const FavouritePage = () => {
         refetch();
       });
     },
-    [userinfo?.customerId, restaurantinfo?.restaurantId, refetch]
+    [userinfo?.customerId, restaurantinfo?.restaurantId]
   );
 
   const handleToggleMenuItemModal = (value: boolean) => {

@@ -115,7 +115,7 @@ const MenuItemAddToCart = ({
     }).then((response) => {
       if (response) {
         if (response) {
-          console.log("add to cart click getMenuitemList response", response);
+          // console.log("add to cart click getMenuitemList response", response);
           dispatch(setMenuCategoryData(response));
         }
         let menuItemDetail = response;
@@ -221,7 +221,7 @@ const MenuItemAddToCart = ({
                     handleToggleDependnt?.(true);
                   }, 500);
                 } else {
-                  console.log("add item to cart response from else", response);
+                  // console.log("add item to cart response from else", response);
                   if (
                     (menuItemDetail?.dependantMenuList?.length > 0 &&
                       menuItemDetail?.dependantMenuList !== null) ||
@@ -276,8 +276,7 @@ const MenuItemAddToCart = ({
               title={TOOLTIP_MSG.ADDTOCART_BTN}
               id={String(item.menuitemId)}
               onClick={() => addtocartclick(item)}
-            >
-              this is new one Add to cart
+            >Add to cart
             </a>
           </>
         );

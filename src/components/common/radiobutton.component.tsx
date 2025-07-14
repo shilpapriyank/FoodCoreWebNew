@@ -23,10 +23,16 @@ const RadioButton = ({
   classInputName,
   handleOnChangeSubOption,
   disabled,
-}: any) => {
+}: RadioButtonProps) => {
+ // console.log("item from radio button component", item);
+  // console.log(
+  //   "type.subOptionselected from radio button component",
+  //   type.subOptionselected
+  // );
+ // debugger;
   return (
     <input
-      id={type.suboptionId.toString()}
+      id={String(type.suboptionId)}
       onChange={(e) =>
         handleOnChangeSubOption(
           type,
@@ -36,12 +42,12 @@ const RadioButton = ({
           e
         )
       }
-      className={`cursor-pointer ${classInputName ?? ""}`}
+      className={`cursor-pointer ${classInputName}`}
       disabled={disabled}
       value={type.suboptionId}
       name={`rdsuboption_${item.optionId}_${item.subparameterId}`}
       type="radio"
-      checked={type.subOptionselected === true}
+      checked={type?.subOptionselected == true}
     />
   );
 };

@@ -6,7 +6,11 @@ const MenuItemAddCartBtn = ({
   memorisedNetTotal,
   currencySymbol,
   addToCart,
-}: any) => {
+}: {
+  memorisedNetTotal: number;
+  currencySymbol: string;
+  addToCart: () => void;
+}) => {
   const { menuitem } = useReduxData();
   let selectedmenuitemdetail = menuitem?.selectedmenuitemdetail;
   const { isDisplayPrice, isRewardTip } = useUtility();

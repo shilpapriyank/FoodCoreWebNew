@@ -14,9 +14,9 @@ const ShareItemComponent = ({
   isHrLine,
 }: {
   url: string;
-  title: string;
-  description: string;
-  size: number;
+  title?: string;
+  description?: string;
+  size?: number;
   linkClass: string;
   isHrLine: boolean;
 }) => {
@@ -47,7 +47,7 @@ const ShareItemComponent = ({
             title={title}
             className="Demo__some-network"
           >
-            <FacebookIcon size={size} round={true} />
+            <FacebookIcon size={32} round={true} />
           </FBButton>
           <a
             href={`https://api.whatsapp.com/send?text=${url}`}
@@ -55,7 +55,7 @@ const ShareItemComponent = ({
             target="_blank"
             rel="noreferrer"
           >
-            <WhatsappIcon size={size} round={true} />
+            <WhatsappIcon size={32} round={true} />
           </a>
           <span
             className="text-dark cursor "
