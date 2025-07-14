@@ -237,7 +237,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       const locationId = restaurantinfo?.defaultLocation?.locationId;
       const restaurantId = restaurantinfo?.restaurantId;
       if (!restaurantId || !locationId) {
-        console.warn("❗ Missing restaurantId or locationId — API not called");
         return;
       }
       OrderServices.generateTimeSlot({

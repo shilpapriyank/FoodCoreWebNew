@@ -40,6 +40,7 @@ import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { ThemeType } from "@/types/common-types/common.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
 interface HeaderProps {
   handleChangeAddress?: () => void;
@@ -380,7 +381,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         <TimeSlotPopupComponent
           handleToggleTimingModal={handleToggleTimingModal}
           futureDateList={
-            restaurantinfo?.defaultLocation?.futureOrderingDayDates as any
+            restaurantinfo?.defaultLocation?.futureOrderingDayDates as  GetAllRestaurantInfo[]
           }
           enablefutureordering={
             restaurantinfo?.defaultLocation?.enablefutureordering as any
