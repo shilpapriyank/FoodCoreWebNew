@@ -193,22 +193,22 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       ).then((res) => {
         const responseTime = res?.datetime.split(" ").reverse()[0];
         if (pickupWindow && pickupWindow?.length > 0) {
-          const isValid = checkWindowTimeExpires(
-            typeof pickupEndTime === "string" ? pickupEndTime : "",
+          const isValidPickup = checkWindowTimeExpires(
+            typeof pickupEndTime === 'string' ? pickupEndTime : '',
             responseTime,
+            isAsap,
             lastPickupTIme && typeof lastPickupTIme !== "boolean" ? lastPickupTIme.isLastOrder : undefined,
-            isAsap
           );
-          setisPickupWindowAvailable(isValid);
+          setisPickupWindowAvailable(isValidPickup);
         }
         if (deliveryEndTime && deliveryEndTime?.length > 0) {
-          const isValid = checkWindowTimeExpires(
+          const isValidDelivery = checkWindowTimeExpires(
             deliveryEndTime,
             responseTime,
+            isAsap,
             lastDeliveryTime?.isLastOrder,
-            isAsap
           );
-          setisDeliveryWindowAvailable(isValid);
+          setisDeliveryWindowAvailable(isValidDelivery);
         }
       });
     }, [defaultLocation?.locationId]);
@@ -323,7 +323,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     };
     const handleLaterOnClick = () => {
       if (
-         ordertype ===
+        ordertype ===
         ORDER_TYPE.DELIVERY.value &&
         deliveryService === DELIVERYSERVICES.UBEREATS &&
         selectedAddress === null
@@ -675,8 +675,9 @@ const PickupDeliveryTimeSelectPopup: React.FC<
             )}
           </div>
         </div>
-        <div className="modal-backdrop fade show"></div>
+        {/* <div className="modal-backdrop fade show"></div> */}
       </>
+
     );
   };
 export default PickupDeliveryTimeSelectPopup;

@@ -8,7 +8,6 @@ import {
   closeModal,
   unFormatePhoneNumber,
 } from "../../common/utility";
-import { useRouter } from "next/router";
 import { SMS_API_TYPE } from "../../common/utility";
 import { useParams } from "next/navigation";
 //import { LoginTypes } from "../../../../redux/login/login.types";
@@ -83,13 +82,12 @@ const OtpVerificationComponent: React.FC<Props> = ({
   const [isNotValidateOtp, setisNotValidateOtp] = useState<boolean>(true);
   const dispatch = useDispatch();
   const [resendDisable, setresendDisable] = useState(true);
-  const router = useRouter();
+  const params = useParams();
   let otpTime = convertSecondToMinute(
     parseInt(process.env.NEXT_PUBLIC_OTP_DURATION || "60")
   );
-  const {
-    query: { dynamic, location },
-  } = router;
+  const dynamic = params.dynamic;
+  const location = params.location; 
   const [minutes, setMinutes] = useState<number>(otpTime.minute);
   const [seconds, setSeconds] = useState<number>(otpTime.second);
   const [otp, setOtp] = useState<any>("");

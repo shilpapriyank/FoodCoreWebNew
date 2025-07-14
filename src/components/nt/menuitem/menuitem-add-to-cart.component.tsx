@@ -150,7 +150,7 @@ const MenuItemAddToCart = ({
             objrestaurant: restaurantinfo as GetAllRestaurantInfo,
             objselectedItem: item as any,
             menuItemDetail,
-            //customerId,
+            customerId,
             total,
             quantity: currentQty,
             sessionid: cartsessionid as string,

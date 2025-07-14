@@ -24,6 +24,8 @@ import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { ResponseModel, RestaurantCustomModel } from "@/components/common/commonclass";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { AddressItem } from "@/types/address-types/address.type";
+import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 
 interface OrderTypeSelectProps {
   isOpenModal: boolean;
@@ -60,7 +62,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const locationFullLink = `/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}`;
   const defaultLocation = restaurantinfo?.defaultLocation;
-  const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
+  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
     orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
@@ -136,13 +138,15 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
 
       dispatch(refreshCategoryList({
         newselectedRestaurant: updatedRestaurantInfo,
-        customerId,
-      }) as any);
+        customerId
+      })
+      );
 
       dispatch(getSelectedRestaurantTime({
         restaurantId: updatedRestaurantInfo.restaurantId,
-        locationId: lid,
-      }) as any);
+        locationId: lid
+      })
+      );
 
       if (userinfo?.customerId) {
         deleteCartItemFromSessionId(
@@ -328,8 +332,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                         {myDeliveryAddress && (
                           <AddressPill
                             isChecked={true}
-                            address={myDeliveryAddress}
-                            id={myDeliveryAddress.id}
+                            id={String(myDeliveryAddress.id)}
+                            address={myDeliveryAddress as any}
                           />
                         )}
                         {userinfo && <DeliveryaddresspillComponent />}

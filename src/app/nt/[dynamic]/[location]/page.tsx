@@ -72,9 +72,9 @@ export default function LocationPage() {
       dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
       if (order?.checktime === "") {
         OrderServices.getOrderTime({
-          restaurantId: restaurantinfo.restaurantId,
-          locationId: restaurantinfo.locationId,
-        } as any).then((response) => {
+          restaurantId: restaurantinfo?.restaurantId,
+          locationId: restaurantinfo?.locationId,
+        }as any).then((response) => {
           dispatch(isasap(true));
           const time = response?.ordertime?.split(":");
           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;
