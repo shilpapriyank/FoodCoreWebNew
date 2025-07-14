@@ -3,10 +3,8 @@ import { OrderServices } from "./order.services";
 import {
   CheckOrderTimeArgsTypes,
   GetOrderTimeArgsTypes,
-  OrderAddress,
   OrderState,
 } from "../../src/types/order-types/order.type";
-import { OrderTypes } from "./order.type";
 
 const INITIAL_STATE: OrderState = {
   checktime: "",
@@ -19,17 +17,16 @@ const INITIAL_STATE: OrderState = {
   futureOrderDay: "",
 };
 
-// Example Thunks
 export const checkOrderTime = createAsyncThunk(
-  OrderTypes.CHECK_ORDER_TIME,
+  "order/checkOrderTime",
   async (args: CheckOrderTimeArgsTypes) => {
-    const result = await OrderServices.checkOrderTime(args);
-    return result;
+    debugger;
+    return await OrderServices.checkOrderTime(args);
   }
 );
 
 export const getordertime = createAsyncThunk(
-  OrderTypes.GET_ORDER_TIME,
+  "order/getOrderTime",
   async (args: GetOrderTimeArgsTypes) => {
     return await OrderServices.getOrderTime(args);
   }

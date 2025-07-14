@@ -12,47 +12,14 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { RestaurantsServices } from "../../../redux/restaurants/restaurants.services";
 import { AddressList } from "@/types/location-types/location.type";
-import {
-  MainCategoryList,
-  RestaurantWindowTimeNew,
-} from "@/types/mainservice-types/mainservice.type";
-import {
-  CartDetails,
-  CartItemDetail,
-} from "@/types/cart-types/cartservice.type";
-import {
-  GetAllMenuCategoryItems,
-  GetMenuItemDetail,
-  List,
-  Size,
-  Topping,
-  Type,
-} from "@/types/menuitem-types/menuitem.type";
-import {
-  DefaultLocation,
-  GetAllRestaurantInfo,
-} from "@/types/restaurant-types/restaurant.type";
+import { MainCategoryList, RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
+import { CartDetails, CartItemDetail } from "@/types/cart-types/cartservice.type";
+import { GetAllMenuCategoryItems, GetMenuItemDetail, List, Size, Topping, Type } from "@/types/menuitem-types/menuitem.type";
+import { DefaultLocation, GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
+import { LoggedInUser } from "../../../redux/login/login.types";
 
-// export enum ORDER_TYPE_ENUM {
-//   PICKUP = "Pickup",
-//   DELIVERY = "Delivery",
-// }
-// export type OrderType = `${ORDER_TYPE_ENUM}`;
-
-export const ORDER_TYPE = {
-  PICKUP: {
-    text: "Pickup",
-    value: 1,
-  },
-  DELIVERY: {
-    text: "Delivery",
-    value: 2,
-  },
-} as const;
-
-export type OrderType = (typeof ORDER_TYPE)[keyof typeof ORDER_TYPE]["value"];
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -65,6 +32,7 @@ export const ThemeObj = {
   newtheme: "newtheme",
 };
 
+//GET THEME DETAILS FROM THEME TYPE VALUE
 export const ThemeTypeObj: ThemeType[] = [
   {
     name: "default",
@@ -88,12 +56,16 @@ export const ThemeTypeObj: ThemeType[] = [
   },
 ];
 
+export const PromotionType: PromotionTypes = {
+  Percentage: 1,
+  Fixed: 2,
+};
+
 interface ThemeType {
   name: string;
   value: number;
   url: string;
 }
-
 export const GetThemeDetails = (value: number | string) => {
   const ThemeTypeObj: ThemeType[] = [
     { name: "default", value: 1, url: "dt" },
@@ -102,21 +74,6 @@ export const GetThemeDetails = (value: number | string) => {
     { name: "newtheme", value: 4, url: "nt" },
   ];
   return ThemeTypeObj.find((x) => x.value === value);
-};
-
-export const GetThemeDetailsByName = (value: string) => {
-  const ThemeTypeObj: ThemeType[] = [
-    { name: "default", value: 1, url: "dt" },
-    { name: "dominos", value: 2, url: "dm" },
-    { name: "tableorder", value: 201, url: "to" },
-    { name: "newtheme", value: 4, url: "nt" },
-  ];
-  return ThemeTypeObj.find((x) => x.name === value);
-};
-
-export const PromotionType: PromotionTypes = {
-  Percentage: 1,
-  Fixed: 2,
 };
 
 // FORMATE THE NUMBER INTO THE (XXX) XXX-XXXX
@@ -134,6 +91,7 @@ export const unFormatePhoneNumber = (number: string): string => {
     .replace(" ", "");
   return unFormatedNumber;
 };
+
 export const allRegex: AllRegex = {
   phoneRegex1: /(\(?\d{1,2})/,
   phoneRegex2: /(\(?\d{1,2})/,
@@ -153,6 +111,16 @@ export const formatURL = (value: string): string => {
     .replace(/\s{2,}/g, " ")
     .replace(/ /g, "-");
   return formattedString;
+};
+
+export const GetThemeDetailsByName = (value: string) => {
+  const ThemeTypeObj: ThemeType[] = [
+    { name: "default", value: 1, url: "dt" },
+    { name: "dominos", value: 2, url: "dm" },
+    { name: "tableorder", value: 201, url: "to" },
+    { name: "newtheme", value: 4, url: "nt" },
+  ];
+  return ThemeTypeObj.find((x) => x.name === value);
 };
 
 export const formatStringToURLWithBlankSpace = (value: string) => {
@@ -551,8 +519,6 @@ export const getAsapLaterOnState = (
   pickupordelivery?: OrderType,
   restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
-  //debugger;
-  // console.log("➡️ defaultLocation:", defaultLocation);
   if (!defaultLocation || pickupordelivery === undefined) {
     return {
       isdisplay: false,
@@ -578,17 +544,17 @@ export const getAsapLaterOnState = (
   const orderState =
     pickupordelivery === ORDER_TYPE.DELIVERY.value
       ? {
-          timeWindow: deliveryWindow,
-          isAsap: isDeliveryAsap,
-          isLaterOn: isDeliveryPickupTime,
-          isOrderTypeDisable: isDeliveryOrderingDisable,
-        }
+        timeWindow: deliveryWindow,
+        isAsap: isDeliveryAsap,
+        isLaterOn: isDeliveryPickupTime,
+        isOrderTypeDisable: isDeliveryOrderingDisable,
+      }
       : {
-          timeWindow: pickupWindow,
-          isAsap: isTakeOutAsap,
-          isLaterOn: isTakeOutPickupTime,
-          isOrderTypeDisable: isTakeoutOrderingDisable,
-        };
+        timeWindow: pickupWindow,
+        isAsap: isTakeOutAsap,
+        isLaterOn: isTakeOutPickupTime,
+        isOrderTypeDisable: isTakeoutOrderingDisable,
+      };
 
   const isdisplay = orderState.isAsap || orderState.isLaterOn;
 
@@ -639,10 +605,10 @@ export async function getSEODetails(
   return seodetails;
 }
 
-// export const ORDERTYPE = {
-//   Pickup: "Pickup",
-//   Delivery: "Delivery",
-// };
+export const ORDERTYPE = {
+  Pickup: "Pickup",
+  Delivery: "Delivery",
+};
 
 export const onLoadSetDefaultFlag = (
   defaultflag: any,
@@ -669,6 +635,20 @@ export const onLoadSetDefaultFlag = (
     }
   }
 };
+
+export const ORDER_TYPE = {
+  PICKUP: {
+    text: "Pickup",
+    value: 1,
+  },
+  DELIVERY: {
+    text: "Delivery",
+    value: 2,
+  },
+} as const;
+
+export type OrderType = (typeof ORDER_TYPE)[keyof typeof ORDER_TYPE]["value"];
+
 
 export const ORDER_TIME_TYPE: OrderTimeTypes = {
   ASAP: {
@@ -819,7 +799,7 @@ export const bindPlaceOrderObject = (
         : "",
     deliveryNote:
       cart?.orderdeliveryinstruction ||
-      cart?.orderdeliveryinstruction !== undefined
+        cart?.orderdeliveryinstruction !== undefined
         ? cart.orderdeliveryinstruction
         : "",
     preDiscountSubTotal:
@@ -834,9 +814,9 @@ export const bindPlaceOrderObject = (
         : 0,
     deliveryCharges:
       cart.carttotal.deliveryAmount > 0 &&
-      pickupordelivery === ORDER_TYPE.DELIVERY.text
+        pickupordelivery === ORDER_TYPE.DELIVERY.text
         ? //pickupordelivery === ORDERTYPE.Delivery
-          parseFloat(cart.carttotal.deliveryAmount)
+        parseFloat(cart.carttotal.deliveryAmount)
         : 0,
     orderTotal:
       cart.carttotal.grandTotal > 0 ? parseFloat(cart.carttotal.grandTotal) : 0,
@@ -902,7 +882,7 @@ export const calulateTotal = (cartdata: CartDetails) => {
   });
   return parseFloat(total)?.toFixed(2);
 };
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const getCheckTimeArr = (
   orderTime: string,
   restaurantinfo: GetAllRestaurantInfo,
@@ -911,32 +891,27 @@ export const getCheckTimeArr = (
 ): string[] => {
   const Time: string[] = [];
 
-  // ✅ Early return if orderTime is invalid
+  // Early return if orderTime is invalid
   if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
     return ["", "", orderDate];
   }
 
-  // ✅ Case 1: Third-party delivery (DoorDash / UberEats)
-  if (
-    (restaurantinfo?.defaultLocation?.deliveryService ===
-      DELIVERYSERVICES.DOORDASH ||
-      restaurantinfo?.defaultLocation?.deliveryService ===
-        DELIVERYSERVICES.UBEREATS) &&
-    !isasap
-  ) {
-    let checkTime = orderTime;
+  // Case 1: Third-party delivery (DoorDash / UberEats)
+  if ((restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.DOORDASH || restaurantinfo?.defaultLocation?.deliveryService === DELIVERYSERVICES.UBEREATS) && !isasap) {
+    let checkTime = orderTime
     if (checkTime?.includes("AM")) {
-      checkTime = checkTime.replace("AM", "").trim();
-      Time.push(checkTime);
-      Time.push("AM");
+      checkTime = checkTime.replace("AM", "").trim()
+      Time.push(checkTime)
+      Time.push("AM")
     }
     if (checkTime?.includes("PM")) {
-      checkTime = checkTime.replace("PM", "").trim();
-      Time.push(checkTime);
-      Time.push("PM");
+      checkTime = checkTime.replace("PM", "").trim()
+      Time.push(checkTime)
+      Time.push("PM")
     }
-    Time.push("");
-  } else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
+    Time.push("")
+  }
+  else if (restaurantinfo?.defaultLocation?.enabletimeslot && !isasap) {
     Time.push(orderTime);
     Time.push("");
     Time.push(orderDate);
@@ -1038,22 +1013,22 @@ export const getUserLoginExpiryTime = () => {
   return false;
 };
 
-export const convert24HourTo12Hour = (time: any) => {
-  let meridian = "am";
-  let [hour, minute, second] = time?.split(":");
-  if (hour > 12) {
-    hour = hour - 12;
-    meridian = "pm";
-  }
+// export const convert24HourTo12Hour = (time: any) => {
+//   let meridian = "am";
+//   let [hour, minute, second] = time?.split(":");
+//   if (hour > 12) {
+//     hour = hour - 12;
+//     meridian = "pm";
+//   }
 
-  return [hour, minute, meridian];
-};
+//   return [hour, minute, meridian];
+// };
 
 // export const checkWindowTimeExpires = (
-//   windowEndTime: any,
-//   currentTime: any,
-//   isLastOrder: boolean = false,
-//   isasap: any
+//   windowEndTime: string,
+//   currentTime: string,
+//   isLastOrder: any,
+//   isasap: boolean
 // ) => {
 //   let [time, windowMeridian] = getCheckTimeArr(
 //     currentTime,
@@ -1061,68 +1036,210 @@ export const convert24HourTo12Hour = (time: any) => {
 //     windowEndTime,
 //     isasap
 //   );
+
+//   if (!time || !windowMeridian) {
+//     console.warn("Invalid time or windowMeridian from getCheckTimeArr");
+//     return false;
+//   }
+
 //   const [windowHour, windowMinute] = time.split(":");
 //   const [currentHour, currentMinute, meridian] =
 //     convert24HourTo12Hour(currentTime);
-//   //check window expiry time
-//   var beginningTime = moment(
+
+//   const beginningTime = moment(
 //     `${currentHour}:${currentMinute}${meridian}`,
 //     "hh:mma"
 //   );
-//   var endTime = moment(
-//     `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
+
+//   const safeMeridian = (windowMeridian || "").toLowerCase();
+//   const endTime = moment(
+//     `${windowHour}:${windowMinute}${safeMeridian}`,
 //     "hh:mma"
 //   );
+
 //   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
+
+//   if (
+//     meridian.trim().toLowerCase() === "pm" &&
+//     isLastOrder &&
+//     safeMeridian === "am"
+//   ) {
+//     WindowTimeIsAvailable = true;
+//   }
+
+//   return WindowTimeIsAvailable;
+// };
+
+export const convert24HourTo12Hour = (
+  time: string
+): [string, string, "am" | "pm"] => {
+  if (!time || typeof time !== "string" || !time.includes(":")) {
+    return ["12", "00", "am"]; // default fallback
+  }
+
+  let [hourStr, minute = "00"] = time.split(":");
+  let hour = parseInt(hourStr, 10);
+
+  let meridian: "am" | "pm" = "am";
+
+  if (hour >= 12) {
+    meridian = "pm";
+    if (hour > 12) {
+      hour -= 12;
+    }
+  }
+
+  if (hour === 0) {
+    hour = 12;
+  }
+
+  return [hour.toString().padStart(2, "0"), minute.padStart(2, "0"), meridian];
+};
+
+// export const checkWindowTimeExpires = (
+//   windowEndTime: string,
+//   currentTime: string,
+//   isasap: boolean = false,
+//   restaurantinfo: GetAllRestaurantInfo,
+//   isLastOrder: boolean = false
+// ): boolean => {
+//   debugger;
+//   const [time, windowMeridian] = getCheckTimeArr(
+//     currentTime,
+//     restaurantinfo,
+//     windowEndTime,
+//     isasap
+//   );
+//   if (!time || !windowMeridian) {
+//     console.warn("Invalid time or meridian from getCheckTimeArr");
+//     return false;
+//   }
+
+//   const [windowHour, windowMinute] = time.split(":");
+//   const [currentHour, currentMinute, meridian] = convert24HourTo12Hour(currentTime);
+
+//   const beginningTime = moment(`${currentHour}:${currentMinute}${meridian}`, "hh:mma");
+//   const endTime = moment(`${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`, "hh:mma");
+
+//   let isAvailable = beginningTime.isBefore(endTime);
+
 //   if (
 //     meridian.trim().toLowerCase() === "pm" &&
 //     isLastOrder &&
 //     windowMeridian.trim().toLowerCase() === "am"
 //   ) {
-//     WindowTimeIsAvailable = true;
+//     isAvailable = true;
 //   }
-//   return WindowTimeIsAvailable;
+
+//   return isAvailable;
+// };
+
+// // last changes
+// export const checkWindowTimeExpires = (
+//   windowEndTime: string,
+//   currentTime: string,
+//   isasap: boolean = false,
+//   restaurantinfo: GetAllRestaurantInfo,
+//   isLastOrder: boolean = false
+// ): boolean => {
+//   const [time, windowMeridian] = getCheckTimeArr(
+//     currentTime,
+//     restaurantinfo,
+//     windowEndTime,
+//     isasap
+//   );
+
+//   //  Defensive check: empty or malformed response
+//   if (
+//     !time || !windowMeridian ||
+//     typeof time !== "string" || typeof windowMeridian !== "string" ||
+//     !time.includes(":")
+//   ) {
+//     console.warn("Invalid time or meridian from getCheckTimeArr", {
+//       time,
+//       windowMeridian,
+//       input: { currentTime, windowEndTime, isasap, restaurantinfo },
+//     });
+//     return false;
+//   }
+
+//   const [windowHour, windowMinute] = time.split(":");
+
+//   const [currentHour, currentMinute, meridian] =
+//     convert24HourTo12Hour(currentTime);
+
+//   const beginningTime = moment(
+//     `${currentHour}:${currentMinute}${meridian}`,
+//     "hh:mma"
+//   );
+
+//   const endTime = moment(
+//     `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
+//     "hh:mma"
+//   );
+
+//   let isAvailable = beginningTime.isBefore(endTime);
+
+//   if (
+//     meridian.trim().toLowerCase() === "pm" &&
+//     isLastOrder &&
+//     windowMeridian.trim().toLowerCase() === "am"
+//   ) {
+//     isAvailable = true;
+//   }
+
+//   return isAvailable;
 // };
 
 export const checkWindowTimeExpires = (
   windowEndTime: string,
   currentTime: string,
-  isLastOrder: any,
-  isasap: boolean
-) => {
-  let [time, windowMeridian] = getCheckTimeArr(
+  isasap: boolean = false,
+  restaurantinfo: GetAllRestaurantInfo,
+  isLastOrder: boolean = false
+): boolean => {
+  console.log("✅ checkWindowTimeExpires called with:", {
+    windowEndTime,
     currentTime,
+    isasap,
     isLastOrder,
+    restaurantinfo,
+  });
+
+  const [time, windowMeridian] = getCheckTimeArr(
+    currentTime,
+    restaurantinfo,
     windowEndTime,
     isasap
   );
 
-  if (!time || !windowMeridian) {
-    console.warn("Invalid time or windowMeridian from getCheckTimeArr");
+  if (
+    !time ||
+    !windowMeridian ||
+    typeof time !== "string" ||
+    typeof windowMeridian !== "string" ||
+    !time.includes(":")
+  ) {
+    console.warn("❌ Invalid output from getCheckTimeArr:", {
+      time,
+      windowMeridian,
+      input: { currentTime, windowEndTime, isasap, restaurantinfo },
+    });
     return false;
   }
 
   const [windowHour, windowMinute] = time.split(":");
-  const [currentHour, currentMinute, meridian] =
-    convert24HourTo12Hour(currentTime);
+  const [currentHour, currentMinute, meridian] = convert24HourTo12Hour(currentTime);
 
-  const beginningTime = moment(
-    `${currentHour}:${currentMinute}${meridian}`,
-    "hh:mma"
-  );
-
-  const safeMeridian = (windowMeridian || "").toLowerCase();
-  const endTime = moment(
-    `${windowHour}:${windowMinute}${safeMeridian}`,
-    "hh:mma"
-  );
+  const beginningTime = moment(`${currentHour}:${currentMinute}${meridian}`, "hh:mma");
+  const endTime = moment(`${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`, "hh:mma");
 
   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
 
   if (
     meridian.trim().toLowerCase() === "pm" &&
     isLastOrder &&
-    safeMeridian === "am"
+    windowMeridian.trim().toLowerCase() === "am"
   ) {
     WindowTimeIsAvailable = true;
   }
@@ -1130,8 +1247,8 @@ export const checkWindowTimeExpires = (
   return WindowTimeIsAvailable;
 };
 
-export const tipWarningMessage =
-  "Please note drivers may decline or cancel a delivery if the tip amount is less than 15%";
+
+export const tipWarningMessage = "Please note drivers may decline or cancel a delivery if the tip amount is less than 15%";
 
 export const getLocationFromUrl = (
   locationUrl: string,
@@ -1259,8 +1376,8 @@ function getOptionBaseType(PriceList: any, option: any, currencysymbol: any) {
 }
 
 export const generateTableName = (
-  restaurantId: any,
-  locationId: any,
+  restaurantId: number,
+  locationId: number,
   env: any
 ) => {
   switch (env) {
@@ -1274,9 +1391,9 @@ export const generateTableName = (
 };
 
 export function getCustomerDetails(
-  user: any,
+  user: LoggedInUser,
   tableDetail: any,
-  serverId: any = 0
+  serverId: number = 0
 ) {
   let customerId = user?.customerId ?? user?.othercustomerId;
   const userName = user.firstName ?? user?.firstname;
@@ -1407,7 +1524,7 @@ export const calculateFinalCount = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
           (tc?.halfPizzaPriceToppingPercentage ||
           tc.halfPizzaPriceToppingPercentage === 0
@@ -1438,12 +1555,12 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
+        (tc.halfPizzaPriceToppingPercentage === "" ||
           parseInt(tc.halfPizzaPriceToppingPercentage) === 0
-            ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+          ? 1
+          : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
         : topvalue;
 
     const paidQty = parseInt(tc.paidQty) || 0;
@@ -1471,11 +1588,11 @@ export const calculateFinalCountTable = (
         : parseInt(tc.toppingValue);
     var calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+        (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-            ? 1
-            : parseInt(tc.halfpizzaprice) / 100)
+        (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
+          ? 1
+          : parseInt(tc.halfpizzaprice) / 100)
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
@@ -1487,9 +1604,8 @@ export const convertOptionToStrList = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
+        ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${index === item.length - 1 ? "" : ","
+          }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1501,9 +1617,8 @@ export const convertOptionToStrListTo = (...optionList: any) => {
   optionList?.map((item: any) => {
     const str = item?.reduce(
       (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
+        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${index === item.length - 1 ? "" : ","
+          }${" "}`)}`,
       ""
     );
     optionStrList.push(str);
@@ -1614,9 +1729,7 @@ export function closeModal(myclass: any) {
   return;
 }
 export const GetCurrency = () => {
-  const restaurantinfo = useSelector(
-    ({ restaurant }: any) => restaurant?.restaurantdetail
-  );
+  const restaurantinfo = useSelector(({ restaurant }: any) => restaurant?.restaurantdetail);
   const location = restaurantinfo?.defaultLocation;
   return location?.currencysymbol;
 };
@@ -1738,7 +1851,7 @@ export const calculateNettotal = (
           (data.pizzaside === "L" || data.pizzaside === "R"
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
-            data.subOptionToppingQuantity;
+          data.subOptionToppingQuantity;
       } else {
       }
     });

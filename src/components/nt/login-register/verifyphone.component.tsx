@@ -38,7 +38,6 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({
   const [minutes, setMinutes] = useState<number>(0);
   const [isOtpSecond, setisOtpSecond] = useState<boolean>(false);
   const {
-    firebase,
     intializeRecaptchaVerified,
     intializeFirebaseApp,
     handleSendOTP: handleSendOtpHook,

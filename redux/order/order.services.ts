@@ -497,7 +497,7 @@ export class OrderServices {
     const data = {
       request: {
         restaurantId: restaurantId,
-        locationId: locationId, //32
+        locationId: locationId,// 32
         orderType: ordertype,
         scheduleDateTime: scheduleDateTime,
       },

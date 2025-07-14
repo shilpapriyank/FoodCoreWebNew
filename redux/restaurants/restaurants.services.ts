@@ -98,7 +98,7 @@ export class RestaurantsServices {
 
   static async getRestaurantThemeType(
     restauranturl: string
-  ): Promise<any | null> {
+  ): Promise<any> {
     responseclass = new ResponseModel();
     const methodName = "getRestaurantThemeType";
     const themetypeurl = ENDPOINTS.GET_THEME_TYPE;

@@ -155,7 +155,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
         //   });
         // }
       },
-      [deliveryaddress?.addressId?.customerAddressId]
+      [(deliveryaddress?.addressId as any)?.customerAddressId]
     );
 
     const deleteAddressString = useMemo(() => {

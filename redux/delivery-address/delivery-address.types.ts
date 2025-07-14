@@ -37,15 +37,7 @@ export interface DeliveryAddressState {
     updatedAddress: boolean | { isAddressUpdated: boolean };
     choosetime: Record<string, any>;
     registeraddress: Record<string, any>
-    addressId:  Record<string, any>
+    addressId: Record<number, any>
     tempDeliveryAddress: DeliveryAddressInput | null;
 }
 
-// interface DeliveryAddressState {
-//   deliveryaddressdata: DeliveryAddressInput[] |null;
-//   updatedAddress: boolean | { isAddressUpdated: boolean };
-//   choosetime: Record<string, any>;
-//   registeraddress: Record<string, any>;
-//   addressId: Record<string, any>;
-//   tempDeliveryAddress: any | null;
-// }

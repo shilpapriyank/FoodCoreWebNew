@@ -105,7 +105,7 @@ const Register: React.FC<RegisterProps> = ({
     const [submitting, setSubmitting] = useState<boolean>(false);
     var apiKey = restaurantinfo?.firebaseConfig?.apikey;
     var authDomain = restaurantinfo?.firebaseConfig?.authdomain;
-    const { firebase, intializeRecaptchaVerified, intializeFirebaseApp, handleSendOTP: handleSendOtpHook, handleValidateOTP: handleValidateOTPHook } = useFireBaseAuth()
+    const { intializeRecaptchaVerified, intializeFirebaseApp, handleSendOTP: handleSendOtpHook, handleValidateOTP: handleValidateOTPHook } = useFireBaseAuth()
     const cleanForm = () => {
         setValues({
             firstname: "",

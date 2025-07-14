@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
-//import { addTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
  import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
-
-// Define constants
+import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 const apiKey = 'AIzaSyC6hNIP3xs2wN0tRG3Ue5Vg8seHGZTYnn4';
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
@@ -61,7 +58,7 @@ function loadAsyncScript(src: string): Promise<HTMLScriptElement> {
     const script = document.createElement('script');
     Object.assign(script, {
       type: 'text/javascript',
-      id: 'google-maps-script', // ✅ Corrected ID
+      id: 'google-maps-script', 
       async: true,
       src,
     });
@@ -157,16 +154,35 @@ export const GoogleAutoComplete: React.FC<GoogleAutoCompleteProps> = ({
         sendToParent(extractAddress(place));
     }
 
+    // const initAutocomplete = () => {
+    //     if (!searchInput.current) return;
+    //     const options = {
+    //         componentRestrictions: { country: regionCode },
+    //     };
+    //     const autocomplete = new (window as any).google.maps.places.Autocomplete(searchInput.current, options); autocomplete.setFields(['address_component', 'geometry']);
+    //     autocomplete.setFields(["address_component", "geometry"]);
+    //     autocomplete.setComponentRestrictions({ country: [regionCode] });
+    //     autocomplete.addListener("place_changed", () => onChangeAddress(autocomplete));
+    // };
     const initAutocomplete = () => {
-        if (!searchInput.current) return;
-        const options = {
-            componentRestrictions: { country: regionCode },
-        };
-        const autocomplete = new (window as any).google.maps.places.Autocomplete(searchInput.current, options); autocomplete.setFields(['address_component', 'geometry']);
-        autocomplete.setFields(["address_component", "geometry"]);
-        autocomplete.setComponentRestrictions({ country: [regionCode] });
-        autocomplete.addListener("place_changed", () => onChangeAddress(autocomplete));
+    if (!searchInput.current) return;
+
+    // Wait until Google Maps API is loaded
+    if (!(window as any).google || !(window as any).google.maps || !(window as any).google.maps.places) {
+        console.warn("Google Maps API not loaded yet.");
+        return;
+    }
+
+    const options = {
+        componentRestrictions: { country: regionCode },
     };
+
+    const autocomplete = new (window as any).google.maps.places.Autocomplete(searchInput.current, options);
+    autocomplete.setFields(["address_component", "geometry"]);
+    autocomplete.setComponentRestrictions({ country: [regionCode] });
+    autocomplete.addListener("place_changed", () => onChangeAddress(autocomplete));
+};
+
 
     useEffect(() => {
         if (!(window as any).initAutocomplete) {

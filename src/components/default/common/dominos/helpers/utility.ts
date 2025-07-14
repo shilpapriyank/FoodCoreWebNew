@@ -1,6 +1,8 @@
 import { ORDER_TYPE } from "@/components/common/utility";
 import { AddressList } from "@/types/location-types/location.type";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { DeliveryAddressInput } from "../../../../../../redux/delivery-address/delivery-address.types";
 
 interface Marker {
   id: number;
@@ -115,8 +117,8 @@ interface OrderDisableObj {
 }
 
 export const orderDisable = (
-  restaurantinfo: any,
-  deliveryaddressinfo: any,
+  restaurantinfo: GetAllRestaurantInfo,
+  deliveryaddressinfo:DeliveryAddressInput,
   restaurantWindowTime: RestaurantWindowTime
 ): OrderDisableObj => {
   const pickupWindow = restaurantWindowTime?.pickupTime;
@@ -214,8 +216,8 @@ export const getImagePath = (
   }
 };
 export const checkTimeStatus = (
-  defaultLocation: any,
-  restaurantWindowTime: any,
+  defaultLocation: GetAllRestaurantInfo,
+  restaurantWindowTime:RestaurantWindowTime,
   orderType: string | number
 ) => {
   const pickupWindow =
