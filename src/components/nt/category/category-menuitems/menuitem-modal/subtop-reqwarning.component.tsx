@@ -13,7 +13,15 @@ interface SubToppingRequiredWarningProps {
 const SubToppingRequiredWarning = ({
   item,
   handleOnChangeRemoveSubOption,
-}: SubToppingRequiredWarningProps) => {
+}: {
+  item: List;
+  handleOnChangeRemoveSubOption: (
+    item: Type,
+    optionId: number,
+    selection: string
+  ) => void;
+}) => {
+  console.log("item from subtopping required warning", item);
   return (
     <div className="d-flex justify-content-between">
       <div>

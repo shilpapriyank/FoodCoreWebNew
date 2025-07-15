@@ -27,6 +27,7 @@ import {
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
+  setMenuCategoryData,
   setMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
@@ -160,6 +161,7 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (categoryslug) {
+      //debugger;
       const targetElement = document.getElementById(categoryslug);
       if (targetElement) {
         scrollToElementWithOffset(categoryslug);
@@ -187,6 +189,7 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
+      //debugger;
       //console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
       if (selectedMenuItemDetail) {
@@ -200,15 +203,15 @@ const CategoryMenuItems = ({
         //     qty: 1,
         //   })
         // );
-        dispatch(
-          selectedMenuItem({
-            menuitemId: dependentId,
-            qty: 1,
-            dependedItemId:
-              selectedMenuItemDetail?.dependedItemId ??
-              selectedMenuItemDetail?.menuitemId,
-          } as any) as any
-        );
+        // dispatch(
+        //   selectedMenuItem({
+        //     menuitemId: dependentId,
+        //     qty: 1,
+        //     dependedItemId:
+        //       selectedMenuItemDetail?.dependedItemId ??
+        //       selectedMenuItemDetail?.menuitemId,
+        //   } as any) as any
+        // );
       }
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
@@ -224,15 +227,16 @@ const CategoryMenuItems = ({
           //   response
           // );
           dispatch(setMenuItemDetailList(response));
+          dispatch(setMenuCategoryData(response));
         }
       });
     }
   }, [dependentId]);
 
   useEffect(() => {
-    //let selectedCat = {};
     let selectedCat;
     if (categoryUrl) {
+     // debugger;
       selectedCat = menuItemsWithCat?.find(
         (cat) => cat.categoryslug === categoryUrl
       );
@@ -280,10 +284,11 @@ const CategoryMenuItems = ({
     }
   }, [menuItemsWithCat, menuitemId]);
 
-  const handleClickItem = (e: React.MouseEvent, item: GetMenuItemDetail) => {
-   // debugger;
-    dispatch(setMenuItemDetailList(item));
-    dispatch(selectedMenuItem(item as any));
+  const handleClickItem = (e: React.MouseEvent, item: Menuitems) => {
+   /// debugger;
+    // dispatch(setMenuItemDetailList(item));
+    console.log("item from handleClickItem CategoryMenuItems", item);
+    dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
       return;
@@ -606,7 +611,6 @@ const CategoryMenuItems = ({
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
-  
                                                 <a
                                                   className=""
                                                   data-menuitemid={

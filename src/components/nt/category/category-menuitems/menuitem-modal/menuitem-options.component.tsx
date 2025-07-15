@@ -13,13 +13,19 @@ import SubToppingRequiredWarning from "./subtop-reqwarning.component";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { leftRightArray } from "@/components/nt/common/utility";
 import { useAppDispatch } from "../../../../../../redux/hooks";
-import { List, Type } from "@/types/menuitem-types/menuitem.type";
+import {
+  GetMenuItemDetail,
+  List,
+  Size,
+  Type,
+} from "@/types/menuitem-types/menuitem.type";
 import {
   removeMenuItem,
   selectedItemSize,
   updateitemoption,
 } from "../../../../../../redux/menu-item/menu-item.slice";
 import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
+import { isDataView } from "node:util/types";
 
 const MenuItemOptions = ({
   isExpand,
@@ -57,16 +63,16 @@ const MenuItemOptions = ({
     isRadioButton?: boolean,
     e?: React.ChangeEvent<HTMLInputElement>
   ) => {
-    //debugger;
+   // debugger;
+    console.log("selection from handleOnChangeSubOption", selection);
     let isFreeCountCalculation = true;
 
     const optionDetails = selectedtopping?.list?.find(
       (option) => option.optionId === optionId
     );
     if (
-      optionDetails &&
       !(
-        optionDetails?.freeToppingsCount > 0 ||
+        (optionDetails && optionDetails?.freeToppingsCount > 0) ||
         optionDetails?.multipleSelectStatus === false
       )
     ) {
@@ -85,25 +91,42 @@ const MenuItemOptions = ({
     // );
     let tdata = selectedoption?.[0]?.type;
 
-   // console.log("tdata from menuitem-option component", tdata);
+    // console.log("tdata from menuitem-option component", tdata);
 
-    const newArray = tdata?.map((a) => Object.assign({}, a));
+    const newArray = tdata?.map((a) =>
+      //Object.assign({}, a)
+      ({ ...a })
+    );
     tdata?.map((data) => {
       // HANDLING FOR THE CHECKBOX ON CHECK THE SUB-OPTION
       if (selection === "deselectall") {
-        data.subOptionselected = false;
-        data.subOptionToppingQuantity = 0;
-        data.subOptionToppingQuantity = 0;
-        data.sequenceNumber = 0;
-        data.pizzaside = "";
+        // data.subOptionselected = false;
+        // data.subOptionToppingQuantity = 0;
+        // data.subOptionToppingQuantity = 0;
+        // data.sequenceNumber = 0;
+        // data.pizzaside = "";
+        return {
+          ...data,
+          subOptionselected: false,
+          subOptionToppingQuantity: 0,
+          sequenceNumber: 0,
+          pizzaside: "",
+        };
       }
       //IF OPTION IS SELECTED THEN DESELECT
       else if (item.name === data.name) {
         if (selection === "deselect") {
-          data.subOptionselected = false;
-          data.subOptionToppingQuantity = 0;
-          data.sequenceNumber = 0;
-          data.pizzaside = "";
+          // data.subOptionselected = false;
+          // data.subOptionToppingQuantity = 0;
+          // data.sequenceNumber = 0;
+          // data.pizzaside = "";
+          return {
+            ...data,
+            subOptionselected: false,
+            subOptionToppingQuantity: 0,
+            sequenceNumber: 0,
+            pizzaside: "",
+          };
         }
       } else {
         data.sequenceNumber =
@@ -149,13 +172,16 @@ const MenuItemOptions = ({
                 ? subOption.paidQty + 1
                 : subOption.paidQty;
           } else {
-            subOption.paidQty = 0;
+            return {
+              ...subOption,
+              paidQty: 0,
+            };
           }
 
           return subOption;
         }
       });
-     // console.log(updateWithPaidTopping);
+      // console.log(updateWithPaidTopping);
       let freeCount = selectedoption?.[0].freeToppingsCount;
       const sortedsuboptionBasedSeqNo = updateWithPaidTopping?.sort(
         (a, b) => b.sequenceNumber - a.sequenceNumber
@@ -261,10 +287,10 @@ const MenuItemOptions = ({
           : data;
       });
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail.size));
+      dispatch(selectedItemSize(menuItemDetail));
+      //dispatch(selectedItemSize(menuItemDetail.size as Size[]));
       dispatch(updateitemoption());
-
-      setreLoad(Math.random);
+      setreLoad(Math.random());
     }
   };
 
@@ -275,15 +301,15 @@ const MenuItemOptions = ({
     isRadioButton: boolean,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    //debugger;
+   // debugger;
     let isFreeCountCalculation = true;
+    console.log("selection from handleOnChangeSubOption", selection);
     const optionDetails = selectedtopping?.list?.find(
       (option) => option.optionId === optionId
     );
     if (
-      optionDetails &&
       !(
-        optionDetails?.freeToppingsCount > 0 ||
+        (optionDetails && optionDetails?.freeToppingsCount > 0) ||
         optionDetails?.multipleSelectStatus === false
       )
     ) {
@@ -307,89 +333,106 @@ const MenuItemOptions = ({
     }
     //UPDATE THE SELCTED OPPTION STATUS:-item.subOptionselected TRUE OR FALSE
     let lstdefault: Type[] = [];
+    console.log(
+      "selectedtopping from handleOnChangeSubOption",
+      selectedtopping
+    );
     let selectedoption = selectedtopping?.list.filter(
       (x) =>
         x.optionId == optionId &&
         x.subparameterId == selectedsize?.subparameterId
     );
+    //debugger;
     let tdata = selectedoption?.[0].type;
     const newArray = tdata?.map((a) =>
       //Object.assign({}, a)
       ({ ...a })
     );
 
-    const updatedList = tdata?.map((data) => {
-      //IF OPTION IS NO SELCTED  THEN SELECT THE OTION
-      if (item.name === data.name && item.subOptionselected === false) {
-        let selectionTypeTopizzaSide =
-          selection === "select"
-            ? selectedoption?.[0]?.isHalfPizza
-              ? "F"
-              : ""
-            : selection === "deselect"
-            ? ""
-            : selection;
-        //item.subOptionselected = true;
-        // data.subOptionselected = true;
-        // data.subOptionToppingQuantity = 1;
-        // data.pizzaside = selectionTypeTopizzaSide;
-        return {
-          subOptionselected: true,
-          subOptionToppingQuantity: 1,
-          pizzaside: selectionTypeTopizzaSide,
-        };
-      }
-      //IF OPTION IS SELECTED THEN DESELECT FOR RADIO BUTTON ONLY
-      else if (data.subOptionselected === true && isRadioButton === true) {
-        if (isRadioButton === true) {
-          // SELECTION VALUE SHULD BE NOT BLANK MEANS PIZZA CLICK THEN SELECT SELECTED SUBOPTION BUT PIZZA SIDE CHANGE SO NO NEED TO DESELECT
-          const AnotherSubOptionSelected = tdata.find(
-            (item) => item?.subOptionselected
-          );
-          let isSuboptionAlreadySelectedForPizza =
-            AnotherSubOptionSelected?.suboptionId === data?.suboptionId;
-          const isSelect =
-            selection !== "" &&
-            data.subOptionselected &&
-            item.subOptionselected &&
-            isSuboptionAlreadySelectedForPizza;
-
-          // data.subOptionselected = isSelect;
-          // data.subOptionToppingQuantity = isSelect ? 1 : 0;
-          // data.pizzaside = isSelect ? selection : "";
+    console.log("new Array from handleOnChangeSubOption", newArray);
+    if (tdata) {
+      lstdefault = tdata?.map((data) => {
+        console.log("new Array from handleOnChangeSubOption", newArray);
+        //IF OPTION IS NO SELCTED  THEN SELECT THE OTION
+        if (item.name === data.name && item.subOptionselected === false) {
+          //debugger;
+          let selectionTypeTopizzaSide =
+            selection === "select"
+              ? selectedoption?.[0]?.isHalfPizza
+                ? "F"
+                : ""
+              : selection === "deselect"
+              ? ""
+              : selection;
+          //item.subOptionselected = true;
+          // data.subOptionselected = true;
+          // data.subOptionToppingQuantity = 1;
+          // data.pizzaside = selectionTypeTopizzaSide;
           return {
             ...data,
-            subOptionselected: isSelect,
-            subOptionToppingQuantity: isSelect ? 1 : 0,
-            pizzaside: isSelect ? selection : "",
+            subOptionselected: true,
+            subOptionToppingQuantity: 1,
+            pizzaside: selectionTypeTopizzaSide,
           };
         }
-      }
-      //CHECK FOR THE HALF PIZZA SELECTION ONLY FOR THE CHECKBOX (FUNCTIONALITY FOR THE CHNAGE PIZZA SIDE)
-      else if (selection !== "" && data?.subOptionselected && !isRadioButton) {
-        // data.subOptionselected = true;
-        // data.subOptionToppingQuantity = data.subOptionToppingQuantity;
-        // //chnage type
-        // data.pizzaside =
-        //   data?.suboptionId === item?.suboptionId ? selection : data?.pizzaside;
-        return {
-          ...data,
-          subOptionselected: true,
-          subOptionToppingQuantity: data.subOptionToppingQuantity,
-          pizzaside:
-            data?.suboptionId === item?.suboptionId
-              ? selection
-              : data?.pizzaside,
-        };
-      }
-      return data;
-      //lstdefault.push(data);
-    });
+        //IF OPTION IS SELECTED THEN DESELECT FOR RADIO BUTTON ONLY
+        else if (data.subOptionselected === true && isRadioButton === true) {
+         // debugger;
+          if (isRadioButton === true) {
+          //  debugger;
+            // SELECTION VALUE SHULD BE NOT BLANK MEANS PIZZA CLICK THEN SELECT SELECTED SUBOPTION BUT PIZZA SIDE CHANGE SO NO NEED TO DESELECT
+            const AnotherSubOptionSelected = tdata.find(
+              (item) => item?.subOptionselected
+            );
+            let isSuboptionAlreadySelectedForPizza =
+              AnotherSubOptionSelected?.suboptionId === data?.suboptionId;
+            const isSelect =
+              selection !== "" &&
+              data.subOptionselected &&
+              item.subOptionselected &&
+              isSuboptionAlreadySelectedForPizza;
+
+            // data.subOptionselected = isSelect;
+            // data.subOptionToppingQuantity = isSelect ? 1 : 0;
+            // data.pizzaside = isSelect ? selection : "";
+            return {
+              ...data,
+              subOptionselected: isSelect,
+              subOptionToppingQuantity: isSelect ? 1 : 0,
+              pizzaside: isSelect ? selection : "",
+            };
+          }
+        }
+        //CHECK FOR THE HALF PIZZA SELECTION ONLY FOR THE CHECKBOX (FUNCTIONALITY FOR THE CHNAGE PIZZA SIDE)
+        else if (
+          selection !== "" &&
+          data?.subOptionselected &&
+          !isRadioButton
+        ) {
+          //debugger;
+          // data.subOptionselected = true;
+          // data.subOptionToppingQuantity = data.subOptionToppingQuantity;
+          // //chnage type
+          // data.pizzaside =
+          //   data?.suboptionId === item?.suboptionId ? selection : data?.pizzaside;
+          return {
+            ...data,
+            subOptionselected: true,
+            subOptionToppingQuantity: data.subOptionToppingQuantity,
+            pizzaside:
+              data?.suboptionId === item?.suboptionId
+                ? selection
+                : data?.pizzaside,
+          };
+        }
+        return { ...data };
+        //return data;
+        ///lstdefault.push({ ...data });
+      });
+    }
 
     let finalcount: number = 0;
-    if (selectedoption) {
-      finalcount = calculateFinalCount(lstdefault, selectedoption[0]);
-    }
+    finalcount = calculateFinalCount(lstdefault, selectedoption?.[0] as List);
     var isMaxSelectZero = isFreeCountCalculation
       ? selectedoption?.[0].freeToppingsCount == 0
         ? true
@@ -507,7 +550,8 @@ const MenuItemOptions = ({
         });
 
       dispatch(removeMenuItem());
-      menuItemDetail && dispatch(selectedItemSize(menuItemDetail?.size));
+      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      //dispatch(selectedItemSize(menuItemDetail?.size));
       dispatch(updateitemoption());
       setreLoad(Math.random);
     } else {
@@ -560,7 +604,8 @@ const MenuItemOptions = ({
       });
 
       dispatch(removeMenuItem());
-      menuItemDetail && dispatch(selectedItemSize(menuItemDetail?.size));
+      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      //dispatch(selectedItemSize(menuItemDetail?.size));
       if (
         selectedSubOption &&
         subOptionCount > selectedSubOption?.suboptionmaxselection
@@ -778,7 +823,8 @@ const MenuItemOptions = ({
       });
 
       dispatch(removeMenuItem());
-      menuItemDetail && dispatch(selectedItemSize(menuItemDetail?.size));
+      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      //dispatch(selectedItemSize(menuItemDetail?.size));
       dispatch(updateitemoption());
     } else {
       selectedtopping?.list.map((data) => {
@@ -806,7 +852,8 @@ const MenuItemOptions = ({
         else Object.assign(data, data);
       });
       dispatch(removeMenuItem());
-      menuItemDetail && dispatch(selectedItemSize(menuItemDetail?.size));
+      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      //dispatch(selectedItemSize(menuItemDetail?.size));
       // handleNotify("Topping value is exceed " + selectedoption[0].maxSelection + " toppings", ToasterPositions.TopRight, ToasterTypes.Error);
       handleNotify(
         "Select max " + selectedoption?.[0].maxSelection + " choices",
@@ -981,18 +1028,18 @@ const MenuItemOptions = ({
   const selectedOptionClick = (
     option: List,
     item: Type | null,
-    alltype: any
+    alltype: string
   ) => {
     //debugger;
-    // console.log(
-    //   "option from selectedoptionClick from menuitem options",
-    //   option
-    // );
-    // console.log("item from selectedoptionClick from menuitem options", item);
-    // console.log(
-    //   "alltype from selectedoptionClick from menuitem options",
-    //   alltype
-    // );
+    console.log(
+      "option from selectedoptionClick from menuitem options",
+      option
+    );
+    console.log("item from selectedoptionClick from menuitem options", item);
+    console.log(
+      "alltype from selectedoptionClick from menuitem options",
+      alltype
+    );
     let lstdefault: Type[] = [];
     option.type.map((data) => {
       let newData = { ...data };
@@ -1035,7 +1082,8 @@ const MenuItemOptions = ({
       data.subparameterId === selectedsize?.subparameterId ? objtopping : data;
     });
     dispatch(removeMenuItem());
-    menuItemDetail && dispatch(selectedItemSize(menuItemDetail.size));
+    dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+    //dispatch(selectedItemSize(menuItemDetail.size as Size[]));
     dispatch(updateitemoption());
   };
 

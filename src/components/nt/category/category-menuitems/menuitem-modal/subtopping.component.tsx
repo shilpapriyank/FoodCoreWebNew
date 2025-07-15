@@ -39,8 +39,31 @@ const SubTopping = ({
   isDisplayPrice,
   increment,
   decrement,
-}: SubToppingProps) => {
-  //debugger
+}: {
+  type: Type;
+  index: number;
+  item: List;
+  handleOnChangeRemoveSubOption: (
+    item: Type,
+    optionId: number,
+    selection: string,
+    isRadioButton: boolean,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  handleOnChangeSubOption: (
+    item: Type,
+    optionId: number,
+    selection: string,
+    isRadioButton: boolean,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  isDisplayPrice: boolean;
+  increment: (optionId: number, data: Type) => void;
+  decrement: (optionId: number, data: Type, isRadioButton: boolean) => void;
+}) => {
+  //debugger;
+  console.log("type from sub topping component", type);
+  console.log("item from sub topping component", item);
   const { restaurantinfo } = useReduxData();
   const redioClass = restaurantinfo?.isSchoolProgramEnabled
     ? "fs-15-radio"

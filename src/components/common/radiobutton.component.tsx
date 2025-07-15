@@ -24,12 +24,12 @@ const RadioButton = ({
   handleOnChangeSubOption,
   disabled,
 }: RadioButtonProps) => {
- // console.log("item from radio button component", item);
-  // console.log(
-  //   "type.subOptionselected from radio button component",
-  //   type.subOptionselected
-  // );
- // debugger;
+  console.log("item from radio button component", item);
+  console.log(
+    "type.subOptionselected from radio button component",
+    type.subOptionselected
+  );
+
   return (
     <input
       id={String(type.suboptionId)}
@@ -47,7 +47,7 @@ const RadioButton = ({
       value={type.suboptionId}
       name={`rdsuboption_${item.optionId}_${item.subparameterId}`}
       type="radio"
-      checked={type?.subOptionselected == true}
+      checked={type?.subOptionselected === true}
     />
   );
 };

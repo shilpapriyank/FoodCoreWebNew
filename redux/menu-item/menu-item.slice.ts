@@ -291,14 +291,14 @@ const menuItemSlice = createSlice({
     removeMenuItemForFavorite: (state) => {
       state.selectedmenuitemdetail = null;
     },
-    // selectedItemSize: (state, action: PayloadAction<GetMenuItemDetail>) => {
-    //   state.menuitemdetaillist = action.payload;
-    // },
-    selectedItemSize: (state, action: PayloadAction<Size[]>) => {
-      if (state.menuitemdetaillist) {
-        state.menuitemdetaillist.size = action.payload;
-      }
+    selectedItemSize: (state, action: PayloadAction<GetMenuItemDetail>) => {
+      state.menuitemdetaillist = action.payload;
     },
+    // selectedItemSize: (state, action: PayloadAction<Size[]>) => {
+    //   if (state.menuitemdetaillist) {
+    //     state.menuitemdetaillist.size = action.payload;
+    //   }
+    // },
     removeMenuItem: (state) => {
       state.menuitemdetaillist = null;
     },
