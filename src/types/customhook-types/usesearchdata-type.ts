@@ -4,7 +4,7 @@ export interface MenuItemType {
   catId: number;
   itemId: number;
   itemName: string;
-  [key: string]: any; // expand as per actual structure
+  [key: string]: string | number | boolean | undefined | null;
 }
 
 export interface CategoryType {
@@ -12,11 +12,13 @@ export interface CategoryType {
   categoryslug: string;
   istakeoutavailable?: boolean;
   isdeliveryavailable?: boolean;
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined;
+
 }
 
 export interface MenuItemSearchResponse {
   categories: CategoryType[];
   menuItems: MenuItemType[];
   [key: string]: any;
+
 }

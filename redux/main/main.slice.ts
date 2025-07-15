@@ -18,7 +18,7 @@ interface MainState {
   promotioncategoryList: MainCategoryList[];
   deliverypickuppopup: boolean;
   ischangelocation: boolean;
-  restaurantWindowTime: RestaurantWindowTimeNew[]
+  restaurantWindowTime: RestaurantWindowTimeNew | null
 }
 
 const initialState: MainState = {
@@ -26,12 +26,12 @@ const initialState: MainState = {
   promotioncategoryList: [],
   deliverypickuppopup: true,
   ischangelocation: false,
-  restaurantWindowTime: []
+  restaurantWindowTime: null
 };
 
 export const getMenuCategoryList = createAsyncThunk<
   MainCategoryList[], // Return type
-  { restaurantId: number; locationId: number } 
+  { restaurantId: number; locationId: number }
 >("main/getMenuCategoryList", async ({ restaurantId, locationId }) => {
   const response = await MainServices.getMenuCategoryList(
     restaurantId,
@@ -41,7 +41,8 @@ export const getMenuCategoryList = createAsyncThunk<
 });
 
 export const getSelectedRestaurantTime = createAsyncThunk<
-  RestaurantWindowTimeNew[],
+  any,
+  // RestaurantWindowTimeNew,
   { restaurantId: number; locationId: number },
   { rejectValue: string }
 >("main/getSelectedRestaurantTime", async ({ restaurantId, locationId }, thunkAPI) => {

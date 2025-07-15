@@ -1,3 +1,5 @@
+import { FutureDateType } from "@/components/nt/timeslot/future-day.component";
+
 export interface TimeSlot {
   StartSlotNew: string | null;
   EndSlotNew: string | null;
@@ -29,7 +31,7 @@ export interface AsapLaterOnState {
 export interface TimeSlotPopupComponentProps {
   isOpenModal: boolean;
   handleToggleTimingModal: (open: boolean) => void;
-  futureDateList: any[];
+  futureDateList: FutureDateType[]
   handleToggleTimeSlotModal?: () => void;
   enablefutureordering: boolean;
   locationId: string;

@@ -25,10 +25,10 @@ const selecteddeliverySlice = createSlice({
   name: "selecteddelivery",
   initialState,
   reducers: {
-    savechoosetime(state, action: PayloadAction<any>) {
+    savechoosetime(state, action: PayloadAction<ChooseTime>) {
       state.choosetime = action.payload;
     },
-    setpickupordelivery(state, action: PayloadAction<any>) {
+    setpickupordelivery(state, action: PayloadAction<string>) {
       state.pickupordelivery = action.payload;
     },
     selecteddeliveryaddress(

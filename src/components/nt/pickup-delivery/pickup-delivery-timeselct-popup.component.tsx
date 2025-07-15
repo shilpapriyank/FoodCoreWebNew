@@ -86,7 +86,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     let locationHrefLink = `/${selectedTheme?.url}/[dynamic]/[location]/`;
     const restaurantslocationlistwithtime =
       restaurant.restaurantslocationlistwithtime;
-    const addressList = restaurantslocationlistwithtime.addressList;
+    const addressList = restaurantslocationlistwithtime.addressList ?? [];
     // console.log(
     //   "address list from pickup and delivery time select popup component.tsx",
     //   addressList
@@ -392,6 +392,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     };
 
     const handleClick = async (lid: any, locationUrl: any, isPickup: boolean) => {
+      debugger
       LocationServices.changeRestaurantLocation(
         restaurantinfo?.restaurantId as number,
         lid

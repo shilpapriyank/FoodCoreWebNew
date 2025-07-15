@@ -32,7 +32,7 @@ export interface RestaurantState {
     restaurantId: number;
   };
   restaurantslocationlistwithtime: {
-    addressList: AddressList[] | null;
+    addressList: AddressList[];
     issupplychainenable: boolean;
     parameterByColorList: ParameterByColorList[] | null;
     parameterByTextSizeList: ParameterByTextSizeList[] | null;

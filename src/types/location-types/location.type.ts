@@ -165,16 +165,16 @@ export interface AddressList {
   NextTakeoutDeliveryOpeningTime: string | null;
   OpeningTime: string[];
   OrdDeliveryClosingTime: string[];
-  OrdDeliveryClosingTimeV1: any[]; // define if possible
+  OrdDeliveryClosingTimeV1: string[]; // define if possible //any[]
   OrdDeliveryOpeningTime: string[];
-  OrdDeliveryOpeningTimeV1: any[]; // define if possible
+  OrdDeliveryOpeningTimeV1: string[]; // define if possible
   SystemAccessFee: number;
   TakeourDeliveryClosingTime: string | null;
   TakeoutAvailable: boolean[];
   TakeoutDeliveryClosingTime: string[];
-  TakeoutDeliveryClosingTimeV1: any[];
+  TakeoutDeliveryClosingTimeV1: string[];
   TakeoutDeliveryOpeningTime: string[];
-  TakeoutDeliveryOpeningTimeV1: any[];
+  TakeoutDeliveryOpeningTimeV1: string[];
   TempoApp: boolean;
   applePayEnable: boolean;
   b2btype: boolean;
@@ -193,10 +193,10 @@ export interface AddressList {
   deliverPartnerStatus: boolean;
   deliveryDays: number;
   deliveryService: string | null;
-  deliverySpecialHoursList: any; // define if possible
-  deliveryTime: any[]; // define type
-  delivery_hour: any[]; // define type
-  deliveryslots: any;
+  deliverySpecialHoursList: { date: string; open: string; close: string }[];
+  deliveryTime: string[]; // define type //any[]
+  delivery_hour: string[]; // define type //any[]
+  deliveryslots: string;  //any[]
   displaylistview: boolean;
   distance: number;
   email: string;
@@ -204,7 +204,7 @@ export interface AddressList {
   enablefutureordering: boolean;
   facebookUrl: string;
   fax: string;
-  futureOrderingDayDates: any[]; // define structure
+  futureOrderingDayDates: string[];//any[]; // define structure
   googlePayEnable: boolean;
   hstgstnumber: string | null;
   instagramUrl: string;
@@ -227,8 +227,8 @@ export interface AddressList {
   isUseFoodCoreDriver: boolean;
   latitude: number;
   locationTime: string;
-  locationTimeList: any; // define if needed
-  locationTimesList: any[]; // define if needed
+  locationTimeList: Record<string, string>; // any
+  locationTimesList: { open: string; close: string; day: string; type: string }[];// any[]; // define if needed
   locationURL: string;
   longitude: number;
   maxLikeInMonth: number;
@@ -249,14 +249,14 @@ export interface AddressList {
   ordersubmittime: number;
   phone: string;
   pickupDays: number;
-  pickupTime: any[]; // define type if known
-  pickup_hour: any[];
+  pickupTime: string  //any[];
+  pickup_hour: string  //any[];
   rewardpointAllow: number;
   stateName: string;
   stripePublishKey: string;
   takeawayextratime: number;
-  takeoutSpecialHoursList: any; // define if needed
-  takeoutslots: any;
+  takeoutSpecialHoursList: { date: string; open: string; close: string }[];// any; // define if needed
+  takeoutslots: string[];
   timeSlotDuration: number;
   timeduration: number;
   timezone: string;

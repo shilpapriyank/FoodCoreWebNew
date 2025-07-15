@@ -1198,7 +1198,7 @@ export const checkWindowTimeExpires = (
   restaurantinfo: GetAllRestaurantInfo,
   isLastOrder: boolean = false
 ): boolean => {
-  console.log("✅ checkWindowTimeExpires called with:", {
+  console.log("checkWindowTimeExpires called with:", {
     windowEndTime,
     currentTime,
     isasap,
@@ -1220,7 +1220,7 @@ export const checkWindowTimeExpires = (
     typeof windowMeridian !== "string" ||
     !time.includes(":")
   ) {
-    console.warn("❌ Invalid output from getCheckTimeArr:", {
+    console.warn("Invalid output from getCheckTimeArr:", {
       time,
       windowMeridian,
       input: { currentTime, windowEndTime, isasap, restaurantinfo },

@@ -3,7 +3,7 @@ import { convertOptionToStrListTo } from '../../common/utility';
 
 interface Topping {
   pizzaside?: string;
-  [key: string]: any; // include this if there are unknown additional properties
+[key: string]: string | number | boolean | undefined | null;
 }
 
 interface CartItemToppingProps {

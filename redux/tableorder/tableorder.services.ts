@@ -10,7 +10,7 @@ import { LoggedInUser } from "../login/login.types";
 let responseclass = new ResponseModel();
 
 export class TableOrderServices {
-    static async registerUser(user: LoggedInUser, restaurantId: number,): Promise<string | any> {
+    static async registerUser(user: LoggedInUser, restaurantId: number,): Promise<string | null> {
         responseclass = new ResponseModel();
         const methodName = "sendVerificationEmail";
         const sendVerificationEmail = ENDPOINTS.SEND_VERIFICATION_EMAIL;
@@ -24,7 +24,7 @@ export class TableOrderServices {
         return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
     }
 
-    static async verifyOtp(user: LoggedInUser, restaurantId: number,): Promise<string | any> {
+    static async verifyOtp(user: LoggedInUser, restaurantId: number,): Promise<string | null> {
         responseclass = new ResponseModel();
         const methodName = "sendVerificationEmail";
         const sendVerificationEmail = ENDPOINTS.SEND_VERIFICATION_EMAIL;
@@ -38,7 +38,7 @@ export class TableOrderServices {
         return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
     }
 
-    static async getCustomerByPhone(phone: string, restaurantId: number, isPos: boolean = true): Promise<any | null> {
+    static async getCustomerByPhone(phone: string, restaurantId: number, isPos: boolean = true): Promise<string | null> {
         responseclass = new ResponseModel();
         const methodName = "getCustomerByPhone";
         const endpoint = ENDPOINTS.GET_CUSTOMER_BY_PHONE;
@@ -51,7 +51,7 @@ export class TableOrderServices {
         return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
     }
 
-    static async insertToOtherCustomer(user: LoggedInUser, restaurantId: number): Promise<any | null> {
+    static async insertToOtherCustomer(user: LoggedInUser, restaurantId: number): Promise<string | null> {
         responseclass = new ResponseModel();
         const methodName = "insertToOtherCustomer";
         const endpoint = ENDPOINTS.INSERT_TO_OTHER_CUSTOMER;
@@ -62,7 +62,7 @@ export class TableOrderServices {
         return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
     }
 
-    static async getPosTableDetails(restaurantId: number, locationId: string, tableno: string): Promise<any | null> {
+    static async getPosTableDetails(restaurantId: number, locationId: string, tableno: string): Promise<string | null> {
         responseclass = new ResponseModel();
         const methodName = "getPosTableDetails";
         const endpoint = ENDPOINTS.GET_POS_TABLE_DETAILS;
@@ -77,7 +77,7 @@ export class TableOrderServices {
         return responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS ? responseclass.result : null;
     }
 
-    static async getListofPrinterSetting(restaurantId: number, locationId: string): Promise<any | null> {
+    static async getListofPrinterSetting(restaurantId: number, locationId: string): Promise<string | null> {
         responseclass = new ResponseModel();
         const methodName = "getListofPrinterSetting";
         const endpoint = ENDPOINTS.GET_PRINTER_INFORMATION;

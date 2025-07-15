@@ -13,7 +13,7 @@ const metadataSlice = createSlice({
   name: "metadata",
   initialState: INITIAL_STATE,
   reducers: {
-    addmetaData: (state, action: PayloadAction<any>) => {
+    addmetaData: (state, action: PayloadAction<Metadata>) => {
       state.metadata = action.payload;
     },
   },

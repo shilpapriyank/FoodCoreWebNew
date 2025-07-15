@@ -63,7 +63,7 @@ export const addAddress = createAsyncThunk(
     restaurantId,
     locationId,
   }: {
-    obj: any;
+    obj: DeliveryAddressInput;
     restaurantId: number;
     locationId: number;
   }) => {
@@ -86,14 +86,14 @@ const deliveryAddressSlice = createSlice({
     updateAddressCheck(state, action: PayloadAction<boolean>) {
       state.updatedAddress = { isAddressUpdated: action.payload };
     },
-    registerAddress(state, action: PayloadAction<any>) {
+    registerAddress(state, action: PayloadAction<DeliveryAddressInput>) {
       state.tempDeliveryAddress = null;
       state.registeraddress = action.payload;
     },
-    insertAddressId(state, action: PayloadAction<any>) {
+    insertAddressId(state, action: PayloadAction<DeliveryAddressInput>) {
       state.addressId = action.payload;
     },
-    AddTempDeliveryAddress(state, action: PayloadAction<any>) {
+    AddTempDeliveryAddress(state, action: PayloadAction<DeliveryAddressInput | null>) {
       state.tempDeliveryAddress = action.payload;
     },
     DeleteTempDeliveryAddress(state) {
@@ -115,13 +115,13 @@ const deliveryAddressSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       getAddress.fulfilled,
-      (state, action: PayloadAction<any[]>) => {
+      (state, action: PayloadAction<DeliveryAddressInput[]>) => {
         state.deliveryaddressdata = action.payload;
       }
     );
     builder.addCase(
       addAddress.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<number | any>) => {
         state.addressId = action.payload;
       }
     );

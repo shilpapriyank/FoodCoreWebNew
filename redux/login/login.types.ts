@@ -5,36 +5,6 @@ export const LoginTypes = {
   LOGOUT_USER: "LOGOUT_USER",
 };
 
-// export interface LoginParams {
-//   username: string;
-//   password: string;
-//   restaurantId: number;
-//   dialCode: string;
-//   locationid: string;
-// }
-
-// export interface LoggedInUser {
-//   [key: string]: any;
-//   businessname: string;
-//   customerId: number;
-//   customertype: number;
-//   dialcode: string;
-//   emailId: string;
-//   firstname: string;
-//   imgname: string | null;
-//   imgtype: string;
-//   isVerified: boolean;
-//   isVerifiedPhone: boolean;
-//   lastname: string;
-//   loyaltynumber: string;
-//   mobile: string;
-//   phone: string;
-//   picture: string;
-//   restaurantId: number;
-//   rewardvalue: number;
-//   totalRewardPoints: number;
-// }
-
 export interface GetLoginUserDetailsParams {
   username: string;
   password: string;
@@ -43,11 +13,7 @@ export interface GetLoginUserDetailsParams {
   locationid: number;
 }
 
-// export interface LoginState {
-//   loggedinuser: LoggedInUser | null;
-// }
-
-// ------------------ Types ------------------
+// -- Types --
 
 export interface LoggedInUser {
   customerId: number;
@@ -68,7 +34,7 @@ export interface LoggedInUser {
   isVerifiedPhone: boolean;
   customertype: number;
   businessname: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined | null;
 }
 
 export interface LoginParams {

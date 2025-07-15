@@ -20,7 +20,6 @@ const INITIAL_STATE: OrderState = {
 export const checkOrderTime = createAsyncThunk(
   "order/checkOrderTime",
   async (args: CheckOrderTimeArgsTypes) => {
-    debugger;
     return await OrderServices.checkOrderTime(args);
   }
 );

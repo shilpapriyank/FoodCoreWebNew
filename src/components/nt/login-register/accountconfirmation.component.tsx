@@ -25,7 +25,7 @@ const AccountConfirmation: React.FC<AccountConfirmationProps> = ({
 }) => {
     const { restaurantinfo, userinfo } = useReduxData();
     const customerId = userinfo ? userinfo.customerId : 0;
-    const selctedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    const selctedTheme = GetThemeDetails(restaurantinfo!.themetype);
     const router = useRouter();
     const params = useParams() as { dynamic?: string; location?: string };
     const dynamic = params.dynamic ?? "";
@@ -37,18 +37,36 @@ const AccountConfirmation: React.FC<AccountConfirmationProps> = ({
             : "";
     const { isRewardTip } = useUtility();
 
-    const handleResendClick = () => {
+    // const handleResendClick = () => {
+    //     if (!restaurantinfo) return;
+    //     RegisterServices.sendVerificationEmail(
+    //         restaurantinfo.restaurantId,
+    //         restaurantinfo.defaultlocationId,
+    //         requesturl,
+    //         customerId
+    //     ).then(() => {
+    //         handleToggleAccountConfirm(false);
+    //         handleToggle?.(true, 'openSendEmailConfirm');
+    //     });
+    // };
+    const handleResendClick = async () => {
         if (!restaurantinfo) return;
-        RegisterServices.sendVerificationEmail(
-            restaurantinfo.restaurantId,
-            restaurantinfo.defaultlocationId,
-            requesturl,
-            customerId
-        ).then(() => {
+
+        try {
+            await RegisterServices.sendVerificationEmail({
+                restaurantId: restaurantinfo.restaurantId,
+                locationId: restaurantinfo.defaultlocationId,
+                requesturl,
+                customerId,
+            });
+
             handleToggleAccountConfirm(false);
-            handleToggle?.(true, 'openSendEmailConfirm');
-        });
+            handleToggle?.(true, "openSendEmailConfirm");
+        } catch (err) {
+            console.error("Could not send verification e‑mail", err);
+        }
     };
+
 
     const handleClose = () => {
         handleToggleAccountConfirm(false);
