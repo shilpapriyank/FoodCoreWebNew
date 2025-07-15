@@ -3,7 +3,7 @@ import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ORDER_TYPE } from "../../common/utility";
 
-interface FutureDateType {
+export interface FutureDateType {
   deliveryStatus?: string;
   takeoutStatus?: string;
   futureDate?: string;

@@ -16,7 +16,6 @@ import { useWindowDimensions } from "@/components/customhooks/usewindowdimension
 import { PAGES } from "../common/pages";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 
-
 interface HeaderLogoProps {
     isLeftMenu: boolean;
     isDisplayBack: boolean;

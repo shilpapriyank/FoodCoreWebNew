@@ -8,7 +8,6 @@ import { useParams, useRouter } from "next/navigation";
 import { closeModal, GetThemeDetails, ORDER_TYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import AddressList from "../common/adresslist.component";
-import { LocationServices } from "../../../../redux/location/location.services";
 import { ChangeUrl, restaurantsdetail } from "../../../../redux/restaurants/restaurants.slice";
 import { getLocationIdFromStorage, setLocationIdInStorage } from "@/components/common/localstore";
 import { clearRedux } from "../../../../redux/tableorder/tableorder.slice";
@@ -26,6 +25,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { AddressItem } from "@/types/address-types/address.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { LocationServices } from "../../../../redux/location/location.services";
 
 interface OrderTypeSelectProps {
   isOpenModal: boolean;
@@ -84,6 +84,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   };
 
   const handleClickConfirmChangeLocation = async (lid: number): Promise<void> => {
+    handleChangeAddress?.()
     dispatch(ChangeUrl(true));
 
     try {
@@ -91,6 +92,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         restaurantinfo?.restaurantId as number,
         lid
       );
+      console.log("method", LocationServices.changeRestaurantLocation);
+
 
       if (!restaurantinfo || !res) return;
 
@@ -108,7 +111,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
       dispatch(restaurantsdetail(updatedRestaurantInfo));
 
       const oldLocationId = getLocationIdFromStorage();
-      if (oldLocationId !== updatedRestaurantInfo.defaultlocationId) {
+      if (oldLocationId !== updatedRestaurantInfo.defaultLocation.locationId) {
         dispatch(clearRedux(true as any));
         dispatch(createSessionId(uuidv4()));
       }
@@ -135,6 +138,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
       }
 
       setLocationIdInStorage(updatedRestaurantInfo.defaultlocationId);
+      //setLocationIdInStorage(updatedRestaurantInfo.defaultLocation.locationId); //
 
       dispatch(refreshCategoryList({
         newselectedRestaurant: updatedRestaurantInfo,
@@ -154,7 +158,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
           updatedRestaurantInfo.restaurantId,
           updatedRestaurantInfo.defaultLocation.locationId
         );
-        dispatch(emptycart() as any);
+        dispatch(emptycart());
       }
 
       handleToggleOrderTypeModal(false);
@@ -189,6 +193,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     handleToggleOrderTypeModal(false);
     handleToggleAddAddressModal(true);
   };
+
+
 
   return (
     <>
@@ -334,6 +340,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                             isChecked={true}
                             id={String(myDeliveryAddress.id)}
                             address={myDeliveryAddress as any}
+                          // id={myDeliveryAddress.id}
+                          // address={(myDeliveryAddress as DeliveryAddressInput )}
                           />
                         )}
                         {userinfo && <DeliveryaddresspillComponent />}

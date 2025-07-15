@@ -1,4 +1,20 @@
 import React from "react";
+interface AddressItems {
+  city?: string;
+  address1?: string;
+  cityName?: string;
+  zipcode?: string;
+  [key: string]: string | number | boolean | undefined | null;
+  id: string | number;
+}
+
+interface AddressPillProps {
+  isChecked: boolean;
+  id: string | number;
+  address: AddressItems;
+  handleChangeAddress?: (address: AddressItems) => void;
+  handleChangeLocation?: () => void;
+}
 
 const AddressPill = ({
   isChecked,
@@ -6,7 +22,7 @@ const AddressPill = ({
   handleChangeAddress,
   address,
   id,
-}: any) => {
+}: AddressPillProps) => {
   return (
     <label
       className="radio-box pointer-cursor"

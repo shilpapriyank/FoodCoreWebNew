@@ -45,6 +45,7 @@
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.80.5",
     "@types/bootstrap": "^5.2.10",
+    "@types/google.maps": "^3.58.1",
     "@types/jquery": "^3.5.32",
     "@types/md5": "^2.3.5",
     "@types/moment": "^2.11.29",

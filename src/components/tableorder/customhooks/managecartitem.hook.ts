@@ -18,6 +18,7 @@ type CartItem = {
 const useManageCartData = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { restaurantinfo, tableorder } = useReduxData();
+    if (!restaurantinfo) return;
     const collectionName = generateTableName(
         restaurantinfo?.restaurantId,
         restaurantinfo?.defaultlocationId,

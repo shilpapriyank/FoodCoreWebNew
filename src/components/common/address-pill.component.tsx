@@ -7,7 +7,7 @@ interface AddressItem {
   address1?: string;
   cityName?: string;
   zipcode?: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined | null;
   id: string | number;
 }
 

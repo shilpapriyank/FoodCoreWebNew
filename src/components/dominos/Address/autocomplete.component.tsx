@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
- import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
+import { AddTempDeliveryAddress } from '../../../../redux/delivery-address/delivery-address.slice';
 import { useReduxData } from '@/components/customhooks/useredux-data-hooks';
 const apiKey = 'AIzaSyC6hNIP3xs2wN0tRG3Ue5Vg8seHGZTYnn4';
 const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 
+declare global {
+    interface Window {
+        google: typeof google;
+        initAutocomplete?: () => void;
+    }
+}
 // Type for address object
 interface Address {
     address1?: string;
@@ -45,31 +51,52 @@ interface GoogleAutoCompleteProps {
 //     });
 // }
 function loadAsyncScript(src: string): Promise<HTMLScriptElement> {
-  return new Promise((resolve) => {
-    if ((window as any).google) {
-      resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
-      return;
-    }
-    if (document.getElementById('google-maps-script')) {
-      resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
-      return;
-    }
+    return new Promise((resolve) => {
+        if (window.google) {
+            resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+            return;
+        }
+        if (document.getElementById('google-maps-script')) {
+            resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+            return;
+        }
 
-    const script = document.createElement('script');
-    Object.assign(script, {
-      type: 'text/javascript',
-      id: 'google-maps-script', 
-      async: true,
-      src,
+        const script = document.createElement('script');
+        Object.assign(script, {
+            type: 'text/javascript',
+            id: 'google-maps-script',
+            async: true,
+            src,
+        });
+        script.addEventListener('load', () => resolve(script));
+        document.head.appendChild(script);
     });
-    script.addEventListener('load', () => resolve(script));
-    document.head.appendChild(script);
-  });
 }
+// return new Promise((resolve) => {
+//         if ((window as any).google) {
+//     // if (window.google) {
+//         resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+//         return;
+//     }
+//     if (document.getElementById('google-maps-script')) {
+//         resolve(document.getElementById('google-maps-script') as HTMLScriptElement);
+//         return;
+//     }
+
+//     const script = document.createElement('script');
+//     Object.assign(script, {
+//         type: 'text/javascript',
+//         id: 'google-maps-script', 
+//         async: true,
+//         src,
+//     });
+//     script.addEventListener('load', () => resolve(script));
+//     document.head.appendChild(script);
+// });
 
 
 // Utility: Extract address from Google place result
-function extractAddress(place: any): Address {
+function extractAddress(place: google.maps.places.PlaceResult): Address {
     const address: Address = {
         city: '',
         state: '',
@@ -141,7 +168,7 @@ export const GoogleAutoComplete: React.FC<GoogleAutoCompleteProps> = ({
     const [, setQuery] = useState<string>('');
 
     const initMapScript = () => {
-        if ((window as any).google) {
+        if (window.google) {
             return Promise.resolve();
         }
         const src = `${mapApiJs}?key=${apiKey}&libraries=places&v=weekly&callback=initAutocomplete`;
@@ -149,6 +176,7 @@ export const GoogleAutoComplete: React.FC<GoogleAutoCompleteProps> = ({
     };
 
     const onChangeAddress = (autocomplete: any) => {
+        //  const onChangeAddress = (autocomplete: google.maps.places.Autocomplete) => {
         const place = autocomplete.getPlace();
         setAddress(extractAddress(place));
         sendToParent(extractAddress(place));
@@ -165,28 +193,28 @@ export const GoogleAutoComplete: React.FC<GoogleAutoCompleteProps> = ({
     //     autocomplete.addListener("place_changed", () => onChangeAddress(autocomplete));
     // };
     const initAutocomplete = () => {
-    if (!searchInput.current) return;
+        if (!searchInput.current) return;
 
-    // Wait until Google Maps API is loaded
-    if (!(window as any).google || !(window as any).google.maps || !(window as any).google.maps.places) {
-        console.warn("Google Maps API not loaded yet.");
-        return;
-    }
+        // Wait until Google Maps API is loaded
+        if (!window.google || !window.google.maps || !window.google.maps.places) {
+            console.warn("Google Maps API not loaded yet.");
+            return;
+        }
 
-    const options = {
-        componentRestrictions: { country: regionCode },
+        const options = {
+            componentRestrictions: { country: regionCode },
+        };
+
+        const autocomplete = new window.google.maps.places.Autocomplete(searchInput.current, options);
+        autocomplete.setFields(["address_component", "geometry"]);
+        autocomplete.setComponentRestrictions({ country: [regionCode] });
+        autocomplete.addListener("place_changed", () => onChangeAddress(autocomplete));
     };
-
-    const autocomplete = new (window as any).google.maps.places.Autocomplete(searchInput.current, options);
-    autocomplete.setFields(["address_component", "geometry"]);
-    autocomplete.setComponentRestrictions({ country: [regionCode] });
-    autocomplete.addListener("place_changed", () => onChangeAddress(autocomplete));
-};
 
 
     useEffect(() => {
-        if (!(window as any).initAutocomplete) {
-            (window as any).initAutocomplete = initAutocomplete;
+        if (!window.initAutocomplete) {
+            window.initAutocomplete = initAutocomplete;
         }
 
         initMapScript().then(() => {
