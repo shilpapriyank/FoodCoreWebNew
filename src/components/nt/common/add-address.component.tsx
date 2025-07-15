@@ -61,9 +61,9 @@ const AddAddress: React.FC<AddAddressProps> = ({
   const customerId = userinfo?.customerId || 0;
   const restaurantId = restaurantinfo?.restaurantId;
   const locationId = restaurantinfo?.defaultLocation?.locationId;
-  const tempDeliveryAddress = (deliveryaddress as any)?.tempDeliveryAddress;
+  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
 
-  const sendToParent = (index: any) => {
+  const sendToParent = (index :any) => {
     setAddressField((prev) => ({
       ...prev,
       address1: index.address1,

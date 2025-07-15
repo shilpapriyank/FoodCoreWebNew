@@ -86,6 +86,10 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const restaurantslocationlistwithtime =
     restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime?.addressList ?? [];
+  // console.log(
+  //     "address list from pickup and delivery time select popup component.tsx",
+  //     addressList
+  //   );
   const selectedAddress =
     userinfo === null
       ? deliveryaddress?.tempDeliveryAddress
@@ -419,7 +423,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                     <>
                       {(asapLaterOnState.isAsap && selectedDate === "Today") && (
                         <>
-                          {/* {console.log("✅ Showing ASAP TimeSlotPillComponent")} */}
+                          {/* {console.log("Showing ASAP TimeSlotPillComponent")} */}
                           <TimeSlotPillComponent
                             time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
                             id={"C"}

@@ -1,3 +1,5 @@
+import { ChooseTime } from "@/types/selectdelivery-types/selectdelivery.types";
+
 export interface DeliveryAddressInput {
     deliveryaddressId: number;
     customerId: number;
@@ -12,7 +14,8 @@ export interface DeliveryAddressInput {
     contactname: string;
     latitude: string;
     longitude: string;
-    [key: string]: any;
+    [key: string]: string | number | boolean | undefined;
+
 }
 
 export interface VerifyAddressInput {
@@ -35,7 +38,7 @@ export interface GetAddressResponse {
 export interface DeliveryAddressState {
     deliveryaddressdata: DeliveryAddressInput[] | null;
     updatedAddress: boolean | { isAddressUpdated: boolean };
-    choosetime: Record<string, any>;
+    choosetime: Record<string, ChooseTime>;
     registeraddress: Record<string, any>
     addressId: Record<number, any>
     tempDeliveryAddress: DeliveryAddressInput | null;

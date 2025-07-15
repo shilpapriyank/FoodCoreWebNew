@@ -14,7 +14,7 @@ export class LoginServices {
     restaurantId,
     dialCode,
     locationid,
-  }: GetLoginUserDetailsParams): Promise<any> {  //Promise <ResponseModel | LoggedInUse>
+  }: GetLoginUserDetailsParams): Promise<ResponseModel | LoggedInUser> {  //Promise <ResponseModel | LoggedInUser>
     responseclass = new ResponseModel();
     const methodName = "getLoginUserDetails";
     const login = ENDPOINTS.LOGIN;
