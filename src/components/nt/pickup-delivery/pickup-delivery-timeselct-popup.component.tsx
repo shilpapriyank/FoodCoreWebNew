@@ -29,7 +29,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { RestaurantWindowTime, RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
 import { DefaultLocation, GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { AddressList } from "@/types/location-types/location.type";
-import { AsapLaterOnState } from "@/types/timeslot-types/timeslot.types";
+import { AsapLaterOnState, TimeSlot } from "@/types/timeslot-types/timeslot.types";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
@@ -99,24 +99,30 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     const defaultLocation = addressList?.find(
       (location: AddressList) => location.locationId === locationId
     );
-    const pickupWindow = defaultLocation?.pickupTime;
-    const deliveryWindow = defaultLocation?.deliveryTime;
+    const pickupWindow = defaultLocation?.pickupTime as TimeSlot[] | undefined;
+    const deliveryWindow = defaultLocation?.deliveryTime as TimeSlot[] | undefined;
     const isTakeOutAsap = defaultLocation?.isTakeOutAsap;
     const isTakeOutPickupTime = defaultLocation?.isTakeOutPickupTime;
     const isDeliveryPickupTime = defaultLocation?.isDeliveryPickupTime;
     const isDeliveryAsap = defaultLocation?.isDeliveryAsap;
     const selecetdtime = order.checktime;
-    const lastPickupTIme =
-      pickupWindow &&
-      pickupWindow?.length > 0 &&
-      pickupWindow?.[pickupWindow?.length - 1];
-    const lastDeliveryTime =
-      deliveryWindow &&
-      deliveryWindow?.length > 0 &&
-      deliveryWindow?.[deliveryWindow?.length - 1];
-    const pickupEndTime = lastPickupTIme && lastPickupTIme.time.split("-")[1];
-    const deliveryEndTime =
-      lastDeliveryTime && lastDeliveryTime.time.split("-")[1];
+    // const lastPickupTIme =
+    //   pickupWindow &&
+    //   pickupWindow?.length > 0 &&
+    //   pickupWindow?.[pickupWindow?.length - 1];
+    const lastPickupTime = pickupWindow?.[pickupWindow.length - 1];
+
+    // const lastDeliveryTime =
+    //   deliveryWindow &&
+    //   deliveryWindow?.length > 0 &&
+    //   deliveryWindow?.[deliveryWindow?.length - 1];
+    const lastDeliveryTime = deliveryWindow?.[deliveryWindow.length - 1];
+
+    // const pickupEndTime = lastPickupTIme && lastPickupTIme?.time.split("-")[1];
+    // const deliveryEndTime = lastDeliveryTime && lastDeliveryTime?.time.split("-")[1];
+    const pickupEndTime = lastPickupTime?.EndSlotNew ?? "";
+    const deliveryEndTime = lastDeliveryTime?.EndSlotNew ?? "";
+
     let selectedAsap =
       clearData === false && order.isasap === true ? true : false;
     let selectedLateron =
@@ -192,21 +198,23 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         restaurantinfo?.defaultlocationId as number
       ).then((res) => {
         const responseTime = res?.datetime.split(" ").reverse()[0];
-        if (pickupWindow && pickupWindow?.length > 0) {
+        if (pickupWindow?.length) {
           const isValidPickup = checkWindowTimeExpires(
-            typeof pickupEndTime === 'string' ? pickupEndTime : '',
+            pickupEndTime ?? "",
             responseTime,
             isAsap,
-            lastPickupTIme && typeof lastPickupTIme !== "boolean" ? lastPickupTIme.isLastOrder : undefined,
+            restaurantinfo as GetAllRestaurantInfo,
+            lastPickupTime?.isLastOrder ?? false
           );
           setisPickupWindowAvailable(isValidPickup);
         }
-        if (deliveryEndTime && deliveryEndTime?.length > 0) {
+        if (deliveryEndTime?.length) {
           const isValidDelivery = checkWindowTimeExpires(
-            deliveryEndTime,
+            deliveryEndTime ?? "",
             responseTime,
             isAsap,
-            lastDeliveryTime?.isLastOrder,
+            restaurantinfo as GetAllRestaurantInfo,
+            lastDeliveryTime?.isLastOrder ?? false
           );
           setisDeliveryWindowAvailable(isValidDelivery);
         }

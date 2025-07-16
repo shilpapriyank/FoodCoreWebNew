@@ -22,6 +22,7 @@ import {
   PlaceOrderArgsTypes,
   RepeatOrderArgsTypes,
 } from "@/types/order-types/order.type";
+import { TimeSlot } from "@/types/timeslot-types/timeslot.types";
 
 
 export class OrderServices {
@@ -485,44 +486,98 @@ export class OrderServices {
     }
   }
 
+  // static async generateTimeSlot({
+  //   restaurantId,
+  //   locationId,
+  //   ordertype,
+  //   scheduleDateTime,
+  // }: GenerateTimeSlotArgsTypes) {
+  //   responseclass = new ResponseModel();
+  //   const methodName = "generateTimeSlot";
+  //   const checktimeurl = ENDPOINTS.GENERATE_TIMESLOT;
+  //   const data = {
+  //     request: {
+  //       restaurantId: restaurantId,
+  //       locationId: locationId,// 32
+  //       orderType: ordertype,
+  //       scheduleDateTime: scheduleDateTime,
+  //     },
+  //   };
+  //   responseclass = await handleAxiosPostAsync(
+  //     data,
+  //     checktimeurl,
+  //     methodName,
+  //     true,
+  //     restaurantId
+  //   );
+
+  //   if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+  //     return responseclass?.result;
+  //   }
+  //   else if (responseclass.status === API_RESPONSE_STATUS.FAIL) {
+  //     handleNotify(
+  //       responseclass.message,
+  //       ToasterPositions.TopRight,
+  //       ToasterTypes.Error
+  //     );
+  //     return;
+  //   } else {
+  //     return responseclass?.result;
+  //   }
+  // }
+
+  private static timeslotCache = new Map<string, Promise<TimeSlot[]>>();
+
+  //  generateTimeSlot calling only ones changes
   static async generateTimeSlot({
     restaurantId,
     locationId,
     ordertype,
     scheduleDateTime,
-  }: GenerateTimeSlotArgsTypes) {
-    responseclass = new ResponseModel();
-    const methodName = "generateTimeSlot";
-    const checktimeurl = ENDPOINTS.GENERATE_TIMESLOT;
-    const data = {
-      request: {
-        restaurantId: restaurantId,
-        locationId: locationId,// 32
-        orderType: ordertype,
-        scheduleDateTime: scheduleDateTime,
-      },
-    };
-    responseclass = await handleAxiosPostAsync(
-      data,
-      checktimeurl,
-      methodName,
-      true,
-      restaurantId
-    );
+  }: GenerateTimeSlotArgsTypes): Promise<TimeSlot[]> {
+    const key = `${restaurantId}-${locationId}-${ordertype}-${scheduleDateTime}`;
+    if (OrderServices.timeslotCache.has(key)) {
+      return OrderServices.timeslotCache.get(key)!;
+    }
 
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
-      return responseclass?.result;
-    }
-    else if (responseclass.status === API_RESPONSE_STATUS.FAIL) {
-      handleNotify(
-        responseclass.message,
-        ToasterPositions.TopRight,
-        ToasterTypes.Error
+    const promise = (async () => {
+      const methodName = "generateTimeSlot";
+      const checktimeurl = ENDPOINTS.GENERATE_TIMESLOT;
+      const data = {
+        request: {
+          restaurantId: restaurantId,
+          locationId: locationId,
+          orderType: ordertype,
+          scheduleDateTime: scheduleDateTime,
+        },
+      };
+
+      const res: ResponseModel = await handleAxiosPostAsync(
+        data,
+        checktimeurl,
+        methodName,
+        true,
+        restaurantId
       );
-      return;
-    } else {
-      return responseclass?.result;
-    }
+
+      if (res.status === API_RESPONSE_STATUS.SUCCESS && res.result != null) {
+        return res.result as TimeSlot[];
+      }
+
+      if (res.status === API_RESPONSE_STATUS.FAIL) {
+        handleNotify(res.message, ToasterPositions.TopRight, ToasterTypes.Error);
+      }
+
+      return [];
+    })();
+
+    OrderServices.timeslotCache.set(key, promise);
+
+    promise.catch(() => {
+      OrderServices.timeslotCache.delete(key);
+    });
+
+    return promise;
   }
 
   static async checkTimeBySlot({
