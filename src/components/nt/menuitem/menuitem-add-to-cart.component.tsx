@@ -276,7 +276,8 @@ const MenuItemAddToCart = ({
               title={TOOLTIP_MSG.ADDTOCART_BTN}
               id={String(item.menuitemId)}
               onClick={() => addtocartclick(item)}
-            >Add to cart
+            >
+              Add to cart
             </a>
           </>
         );

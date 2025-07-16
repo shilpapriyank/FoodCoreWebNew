@@ -103,26 +103,26 @@ const MenuItemModal = ({
   const sessionId = sessionid;
   const dependentId = menuitem?.dependentid ?? 0;
   const dependentIds = menuitem?.dependentitemids;
-  let menuItemDetail = menuitem.menuitemdetaillist;
+  let menuItemDetail = menuitem?.menuitemdetaillist;
   const deliveryaddressinfo = selecteddelivery;
   let selectedsize =
-    menuItemDetail &&
-    menuItemDetail.size &&
+    menuItemDetail?.size &&
     menuItemDetail.size.filter((x) => x.sizeselected === true);
   let selectedtopping =
-    menuItemDetail &&
-    menuItemDetail.topping &&
+    menuItemDetail != undefined &&
+    menuItemDetail.topping != undefined &&
     menuItemDetail.topping.filter(
       (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let updateitemoptionincart = menuitem.updateitemoptionincart;
   let selectedtoppings =
-    menuItemDetail &&
-    menuItemDetail.topping &&
+    menuItemDetail?.topping &&
     menuItemDetail.topping.length > 0 &&
     menuItemDetail?.topping.find(
       (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
+  console.log("updateitemoptionincart", updateitemoptionincart);
+  console.log("selectedtoppings", selectedtoppings);
   let maincategoryList = main?.maincategoryList;
   var ordertype =
     deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -165,6 +165,7 @@ const MenuItemModal = ({
   }
 
   useEffect(() => {
+   // debugger;
     setcurrentQty(
       selectedmenuitemdetail?.qty !== undefined ? selectedmenuitemdetail.qty : 1
     );
@@ -199,6 +200,7 @@ const MenuItemModal = ({
   }, [currentQty]);
 
   useEffect(() => {
+    //debugger;
     let selectedToppingLength =
       selectedtoppings &&
       selectedtoppings?.list?.filter((item) => item.optionselected === true)
@@ -219,20 +221,26 @@ const MenuItemModal = ({
         });
     }
 
-    if (Array.isArray(selectedToppingLength && selectedToppingLength > 0)) {
-      let selectedtop =
-        selectedtoppings &&
-        selectedtoppings?.list.find((item) => item.optionselected === true);
-      let selectedToppintypeLength =
-        selectedtop &&
-        selectedtop?.type.filter((item) => item.subOptionselected === true)
-          .length;
+    if (
+      selectedtoppings &&
+      selectedToppingLength &&
+      selectedToppingLength > 0
+    ) {
+      //debugger;
+      let selectedtop = selectedtoppings?.list.find(
+        (item) => item.optionselected === true
+      );
+      let selectedToppintypeLength = selectedtop?.type.filter(
+        (item) => item.subOptionselected === true
+      ).length;
 
       if (selectedToppintypeLength === 0 && lstcarttoppingNew.length === 0) {
+       // debugger
         setlstcarttopping([]);
       }
     }
     if (selectedtoppings && selectedtoppings?.list.length === 0) {
+     // debugger
       setlstcarttopping([]);
     }
   }, [refreshTopping, updateitemoptionincart, menuItemDetail]);
@@ -242,45 +250,44 @@ const MenuItemModal = ({
   };
 
   const selectedSizeClick = (item: Size) => {
+   // debugger;
     setlstcarttopping([]);
     setisCollpase(true);
 
-    if (item && item != undefined && menuItemDetail) {
+    if (item && menuItemDetail) {
+      const newMenuItemDetail = { ...menuItemDetail };
       let lstsizedata: Size[] = [];
-      menuItemDetail?.size.map((data) => {
-        if (data.type === item.type) data.sizeselected = true;
-        else data.sizeselected = false;
-        lstsizedata.push(data);
-      });
-      menuItemDetail.size = lstsizedata;
+
+      lstsizedata = menuItemDetail?.size?.map((data) => ({
+        ...data,
+        sizeselected: data.type === item.type,
+      }));
+      newMenuItemDetail.size = lstsizedata;
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail.size));
+      dispatch(selectedItemSize(newMenuItemDetail));
+      //dispatch(selectedItemSize(menuItemDetail.size));
     }
     setcount(count + 1);
     handleRefreshTopping();
   };
 
   // const selectedSizeClick = (item: Size) => {
+  //   debugger;
   //   setlstcarttopping([]);
   //   setisCollpase(true);
 
-  //   if (item && item != undefined) {
+  //   if (item && menuItemDetail) {
   //     let lstsizedata: Size[] = [];
-  //     menuItemDetail?.size?.forEach((data) => {
-  //       // Compare item.type with one of the entries in data.type array
-  //       const isMatch = Array.isArray(data.type)
-  //         ? data.type.some((t) => t.name === item.type)
-  //         : false;
-
-  //       data.sizeselected = isMatch;
+  //     menuItemDetail?.size?.map((data) => {
+  //       if (data.type === item.type) data.sizeselected = true;
+  //       else data.sizeselected = false;
   //       lstsizedata.push(data);
   //     });
-
   //     menuItemDetail.size = lstsizedata;
   //     dispatch(removeMenuItem());
-  //     dispatch(selectedItemSize(menuItemDetail.size as Size[]));
+  //     dispatch(selectedItemSize(menuItemDetail));
+  //     //dispatch(selectedItemSize(menuItemDetail.size));
   //   }
-
   //   setcount(count + 1);
   //   handleRefreshTopping();
   // };
@@ -303,6 +310,7 @@ const MenuItemModal = ({
   };
 
   const memorisedNetTotal = useMemo(() => {
+    //debugger;
     return calculateNettotal(
       lstcarttopping,
       selectedsize as Size[],
@@ -313,6 +321,7 @@ const MenuItemModal = ({
 
   const addToCart = () => {
     if (dependentId > 0 && selectedmenuitemdetail) {
+      //debugger;
       selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName as string;
     }
     if (
@@ -321,6 +330,7 @@ const MenuItemModal = ({
         menuItemDetail?.dependantMenuList === null) &&
       menuitem?.dependentqty !== 0
     ) {
+      //debugger;
       dispatch(setDipendentItemQty(0));
     }
     // let total = selectedsize && selectedsize[0]?.price;
@@ -380,7 +390,7 @@ const MenuItemModal = ({
           studentname: "",
         });
         if (itemobj != undefined) {
-        //  console.log("itemobject", itemobj);
+          //  console.log("itemobject", itemobj);
           MenuItemServices.updateCartOrdersItem({
             orderobj: itemobj,
             restaurantId: restaurantId,
@@ -424,7 +434,7 @@ const MenuItemModal = ({
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail,
-        menuItemDetail: menuItemDetail,
+        menuItemDetail: menuItemDetail as GetMenuItemDetail,
         customerId: Number(customerId),
         total: total as number,
         quantity: currentQty,
@@ -481,10 +491,12 @@ const MenuItemModal = ({
       }
     } else if (
       menuItemDetail &&
+      menuItemDetail.topping &&
       selectedoption &&
-      menuItemDetail?.topping.length > 0 &&
+      menuItemDetail?.topping?.length > 0 &&
       selectedoption?.length > 0
     ) {
+     // debugger;
       let result = [];
       for (var i = 0; i < selectedoption.length; i++) {
         if (
@@ -556,6 +568,7 @@ const MenuItemModal = ({
               //TO DO:HANDLE THE DEPENDET ITEM POPUP
               handleToggleMenuItem(false);
               if (
+                menuItemDetail.dependantMenuList &&
                 menuItemDetail?.dependantMenuList?.length > 0 &&
                 ((dependentIds === undefined && dependentId === 0) ||
                   (dependentIds?.length === 0 && dependentId === 0))
@@ -566,7 +579,8 @@ const MenuItemModal = ({
                 }, 500);
               } else {
                 if (
-                  (menuItemDetail?.dependantMenuList?.length > 0 &&
+                  (menuItemDetail.dependantMenuList &&
+                    menuItemDetail?.dependantMenuList?.length > 0 &&
                     menuItemDetail?.dependantMenuList !== null) ||
                   dependentIds?.length > 0
                 ) {
@@ -582,7 +596,9 @@ const MenuItemModal = ({
                   } else if (removefirst && typeof removefirst === "object") {
                     dispatch(setDipendentId(removefirst.DependantMenuItemId));
                   }
-                  dispatch(setDipendentIds(remainingList));
+                  dispatch(
+                    setDipendentIds(remainingList as DependantMenuList[])
+                  );
                 } else {
                   dispatch(setDipendentId(0));
                   dispatch(setDipendentItemQty(0));
@@ -645,6 +661,7 @@ const MenuItemModal = ({
             );
 
             if (
+              menuItemDetail?.dependantMenuList &&
               menuItemDetail?.dependantMenuList?.length > 0 &&
               ((dependentIds === undefined && dependentId === 0) ||
                 (dependentIds?.length === 0 && dependentId === 0))
@@ -655,7 +672,8 @@ const MenuItemModal = ({
               }, 500);
             } else {
               if (
-                (menuItemDetail?.dependantMenuList?.length > 0 &&
+                (menuItemDetail?.dependantMenuList &&
+                  menuItemDetail?.dependantMenuList?.length > 0 &&
                   menuItemDetail?.dependantMenuList !== null) ||
                 dependentIds?.length > 0
               ) {
@@ -670,7 +688,7 @@ const MenuItemModal = ({
                 } else if (removefirst && typeof removefirst === "object") {
                   dispatch(setDipendentId(removefirst.DependantMenuItemId));
                 }
-                dispatch(setDipendentIds(remainingList));
+                dispatch(setDipendentIds(remainingList as DependantMenuList[]));
               } else {
                 dispatch(setDipendentId(0));
                 dispatch(setDipendentItemQty(0));
