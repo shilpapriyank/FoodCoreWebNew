@@ -18,7 +18,13 @@ interface MainState {
   promotioncategoryList: MainCategoryList[];
   deliverypickuppopup: boolean;
   ischangelocation: boolean;
-  restaurantWindowTime: RestaurantWindowTimeNew | null
+  restaurantWindowTime: RestaurantWindowTimeNew | null;
+
+  restaurantTimeByLocation: Record<string, {
+    status: "idle" | "loading" | "succeeded" | "failed";
+    data?: RestaurantWindowTimeNew;
+    error?: string;
+  }>;
 }
 
 const initialState: MainState = {
@@ -26,7 +32,9 @@ const initialState: MainState = {
   promotioncategoryList: [],
   deliverypickuppopup: true,
   ischangelocation: false,
-  restaurantWindowTime: null
+  restaurantWindowTime: null,
+
+  restaurantTimeByLocation: {},
 };
 
 export const getMenuCategoryList = createAsyncThunk<
@@ -44,16 +52,31 @@ export const getSelectedRestaurantTime = createAsyncThunk<
   any,
   // RestaurantWindowTimeNew,
   { restaurantId: number; locationId: number },
-  { rejectValue: string }
->("main/getSelectedRestaurantTime", async ({ restaurantId, locationId }, thunkAPI) => {
+  { rejectValue: string; state: RootState }
+>(
+  "main/getSelectedRestaurantTime",
+  async ({ restaurantId, locationId }, thunkAPI) => {
+    try {
+      const res = await MainServices.getSelectedRestaurantWindowTime(restaurantId, locationId);
+      return res ?? thunkAPI.rejectWithValue("No response from API");
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.message || "Failed to fetch window time");
+    }
+  },
 
-  try {
-    const res = await MainServices.getSelectedRestaurantWindowTime(restaurantId, locationId);
-    return res ?? thunkAPI.rejectWithValue("No response from API");
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.message || "Failed to fetch window time");
+  {
+    // Rename to avoid duplicate identifiers
+    condition: (args, { getState }) => {
+      const { restaurantId, locationId } = args;
+      const key = `${restaurantId}-${locationId}`;
+      const state = getState();
+      const entry = state.main.restaurantTimeByLocation?.[key];
+
+      return !entry || entry.status === "failed";
+    },
   }
-});
+);
+
 
 export const refreshCategoryList = createAsyncThunk<
   void,
@@ -159,11 +182,39 @@ export const mainSlice = createSlice({
       (state, action: PayloadAction<MainCategoryList[]>) => {
         state.maincategoryList = action.payload;
       }
-    );
-    builder.addCase(getSelectedRestaurantTime.rejected, (state, action) => {
-      console.warn("Failed to fetch restaurant time:", action.payload);
-    });
-  },
+    )
+      // getSelectedRestaurantTime calling only ones changes
+      .addCase(getSelectedRestaurantTime.pending, (state, action) => {
+        const { restaurantId, locationId } = action.meta.arg;
+        const key = `${restaurantId}-${locationId}`;
+        state.restaurantTimeByLocation[key] = { status: "loading" };
+      })
+
+      .addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
+        const { restaurantId, locationId } = action.meta.arg;
+        const key = `${restaurantId}-${locationId}`;
+        state.restaurantTimeByLocation[key] = {
+          status: "succeeded",
+          data: action.payload,
+        };
+        state.restaurantWindowTime = action.payload;
+      })
+      .addCase(getSelectedRestaurantTime.rejected, (state, action) => {
+        const { restaurantId, locationId } = action.meta.arg;
+        const key = `${restaurantId}-${locationId}`;
+
+        //getSelectedRestaurantTime calling only ones changes
+        if (!state.restaurantTimeByLocation) {
+          state.restaurantTimeByLocation = {};
+        }
+
+        state.restaurantTimeByLocation[key] = {
+          status: "failed",
+          error: action.payload || "Unknown error",
+        };
+        console.warn("Failed to fetch restaurant time:", action.payload);
+      });
+  }
 });
 
 export const {
@@ -177,4 +228,4 @@ export const {
   getPromotionCategoryData,
 } = mainSlice.actions;
 
-export default mainSlice.reducer;
+export default mainSlice.reducer; 

@@ -896,7 +896,7 @@ export const calulateTotal = (cartdata: CartDetails) => {
   });
   return parseFloat(total)?.toFixed(2);
 };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////
 export const getCheckTimeArr = (
   orderTime: string,
   restaurantinfo: GetAllRestaurantInfo,
@@ -1213,7 +1213,7 @@ export const convert24HourTo12Hour = (
 export const checkWindowTimeExpires = (
   windowEndTime: string,
   currentTime: string,
-  isasap: boolean = false,
+  isasap: boolean,
   restaurantinfo: GetAllRestaurantInfo,
   isLastOrder: boolean = false
 ): boolean => {

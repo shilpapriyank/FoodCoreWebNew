@@ -1,6 +1,7 @@
 import { ChooseTime } from "@/types/selectdelivery-types/selectdelivery.types";
 
 export interface DeliveryAddressInput {
+    id:number;
     deliveryaddressId: number;
     customerId: number;
     othercustomerId?: number;

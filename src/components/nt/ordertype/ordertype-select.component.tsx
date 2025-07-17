@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import PickupDeliveryButton from "./pickup-delivery-btn.component";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
-import { useDispatch } from "react-redux";
 import { useParams, useRouter } from "next/navigation";
 import { closeModal, GetThemeDetails, ORDER_TYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
@@ -23,7 +22,6 @@ import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { ResponseModel, RestaurantCustomModel } from "@/components/common/commonclass";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-import { AddressItem } from "@/types/address-types/address.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 import { LocationServices } from "../../../../redux/location/location.services";
 
@@ -64,8 +62,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
   const defaultLocation = restaurantinfo?.defaultLocation;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
-  const address =
-    orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
+  const address = orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";
   const selecteddeliveryaddress = selecteddelivery.selecteddeliveryaddress;
   const myDeliveryAddress = tempDeliveryAddress;
 
@@ -78,25 +75,18 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
       }
     }
   };
-
   const handleChangeLocation = (id: number) => {
     setSelectedLocationId(id);
   };
-
   const handleClickConfirmChangeLocation = async (lid: number): Promise<void> => {
     handleChangeAddress?.()
     dispatch(ChangeUrl(true));
-
     try {
       const res = await LocationServices.changeRestaurantLocation(
         restaurantinfo?.restaurantId as number,
         lid
       );
-      console.log("method", LocationServices.changeRestaurantLocation);
-
-
       if (!restaurantinfo || !res) return;
-
       const updatedRestaurantInfo: GetAllRestaurantInfo = {
         ...restaurantinfo,
         defaultLocation: {
@@ -105,17 +95,14 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         },
         defaultlocationId: res.locationId,
       };
-
       dispatch(restaurantsdetail(null));
       router.push(`${locationFullLink}/${updatedRestaurantInfo.defaultLocation?.locationURL}`);
       dispatch(restaurantsdetail(updatedRestaurantInfo));
-
       const oldLocationId = getLocationIdFromStorage();
       if (oldLocationId !== updatedRestaurantInfo.defaultLocation.locationId) {
         dispatch(clearRedux(true as any));
         dispatch(createSessionId(uuidv4()));
       }
-
       if (userinfo?.customerId) {
         const rewardRes = await CustomerServices.checkCustomerRewardPointsLocationBase(
           updatedRestaurantInfo.restaurantId,
@@ -136,10 +123,8 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
           }));
         }
       }
-
       setLocationIdInStorage(updatedRestaurantInfo.defaultlocationId);
       //setLocationIdInStorage(updatedRestaurantInfo.defaultLocation.locationId); //
-
       dispatch(refreshCategoryList({
         newselectedRestaurant: updatedRestaurantInfo,
         customerId
@@ -160,9 +145,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
         );
         dispatch(emptycart());
       }
-
       handleToggleOrderTypeModal(false);
-
       dispatch(setpickupordelivery(
         updatedRestaurantInfo.defaultLocation?.defaultordertype
           ? ORDER_TYPE.DELIVERY.text
@@ -177,7 +160,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
       console.error("Error in changing restaurant location:", error);
     }
   };
-
   const handleClickConfirm = () => {
     if (
       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
@@ -193,8 +175,6 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
     handleToggleOrderTypeModal(false);
     handleToggleAddAddressModal(true);
   };
-
-
 
   return (
     <>
@@ -339,9 +319,7 @@ const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
                           <AddressPill
                             isChecked={true}
                             id={String(myDeliveryAddress.id)}
-                            address={myDeliveryAddress as any}
-                          // id={myDeliveryAddress.id}
-                          // address={(myDeliveryAddress as DeliveryAddressInput )}
+                            address={myDeliveryAddress as DeliveryAddressInput} // id add this interface
                           />
                         )}
                         {userinfo && <DeliveryaddresspillComponent />}

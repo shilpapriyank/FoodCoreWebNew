@@ -3,6 +3,7 @@ import { FutureDateType } from "@/components/nt/timeslot/future-day.component";
 export interface TimeSlot {
   StartSlotNew: string | null;
   EndSlotNew: string | null;
+  isLastOrder?: boolean;
 }
 
 export interface FutureOrderDay {
