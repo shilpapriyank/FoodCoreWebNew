@@ -1538,7 +1538,6 @@ export const calculateFinalCount = (
   subOptionList: Type[],
   selectedOption: List
 ) => {
-  //debugger;
   console.log("subOptionList from calculateFinalCount", subOptionList);
   console.log("selectedOption from calculateFinalCount", selectedOption);
   let finalcount = 0;
