@@ -121,8 +121,6 @@ const MenuItemModal = ({
     menuItemDetail?.topping.find(
       (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
-  console.log("updateitemoptionincart", updateitemoptionincart);
-  console.log("selectedtoppings", selectedtoppings);
   let maincategoryList = main?.maincategoryList;
   var ordertype =
     deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -390,7 +388,6 @@ const MenuItemModal = ({
           studentname: "",
         });
         if (itemobj != undefined) {
-          //  console.log("itemobject", itemobj);
           MenuItemServices.updateCartOrdersItem({
             orderobj: itemobj,
             restaurantId: restaurantId,

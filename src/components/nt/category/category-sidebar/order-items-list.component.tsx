@@ -441,7 +441,7 @@ export const OrderItemsList = () => {
             (x) => x.cartid === data.cartid
           );
           let subOptionDisplayCmp = "";
-          <CartSuboptionDisplay subOption={subOption} />;
+          <CartSuboptionDisplay key={index} subOption={subOption} />;
           let itemImage = getImagePath(
             data?.imgUrl,
             restaurantinfo?.defaultLocation?.defaultmenuitemimage
@@ -456,7 +456,7 @@ export const OrderItemsList = () => {
           );
 
           return (
-            <>
+            <React.Fragment key={index}>
               <h6>
                 {" "}
                 {data.itemname + " - " + data.subparametername}{" "}
@@ -520,7 +520,7 @@ export const OrderItemsList = () => {
                 </a>
               </div>
               {isBorderBottom && <hr />}
-            </>
+            </React.Fragment>
           );
         })}
       {/* {isOpenModal && (

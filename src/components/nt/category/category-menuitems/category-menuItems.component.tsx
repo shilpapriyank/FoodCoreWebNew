@@ -190,7 +190,6 @@ const CategoryMenuItems = ({
   useEffect(() => {
     if (dependentId > 0) {
       //debugger;
-      //console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
       if (selectedMenuItemDetail) {
         // dispatch(
@@ -222,10 +221,6 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          // console.log(
-          //   "response of getMenuItemList in dependentId condi",
-          //   response
-          // );
           dispatch(setMenuItemDetailList(response));
           dispatch(setMenuCategoryData(response));
         }
@@ -236,15 +231,10 @@ const CategoryMenuItems = ({
   useEffect(() => {
     let selectedCat;
     if (categoryUrl) {
-     // debugger;
+      // debugger;
       selectedCat = menuItemsWithCat?.find(
         (cat) => cat.categoryslug === categoryUrl
       );
-      //console.log("menuItemsWithCat", menuItemsWithCat);
-      // console.log(
-      //   "selected category from useEffect of category menuitems for test",
-      //   selectedCat
-      // );
     }
     // THIS WILL BE EXECUTE WHEN MENU ITEM ID COME FROM HOME PAGE
     if (
@@ -285,9 +275,8 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: Menuitems) => {
-   /// debugger;
+    /// debugger;
     // dispatch(setMenuItemDetailList(item));
-    console.log("item from handleClickItem CategoryMenuItems", item);
     dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
@@ -381,7 +370,6 @@ const CategoryMenuItems = ({
         locationId: restaurantinfo?.defaultlocationId as number,
       }).then((res) => {
         if (res) {
-          //console.log("quick order click response in cat menuitem", res);
           handleNotify(
             "Item added succesfully",
             ToasterPositions.TopRight,

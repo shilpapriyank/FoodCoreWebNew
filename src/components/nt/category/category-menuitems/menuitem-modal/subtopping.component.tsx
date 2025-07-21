@@ -62,8 +62,6 @@ const SubTopping = ({
   decrement: (optionId: number, data: Type, isRadioButton: boolean) => void;
 }) => {
   //debugger;
-  console.log("type from sub topping component", type);
-  console.log("item from sub topping component", item);
   const { restaurantinfo } = useReduxData();
   const redioClass = restaurantinfo?.isSchoolProgramEnabled
     ? "fs-15-radio"

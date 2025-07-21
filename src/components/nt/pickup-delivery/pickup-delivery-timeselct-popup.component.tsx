@@ -400,7 +400,6 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     };
 
     const handleClick = async (lid: any, locationUrl: any, isPickup: boolean) => {
-      debugger
       LocationServices.changeRestaurantLocation(
         restaurantinfo?.restaurantId as number,
         lid
