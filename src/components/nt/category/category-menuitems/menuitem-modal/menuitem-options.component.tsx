@@ -56,10 +56,6 @@ const MenuItemOptions = ({
   const [reLoad, setreLoad] = useState<number>(0);
   const { isDisplayPrice } = useUtility();
 
-  type Mutable<T> = {
-    -readonly [P in keyof T]: T[P];
-  };
-
   const handleOnChangeRemoveSubOption = (
     item: Type,
     optionId: number,
@@ -67,7 +63,8 @@ const MenuItemOptions = ({
     isRadioButton?: boolean,
     e?: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("selection from handleOnChangeSubOption", selection);
+   // debugger;
+    item = { ...item };
     let isFreeCountCalculation = true;
 
     const optionDetails = selectedtopping?.list?.find(
@@ -88,13 +85,13 @@ const MenuItemOptions = ({
         x.subparameterId === selectedsize?.subparameterId &&
         x.optionId === optionId
     );
-   
+
     let tdata = selectedoption?.[0]?.type;
 
-    const newArray = tdata?.map((a) =>
-      Object.assign({}, a)
-    );
+    const newArray = tdata?.map((a) => Object.assign({}, a));
+
     tdata?.map((data) => {
+      data = { ...data };
       // HANDLING FOR THE CHECKBOX ON CHECK THE SUB-OPTION
       if (selection === "deselectall") {
         data.subOptionselected = false;
@@ -122,12 +119,19 @@ const MenuItemOptions = ({
     if (!selectedoption || !selectedoption[0]) {
       return;
     }
-    let finalcount = calculateFinalCount(lstdefault, selectedoption?.[0]);
+
+    //to update the selectedoption.type
+    let updatedSelectedOption = {
+      ...(selectedoption?.[0] as List), //make copy of old selectedoption
+      type: lstdefault, //assign lstdefault to type that hold the new updated type
+    };
+
+    let finalcount = calculateFinalCount(lstdefault, updatedSelectedOption);
     var isMaxSelectZero =
-      selectedoption?.[0].freeToppingsCount == 0 ? true : false;
+      updatedSelectedOption.freeToppingsCount == 0 ? true : false;
     var checkCount =
       isMaxSelectZero == false
-        ? finalcount <= selectedoption?.[0].freeToppingsCount
+        ? finalcount <= updatedSelectedOption.freeToppingsCount
           ? true
           : false
         : true;
@@ -164,8 +168,7 @@ const MenuItemOptions = ({
           return subOption;
         }
       });
-      console.log(updateWithPaidTopping);
-      let freeCount = selectedoption?.[0].freeToppingsCount;
+      let freeCount = updatedSelectedOption.freeToppingsCount;
       const sortedsuboptionBasedSeqNo = updateWithPaidTopping?.sort(
         (a, b) => b.sequenceNumber - a.sequenceNumber
       );
@@ -174,22 +177,21 @@ const MenuItemOptions = ({
       );
       let totalFreeCount = calculateFinalCount(
         notPaidSuboption,
-        selectedoption?.[0]
+        updatedSelectedOption
       );
       const freeCountWithPaid = calculateFinalCountWithPaid(
         updateWithPaidTopping?.filter((sub) => sub.subOptionselected),
-        selectedoption?.[0]
+        updatedSelectedOption
       );
       let reaminingTotalFreeCount = (freeCount as number) - freeCountWithPaid;
-      console.log("freeCountWithPaid", freeCountWithPaid);
       const sub = sortedsuboptionBasedSeqNo.map((sub) => {
-        let subOptioncount = calculateFinalCount([sub], selectedoption?.[0]);
+        let subOptioncount = calculateFinalCount([sub], updatedSelectedOption);
         let remainCount = (freeCount as number) - subOptioncount;
 
         if (totalFreeCount <= remainCount && reaminingTotalFreeCount > 0) {
           const subOptionCount = calculateFinalCount(
             [sub],
-            selectedoption?.[0]
+            updatedSelectedOption
           );
           if (subOptionCount <= reaminingTotalFreeCount)
             reaminingTotalFreeCount = reaminingTotalFreeCount - subOptionCount;
@@ -225,32 +227,26 @@ const MenuItemOptions = ({
           if (remainCount === 0 && reaminingTotalFreeCount > 0) {
             const subOptionCount = calculateFinalCount(
               [sub],
-              selectedoption?.[0]
+              updatedSelectedOption
             );
             sub.paidQty = subOptionCount - reaminingTotalFreeCount;
             reaminingTotalFreeCount = reaminingTotalFreeCount - sub.paidQty;
           }
         }
-        //console.log("lstdefault from menuitem-options", lstdefault);
         return sub;
       });
     }
 
     let lstobj = {
-      optionselected: selectedoption?.[0].optionselected,
-      subparameterId: selectedoption?.[0].subparameterId,
-      name: selectedoption?.[0].name,
-      maxSelection: selectedoption?.[0].maxSelection,
+      optionselected: updatedSelectedOption.optionselected,
+      subparameterId: updatedSelectedOption.subparameterId,
+      name: updatedSelectedOption.name,
+      maxSelection: updatedSelectedOption.maxSelection,
       type: isFreeCountCalculation ? updateWithPaidTopping : lstdefault,
     };
 
     //UPDATE THE LIST
     selectedtopping?.list.map((data) => {
-      // if (data.optionselected === true) {
-      //   data = lstobj;
-      // } else {
-      //   data = data;
-      // }
       data.optionselected === true ? lstobj : data;
     });
 
@@ -261,10 +257,6 @@ const MenuItemOptions = ({
 
     if (menuItemDetail) {
       menuItemDetail?.topping.map((data) => {
-        // if (data.subparameterId === selectedsize?.subparameterId)
-        //   data = objtopping;
-        // else data = data;
-
         data.subparameterId === selectedsize?.subparameterId
           ? objtopping
           : data;
@@ -284,7 +276,8 @@ const MenuItemOptions = ({
     isRadioButton: boolean,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    //let mutableItem = item as Mutable<typeof item>;
+    //debugger;
+    item = { ...item };
     let isFreeCountCalculation = true;
     const optionDetails = selectedtopping?.list?.find(
       (option) => option.optionId === optionId
@@ -324,7 +317,8 @@ const MenuItemOptions = ({
     let newArray = tdata?.map((a) => Object.assign({}, a));
 
     tdata?.map((data) => {
-      //IF OPTION IS NO SELCTED  THEN SELECT THE OTION
+      data = { ...data };
+
       if (item.name === data.name && item.subOptionselected === false) {
         let selectionTypeTopizzaSide =
           selection === "select"
@@ -334,60 +328,79 @@ const MenuItemOptions = ({
             : selection === "deselect"
             ? ""
             : selection;
+
         item.subOptionselected = true;
         data.subOptionselected = true;
         data.subOptionToppingQuantity = 1;
         data.pizzaside = selectionTypeTopizzaSide;
-      }
-      //IF OPTION IS SELECTED THEN DESELECT FOR RADIO BUTTON ONLY
-      else if (data.subOptionselected === true && isRadioButton === true) {
-        if (isRadioButton === true) {
-          const AnotherSubOptionSelected = tdata.find(
-            (item) => item?.subOptionselected
-          );
-          let isSuboptionAlreadySelectedForPizza =
-            AnotherSubOptionSelected?.suboptionId === data?.suboptionId;
-          const isSelect =
-            selection !== "" &&
-            data.subOptionselected &&
-            item.subOptionselected &&
-            isSuboptionAlreadySelectedForPizza;
-          data.subOptionselected = isSelect;
-          data.subOptionToppingQuantity = isSelect ? 1 : 0;
-          data.pizzaside = isSelect ? selection : "";
-        }
-      }
-      //CHECK FOR THE HALF PIZZA SELECTION ONLY FOR THE CHECKBOX (FUNCTIONALITY FOR THE CHNAGE PIZZA SIDE)
-      else if (selection !== "" && data?.subOptionselected && !isRadioButton) {
+      } else if (data.subOptionselected === true && isRadioButton === true) {
+        const anotherSelected = tdata?.find((item) => item.subOptionselected);
+        const isSame = anotherSelected?.suboptionId === data.suboptionId;
+
+        const isSelect =
+          selection !== "" &&
+          data.subOptionselected &&
+          data.subOptionselected &&
+          isSame;
+
+        data.subOptionselected = isSelect;
+        data.subOptionToppingQuantity = isSelect ? 1 : 0;
+        data.pizzaside = isSelect ? selection : "";
+      } else if (selection !== "" && data.subOptionselected && !isRadioButton) {
         data.subOptionselected = true;
-        data.subOptionToppingQuantity = data.subOptionToppingQuantity;
-        //chnage type
         data.pizzaside =
           data?.suboptionId === item?.suboptionId ? selection : data?.pizzaside;
       }
+
       lstdefault.push(data);
     });
 
+    //to update the selectedoption.type
+    let updatedSelectedOption = {
+      ...(selectedoption?.[0] as List), //make copy of old selectedoption
+      type: lstdefault, //assign lstdefault to type that hold the new updated type
+    };
+
     let finalcount: number = 0;
-    finalcount = calculateFinalCount(lstdefault, selectedoption?.[0] as List);
+    finalcount = calculateFinalCount(lstdefault, updatedSelectedOption);
 
     var isMaxSelectZero = isFreeCountCalculation
-      ? selectedoption?.[0].freeToppingsCount == 0 ? true : false
-      : selectedoption?.[0].maxSelection == 0 ? true : false;
+      ? updatedSelectedOption.freeToppingsCount == 0
+        ? true
+        : false
+      : updatedSelectedOption.maxSelection == 0
+      ? true
+      : false;
     var checkCount = isFreeCountCalculation
       ? isMaxSelectZero == false
-      ? finalcount <= Number(selectedoption?.[0].freeToppingsCount) ? true : false : true : isMaxSelectZero == false
-      ? finalcount <= Number(selectedoption?.[0].maxSelection) ? true : false : true;
+        ? finalcount <= Number(updatedSelectedOption.freeToppingsCount)
+          ? true
+          : false
+        : true
+      : isMaxSelectZero == false
+      ? finalcount <= Number(updatedSelectedOption.maxSelection)
+        ? true
+        : false
+      : true;
     //TODO:CHECKCOUNT IS FALSE THEN MAKE isExtraPaidTopping TRUE for that update the lstdefault array based on on
     //TODO:lso update the sequence number
     const selectedSubOption = lstdefault?.find(
       (sub) => sub.suboptionId === item?.suboptionId
     );
     var topvalue =
-      selectedSubOption?.toppingValue === "" ? 1 : selectedSubOption?.toppingValue;
-    var calculatedtopvalue = selectedoption?.[0].isHalfPizza === true && (selectedSubOption?.pizzaside === "L" ||
-        selectedSubOption?.pizzaside === "R") ? (topvalue as number) * (selectedSubOption.halfPizzaPriceToppingPercentage ||
-        selectedSubOption.halfPizzaPriceToppingPercentage === 0 ? 1: selectedSubOption.halfPizzaPriceToppingPercentage / 100) : topvalue;
+      selectedSubOption?.toppingValue === ""
+        ? 1
+        : selectedSubOption?.toppingValue;
+    var calculatedtopvalue =
+      updatedSelectedOption.isHalfPizza === true &&
+      (selectedSubOption?.pizzaside === "L" ||
+        selectedSubOption?.pizzaside === "R")
+        ? (topvalue as number) *
+          (selectedSubOption.halfPizzaPriceToppingPercentage ||
+          selectedSubOption.halfPizzaPriceToppingPercentage === 0
+            ? 1
+            : selectedSubOption.halfPizzaPriceToppingPercentage / 100)
+        : topvalue;
     const subOptionCount =
       Number(selectedSubOption?.subOptionToppingQuantity) *
       Number(calculatedtopvalue);
@@ -397,20 +410,20 @@ const MenuItemOptions = ({
       const topRecord = lstdefault.reduce((max, subOption) =>
         subOption.sequenceNumber > max.sequenceNumber ? subOption : max
       );
-      console.log(topRecord);
       updateWithPaidTopping = lstdefault?.map((subOption) => {
         if (item.suboptionId === subOption.suboptionId) {
           subOption.sequenceNumber = topRecord?.sequenceNumber + 1;
           subOption.isExtraPaidTopping = !checkCount;
           if (subOption.isExtraPaidTopping) {
             subOption.paidQty =
-              subOption.paidQty + 1 > subOption?.subOptionToppingQuantity ? subOption.paidQty : subOption.paidQty + 1;
+              subOption.paidQty + 1 > subOption?.subOptionToppingQuantity
+                ? subOption.paidQty
+                : subOption.paidQty + 1;
           } else {
             subOption.paidQty = 0;
           }
           return subOption;
         } else {
-          // subOption.isExtraPaidTopping = !checkCount
           if (!subOption.isExtraPaidTopping) {
             subOption.paidQty = 0;
           }
@@ -419,8 +432,8 @@ const MenuItemOptions = ({
       });
     }
     const isValidMaxSelection = isFreeCountCalculation
-      ? finalcount < Number(selectedoption?.[0].maxSelection)
-      : finalcount <= Number(selectedoption?.[0].maxSelection);
+      ? finalcount < Number(updatedSelectedOption.maxSelection)
+      : finalcount <= Number(updatedSelectedOption.maxSelection);
     if (
       (item.subOptionselected === true &&
         isValidMaxSelection &&
@@ -428,73 +441,105 @@ const MenuItemOptions = ({
       isRadioButton
     ) {
       let lstobj = {
-        optionselected: selectedoption?.[0].optionselected,
-        subparameterId: selectedoption?.[0].subparameterId,
-        name: selectedoption?.[0].name,
-        maxSelection: selectedoption?.[0].maxSelection,
+        optionselected: updatedSelectedOption.optionselected,
+        subparameterId: updatedSelectedOption.subparameterId,
+        name: updatedSelectedOption.name,
+        maxSelection: updatedSelectedOption.maxSelection,
         type: isFreeCountCalculation ? updateWithPaidTopping : lstdefault,
       };
+
       //UPDATE THE LIST
-      selectedtopping?.list.map((data) => {
-       if (data.optionselected === true) {
-          //data = lstobj;
-          lstobj
-        } else {
-          data = data;
+      // const updatedList = selectedtopping?.list.map((data) => {
+      //   if (data.optionselected === true) {
+      //     return lstobj;
+      //   }
+      //   return data;
+      // });
+
+      //UPDATE THE LIST
+      const updatedList = selectedtopping?.list.map((data) => {
+        if (data.optionId === updatedSelectedOption.optionId) {
+          return updatedSelectedOption;
         }
+        return data;
       });
 
-      let objtopping = {
+      let updatedTopping = {
         subparameterId: selectedtopping?.subparameterId,
-        list: selectedtopping?.list,
+        list: updatedList,
       };
-      menuItemDetail?.topping.map((data) => {
-        if (data.subparameterId === selectedsize?.subparameterId) 
-         // data = objtopping;
-          objtopping
-        else data = data;
-      });
+
+      const updatedMenuItemDetail = {
+        ...menuItemDetail,
+        topping: menuItemDetail?.topping.map((data) =>
+          data.subparameterId === selectedsize?.subparameterId
+            ? updatedTopping
+            : data
+        ),
+      };
 
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      // dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(updatedMenuItemDetail as GetMenuItemDetail));
       dispatch(updateitemoption());
       setreLoad(Math.random);
     } else {
       // e.currentTarget.checked = false;
-      if (selectedoption && selectedoption[0].maxSelection !== 0) {
+      if (updatedSelectedOption.maxSelection !== 0) {
         e.target.checked = false;
       }
 
       let lstobj = {
-        optionselected: selectedoption?.[0].optionselected,
-        subparameterId: selectedoption?.[0].subparameterId,
-        name: selectedoption?.[0].name,
-        maxSelection: selectedoption?.[0].maxSelection,
-        type: newArray,
+        optionselected: updatedSelectedOption.optionselected,
+        subparameterId: updatedSelectedOption.subparameterId,
+        name: updatedSelectedOption.name,
+        maxSelection: updatedSelectedOption.maxSelection,
+        type: isFreeCountCalculation ? updateWithPaidTopping : lstdefault,
       };
 
       //Arun  assign old toppings, if max limit exceed of topping
-      selectedtopping?.list.map((option) => {
-        if (option.optionId === optionId) {
-          Object.assign(option.type, newArray);
+      // selectedtopping?.list.map((option) => {
+      //   if (option.optionId === optionId) {
+      //     Object.assign(option.type, newArray);
+      //   }
+      // });
+
+      // let objtopping = {
+      //   subparameterId: selectedtopping?.subparameterId,
+      //   list: selectedtopping?.list,
+      // };
+
+      // menuItemDetail?.topping.map((data) => {
+      //   if (data.subparameterId === selectedsize?.subparameterId) {
+      //     Object.assign(data, objtopping);
+      //   } else {
+      //     Object.assign(data, data);
+      //   }
+      // });
+      const updatedList = selectedtopping?.list.map((data) => {
+        if (data.optionselected === true) {
+          return lstobj;
+        } else {
+          return data;
         }
       });
 
-      let objtopping = {
+      let updatedTopping = {
         subparameterId: selectedtopping?.subparameterId,
-        list: selectedtopping?.list,
+        list: updatedList,
       };
 
-      menuItemDetail?.topping.map((data) => {
-        if (data.subparameterId === selectedsize?.subparameterId) {
-          Object.assign(data, objtopping);
-        } else {
-          Object.assign(data, data);
-        }
-      });
+      const updatedMenuItemDetail = {
+        ...menuItemDetail,
+        topping: menuItemDetail?.topping.map((data) =>
+          data.subparameterId === selectedsize?.subparameterId
+            ? updatedTopping
+            : data
+        ),
+      };
 
       dispatch(removeMenuItem());
-      dispatch(selectedItemSize(menuItemDetail as GetMenuItemDetail));
+      dispatch(selectedItemSize(updatedMenuItemDetail as GetMenuItemDetail));
       if (
         selectedSubOption &&
         subOptionCount > selectedSubOption?.suboptionmaxselection
@@ -506,7 +551,7 @@ const MenuItemOptions = ({
         );
       } else {
         handleNotify(
-          "Select max " + selectedoption?.[0].maxSelection + " choices",
+          "Select max " + updatedSelectedOption.maxSelection + " choices",
           ToasterPositions.TopRight,
           ToasterTypes.Error
         );
@@ -520,6 +565,7 @@ const MenuItemOptions = ({
     suboptionId: number,
     operator: any
   ) => {
+   // debugger;
     let isFreeCountCalculation = true;
     const optionDetails = selectedtopping?.list?.find(
       (option) => option.optionId === optionId
@@ -580,25 +626,30 @@ const MenuItemOptions = ({
         checkCount =
           finalcount <= Number(selectedoption?.[0].freeToppingsCount) ||
           finalcount <= suboptionmaxselection ||
-          finalcount <= Number(selectedoption?.[0].maxSelection) ? true : false;
+          finalcount <= Number(selectedoption?.[0].maxSelection)
+            ? true
+            : false;
       } else {
         checkCount =
           finalcount <= Number(selectedoption?.[0].maxSelection) ||
-          finalcount <= suboptionmaxselection ? true : false;
+          finalcount <= suboptionmaxselection
+            ? true
+            : false;
       }
     // checkCount = (finalcount <= parseInt(selectedoption[0].maxSelection)) ? true : false
     else checkCount = true;
     const isExtraPaidTopping = !(
       finalcount <= Number(selectedoption?.[0].freeToppingsCount)
     );
-    console.log(isExtraPaidTopping);
     //var isMaxSelectZero =  parseInt(selectedoption[0].maxSelection) == 0 ? true : false;
     //var checkCount = isMaxSelectZero == false ? finalcount <= parseInt(selectedoption[0].maxSelection) ? true : false : true;
     let updateWithPaidTopping: Type[];
     if (checkCount) {
       selectedtopping?.list.map((data) => {
         let type =
-          selectedoption?.[0].optionId === data.optionId ? lstdefault : data.type;
+          selectedoption?.[0].optionId === data.optionId
+            ? lstdefault
+            : data.type;
         if (isFreeCountCalculation) {
           updateWithPaidTopping = type?.map((subOption) => {
             if (isExtraPaidTopping && suboptionId === subOption.suboptionId) {
@@ -668,7 +719,6 @@ const MenuItemOptions = ({
             return sub;
           });
         }
-        // console.log("sortedsuboptionBasedSeqNo", sortedsuboptionBasedSeqNo)
         let myobj = {
           optionselected: data.optionselected,
           subparameterId: data.subparameterId,
@@ -887,6 +937,7 @@ const MenuItemOptions = ({
   }
 
   const calculateToppingRemaining = (optionId: number) => {
+    //debugger;
     let selectedoption = selectedtopping?.list.filter(
       (x) =>
         x.optionId == optionId &&
@@ -911,32 +962,19 @@ const MenuItemOptions = ({
     item: Type | null,
     alltype: string
   ) => {
-    console.log(
-      "option from selectedoptionClick from menuitem options",
-      option
-    );
-    console.log("item from selectedoptionClick from menuitem options", item);
-    console.log(
-      "alltype from selectedoptionClick from menuitem options",
-      alltype
-    );
+    //debugger
     let lstdefault: Type[] = [];
     option.type.map((data) => {
-      let newData = { ...data };
+      data = { ...data };
       if (alltype !== "all") {
-        // if (item?.suboptioncategoryname == data.suboptioncategoryname)
-        //   data.defaultSelection = item.suboptioncategoryname;
-        // else data.defaultSelection = "";
-        newData.defaultSelection =
+        data.defaultSelection =
           item?.suboptioncategoryname === data.suboptioncategoryname
             ? item.suboptioncategoryname
             : "";
       } else {
-        //data.defaultSelection = "all";
-        newData.defaultSelection = "all";
+        data.defaultSelection = "all";
       }
-      //lstdefault.push(data);
-      lstdefault.push(newData);
+      lstdefault.push(data);
     });
     let lstobj = {
       optionselected: option.optionselected,
@@ -946,8 +984,6 @@ const MenuItemOptions = ({
       type: lstdefault,
     };
     selectedtopping?.list.map((data) => {
-      // if (data.optionselected === true) data = lstobj;
-      // else data = data;
       data.optionselected === true ? lstobj : data;
     });
     let objtopping = {
@@ -956,9 +992,6 @@ const MenuItemOptions = ({
     };
 
     menuItemDetail?.topping.map((data) => {
-      // if (data.subparameterId === selectedsize?.subparameterId)
-      //   data = objtopping;
-      // else data = data;
       data.subparameterId === selectedsize?.subparameterId ? objtopping : data;
     });
     dispatch(removeMenuItem());
@@ -998,7 +1031,7 @@ const MenuItemOptions = ({
                     lstoption.push(data);
                 });
               return (
-                <div className="col-lg-6 col-md-6 col-12" key={item.optionId}>
+                <div className="col-lg-6 col-md-6 col-12" key={index}>
                   <div className="card mb-2 accordion-item">
                     <OptionHeader
                       remainCount={
@@ -1025,7 +1058,7 @@ const MenuItemOptions = ({
                     >
                       <div className="row">
                         <SubToppingRequiredWarning
-                          key={item.optionId}
+                          key={index}
                           item={item}
                           handleOnChangeRemoveSubOption={
                             handleOnChangeRemoveSubOption

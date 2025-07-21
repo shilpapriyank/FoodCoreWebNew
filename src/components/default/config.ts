@@ -43,7 +43,6 @@ export const ENDPOINTS : Record<string, string> = {
   GET_DELIVERY_ADDRESS: `${BASE_URL}/RestaurantAPIOnlineV1.asmx/getDeliveryAddress_Version1`,
   // ADD_DELIVERY_ADDRESS: `${BASE_URL}/RestaurantAPIOnlineV1.asmx/addDeliveryAddresss_V1`,
   ADD_DELIVERY_ADDRESS: `${BASE_URL}/RestaurantAPIOnlineWebV1.asmx/addDeliveryAddresss`,
-
   DELETE_DELIVERY_ADDRESS: `${BASE_URL}/RestaurantAPIOnlineV1.asmx/deleteDeliveryAddress`,
   GET_CUSTOMER_PASSWORD: `${BASE_URL}/RestaurantAPIOnlineWebV1.asmx/getCustomerPassword`,
   UPDATE_CUSTOMER: `${BASE_URL}/RestaurantAPIOnlineV1.asmx/addUpdateCustomerV3`,

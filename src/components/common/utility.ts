@@ -1538,8 +1538,6 @@ export const calculateFinalCount = (
   subOptionList: Type[],
   selectedOption: List
 ) => {
-  console.log("subOptionList from calculateFinalCount", subOptionList);
-  console.log("selectedOption from calculateFinalCount", selectedOption);
   let finalcount = 0;
   var toppingcount = subOptionList?.filter((x) => x.subOptionselected === true);
   toppingcount?.map((tc) => {
@@ -1558,7 +1556,6 @@ export const calculateFinalCount = (
         : topvalue;
     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
   });
-  //console.log("final count from calculate final count", finalcount);
   return finalcount;
 };
 

@@ -149,7 +149,7 @@ export interface MenuItem {
   menuitemslug: string;
   description: string;
   imgurl: string;
-  thumbimgurl: string;
+  //thumbimgurl: string;
   mediumimgurl: string;
   fullimgurl: string;
   totallikes: any;
@@ -186,7 +186,7 @@ export interface Category {
   catName: string;
   categoryslug: string;
   description: string;
-  thumbimgurl: string;
+  // thumbimgurl: string;
   subCategory: any;
   isDiscountApply: boolean;
   isrelativeCategory: boolean;
@@ -229,7 +229,7 @@ export interface MenuItemsCommon {
   menuitemslug: string;
   description: string;
   imgurl: string;
-  thumbimgurl: string;
+  //thumbimgurl: string;
   mediumimgurl: string;
   fullimgurl: string;
   totallikes: any;

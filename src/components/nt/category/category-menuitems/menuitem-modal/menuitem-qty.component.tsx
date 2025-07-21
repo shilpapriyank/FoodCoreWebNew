@@ -19,7 +19,7 @@ const MenuItemQty = ({
           type="button"
           onClick={decrement}
         >
-          <i className="fa fa-minus">minus</i>
+          <i className="fa fa-minus"></i>
         </button>
         <input
           type="text"
@@ -31,9 +31,9 @@ const MenuItemQty = ({
         <button
           className="qty-btn-plus btn-light quantity__plus"
           type="button"
-          onClick={increment} // ✅ move onClick here
+          onClick={increment} 
         >
-          <i className="fa fa-plus">plus</i>
+          <i className="fa fa-plus"></i>
         </button>
       </div>
     </div>
