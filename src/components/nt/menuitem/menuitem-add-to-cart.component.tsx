@@ -15,7 +15,6 @@ import {
   setDipendentIds,
   setDipendentItemQty,
   setMenuCategoryData,
-  setMenuItemDetailList,
 } from "../../../../redux/menu-item/menu-item.slice";
 import { MenuItemServices } from "../../../../redux/menu-item/menu-item.services";
 import { FormatOrderObject } from "../common/format-order-object";
@@ -104,6 +103,7 @@ const MenuItemAddToCart = ({
   };
 
   const addtocartclick = (item: Menuitems) => {
+    //debugger;
     dispatch(selectedMenuItem(item as any));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
@@ -162,10 +162,6 @@ const MenuItemAddToCart = ({
               orderobj: itemobj,
               restaurantId: restaurantinfo?.restaurantId as number,
             }).then((response) => {
-              // dispatch({
-              //   type: MenuItemTypes.ADD_ITEM_TO_CART,
-              //   payload: response,
-              // });
               dispatch(addItemToCart(response));
               // console.log("add item to cart response from if", response);
               if (response) {

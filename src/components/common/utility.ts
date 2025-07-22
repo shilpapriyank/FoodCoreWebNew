@@ -1122,7 +1122,6 @@ export const convert24HourTo12Hour = (
 //   restaurantinfo: GetAllRestaurantInfo,
 //   isLastOrder: boolean = false
 // ): boolean => {
-//   debugger;
 //   const [time, windowMeridian] = getCheckTimeArr(
 //     currentTime,
 //     restaurantinfo,

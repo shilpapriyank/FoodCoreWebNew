@@ -124,6 +124,7 @@ export const RelatedItemsList = () => {
   };
 
   const handleRelativeItemClick = (item: any) => {
+   // debugger
     if (item && item?.menuItemId !== undefined)
       item.menuitemId = item.menuItemId;
     delete item.menuItemId;

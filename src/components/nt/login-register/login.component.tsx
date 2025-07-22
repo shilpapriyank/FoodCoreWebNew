@@ -117,7 +117,7 @@ const Login: React.FC<LoginProps> = ({
                 locationid: locationId as number,
             }).then((responsedata) => {
                 // debugger
-                if (responsedata !== null && responsedata.customerDetails !== null && responsedata.customerDetails !== undefined) {
+                if (responsedata && responsedata !== null && responsedata?.customerDetails !== null && responsedata?.customerDetails !== undefined) {
 
                     const customer = responsedata?.customerDetails;
                     if (responsedata && customer) {

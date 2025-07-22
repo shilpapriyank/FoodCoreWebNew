@@ -79,6 +79,7 @@ export const OrderItemsList = () => {
   const enableRewardPoint = restaurantinfo?.defaultLocation?.enableRewardPoint;
 
   useEffect(() => {
+    //debugger;
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -180,6 +181,7 @@ export const OrderItemsList = () => {
   };
 
   const deletecartclick = (deleteitem: any) => {
+    //debugger;
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -189,6 +191,7 @@ export const OrderItemsList = () => {
       ramount = rpoint / rewardpoint.rewardvalue;
     }
     if (deleteitem != undefined) {
+      //debugger;
       CartServices.deleteCartItem(
         sessionId as string,
         deleteitem.cartid,
@@ -297,6 +300,7 @@ export const OrderItemsList = () => {
     cartid: number,
     dependentParentQty: number
   ) => {
+    // debugger;
     const plusState = currentQty + 1;
     if (dependentParentQty > 0 && dependentParentQty < plusState) {
       return;
@@ -339,6 +343,7 @@ export const OrderItemsList = () => {
     dependentParentQty: number,
     item: any
   ) => {
+    // debugger;
     if (minQty === currentQty) {
       return;
     }
@@ -500,9 +505,9 @@ export const OrderItemsList = () => {
                   />
                   <button
                     className="qty-btn-plus btn-light quantity__plus"
-                    // onClick={() =>
-                    //   increment(data.qty, data.cartid, dependentParentQty)
-                    // }
+                    onClick={() =>
+                      increment(data.qty, data.cartid, dependentParentQty)
+                    }
                     type="button"
                   >
                     {" "}
@@ -515,7 +520,6 @@ export const OrderItemsList = () => {
                     handlesetDeleteData(data);
                   }}
                 >
-                  {" "}
                   <i className="fa fa-trash red-color-dark" />{" "}
                 </a>
               </div>
@@ -523,10 +527,10 @@ export const OrderItemsList = () => {
             </React.Fragment>
           );
         })}
-      {/* {isOpenModal && (
+      {isOpenModal && (
         <CommonModal
           title="Delete"
-          text={`Are you sure you want to remove ${deleteItemData?.itemname} from the cart?`}
+          text={`Are you sure you want to remove ${deleteItemData?.itemName} from the cart?`}
           btn1Name="Delete"
           btn2Name="Cancel"
           isbtn2={true}
@@ -535,7 +539,7 @@ export const OrderItemsList = () => {
           handleToggle={handleToggle}
           isOpenModal={isOpenModal}
         />
-      )} */}
+      )}
     </>
   );
 };
