@@ -29,6 +29,7 @@ import {
   setDipendentItemQty,
   setMenuCategoryData,
   setMenuItemDetailList,
+  setSelectedMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
 import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
 import {
@@ -54,6 +55,7 @@ import { useParams, useRouter } from "next/navigation";
 import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
 import ScrollToTop from "@/components/common/scroll-to-top";
 import {
+  DependantMenuList,
   GetAllMenuCategoryItems,
   GetMenuItemDetail,
   Menuitems,
@@ -161,7 +163,6 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (categoryslug) {
-      //debugger;
       const targetElement = document.getElementById(categoryslug);
       if (targetElement) {
         scrollToElementWithOffset(categoryslug);
@@ -188,41 +189,38 @@ const CategoryMenuItems = ({
   ]);
 
   useEffect(() => {
+   // debugger;
     if (dependentId > 0) {
-      //debugger;
+      console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
-      if (selectedMenuItemDetail) {
-        // dispatch(
-        //   selectedMenuItem({
-        //     ...selectedMenuItemDetail,
-        //     dependedItemId:
-        //       selectedMenuItemDetail?.dependedItemId ??
-        //       selectedMenuItemDetail?.menuitemId ??
-        //       0,
-        //     qty: 1,
-        //   })
-        // );
-        // dispatch(
-        //   selectedMenuItem({
-        //     menuitemId: dependentId,
-        //     qty: 1,
-        //     dependedItemId:
-        //       selectedMenuItemDetail?.dependedItemId ??
-        //       selectedMenuItemDetail?.menuitemId,
-        //   } as any) as any
-        // );
-      }
+      dispatch(
+        selectedMenuItem({
+          menuitemId: dependentId,
+          qty: 1,
+          dependedItemId:
+            selectedMenuItemDetail?.dependedItemId ??
+            selectedMenuItemDetail?.menuitemId,
+        } as any) as any
+      );
       MenuItemServices.getMenuItemList({
         restaurantId: restaurantinfo?.restaurantId as number,
         locationId: restaurantinfo?.defaultlocationId as number,
         customerId: customerId,
-        menuitemId: dependentId,
-        cartsessionId: String(sessionid),
+        menuitemId: dependentId as number,
+        cartsessionId: sessionid as string,
         cartId: 0,
       }).then((response) => {
         if (response) {
+          console.log(
+            "response of getMenuItemList in  dependentId condi",
+            response
+          );
           dispatch(setMenuItemDetailList(response));
           dispatch(setMenuCategoryData(response));
+          dispatch({
+            type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
+            payload: response,
+          });
         }
       });
     }
@@ -231,7 +229,7 @@ const CategoryMenuItems = ({
   useEffect(() => {
     let selectedCat;
     if (categoryUrl) {
-      // debugger;
+      //debugger;
       selectedCat = menuItemsWithCat?.find(
         (cat) => cat.categoryslug === categoryUrl
       );
@@ -275,8 +273,8 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: Menuitems) => {
-    /// debugger;
-    // dispatch(setMenuItemDetailList(item));
+    //debugger;
+    dispatch(setSelectedMenuItemDetailList(item));
     dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
@@ -358,6 +356,7 @@ const CategoryMenuItems = ({
   };
 
   function quickOrderClick(item: Menuitems) {
+   // debugger;
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&
@@ -432,8 +431,11 @@ const CategoryMenuItems = ({
     dispatch(setDipendentItemQty(0));
     setopenDependentList(false);
   };
+
   const handleOnCheck = (id: number) => {
+    //debugger;
     if (selectedDependentItems.includes(id)) {
+     // debugger;
       let item = selectedDependentItems.filter((item) => item !== id);
       setselectedDependentItems([...item]);
     } else {
@@ -442,18 +444,15 @@ const CategoryMenuItems = ({
   };
 
   function handleCklickOnNext() {
+   // debugger;
     const [first, ...remainingList] = selectedDependentItems;
     const depQty =
       menuitem?.dependentqty > 0
         ? menuitem?.dependentqty
         : menuitem?.selecteditemquantity;
+    console.log("first from on next click", first);
     dispatch(setDipendentItemQty(depQty));
-    dispatch({
-      type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-      payload: {},
-    });
-    // dispatch(setDipendentId(first?.DependantMenuItemId));
-    dispatch(setDipendentId(Number(first)));
+    dispatch(setDipendentId(first?.DependantMenuItemId));
     dispatch(setDipendentIds(remainingList));
     setselectedDependentItems([]);
     setopenDependentList(false);

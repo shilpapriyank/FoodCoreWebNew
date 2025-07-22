@@ -29,8 +29,7 @@ export const FormatOrderObject = ({
   selectedtime: string;
   studentname?: string;
 }) => {
- // console.log("objselectedItem from FormatOrderObject", objselectedItem);
-  //console.log("menuItemDetail from FormatOrderObject", menuItemDetail);
+  //debugger
   const selectedsize = menuItemDetail?.size?.find(
     (x) => x.sizeselected === true
   );

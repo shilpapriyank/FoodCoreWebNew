@@ -63,7 +63,7 @@ const MenuItemOptions = ({
     isRadioButton?: boolean,
     e?: React.ChangeEvent<HTMLInputElement>
   ) => {
-   // debugger;
+    //debugger;
     item = { ...item };
     let isFreeCountCalculation = true;
 
@@ -565,7 +565,7 @@ const MenuItemOptions = ({
     suboptionId: number,
     operator: any
   ) => {
-   // debugger;
+    //debugger;
     let isFreeCountCalculation = true;
     const optionDetails = selectedtopping?.list?.find(
       (option) => option.optionId === optionId
@@ -794,6 +794,7 @@ const MenuItemOptions = ({
   };
 
   const increment = (optionId: number, data: any) => {
+   // debugger;
     let isFreeCountCalculation = true;
 
     const optionDetails = selectedtopping?.list?.find(
@@ -886,6 +887,7 @@ const MenuItemOptions = ({
   };
 
   const decrement = (optionId: number, data: any, isRadioButton: boolean) => {
+    //debugger;
     if (minQty === data.subOptionToppingQuantity) {
       selectedquantityClick(optionId, minQty, data.suboptionId, "-");
       return;
@@ -937,7 +939,6 @@ const MenuItemOptions = ({
   }
 
   const calculateToppingRemaining = (optionId: number) => {
-    //debugger;
     let selectedoption = selectedtopping?.list.filter(
       (x) =>
         x.optionId == optionId &&
@@ -962,7 +963,7 @@ const MenuItemOptions = ({
     item: Type | null,
     alltype: string
   ) => {
-    //debugger
+   // debugger;
     let lstdefault: Type[] = [];
     option.type.map((data) => {
       data = { ...data };

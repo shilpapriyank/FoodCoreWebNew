@@ -24,7 +24,6 @@ import {
 } from "@/types/order-types/order.type";
 import { TimeSlot } from "@/types/timeslot-types/timeslot.types";
 
-
 export class OrderServices {
   static async checkOrderTime({
     restaurantId,
@@ -71,7 +70,10 @@ export class OrderServices {
       true,
       restaurantId
     );
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass.result;
     } else {
       return responseclass;
@@ -357,14 +359,12 @@ export class OrderServices {
     obj,
     requestId = "",
   }: GetOrderTimingArgsTypes) {
-    //debugger
-    console.log("loactionId from order services:", locationId)
+    console.log("loactionId from order services:", locationId);
     responseclass = new ResponseModel();
     const methodName = "getOrderTiming";
     const checktimeurl = ENDPOINTS.GET_TIMING;
 
-    const selectedAddress =
-    {
+    const selectedAddress = {
       deliveryAddressId: obj?.deliveryaddressId ?? 0,
       restaurantId: restaurantId,
       locationId: locationId,
@@ -565,7 +565,11 @@ export class OrderServices {
       }
 
       if (res.status === API_RESPONSE_STATUS.FAIL) {
-        handleNotify(res.message, ToasterPositions.TopRight, ToasterTypes.Error);
+        handleNotify(
+          res.message,
+          ToasterPositions.TopRight,
+          ToasterTypes.Error
+        );
       }
 
       return [];
