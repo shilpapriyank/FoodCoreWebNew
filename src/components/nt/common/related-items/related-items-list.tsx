@@ -52,27 +52,6 @@ export const RelatedItemsList = () => {
     "/";
   let locationHrefLink = `/${selectedTheme?.url}/[dynamic]/[location]/`;
 
-  // const { data, refetch } = useQuery<GetAllMenuCategoryItems[]>(
-  //   [
-  //     "getCategoryRelativesItemstOrders",
-  //     restaurantinfo?.restaurantId,
-  //     restaurantinfo?.defaultLocation.locationId,
-  //     sessionid,
-  //   ],
-  //   () =>
-  //     CategoryServices.getCategoryRelativesItems(
-  //       sessionid as string,
-  //       restaurantinfo?.defaultLocation.locationId as number,
-  //       restaurantinfo?.restaurantId as number
-  //     ),
-  //   // { staleTime: 0, refetchOnWindowFocus: false, enabled: cartitemcount > 0 }
-  //   {
-  //     staleTime: 0,
-  //     refetchOnWindowFocus: false,
-  //     enabled: cart?.cartitemcount > 0,
-  //   }
-  // );
-
   const { data, refetch } = useQuery({
     queryKey: [
       "getCategoryRelativesItems",
@@ -124,23 +103,15 @@ export const RelatedItemsList = () => {
   };
 
   const handleRelativeItemClick = (item: any) => {
-   // debugger
     if (item && item?.menuItemId !== undefined)
       item.menuitemId = item.menuItemId;
     delete item.menuItemId;
-    // dispatch({
-    //   type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-    //   payload: {},
-    // });
     dispatch(setMenuItemDetailList(item));
     dispatch(selectedMenuItem(item));
 
     setTimeout(() => {
-      // setisProductItemPopup(true);
       setopenMenuItemModal(true);
     }, 100);
-    //   }
-    // });
   };
 
   if (pathname.includes(PAGES.CHECKOUT) && data && cart?.cartitemcount > 0) {

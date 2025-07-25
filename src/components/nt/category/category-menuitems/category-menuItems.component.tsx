@@ -139,9 +139,9 @@ const CategoryMenuItems = ({
   let selectedMenuItemDetail = menuitem?.selectedmenuitemdetail;
   const dependentId = menuitem?.dependentid ?? 0;
   const [selectedDependentItems, setselectedDependentItems] = useState<
-    number[]
+    DependantMenuList[]
   >([]);
-  let menuItemDetail = menuitem.menuitemdetaillist;
+  let menuItemDetail = menuitem?.menuitemdetaillist;
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const [isStudentPopUp, setisStudentPopUp] = useState<boolean>(false);
   const isOrderingDisable = restaurantinfo?.defaultLocation?.isOrderingDisable;
@@ -180,7 +180,6 @@ const CategoryMenuItems = ({
       const findedCat = catWithSearch?.find(
         (cat) => cat?.categoryslug === categoryUrl
       );
-      //dispatch(setSelectedCategory(findedCat as MainCategoryList));
     }
   }, [
     categoryslug,
@@ -189,7 +188,6 @@ const CategoryMenuItems = ({
   ]);
 
   useEffect(() => {
-   // debugger;
     if (dependentId > 0) {
       console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
@@ -216,11 +214,6 @@ const CategoryMenuItems = ({
             response
           );
           dispatch(setMenuItemDetailList(response));
-          dispatch(setMenuCategoryData(response));
-          dispatch({
-            type: MenuItemTypes.MENU_ITEM_DETAIL_LIST,
-            payload: response,
-          });
         }
       });
     }
@@ -229,7 +222,6 @@ const CategoryMenuItems = ({
   useEffect(() => {
     let selectedCat;
     if (categoryUrl) {
-      //debugger;
       selectedCat = menuItemsWithCat?.find(
         (cat) => cat.categoryslug === categoryUrl
       );
@@ -273,8 +265,6 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: Menuitems) => {
-    //debugger;
-    dispatch(setSelectedMenuItemDetailList(item));
     dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);
@@ -356,7 +346,6 @@ const CategoryMenuItems = ({
   };
 
   function quickOrderClick(item: Menuitems) {
-   // debugger;
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&
@@ -407,7 +396,6 @@ const CategoryMenuItems = ({
         }
       });
     } else {
-      // increment(item)
     }
   }
 
@@ -432,10 +420,8 @@ const CategoryMenuItems = ({
     setopenDependentList(false);
   };
 
-  const handleOnCheck = (id: number) => {
-    //debugger;
+  const handleOnCheck = (id: any) => {
     if (selectedDependentItems.includes(id)) {
-     // debugger;
       let item = selectedDependentItems.filter((item) => item !== id);
       setselectedDependentItems([...item]);
     } else {
@@ -444,7 +430,6 @@ const CategoryMenuItems = ({
   };
 
   function handleCklickOnNext() {
-   // debugger;
     const [first, ...remainingList] = selectedDependentItems;
     const depQty =
       menuitem?.dependentqty > 0
@@ -592,7 +577,6 @@ const CategoryMenuItems = ({
                                                 }
                                               />
                                             </div>
-                                            {/* {menu.isregular && <ShareitemComponent size={25} title={menu.menuItemName} url={shareUrl} description={menu.description} linkClass="fs-5 pt-1" />} */}
                                           </>
                                         ) : (
                                           <>
@@ -613,7 +597,6 @@ const CategoryMenuItems = ({
                                                     {menu.menuItemName}{" "}
                                                   </h3>{" "}
                                                 </a>
-                                                {/* <p>{fixedLengthString(menu.description)}</p> */}
                                                 {menu.description.length <
                                                 180 ? (
                                                   <p>

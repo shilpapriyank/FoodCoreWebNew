@@ -6,6 +6,7 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CheckBox from "@/components/common/checkbox.component";
 import RadioButton from "@/components/common/radiobutton.component";
 import { List, Type } from "@/types/menuitem-types/menuitem.type";
+import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 
 interface SubToppingProps {
   type: Type;
@@ -48,14 +49,14 @@ const SubTopping = ({
     optionId: number,
     selection: string,
     isRadioButton: boolean,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: InputOrClickEvent
   ) => void;
   handleOnChangeSubOption: (
     item: Type,
     optionId: number,
     selection: string,
     isRadioButton: boolean,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: InputOrClickEvent
   ) => void;
   isDisplayPrice: boolean;
   increment: (optionId: number, data: Type) => void;
@@ -111,7 +112,7 @@ const SubTopping = ({
             {item?.isHalfPizza && (
               <PizzaSlice
                 optionId={item.optionId}
-                handleOnChangeSubOption={() => handleOnChangeSubOption}
+                handleOnChangeSubOption={handleOnChangeSubOption}
                 type={type}
               />
             )}

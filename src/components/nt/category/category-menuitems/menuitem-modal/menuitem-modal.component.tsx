@@ -243,7 +243,6 @@ const MenuItemModal = ({
   };
 
   const selectedSizeClick = (item: Size) => {
-    //debugger;
     setlstcarttopping([]);
     setisCollpase(true);
 
@@ -264,29 +263,7 @@ const MenuItemModal = ({
     handleRefreshTopping();
   };
 
-  // const selectedSizeClick = (item: Size) => {
-  //   debugger;
-  //   setlstcarttopping([]);
-  //   setisCollpase(true);
-
-  //   if (item && menuItemDetail) {
-  //     let lstsizedata: Size[] = [];
-  //     menuItemDetail?.size?.map((data) => {
-  //       if (data.type === item.type) data.sizeselected = true;
-  //       else data.sizeselected = false;
-  //       lstsizedata.push(data);
-  //     });
-  //     menuItemDetail.size = lstsizedata;
-  //     dispatch(removeMenuItem());
-  //     dispatch(selectedItemSize(menuItemDetail));
-  //     //dispatch(selectedItemSize(menuItemDetail.size));
-  //   }
-  //   setcount(count + 1);
-  //   handleRefreshTopping();
-  // };
-
   const increment = () => {
-    //debugger;
     const plusState = currentQty + 1;
     if (menuitem?.dependentqty !== 0 && plusState > menuitem?.dependentqty) {
       return;
@@ -296,7 +273,6 @@ const MenuItemModal = ({
 
   const decrement = () => {
     if (minQty === currentQty) {
-      //debugger;
       setcurrentQty(minQty);
       return;
     }
@@ -314,9 +290,8 @@ const MenuItemModal = ({
   }, [lstcarttopping, quantity, selectedsize]);
 
   const addToCart = () => {
-    //debugger;
     if (dependentId > 0 && selectedmenuitemdetail) {
-      selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName as string;
+      selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName || "";
     }
     if (
       dependentId === 0 &&
@@ -326,7 +301,6 @@ const MenuItemModal = ({
     ) {
       dispatch(setDipendentItemQty(0));
     }
-    // let total = selectedsize && selectedsize[0]?.price;
     let total =
       selectedsize &&
       selectedsize != undefined &&
@@ -340,7 +314,6 @@ const MenuItemModal = ({
     if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
       var isValidateItem = true;
-      //test
       if (
         menuItemDetail &&
         menuItemDetail.topping != undefined &&
@@ -370,7 +343,6 @@ const MenuItemModal = ({
 
       //THIS CONDITION WILL EXECUTE WHEN ITEM UPDATE FROM CART PAGE
       if (isValidateItem) {
-        //debugger;
         let itemobj = FormatOrderObject({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
           objselectedItem: selectedmenuitemdetail,
@@ -389,29 +361,29 @@ const MenuItemModal = ({
             restaurantId: restaurantId,
           }).then((response) => {
             if (response) {
-              dispatch(
-                getCartItem({
-                  cartsessionId: sessionid as string,
-                  locationId: restaurantinfo?.defaultlocationId as number,
-                  restaurantId: restaurantinfo?.restaurantId as number,
-                  cartId: 0,
-                  customerId: userinfo ? userinfo?.customerId : 0,
-                  rewardpoints: rpoint,
-                  redeemamount: ramount,
-                  deliveryaddressId: 0,
-                  tipPercentage: 0,
-                  tipAmount: 0,
-                  ordertype: Number(ordertype),
-                  selectedTime: order?.checktime,
-                  requestId: order?.deliveryRequestId,
-                })
-              );
+              // dispatch(
+              //   getCartItem({
+              //     cartsessionId: sessionid as string,
+              //     locationId: restaurantinfo?.defaultlocationId as number,
+              //     restaurantId: restaurantinfo?.restaurantId as number,
+              //     cartId: 0,
+              //     customerId: userinfo ? userinfo?.customerId : 0,
+              //     rewardpoints: rpoint,
+              //     redeemamount: ramount,
+              //     deliveryaddressId: 0,
+              //     tipPercentage: 0,
+              //     tipAmount: 0,
+              //     ordertype: Number(ordertype),
+              //     selectedTime: order?.checktime,
+              //     requestId: order?.deliveryRequestId,
+              //   })
+              // );
               dispatch(
                 getCartItemCount({
-                  sessionId,
-                  defaultlocationId,
-                  restaurantId,
-                  customerId,
+                  cartsessionId: sessionId,
+                  restaurantId: restaurantId,
+                  locationId: restaurantinfo?.locationId,
+                  customerId: userinfo ? userinfo.customerId : 0,
                 })
               );
               handleToggleMenuItem(false);
@@ -424,11 +396,10 @@ const MenuItemModal = ({
       menuItemDetail?.topping != undefined &&
       menuItemDetail?.topping.length === 0
     ) {
-     // debugger;
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail,
-        menuItemDetail: menuItemDetail as GetMenuItemDetail,
+        menuItemDetail: menuItemDetail,
         customerId: Number(customerId),
         total: total as number,
         quantity: currentQty,
@@ -446,10 +417,10 @@ const MenuItemModal = ({
             dispatch(setCartItem(response));
             dispatch(
               getCartItemCount({
-                sessionId,
-                defaultlocationId,
-                restaurantId,
-                customerId,
+                cartsessionId: sessionId,
+                locationId: restaurantinfo?.defaultlocationId,
+                restaurantId: restaurantinfo?.restaurantId,
+                customerId: customerId,
               })
             );
             dispatch(
@@ -476,10 +447,10 @@ const MenuItemModal = ({
         // dispatch(updateCartItemCount());
         dispatch(
           getCartItemCount({
-            sessionId,
-            defaultlocationId,
-            restaurantId,
-            customerId,
+            cartsessionId: sessionId,
+            locationId: restaurantinfo?.defaultlocationId,
+            restaurantId: restaurantinfo?.restaurantId,
+            customerId: customerId,
           })
         );
       }
@@ -490,7 +461,6 @@ const MenuItemModal = ({
       menuItemDetail?.topping?.length > 0 &&
       selectedoption?.length > 0
     ) {
-      //debugger;
       let result = [];
       for (var i = 0; i < selectedoption.length; i++) {
         if (
@@ -514,7 +484,6 @@ const MenuItemModal = ({
         result.length > 0 &&
         result.filter((x) => x.text == false).length === 0
       ) {
-        //debugger;
         let itemobj = FormatOrderObject({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
           objselectedItem: selectedmenuitemdetail!,
@@ -528,7 +497,6 @@ const MenuItemModal = ({
           studentname: "",
         });
         if (itemobj != undefined) {
-          //debugger;
           MenuItemServices.addItemToCart({
             orderobj: itemobj,
             restaurantId: restaurantId,
@@ -537,10 +505,10 @@ const MenuItemModal = ({
               dispatch(setCartItem(response));
               dispatch(
                 getCartItemCount({
-                  sessionId,
-                  defaultlocationId,
-                  restaurantId,
-                  customerId,
+                  cartsessionId: sessionId,
+                  locationId: defaultlocationId,
+                  restaurantId: restaurantId,
+                  customerId: userinfo?.customerId ? userinfo.customerId : 0,
                 })
               );
               dispatch(
@@ -569,7 +537,6 @@ const MenuItemModal = ({
                 ((dependentIds === undefined && dependentId === 0) ||
                   (dependentIds?.length === 0 && dependentId === 0))
               ) {
-                //debugger;
                 //TODO:
                 setTimeout(() => {
                   handleToggleDependnt?.(true);
@@ -581,7 +548,6 @@ const MenuItemModal = ({
                     menuItemDetail?.dependantMenuList !== null) ||
                   dependentIds?.length > 0
                 ) {
-                  //debugger;
                   let dependentItemList =
                     dependentIds?.length > 0
                       ? dependentIds
@@ -589,11 +555,8 @@ const MenuItemModal = ({
                   let removefirst = dependentItemList?.shift();
                   let remainingList = dependentItemList;
 
-                  if (typeof removefirst === "number") {
-                    dispatch(setDipendentId(removefirst));
-                  } else if (removefirst && typeof removefirst === "object") {
-                    dispatch(setDipendentId(removefirst.DependantMenuItemId));
-                  }
+                  dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+                  dispatch(setDipendentId(removefirst?.DependantMenuItemId));
                   dispatch(
                     setDipendentIds(remainingList as DependantMenuList[])
                   );
@@ -612,7 +575,6 @@ const MenuItemModal = ({
       menuItemDetail?.topping.length > 0 &&
       selectedoption
     ) {
-    //  debugger;
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail!,
@@ -626,19 +588,18 @@ const MenuItemModal = ({
         studentname: "",
       });
       if (itemobj != undefined) {
-       // debugger;
         MenuItemServices.addItemToCart({
           orderobj: itemobj,
           restaurantId: restaurantId,
         }).then((response) => {
           if (response) {
-            dispatch(setCartItem(response));
+            dispatch(getCartItem(response));
             dispatch(
               getCartItemCount({
-                sessionId,
-                defaultlocationId,
-                restaurantId,
-                customerId,
+                cartsessionId: sessionId,
+                locationId: restaurantinfo?.defaultlocationId,
+                restaurantId: restaurantinfo?.restaurantId,
+                customerId: userinfo?.customerId ? userinfo.customerId : 0,
               })
             );
             handleToggleMenuItem(false);
@@ -683,11 +644,10 @@ const MenuItemModal = ({
                     : menuItemDetail?.dependantMenuList;
                 let removefirst = dependentItemList?.shift();
                 let remainingList = dependentItemList;
-                if (typeof removefirst === "number") {
-                  dispatch(setDipendentId(removefirst));
-                } else if (removefirst && typeof removefirst === "object") {
-                  dispatch(setDipendentId(removefirst.DependantMenuItemId));
-                }
+                dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+                dispatch(
+                  setDipendentId(removefirst?.DependantMenuItemId as number)
+                );
                 dispatch(setDipendentIds(remainingList as DependantMenuList[]));
               } else {
                 dispatch(setDipendentId(0));
@@ -700,46 +660,10 @@ const MenuItemModal = ({
     }
   };
 
-  // const handleClickSkip = () => {
-  //   debugger;
-  //   handleToggleMenuItem(false);
-  //   if (dependentIds?.length > 0) {
-  //     debugger;
-  //     dispatch(
-  //       getMenuItemDetailes({
-  //         restaurantId: restaurantinfo?.restaurantId as number,
-  //         locationId: restaurantinfo?.defaultlocationId as number,
-  //         customerId: userinfo ? userinfo.customerId : 0,
-  //         menuitemId: menuItemDetail?.menuItemId as number,
-  //         cartsessionId: sessionId as string,
-  //         cartId: 0,
-  //       })
-  //     );
-  //     let dependentItemList =
-  //       dependentIds?.length > 0
-  //         ? dependentIds
-  //         : menuItemDetail?.dependantMenuList;
-  //     let removefirst = dependentItemList?.shift();
-  //     let remainingList = dependentItemList;
-  //     if (typeof removefirst === "number") {
-  //       dispatch(setDipendentId(removefirst));
-  //     } else if (removefirst && typeof removefirst === "object") {
-  //       dispatch(setDipendentId(removefirst.DependantMenuItemId));
-  //     }
-  //     dispatch(setDipendentIds(remainingList as DependantMenuList[]));
-  //   } else {
-  //     dispatch(setDipendentItemQty(0));
-  //     dispatch(setDipendentId(0));
-  //   }
-  // };
-
   const handleClickSkip = () => {
-    //debugger;
     handleToggleMenuItem(false);
 
     if (dependentIds?.length > 0) {
-     // debugger;
-
       dispatch(
         getMenuItemDetailes({
           restaurantId: restaurantinfo?.restaurantId as number,
@@ -756,7 +680,7 @@ const MenuItemModal = ({
           ? dependentIds
           : menuItemDetail?.dependantMenuList;
 
-      // 🛠️ FIX: Make a copy before mutating
+      // make a copy before mutating
       let dependentItemListCopy = [...(dependentItemList || [])];
       let removefirst = dependentItemListCopy.shift();
       let remainingList = dependentItemListCopy;
@@ -799,6 +723,7 @@ const MenuItemModal = ({
       );
     }
   };
+  
   return (
     <>
       <div

@@ -3,7 +3,7 @@ import React from "react";
 
 interface OptionHeaderProps {
   isOnLoadExpand: boolean;
-  remainCount: number;
+  remainCount: React.ReactNode;
   item: List;
   selectedtypecount: Type;
   iscompletecheck: boolean;

@@ -64,10 +64,6 @@ const MenuItemAddToCart = ({
   const dependentId = menuitem?.dependentid ?? 0;
   const cartdata = cart?.cartitemdetail && cart?.cartitemdetail;
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-  // console.log(
-  //   "selected menuitem detail from menuitem-addto cartcompo",
-  //   menuitem?.selectedmenuitemdetail
-  // );
   const locationSelected = restaurantinfo?.defaultLocation;
   const ordertype =
     deliveryaddressinfo.pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -103,7 +99,6 @@ const MenuItemAddToCart = ({
   };
 
   const addtocartclick = (item: Menuitems) => {
-    //debugger;
     dispatch(selectedMenuItem(item as any));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,

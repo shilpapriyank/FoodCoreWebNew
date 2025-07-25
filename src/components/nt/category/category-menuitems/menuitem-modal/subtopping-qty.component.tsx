@@ -1,3 +1,4 @@
+import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 import { Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
 
@@ -14,7 +15,7 @@ interface SubToppingQtyProps {
     optionId: number,
     action: "select" | "deselect",
     isRadioButton: boolean,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: InputOrClickEvent
   ) => void;
 }
 

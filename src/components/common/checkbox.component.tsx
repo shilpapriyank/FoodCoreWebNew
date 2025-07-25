@@ -1,3 +1,4 @@
+import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
 
@@ -12,7 +13,7 @@ interface CheckBoxProps {
     optionId: number,
     action: "select" | "deselect",
     isRadioButton: boolean,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: InputOrClickEvent
   ) => void;
 }
 
