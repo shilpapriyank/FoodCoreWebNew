@@ -2,7 +2,6 @@ import { CartOptionParam } from "@/types/cart-types/cartservice.type";
 import {
   GetMenuItemDetail,
   Menuitems,
-  Type,
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
@@ -29,75 +28,81 @@ export const FormatOrderObject = ({
   selectedtime: string;
   studentname?: string;
 }) => {
-  //debugger
-  const selectedsize = menuItemDetail?.size?.find(
-    (x) => x.sizeselected === true
-  );
-
-  const selectedtopping = menuItemDetail?.topping?.find(
-    (x) => x.subparameterId === selectedsize?.subparameterId
-  );
-
+  let selectedsize =
+    menuItemDetail != undefined &&
+    menuItemDetail.size != undefined &&
+    menuItemDetail.size.length > 0 &&
+    menuItemDetail.size.find((x) => x.sizeselected === true);
+  let selectedtopping =
+    menuItemDetail &&
+    selectedsize &&
+    menuItemDetail.topping &&
+    menuItemDetail.topping.length > 0 &&
+    menuItemDetail.topping.find(
+      (x) => x.subparameterId == selectedsize?.subparameterId
+    );
   const currentdate = new Date().toLocaleDateString("en-CA");
 
   const lstcarttopping: CartOptionParam[] = [];
 
-  selectedtopping?.list?.forEach((lsttop) => {
-    lsttop.type?.forEach((type) => {
-      if (type.subOptionselected === true) {
-        const isHalfPrice = type.pizzaside === "L" || type.pizzaside === "R";
-        const price =
-          lsttop?.freeToppingsCount > 0 && lsttop?.multipleSelectStatus
-            ? type.paidQty > 0
-              ? isHalfPrice
-                ? type.price * 0.5
-                : type.price
-              : 0
-            : type.price;
+  selectedtopping &&
+    selectedtopping?.list?.forEach((lsttop) => {
+      lsttop.type?.forEach((type) => {
+        if (type.subOptionselected === true) {
+          const isHalfPrice = type.pizzaside === "L" || type.pizzaside === "R";
+          const price =
+            lsttop?.freeToppingsCount > 0 && lsttop?.multipleSelectStatus
+              ? type.paidQty > 0
+                ? isHalfPrice
+                  ? type.price * 0.5
+                  : type.price
+                : 0
+              : type.price;
 
-        lstcarttopping.push({
-          cartid: objselectedItem?.cartid ?? 0,
-          Title: type.name,
-          optionId: lsttop.optionId,
-          optiontitle: lsttop.name,
-          price,
-          suboptionId: type.suboptionId,
-          pizzaside: type.pizzaside,
-          paidQty: type.paidQty,
-          toppingquantity: type.subOptionToppingQuantity - type.paidQty,
-          quantity: type.subOptionToppingQuantity - type.paidQty, // match original
-        });
-      }
+          lstcarttopping.push({
+            cartid: objselectedItem?.cartid ?? 0,
+            Title: type.name,
+            optionId: lsttop.optionId,
+            optiontitle: lsttop.name,
+            price,
+            suboptionId: type.suboptionId,
+            pizzaside: type.pizzaside,
+            paidQty: type.paidQty,
+            toppingquantity: type.subOptionToppingQuantity - type.paidQty,
+            quantity: type.subOptionToppingQuantity - type.paidQty, // match original
+          });
+        }
+      });
     });
-  });
 
   //console.log("lstcarttopping from formate order object", lstcarttopping);
 
   const objorder = {
     cart: [
-      {
-        menuid: objselectedItem.menuitemId,
-        restaurantId: objrestaurant.restaurantId,
-        locationId: objrestaurant.defaultlocationId,
-        cartId: objselectedItem.cartid ?? 0,
-        OrderItemType: 0,
-        orderitemId: 0,
-        qty: quantity,
-        price: selectedsize?.price ?? 0,
-        itemname: objselectedItem.menuItemName ?? "Unknown Item",
-        netprice: total ?? 0,
-        subparameterid: selectedsize?.subparameterId ?? 0,
-        subparametername: selectedsize?.type ?? "",
-        topsubparaid: selectedtopping?.subparameterId ?? 0,
-        topsubparaname: null,
-        topprice: null,
-        dependentmenuitemid: objselectedItem?.dependedItemId ?? 0,
-        sessionid,
-        rewardpoints: 0,
-        Toppings: [],
-        OptionParameter: lstcarttopping,
-        studentname,
-      },
+      selectedsize &&
+        selectedtopping && {
+          menuid: objselectedItem.menuitemId,
+          restaurantId: objrestaurant.restaurantId,
+          locationId: objrestaurant.defaultlocationId,
+          cartId: objselectedItem.cartid ?? 0,
+          OrderItemType: 0,
+          orderitemId: 0,
+          qty: quantity,
+          price: selectedsize?.price ?? 0,
+          itemname: objselectedItem.menuItemName ?? "Unknown Item",
+          netprice: total ?? 0,
+          subparameterid: selectedsize?.subparameterId ?? 0,
+          subparametername: selectedsize?.type ?? "",
+          topsubparaid: selectedtopping?.subparameterId ?? 0,
+          topsubparaname: null,
+          topprice: null,
+          dependentmenuitemid: objselectedItem?.dependedItemId ?? 0,
+          sessionid,
+          rewardpoints: 0,
+          Toppings: [],
+          OptionParameter: lstcarttopping,
+          studentname,
+        },
     ],
     restaurantId: objrestaurant.restaurantId,
     locationId: objrestaurant.defaultlocationId,

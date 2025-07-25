@@ -10,22 +10,11 @@ import { MenuItemTypes } from "./menuitem.type";
 import {
   Category,
   DependantMenuList,
-  GetAllMenuCategoryItems,
   GetMenuItemDetail,
-  GetSerachResult,
   MenuItem,
   Menuitems,
-  MenuStausList,
-  SelectedMenuItemDetail,
-  Size,
-  Topping,
 } from "@/types/menuitem-types/menuitem.type";
 import { RootState } from "../store";
-
-type ThunkConfig = {
-  state: RootState;
-  rejectValue: string;
-};
 
 // Types
 export interface MenuItemState {
@@ -38,8 +27,8 @@ export interface MenuItemState {
     menuItems: MenuItem[];
     categories: Category[];
   };
-  dependentid: number;
-  dependentitemids: number[];
+  dependentid: any;
+  dependentitemids: DependantMenuList[];
   dependentqty: number;
 }
 
@@ -238,7 +227,7 @@ const menuItemSlice = createSlice({
     ) => {
       state.searchdata = action.payload;
     },
-    setDipendentId: (state, action: PayloadAction<number>) => {
+    setDipendentId: (state, action: PayloadAction<any>) => {
       state.dependentid = action.payload;
     },
     setDipendentIds: (state, action: PayloadAction<any[]>) => {

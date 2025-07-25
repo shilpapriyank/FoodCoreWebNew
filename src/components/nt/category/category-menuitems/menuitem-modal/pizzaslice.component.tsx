@@ -1,3 +1,4 @@
+import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 import { Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
 
@@ -8,7 +9,7 @@ interface PizzaSliceProps {
     optionId: number,
     side: "L" | "F" | "R",
     isRadioButton: boolean,
-    event: React.MouseEvent
+    event: InputOrClickEvent
   ) => void;
   isRadioButton?: boolean;
   optionId: number;

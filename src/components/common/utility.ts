@@ -1533,28 +1533,68 @@ export const NotificationSettingTypes = {
   POS: 4,
 };
 
+// export const calculateFinalCount = (
+//   subOptionList: Type[],
+//   selectedOption: List
+// ) => {
+//   let finalcount = 0;
+//   var toppingcount = subOptionList?.filter((x) => x.subOptionselected === true);
+//   toppingcount?.map((tc) => {
+//     var topvalue =
+//       tc.toppingValue === "" || Number(tc.toppingValue) === 0
+//         ? 1
+//         : Number(tc.toppingValue);
+//     var calculatedtopvalue =
+//       selectedOption.isHalfPizza === true &&
+//       (tc.pizzaside === "L" || tc.pizzaside === "R")
+//         ? topvalue *
+//           (tc?.halfPizzaPriceToppingPercentage ||
+//           tc.halfPizzaPriceToppingPercentage === 0
+//             ? 1
+//             : tc.halfPizzaPriceToppingPercentage / 100)
+//         : topvalue;
+//     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
+//   });
+//   return finalcount;
+// };
+
 export const calculateFinalCount = (
   subOptionList: Type[],
   selectedOption: List
 ) => {
   let finalcount = 0;
-  var toppingcount = subOptionList?.filter((x) => x.subOptionselected === true);
-  toppingcount?.map((tc) => {
-    var topvalue =
-      tc.toppingValue === "" || parseInt(tc.toppingValue) === 0
+
+  const toppingcount = subOptionList?.filter(
+    (x) => x.subOptionselected === true
+  );
+
+  toppingcount?.forEach((tc) => {
+    // Parse toppingValue only if it's a string
+    const topvalue =
+      tc.toppingValue === "" || Number(tc.toppingValue) === 0
         ? 1
-        : parseInt(tc.toppingValue);
-    var calculatedtopvalue =
+        : Number(tc.toppingValue);
+
+    let calculatedtopvalue = topvalue;
+
+    // Apply half pizza percentage if applicable
+    if (
       selectedOption.isHalfPizza === true &&
       (tc.pizzaside === "L" || tc.pizzaside === "R")
-        ? topvalue *
-          (tc?.halfPizzaPriceToppingPercentage ||
-          tc.halfPizzaPriceToppingPercentage === 0
-            ? 1
-            : tc.halfPizzaPriceToppingPercentage / 100)
-        : topvalue;
-    finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
+    ) {
+      const percentage =
+        tc.halfPizzaPriceToppingPercentage === 0 ||
+        tc.halfPizzaPriceToppingPercentage === undefined ||
+        tc.halfPizzaPriceToppingPercentage === null
+          ? 1
+          : tc.halfPizzaPriceToppingPercentage / 100;
+
+      calculatedtopvalue = topvalue * percentage;
+    }
+
+    finalcount += tc.subOptionToppingQuantity * calculatedtopvalue;
   });
+
   return finalcount;
 };
 

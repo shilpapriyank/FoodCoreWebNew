@@ -13,7 +13,6 @@ const MenuItemQuickOrder = ({ item, quickOrderClick }: any) => {
   const locationSelected = restaurantinfo?.defaultLocation;
 
   const IsOrderDisable = () => {
-    //debugger
     if (locationSelected && locationSelected.isOrderingDisable == true) {
       return <b className="red-text">{locationSelected?.orderingMessage}</b>;
     } else {
