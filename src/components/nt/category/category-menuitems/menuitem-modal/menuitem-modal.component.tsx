@@ -49,9 +49,7 @@ import { useAppDispatch } from "../../../../../../redux/hooks";
 import {
   DependantMenuList,
   GetMenuItemDetail,
-  List,
   Size,
-  Topping,
   Type,
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
@@ -723,7 +721,7 @@ const MenuItemModal = ({
       );
     }
   };
-  
+
   return (
     <>
       <div

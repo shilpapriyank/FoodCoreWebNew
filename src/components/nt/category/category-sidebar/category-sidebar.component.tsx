@@ -58,6 +58,7 @@ const CategorySidebar: React.FC = () => {
           <div className="card totalbox">
             <OrderItemsList />
             {cart?.cartitemcount > 0 && <RelatedItemsList />}
+            {/* <RelatedItemsList /> */}
             {cart?.cartitemcount > 0 ? (
               <a className="btn-default w-100" onClick={handleClick}>
                 {" "}

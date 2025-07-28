@@ -364,6 +364,7 @@ export const getAvailableCartRelativeData = (
   pickupordelivery: string,
   cartRelativeData: GetCategoriesRelativeItems[]
 ) => {
+  debugger
   if (cartRelativeData === undefined || cartRelativeData === null) {
     return undefined;
   }
