@@ -9,15 +9,11 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { CategoryServices } from "../../../../../redux/category/category.services";
 import { useQuery } from "@tanstack/react-query";
-import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
-import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
-import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
 import {
   selectedMenuItem,
   setMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
 import { PAGES } from "../pages";
-import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import {
   getAvailableCartRelativeData,
   GetThemeDetails,
