@@ -18,7 +18,7 @@ import {
 } from "@/types/mainservice-types/mainservice.type";
 import {
   CartDetails,
-  CartItemDetail,
+  CartItemDetails,
 } from "@/types/cart-types/cartservice.type";
 import {
   GetAllMenuCategoryItems,
@@ -318,7 +318,7 @@ export const checkCheckoutDisable = (
   return false;
 };
 
-export const checkMenuItemTimeAvailability = (cartItems: CartItemDetail[]) => {
+export const checkMenuItemTimeAvailability = (cartItems: CartItemDetails[]) => {
   return cartItems?.some((item) => item.availability == false);
 };
 
@@ -364,7 +364,6 @@ export const getAvailableCartRelativeData = (
   pickupordelivery: string,
   cartRelativeData: GetCategoriesRelativeItems[]
 ) => {
-  debugger
   if (cartRelativeData === undefined || cartRelativeData === null) {
     return undefined;
   }
@@ -892,7 +891,7 @@ export const ORDERSTATUS = {
 };
 export const calulateTotal = (cartdata: CartDetails) => {
   let total: any = 0;
-  cartdata?.cartItemDetails.map((data) => {
+  cartdata?.cartItemDetails?.map((data) => {
     total += data?.totalprice;
   });
   return parseFloat(total)?.toFixed(2);

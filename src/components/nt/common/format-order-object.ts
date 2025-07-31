@@ -1,4 +1,4 @@
-import { CartOptionParam } from "@/types/cart-types/cartservice.type";
+import { CartOptionParams } from "@/types/cart-types/cartservice.type";
 import {
   GetMenuItemDetail,
   Menuitems,
@@ -28,22 +28,32 @@ export const FormatOrderObject = ({
   selectedtime: string;
   studentname?: string;
 }) => {
+  //debugger;
   let selectedsize =
     menuItemDetail != undefined &&
     menuItemDetail.size != undefined &&
     menuItemDetail.size.length > 0 &&
     menuItemDetail.size.find((x) => x.sizeselected === true);
-  let selectedtopping =
-    menuItemDetail &&
-    selectedsize &&
-    menuItemDetail.topping &&
-    menuItemDetail.topping.length > 0 &&
-    menuItemDetail.topping.find(
-      (x) => x.subparameterId == selectedsize?.subparameterId
+  // let selectedtopping =
+  //   selectedsize &&
+  //   menuItemDetail != undefined &&
+  //   menuItemDetail.topping != undefined &&
+  //   menuItemDetail.topping.length > 0 &&
+  //   menuItemDetail.topping.find(
+  //     (x) => x.subparameterId == selectedsize.subparameterId
+  //   );
+  let selectedtopping = undefined;
+
+  if (menuItemDetail?.topping?.length > 0 && selectedsize) {
+    selectedtopping = menuItemDetail.topping.find(
+      (top) =>
+        top.subparameterId === selectedsize.subparameterId &&
+        Array.isArray(top.list)
     );
+  }
   const currentdate = new Date().toLocaleDateString("en-CA");
 
-  const lstcarttopping: CartOptionParam[] = [];
+  const lstcarttopping: CartOptionParams[] = [];
 
   selectedtopping &&
     selectedtopping?.list?.forEach((lsttop) => {
@@ -60,7 +70,7 @@ export const FormatOrderObject = ({
               : type.price;
 
           lstcarttopping.push({
-            cartid: objselectedItem?.cartid ?? 0,
+            cartid: 0,
             Title: type.name,
             optionId: lsttop.optionId,
             optiontitle: lsttop.name,
@@ -116,127 +126,3 @@ export const FormatOrderObject = ({
   //console.log("objorder from format order obj ", objorder);
   return objorder;
 };
-
-// import { CartOptionParam } from "@/types/cart-types/cartservice.type";
-// import {
-//   GetMenuItemDetail,
-//   Menuitems,
-//   Type,
-// } from "@/types/menuitem-types/menuitem.type";
-// import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-
-// export const FormatOrderObject = ({
-//   objrestaurant,
-//   objselectedItem,
-//   menuItemDetail,
-//   customerId,
-//   total,
-//   quantity,
-//   sessionid,
-//   orderType,
-//   selectedtime,
-//   studentname,
-// }: {
-//   objrestaurant: GetAllRestaurantInfo;
-//   objselectedItem: Menuitems;
-//   menuItemDetail: GetMenuItemDetail;
-//   customerId: number;
-//   total: number;
-//   quantity: number;
-//   sessionid: string;
-//   orderType: number;
-//   selectedtime: string;
-//   studentname?: string;
-// }) => {
-//   let selectedsize =
-//     menuItemDetail != undefined &&
-//     menuItemDetail.size != undefined &&
-//     menuItemDetail.size.length > 0 &&
-//     menuItemDetail.size.find((x) => x.sizeselected === true);
-//   let selectedtopping =
-//     menuItemDetail != undefined &&
-//     menuItemDetail.topping != undefined &&
-//     menuItemDetail.topping.length > 0 &&
-//     selectedsize &&
-//     menuItemDetail.topping.find(
-//       (x) => x.subparameterId == selectedsize?.subparameterId
-//     );
-
-//   let currentdate = new Date().toLocaleDateString("en-CA");
-
-//   const lstcarttopping: any[] = [];
-
-//   if (selectedtopping && selectedtopping?.list?.length > 0) {
-//     selectedtopping.list.forEach((lsttop) => {
-//       lsttop.type?.forEach((type) => {
-//         if (type.subOptionselected) {
-//           const isHalfPrice = type.pizzaside === "L" || type.pizzaside === "R";
-//           const price =
-//             lsttop.freeToppingsCount > 0 && lsttop.multipleSelectStatus
-//               ? type.paidQty > 0
-//                 ? isHalfPrice
-//                   ? type.price * 0.5
-//                   : type.price
-//                 : 0
-//               : type.price;
-
-//           lstcarttopping.push({
-//             Title: type.name,
-//             optionId: lsttop.optionId,
-//             optiontitle: lsttop.name,
-//             price,
-//             suboptionId: type.suboptionId,
-//             toppingquantity: type.subOptionToppingQuantity - type.paidQty,
-//             paidQty: type.paidQty,
-//             pizzaside: type.pizzaside,
-//           });
-//         }
-//       });
-//     });
-//   }
-//   const objorder = {
-//     cart: [
-//       {
-//         menuid:
-//           objselectedItem && objselectedItem.menuitemId !== undefined
-//             ? objselectedItem.menuitemId
-//             : objselectedItem.menuitemId,
-//         restaurantId: objrestaurant?.restaurantId,
-//         locationId: objrestaurant?.defaultlocationId,
-//         cartId:
-//           objselectedItem.cartid !== undefined && objselectedItem.cartid !== 0
-//             ? objselectedItem.cartid
-//             : 0,
-//         OrderItemType: 0,
-//         orderitemId: 0,
-//         qty: quantity,
-//         price: selectedsize?.price ? selectedsize.price : 0,
-//         itemname:
-//           objselectedItem.menuItemName ??
-//           objselectedItem.menuItemName ??
-//           "Unknown Item",
-//         netprice: total !== 0 ? total : 0,
-//         subparameterid: selectedsize?.subparameterId ?? 0,
-//         subparametername: selectedsize?.type ?? "",
-//         topsubparaid: selectedtopping?.subparameterId ?? 0,
-//         topsubparaname: null,
-//         topprice: null,
-//         dependentmenuitemid: objselectedItem?.dependedItemId ?? 0,
-//         sessionid,
-//         rewardpoints: 0,
-//         Toppings: [],
-//         OptionParameter: lstcarttopping,
-//         studentname,
-//       },
-//     ],
-//     restaurantId: objrestaurant.restaurantId,
-//     locationId: objrestaurant.defaultlocationId,
-//     removecart: "",
-//     cartsessionId: sessionid,
-//     orderType,
-//     selectedTime: selectedtime,
-//     selectedDate: currentdate,
-//   };
-
-//   return objorder;
-// };

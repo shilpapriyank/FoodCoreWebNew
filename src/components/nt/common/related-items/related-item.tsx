@@ -11,6 +11,7 @@ export const RelatedItem = ({
   defaultmenuitemimage,
   isDisplayPrice,
 }: any) => {
+ // debugger
   let itemImage = getImagePath(
     relativeItem?.menuItemImage,
     defaultmenuitemimage

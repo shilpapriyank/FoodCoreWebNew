@@ -27,19 +27,11 @@ import {
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
-  setMenuCategoryData,
   setMenuItemDetailList,
-  setSelectedMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
-import { MenuItemTypes } from "../../../../../redux/menu-item/menuitem.type";
-import {
-  removeCategoryList,
-  setCategoryList,
-  setSelectedCategory,
-} from "../../../../../redux/category/category.slice";
+import { setCategoryList } from "../../../../../redux/category/category.slice";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { displayViewUpdate } from "../../../../../redux/restaurants/restaurants.slice";
-import { getCartItemCount } from "../../../../../redux/tableorder/tableorder.slice";
 import { CartServices } from "../../../../../redux/cart/cart.services";
 import { PopOver } from "../../common/popover.component";
 import MenuItemAddToCart from "../../menuitem/menuitem-add-to-cart.component";
@@ -50,7 +42,10 @@ import FavouriteSkeleton from "../../skeleton/favourite-skeleton";
 import BottomBash from "../../common/bottom-bash.component";
 import CommonModal from "../../common/common-model.component";
 import DependentItemListComponent from "./dependentitems-list.component";
-import { setCartItem } from "../../../../../redux/cart/cart.slice";
+import {
+  getCartItemCount,
+  setCartItem,
+} from "../../../../../redux/cart/cart.slice";
 import { useParams, useRouter } from "next/navigation";
 import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
 import ScrollToTop from "@/components/common/scroll-to-top";
@@ -346,6 +341,7 @@ const CategoryMenuItems = ({
   };
 
   function quickOrderClick(item: Menuitems) {
+    //debugger;
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&
@@ -365,9 +361,9 @@ const CategoryMenuItems = ({
           );
           dispatch(
             getCartItemCount({
-              cartsessionid: sessionid,
-              locationId: restaurantinfo?.defaultlocationId,
-              restaurantId: restaurantinfo?.restaurantId,
+              cartsessionId: sessionid as string,
+              locationId: restaurantinfo?.defaultlocationId as number,
+              restaurantId: restaurantinfo?.restaurantId as number,
               customerId: userinfo ? userinfo?.customerId : 0,
             })
           );
@@ -387,6 +383,10 @@ const CategoryMenuItems = ({
             selectedTime: selecetdtime,
             requestId: deliveryRequestId,
           }).then((response) => {
+            console.log(
+              "response of getCartItemList from quickOrderClick",
+              response
+            );
             if (response) {
               if (response?.cartDetails && response?.cartDetails?.cartTotal) {
                 dispatch(setCartItem(response));

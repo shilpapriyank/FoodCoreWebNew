@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { getImagePath } from "../../common/utility";
-import { getDependentParentQty, ORDER_TYPE } from "../../../common/utility";
+import {
+  getDependentParentQty,
+  ORDER_TYPE,
+  ORDERTYPE,
+} from "../../../common/utility";
 import useUtility from "../../../customhooks/utility-hook";
 import useFutureOrder from "../../../customhooks/usefuture-order-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
@@ -9,21 +13,19 @@ import { useParams, useRouter } from "next/navigation";
 import { CartServices } from "../../../../../redux/cart/cart.services";
 import { CartTypes } from "../../../../../redux/cart/cart.type";
 import { CustomerServices } from "../../../../../redux/customer/customer.services";
-import { CartItem, CartItemDetail } from "@/types/cart-types/cartservice.type";
+import { CartDetails, GetCartItems } from "@/types/cart-types/cartservice.type";
 import CommonModal from "../../common/common-model.component";
 import {
+  carttotaldata,
   deleteCartItem,
+  getCartItemCount,
   orderinstruction,
   setCartItem,
   updateCartItem,
   updateCartItemCount,
+  updatequantity,
 } from "../../../../../redux/cart/cart.slice";
 import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.slice";
-import {
-  getCartData,
-  getCartItemCount,
-  getCartTotal,
-} from "../../../../../redux/tableorder/tableorder.slice";
 import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
 import {
   selectedMenuItem,
@@ -33,22 +35,18 @@ import {
 import CartSuboptionDisplay from "../../checkout/suboption-display.component";
 
 export const OrderItemsList = () => {
+  // debugger;
   const {
     restaurantinfo,
     userinfo,
     selecteddelivery,
     sessionid,
     rewardpoints,
-    main,
-    orderTimeType,
-    recievingTime,
-    meredian,
     order,
     cart,
   } = useReduxData();
   const { recievingDate, enabletimeslot } = useFutureOrder();
 
-  // const {isShowing, toggle} = useModal();
   const { isDisplayPrice } = useUtility();
   const deliveryaddressinfo = selecteddelivery.selecteddeliveryaddress;
   const pickupordelivery = selecteddelivery.pickupordelivery;
@@ -71,9 +69,7 @@ export const OrderItemsList = () => {
 
   let rewardvalue = rewardpoints?.rewardvalue;
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [deleteItemData, setdeleteItemData] = useState<CartItemDetail | null>(
-    null
-  );
+  const [deleteItemData, setdeleteItemData] = useState<any | null>(null);
   const [updateQty, setupdateQty] = useState<boolean>(false);
   const minQty = 1;
   const [cartdeleteconfirm, setcartdeleteconfirm] = useState<boolean>(false);
@@ -82,6 +78,7 @@ export const OrderItemsList = () => {
   const enableRewardPoint = restaurantinfo?.defaultLocation?.enableRewardPoint;
 
   useEffect(() => {
+    //debugger;
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -115,7 +112,7 @@ export const OrderItemsList = () => {
         requestId: order?.deliveryRequestId,
       }).then((response) => {
         if (response) {
-          if (response?.cartDetails) {
+          if (response?.cartDetails && response?.cartDetails?.cartTotal) {
             dispatch(setCartItem(response));
           }
         }
@@ -128,10 +125,10 @@ export const OrderItemsList = () => {
       restaurantinfo?.restaurantId,
       customerId,
       0,
-      0 || "0",
+      "0",
       String(restaurantinfo?.defaultlocationId)
     ).then((response) => {
-      if (response && rewardpoints && response.status == 1) {
+      if (response && response.status == 1) {
         let rewards = {
           rewardvalue: rewardvalue,
           rewardamount: (
@@ -151,6 +148,30 @@ export const OrderItemsList = () => {
           redeemPoint: 0,
         };
         dispatch(setrewardpoint(rewards as any));
+        dispatch(
+          carttotaldata({
+            cartsessionId: sessionId as string,
+            locationId: restaurantinfo?.defaultlocationId as number,
+            restaurantId: Number(restaurantinfo?.restaurantId),
+            customerId: customerId,
+            cartId: 0,
+            rewardpoints: "0",
+            redeemamount: "0",
+            tipPercentage: String(carttotal?.tipPercentage),
+            tipAmount: String(carttotal?.tipAmount),
+            deliveryaddressId:
+              pickupordelivery === ORDERTYPE.Delivery &&
+              deliveryaddressinfo &&
+              deliveryaddressinfo.deliveryaddressId,
+            ordertype: ordertype,
+            requestId: order.deliveryRequestId,
+            recievingTime: "",
+            recievingMeridian: "",
+            ordertimetype: 0,
+            recievingDate: recievingDate,
+            enableTimeSlot: enabletimeslot as boolean,
+          })
+        );
       }
     });
   };
@@ -183,7 +204,7 @@ export const OrderItemsList = () => {
           //CHECK CARTITEM ONLY ONE DEPENDENT ITEM
           if (cartItem?.length === 1 && deleteitem?.dependentmenuitemid === 0) {
             // TO DO:HANDLE GET ITEM AND CaLACULATE THE SUBTOTAL
-            dispatch(updateCartItem(response));
+            dispatch(updateCartItem());
           }
           if (cartItem?.length === 1 && deleteitem?.dependentmenuitemid === 0) {
             dispatch(updateCartItemCount());
@@ -197,11 +218,17 @@ export const OrderItemsList = () => {
               rewardpoints?.redeemPoint / rewardpoints?.rewardvalue;
           }
           dispatch(
+            // getCartItemCount({
+            //   cartsessionId: sessionId,
+            //   locationId: restaurantinfo?.defaultlocationId,
+            //   restaurantId: restaurantinfo?.restaurantId,
+            //   customerId: customerId,
+            // })
             getCartItemCount({
-              cartsessionId: sessionId,
-              locationId: restaurantinfo?.defaultlocationId,
-              restaurantId: restaurantinfo?.restaurantId,
-              customerId: customerId,
+              cartsessionId: sessionId as string,
+              restaurantId: restaurantinfo?.restaurantId as number,
+              locationId: restaurantinfo?.locationId as number,
+              customerId: userinfo ? userinfo.customerId : 0,
             })
           );
           CartServices.getCartItemList({
@@ -221,7 +248,8 @@ export const OrderItemsList = () => {
           }).then((response) => {
             if (response) {
               if (response?.cartDetails && response?.cartDetails?.cartTotal) {
-                dispatch(getCartData(response));
+                //dispatch(getCartData(response));
+                dispatch(setCartItem(response));
               }
             }
           });
@@ -270,7 +298,7 @@ export const OrderItemsList = () => {
     }
     let dcart: any[] = [];
     let cdetail: any = cartdata;
-    cartdata?.cartDetails.cartItemDetails.map((data) => {
+    cartdata?.cartDetails?.cartItemDetails?.map((data) => {
       if (data.cartid === cartid) {
         data.qty = plusState;
         data.totalprice = data.unitprice * data.qty;
@@ -284,13 +312,14 @@ export const OrderItemsList = () => {
       sessionId as string,
       cartid,
       plusState,
-      0 || "0",
+      "0",
       restaurantinfo?.defaultlocationId as number,
       restaurantinfo?.restaurantId as number
     ).then((response) => {
       if (response) {
-        dispatch(updateCartItem(response));
-        dispatch(updateCartItemCount());
+        // dispatch(updateCartItem());
+        // dispatch(updateCartItemCount());
+        dispatch(updatequantity(response));
         setTimeout(() => {
           setupdateQty(!updateQty);
         }, 100);
@@ -310,7 +339,7 @@ export const OrderItemsList = () => {
     const minusState = currentQty - 1;
     let dcart: any[] = [];
     let cdetail: any = cartdata;
-    cartdata?.cartDetails.cartItemDetails.map((data) => {
+    cartdata?.cartDetails?.cartItemDetails?.map((data) => {
       if (data.cartid === cartid) {
         data.qty = minusState;
         data.totalprice = data.unitprice * data.qty;
@@ -338,10 +367,7 @@ export const OrderItemsList = () => {
       restaurantinfo?.restaurantId as number
     ).then((response) => {
       if (response) {
-        dispatch({
-          type: CartTypes.UPDATE_QUANTITY,
-          payload: response,
-        });
+        dispatch(updatequantity(response));
         setTimeout(() => {
           setupdateQty(!updateQty);
         }, 100);
@@ -356,7 +382,7 @@ export const OrderItemsList = () => {
 
   const memoRiseddeleteItemData = useMemo(() => {
     return deleteItemData;
-  }, [deleteItemData, deleteItemData]);
+  }, [deleteItemData?.orderitemId, deleteItemData?.cartid]);
 
   const handleConfirmDeleteItem = useCallback(() => {
     console.log("delete cart item data", deleteItemData);
@@ -380,9 +406,7 @@ export const OrderItemsList = () => {
         if (response) {
           dispatch(setMenuItemDetailList(response));
           dispatch(selectedMenuItem(item));
-
-          setTimeout(() => {
-          }, 100);
+          setTimeout(() => {}, 100);
         }
       });
     }
@@ -398,7 +422,7 @@ export const OrderItemsList = () => {
       {cartdata &&
         cartdata?.cartDetails?.cartItemDetails?.map((data, index) => {
           let counter = index;
-          let subOption = cartdata.cartDetails.cartOptionParams.filter(
+          let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
             (x) => x.cartid === data.cartid
           );
           let subOptionDisplayCmp = "";
@@ -408,7 +432,7 @@ export const OrderItemsList = () => {
             restaurantinfo?.defaultLocation?.defaultmenuitemimage
           );
           let isBorderBottom =
-            !cartdata?.cartDetails?.cartItemDetails[index + 1]
+            !cartdata?.cartDetails?.cartItemDetails?.[index + 1]
               ?.dependentmenuitemid;
           let dependentParentQty = getDependentParentQty(
             cartdata?.cartDetails?.cartItemDetails,

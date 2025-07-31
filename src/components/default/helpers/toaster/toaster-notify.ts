@@ -10,6 +10,10 @@ const handleNotify = (
   position: PositionType,
   action: ActionType
 ) => {
+  if (!messagetext || typeof messagetext !== "string") {
+    console.warn("Toast called with invalid or empty message.");
+    return;
+  }
   let toasterposition: ToastPosition = ToasterPositions.BottomRight;
 
   switch (position) {
