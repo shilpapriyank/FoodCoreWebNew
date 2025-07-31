@@ -10,6 +10,8 @@ import { getDate, ORDER_TIME_TYPE } from "@/components/common/utility";
 import { ParseArgsConfig } from "util";
 import {
   CartDetails,
+  CartItemDetails,
+  CartOptionParams,
   CartTotal,
   GetCartItems,
   GetCartItemsList,
@@ -46,7 +48,8 @@ export class CartServices {
     ordertype?: number;
     selectedTime: string;
     requestId: string;
-  }): Promise<GetCartItemsList | null> {
+  }): Promise<GetCartItems | null> {
+    //debugger;
     responseclass = new ResponseModel();
     const methodName = "getCartItemList";
     const location = ENDPOINTS.GET_CART_ITEM;
@@ -84,7 +87,7 @@ export class CartServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result as GetCartItemsList;
+      return responseclass.result as GetCartItems;
     } else {
       return null;
     }
@@ -95,7 +98,8 @@ export class CartServices {
     locationId: number,
     restaurantId: number,
     customerId: number
-  ): Promise<number> {
+  ): Promise<any> {
+    //debugger;
     responseclass = new ResponseModel();
     const methodName = "getCartItemCount";
     const location = ENDPOINTS.GET_CART_ITEM_COUNT;
@@ -128,7 +132,7 @@ export class CartServices {
     cartId: number,
     restaurantId: number,
     locationId: number
-  ): Promise<string | null> {
+  ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "deleteCartItem";
     const location = ENDPOINTS.DELETE_CART_ITEM;
@@ -212,7 +216,7 @@ export class CartServices {
     price: string,
     locationId: number,
     restaurantId: number
-  ): Promise<string | null> {
+  ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "updatequantity";
     const location = ENDPOINTS.UPDATE_QUANTITY;
@@ -324,7 +328,7 @@ export class CartServices {
     restaurantId: number,
     locationId: number,
     isGeoFancing: boolean
-  ): Promise<any[]> {
+  ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "deliverycharges";
     const location = ENDPOINTS.GET_DELIVERY_CHARGES;
@@ -350,7 +354,7 @@ export class CartServices {
       return responseclass.result;
     } else {
       //handleNotify(responseclass.message, ToasterPositions.TopRight, ToasterTypes.Success);
-      return [];
+      return null;
     }
   }
 

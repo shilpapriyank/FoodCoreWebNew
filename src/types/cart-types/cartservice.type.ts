@@ -86,7 +86,7 @@ export interface PromotionData {
   promotionappliedto: number;
 }
 
-export interface CartOptionParam {
+export interface CartOptionParams {
   cartid: number;
   suboptionId: number;
   Title: string;
@@ -103,30 +103,7 @@ export interface GetCartItemsList {
   cartDetails: CartDetails;
 }
 
-export interface CartDetails {
-  cartItemDetails: CartItemDetail[];
-  cartOptionParams: CartOptionParam[]; // Add more specific typing if structure known
-  cartTotal: CartTotal[];
-}
-
-///// getCartItemsCount service response after menuitem added to cart
-export interface GetCartItemsCount {
-  cartCount: number;
-}
-
-////getCartItems service response after item added to cart
-///this is have to apply
-export interface GetCartItems {
-  cartDetails: CartDetails;
-}
-
-// export interface CartDetails {
-//   // cartItemDetails: CartItemDetail[];
-//   //cartOptionParams: CartOptionParam[];
-//   cartTotal: CartTotal;
-// }
-
-export interface CartItemDetail {
+export interface CartItemDetails {
   categoryname: string;
   cartitemcount: number;
   categoryId: number;
@@ -204,6 +181,29 @@ export interface CartTotal {
   isDiscountApplied: boolean;
   PromotionData: PromotionData;
 }
+
+export interface CartDetails {
+  cartItemDetails?: CartItemDetails[];
+  cartOptionParams?: CartOptionParams[];
+  cartTotal?: CartTotal[];
+}
+
+///// getCartItemsCount service response after menuitem added to cart
+export interface GetCartItemsCount {
+  cartCount: number;
+}
+
+////getCartItems service response after item added to cart
+///this is have to apply
+export interface GetCartItems {
+  cartDetails: CartDetails;
+}
+
+// export interface CartDetails {
+//   // cartItemDetails: CartItemDetail[];
+//   //cartOptionParams: CartOptionParam[];
+//   cartTotal: CartTotal;
+// }
 
 // // ------new defined types ----------
 // ///getCartItems service types

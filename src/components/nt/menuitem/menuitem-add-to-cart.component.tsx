@@ -19,10 +19,10 @@ import {
 import { MenuItemServices } from "../../../../redux/menu-item/menu-item.services";
 import { FormatOrderObject } from "../common/format-order-object";
 import {
+  getCartItemCount,
   setCartItem,
   updateCartItemCount,
 } from "../../../../redux/cart/cart.slice";
-import { getCartItemCount } from "../../../../redux/tableorder/tableorder.slice";
 import { CartServices } from "../../../../redux/cart/cart.services";
 import Popover from "../common/custompopover";
 import ShareitemComponent from "../common/shareitem.component";
@@ -99,6 +99,7 @@ const MenuItemAddToCart = ({
   };
 
   const addtocartclick = (item: Menuitems) => {
+    //debugger;
     dispatch(selectedMenuItem(item as any));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
@@ -108,6 +109,7 @@ const MenuItemAddToCart = ({
       cartsessionId: String(cartsessionid),
       cartId: 0,
     }).then((response) => {
+      //debugger;
       if (response) {
         if (response) {
           // console.log("add to cart click getMenuitemList response", response);
@@ -163,9 +165,9 @@ const MenuItemAddToCart = ({
                 dispatch(updateCartItemCount());
                 dispatch(
                   getCartItemCount({
-                    cartsessionid: cartsessionid,
-                    locationId: restaurantinfo?.defaultlocationId,
-                    restaurantId: restaurantinfo?.restaurantId,
+                    cartsessionId: cartsessionid as string,
+                    locationId: restaurantinfo?.defaultlocationId as number,
+                    restaurantId: restaurantinfo?.restaurantId as number,
                     customerId: customerId,
                   })
                 );

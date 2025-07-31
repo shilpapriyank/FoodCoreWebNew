@@ -792,7 +792,6 @@ const MenuItemOptions = ({
   };
 
   const increment = (optionId: number, data: any) => {
-    debugger;
     let isFreeCountCalculation = true;
 
     const optionDetails = selectedtopping?.list?.find(
@@ -883,7 +882,6 @@ const MenuItemOptions = ({
   };
 
   const decrement = (optionId: number, data: any, isRadioButton: boolean) => {
-    debugger;
     if (minQty === data.subOptionToppingQuantity) {
       selectedquantityClick(optionId, minQty, data.suboptionId, "-");
       return;
