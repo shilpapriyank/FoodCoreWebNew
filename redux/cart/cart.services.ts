@@ -99,7 +99,6 @@ export class CartServices {
     restaurantId: number,
     customerId: number
   ): Promise<any> {
-    //debugger;
     responseclass = new ResponseModel();
     const methodName = "getCartItemCount";
     const location = ENDPOINTS.GET_CART_ITEM_COUNT;
@@ -133,6 +132,7 @@ export class CartServices {
     restaurantId: number,
     locationId: number
   ): Promise<any | null> {
+    //debugger;
     responseclass = new ResponseModel();
     const methodName = "deleteCartItem";
     const location = ENDPOINTS.DELETE_CART_ITEM;

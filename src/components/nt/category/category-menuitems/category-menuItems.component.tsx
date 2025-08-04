@@ -341,7 +341,6 @@ const CategoryMenuItems = ({
   };
 
   function quickOrderClick(item: Menuitems) {
-    //debugger;
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&

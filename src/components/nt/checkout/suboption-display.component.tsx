@@ -3,7 +3,6 @@ import { convertOptionToStrList } from "../../common/utility";
 import { CARTPAGEMESSAGE } from "../helpers/static-message/cart-message";
 
 const CartSuboptionDisplay = ({ subOption }: any) => {
-  //debugger;
   const leftPizzaSuboption = subOption.filter(
     (sub: any) => sub.pizzaside === "L"
   );

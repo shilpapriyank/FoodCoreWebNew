@@ -13,7 +13,11 @@ import { useParams, useRouter } from "next/navigation";
 import { CartServices } from "../../../../../redux/cart/cart.services";
 import { CartTypes } from "../../../../../redux/cart/cart.type";
 import { CustomerServices } from "../../../../../redux/customer/customer.services";
-import { CartDetails, GetCartItems } from "@/types/cart-types/cartservice.type";
+import {
+  CartDetails,
+  CartItemDetails,
+  GetCartItems,
+} from "@/types/cart-types/cartservice.type";
 import CommonModal from "../../common/common-model.component";
 import {
   carttotaldata,
@@ -35,7 +39,6 @@ import {
 import CartSuboptionDisplay from "../../checkout/suboption-display.component";
 
 export const OrderItemsList = () => {
-  // debugger;
   const {
     restaurantinfo,
     userinfo,
@@ -78,7 +81,6 @@ export const OrderItemsList = () => {
   const enableRewardPoint = restaurantinfo?.defaultLocation?.enableRewardPoint;
 
   useEffect(() => {
-    //debugger;
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -121,6 +123,7 @@ export const OrderItemsList = () => {
   }, [update, deliveryaddressinfo, userinfo?.customerId, order?.checktime]);
 
   const clearRedeempoint = () => {
+    //debugger;
     CustomerServices.checkCustomerRewardPointsLocationBase(
       restaurantinfo?.restaurantId,
       customerId,
@@ -176,7 +179,8 @@ export const OrderItemsList = () => {
     });
   };
 
-  const deletecartclick = (deleteitem: any) => {
+  const deletecartclick = (deleteitem: CartItemDetails) => {
+    //debugger;
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -186,6 +190,7 @@ export const OrderItemsList = () => {
       ramount = rpoint / rewardpoint.rewardvalue;
     }
     if (deleteitem != undefined) {
+      //debugger;
       CartServices.deleteCartItem(
         sessionId as string,
         deleteitem.cartid,
@@ -193,8 +198,9 @@ export const OrderItemsList = () => {
         restaurantinfo?.defaultlocationId as number
       ).then((response) => {
         if (response) {
-          //dispatch({ type: CartTypes.DELETE_CART_ITEM, payload: response });
+          // dispatch({ type: CartTypes.DELETE_CART_ITEM, payload: response });
           dispatch(deleteCartItem(response));
+
           let cartItem = cartdata?.cartDetails?.cartItemDetails?.filter(
             (item) => item.dependentmenuitemid === 0
           );
@@ -218,43 +224,41 @@ export const OrderItemsList = () => {
               rewardpoints?.redeemPoint / rewardpoints?.rewardvalue;
           }
           dispatch(
-            // getCartItemCount({
-            //   cartsessionId: sessionId,
-            //   locationId: restaurantinfo?.defaultlocationId,
-            //   restaurantId: restaurantinfo?.restaurantId,
-            //   customerId: customerId,
-            // })
             getCartItemCount({
-              cartsessionId: sessionId as string,
+              cartsessionId: sessionid as string,
+              locationId: restaurantinfo?.defaultlocationId as number,
               restaurantId: restaurantinfo?.restaurantId as number,
-              locationId: restaurantinfo?.locationId as number,
-              customerId: userinfo ? userinfo.customerId : 0,
+              customerId: userinfo ? userinfo?.customerId : 0,
             })
           );
           CartServices.getCartItemList({
-            cartsessionId: sessionId as string,
+            cartsessionId: String(sessionId),
             locationId: restaurantinfo?.defaultlocationId as number,
             restaurantId: restaurantinfo?.restaurantId as number,
             cartId: 0,
             customerId: customerId,
-            rewardpoints: rpoint,
+            rewardpoints: Number(rpoint),
             redeemamount: ramount,
-            deliveryaddressId: deliveryaddressinfo?.deliveryaddressId,
-            tipPercentage: Number(carttotal?.tipPercentage),
-            tipAmount: carttotal?.tipAmount,
+            deliveryaddressId: 0,
+            tipPercentage: 0,
+            tipAmount: 0,
             ordertype: Number(ordertype),
             selectedTime: selectedtime,
             requestId: order?.deliveryRequestId,
           }).then((response) => {
             if (response) {
               if (response?.cartDetails && response?.cartDetails?.cartTotal) {
-                //dispatch(getCartData(response));
+                // dispatch({
+                //   type: CartTypes.CART_DATA,
+                //   payload: response,
+                // });
                 dispatch(setCartItem(response));
               }
             }
           });
         }
       });
+      // setcartdeleteconfirm(false);
       setIsOpenModal(false);
     }
   };
@@ -292,6 +296,7 @@ export const OrderItemsList = () => {
     cartid: number,
     dependentParentQty: number
   ) => {
+    // debugger;
     const plusState = currentQty + 1;
     if (dependentParentQty > 0 && dependentParentQty < plusState) {
       return;
@@ -333,12 +338,13 @@ export const OrderItemsList = () => {
     dependentParentQty: number,
     item: any
   ) => {
+    //debugger;
     if (minQty === currentQty) {
       return;
     }
     const minusState = currentQty - 1;
-    let dcart: any[] = [];
-    let cdetail: any = cartdata;
+    let dcart: CartItemDetails[] = [];
+    let cdetail = cartdata;
     cartdata?.cartDetails?.cartItemDetails?.map((data) => {
       if (data.cartid === cartid) {
         data.qty = minusState;
@@ -355,6 +361,8 @@ export const OrderItemsList = () => {
       }
       dcart.push(data);
     });
+
+    if (!cdetail) return;
     cdetail.cartDetails.cartItemDetails = dcart;
 
     dispatch(setCartItem(cdetail));
@@ -376,6 +384,7 @@ export const OrderItemsList = () => {
   };
 
   const handlesetDeleteData = (data: any) => {
+    //debugger;
     setdeleteItemData(data);
     setIsOpenModal(true);
   };
@@ -385,7 +394,7 @@ export const OrderItemsList = () => {
   }, [deleteItemData?.orderitemId, deleteItemData?.cartid]);
 
   const handleConfirmDeleteItem = useCallback(() => {
-    console.log("delete cart item data", deleteItemData);
+    //debugger;
     deletecartclick(deleteItemData);
   }, [memoRiseddeleteItemData]);
 
@@ -425,8 +434,12 @@ export const OrderItemsList = () => {
           let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
             (x) => x.cartid === data.cartid
           );
-          let subOptionDisplayCmp = "";
-          <CartSuboptionDisplay key={index} subOption={subOption} />;
+          let subOptionDisplayCmp = (
+            // <CartSuboptionDisplay
+            //   subOption={Array.isArray(subOption) ? subOption : []}
+            // />
+            <CartSuboptionDisplay subOption={subOption} />
+          );
           let itemImage = getImagePath(
             data?.imgUrl,
             restaurantinfo?.defaultLocation?.defaultmenuitemimage
@@ -441,7 +454,7 @@ export const OrderItemsList = () => {
           );
 
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={data.cartid || index}>
               <h6>
                 {" "}
                 {data.itemname + " - " + data.subparametername}{" "}
@@ -453,7 +466,7 @@ export const OrderItemsList = () => {
                   </span>
                 )}
               </h6>
-              <p className="small mb-1">{subOptionDisplayCmp}</p>
+              <div className="small mb-1">{subOptionDisplayCmp}</div>
               {data?.studentname && (
                 <p className="color_black mt-0 mb-1">
                   Name: <span className="color-red"> {data?.studentname} </span>
@@ -500,6 +513,7 @@ export const OrderItemsList = () => {
                     handlesetDeleteData(data);
                   }}
                 >
+                  {" "}
                   <i className="fa fa-trash red-color-dark" />{" "}
                 </a>
               </div>

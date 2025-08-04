@@ -145,7 +145,7 @@ export const getCartItemCount = createAsyncThunk(
     },
     thunkAPI
   ) => {
-    debugger
+    //debugger;
     const response = await CartServices.getCartItemCount(
       cartsessionId ?? "",
       locationId,
@@ -183,6 +183,19 @@ export const deleteCartItem = createAsyncThunk(
     return response;
   }
 );
+
+// export const deleteCartItem = createAsyncThunk(
+//   "cart/deleteCartItem",
+//   async (params: any) => {
+//     const response = await CartServices.deleteCartItem(
+//       params.cartsessionId,
+//       params.cartId,
+//       params.restaurantId,
+//       params.locationId
+//     );
+//     return response;
+//   }
+// );
 
 export const updatequantity = createAsyncThunk(
   //"cart/updatequantity",
@@ -608,13 +621,13 @@ const cartSlice = createSlice({
       }
     );
 
-    builder.addCase(
-      deleteCartItem.fulfilled,
-      (state, action: PayloadAction<any>) => {
-        // Optional: You can modify this if response structure is different
-        state.cartitemdetail = action.payload;
-      }
-    );
+    // builder.addCase(
+    //   deleteCartItem.fulfilled,
+    //   (state, action: PayloadAction<any>) => {
+    //     // Optional: You can modify this if response structure is different
+    //     state.cartitemdetail = action.payload;
+    //   }
+    // );
 
     builder.addCase(
       updatequantity.fulfilled,
