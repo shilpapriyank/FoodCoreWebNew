@@ -28,7 +28,6 @@ export const FormatOrderObject = ({
   selectedtime: string;
   studentname?: string;
 }) => {
-  //debugger;
   let selectedsize =
     menuItemDetail != undefined &&
     menuItemDetail.size != undefined &&

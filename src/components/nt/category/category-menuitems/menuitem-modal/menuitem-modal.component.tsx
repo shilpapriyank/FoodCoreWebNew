@@ -291,7 +291,6 @@ const MenuItemModal = ({
   const addToCart = () => {
     //debugger;
     if (dependentId > 0 && selectedmenuitemdetail) {
-      //debugger;
       selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName || "";
     }
     if (
@@ -300,7 +299,6 @@ const MenuItemModal = ({
         menuItemDetail?.dependantMenuList === null) &&
       menuitem?.dependentqty !== 0
     ) {
-      //debugger;
       dispatch(setDipendentItemQty(0));
     }
     let total =
@@ -314,7 +312,6 @@ const MenuItemModal = ({
       selectedtopping?.length > 0 &&
       selectedtopping?.[0].list.filter((x) => x.isCompulsory == true);
     if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
-      // debugger;
       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
       var isValidateItem = true;
       if (
@@ -324,7 +321,6 @@ const MenuItemModal = ({
         selectedoption &&
         selectedoption.length > 0
       ) {
-        //debugger;
         let result = [];
         for (var i = 0; i < selectedoption.length; i++) {
           if (
@@ -333,7 +329,6 @@ const MenuItemModal = ({
             selectedoption[i].type.filter((x) => x.subOptionselected === true)
               .length === 0
           ) {
-            // debugger;
             handleNotify(
               "Please select atleast one item in " + selectedoption[i].name,
               ToasterPositions.TopRight,
@@ -348,7 +343,6 @@ const MenuItemModal = ({
 
       //THIS CONDITION WILL EXECUTE WHEN ITEM UPDATE FROM CART PAGE
       if (isValidateItem) {
-        //debugger;
         let itemobj = FormatOrderObject({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
           objselectedItem: selectedmenuitemdetail,
@@ -362,13 +356,11 @@ const MenuItemModal = ({
           studentname: "",
         });
         if (itemobj != undefined) {
-          // debugger;
           MenuItemServices.updateCartOrdersItem({
             orderobj: itemobj,
             restaurantId: restaurantId,
           }).then((response) => {
             if (response) {
-              //debugger;
               dispatch(
                 getCartItem({
                   cartsessionId: sessionid as string,
@@ -388,10 +380,10 @@ const MenuItemModal = ({
               );
               dispatch(
                 getCartItemCount({
-                  cartsessionId: sessionId as string,
-                  restaurantId: restaurantId,
-                  locationId: restaurantinfo?.locationId as number,
-                  customerId: userinfo ? userinfo.customerId : 0,
+                  cartsessionId: String(sessionid),
+                  locationId: restaurantinfo?.defaultlocationId as number,
+                  restaurantId: restaurantinfo?.restaurantId as number,
+                  customerId: userinfo ? userinfo?.customerId : 0,
                 })
               );
               handleToggleMenuItem(false);
@@ -404,7 +396,6 @@ const MenuItemModal = ({
       menuItemDetail?.topping != undefined &&
       menuItemDetail?.topping.length === 0
     ) {
-      //debugger;
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail,
@@ -418,20 +409,18 @@ const MenuItemModal = ({
         studentname: "",
       });
       if (itemobj != undefined) {
-        //debugger;
         MenuItemServices.addItemToCart({
           orderobj: itemobj,
           restaurantId: restaurantId,
         }).then((response) => {
-          // debugger;
           if (response) {
             //dispatch(setCartItem(response));
             dispatch(
               getCartItemCount({
-                cartsessionId: sessionId as string,
-                restaurantId: restaurantId,
-                locationId: restaurantinfo?.locationId as number,
-                customerId: userinfo ? userinfo.customerId : 0,
+                cartsessionId: String(sessionid),
+                locationId: restaurantinfo?.defaultlocationId as number,
+                restaurantId: restaurantinfo?.restaurantId as number,
+                customerId: userinfo ? userinfo?.customerId : 0,
               })
             );
             dispatch(
@@ -457,10 +446,10 @@ const MenuItemModal = ({
         });
         dispatch(
           getCartItemCount({
-            cartsessionId: sessionId as string,
-            restaurantId: restaurantId,
-            locationId: restaurantinfo?.locationId as number,
-            customerId: userinfo ? userinfo.customerId : 0,
+            cartsessionId: String(sessionid),
+            locationId: restaurantinfo?.defaultlocationId as number,
+            restaurantId: restaurantinfo?.restaurantId as number,
+            customerId: userinfo ? userinfo?.customerId : 0,
           })
         );
       }
@@ -471,7 +460,6 @@ const MenuItemModal = ({
       menuItemDetail?.topping?.length > 0 &&
       selectedoption?.length > 0
     ) {
-      //debugger;
       let result = [];
       for (var i = 0; i < selectedoption.length; i++) {
         if (
@@ -480,7 +468,6 @@ const MenuItemModal = ({
           selectedoption[i].type.filter((x) => x.subOptionselected === true)
             .length === 0
         ) {
-          //debugger;
           handleNotify(
             "Please select atleast one item in " + selectedoption[i].name,
             ToasterPositions.TopRight,
@@ -496,7 +483,6 @@ const MenuItemModal = ({
         result.length > 0 &&
         result.filter((x) => x.text == false).length === 0
       ) {
-        // debugger;
         let itemobj = FormatOrderObject({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
           objselectedItem: selectedmenuitemdetail!,
@@ -514,15 +500,14 @@ const MenuItemModal = ({
             orderobj: itemobj,
             restaurantId: restaurantId,
           }).then((response) => {
-            // debugger;
             if (response) {
               dispatch(setCartItem(response));
               dispatch(
                 getCartItemCount({
-                  cartsessionId: sessionId as string,
-                  restaurantId: restaurantId,
-                  locationId: restaurantinfo?.locationId as number,
-                  customerId: userinfo ? userinfo.customerId : 0,
+                  cartsessionId: String(sessionid),
+                  locationId: restaurantinfo?.defaultlocationId as number,
+                  restaurantId: restaurantinfo?.restaurantId as number,
+                  customerId: userinfo ? userinfo?.customerId : 0,
                 })
               );
               dispatch(
@@ -551,7 +536,6 @@ const MenuItemModal = ({
                 ((dependentIds === undefined && dependentId === 0) ||
                   (dependentIds?.length === 0 && dependentId === 0))
               ) {
-                //  debugger;
                 //TODO:
                 setTimeout(() => {
                   handleToggleDependnt?.(true);
@@ -563,7 +547,6 @@ const MenuItemModal = ({
                     menuItemDetail?.dependantMenuList !== null) ||
                   dependentIds?.length > 0
                 ) {
-                  // debugger;
                   let dependentItemList =
                     dependentIds?.length > 0
                       ? dependentIds
@@ -591,7 +574,6 @@ const MenuItemModal = ({
       menuItemDetail?.topping.length > 0 &&
       selectedoption
     ) {
-      //debugger;
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
         objselectedItem: selectedmenuitemdetail!,
@@ -609,15 +591,14 @@ const MenuItemModal = ({
           orderobj: itemobj,
           restaurantId: restaurantId,
         }).then((response) => {
-          //debugger;
           if (response) {
             dispatch(getCartItem(response));
             dispatch(
               getCartItemCount({
-                cartsessionId: sessionId as string,
-                restaurantId: restaurantId,
-                locationId: restaurantinfo?.locationId as number,
-                customerId: userinfo ? userinfo.customerId : 0,
+                cartsessionId: String(sessionid),
+                locationId: restaurantinfo?.defaultlocationId as number,
+                restaurantId: restaurantinfo?.restaurantId as number,
+                customerId: userinfo ? userinfo?.customerId : 0,
               })
             );
             handleToggleMenuItem(false);
@@ -646,7 +627,6 @@ const MenuItemModal = ({
                 (dependentIds?.length === 0 && dependentId === 0))
             ) {
               //TODO:
-              //debugger;
               setTimeout(() => {
                 handleToggleDependnt?.(true);
               }, 500);
@@ -657,7 +637,6 @@ const MenuItemModal = ({
                   menuItemDetail?.dependantMenuList !== null) ||
                 dependentIds?.length > 0
               ) {
-                //debugger;
                 let dependentItemList =
                   dependentIds?.length > 0
                     ? dependentIds

@@ -21,7 +21,6 @@ import {
 import { ORDER_TYPE } from "../utility";
 
 export const RelatedItemsList = () => {
-  //debugger
   const {
     restaurantinfo,
     selecteddelivery,

@@ -296,7 +296,6 @@ export class MenuItemServices {
     restaurantId: number;
     locationId: number;
   }): Promise<any | null> {
-   // debugger;
     responseclass = new ResponseModel();
     const methodName = "quickOrderaddToCart";
     const quickOrderUrl = ENDPOINTS.QUICK_ORDER_ADD_TO_CART;
