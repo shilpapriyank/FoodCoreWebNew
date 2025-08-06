@@ -289,9 +289,13 @@ const MenuItemModal = ({
   }, [lstcarttopping, quantity, selectedsize]);
 
   const addToCart = () => {
-    //debugger;
+    let updatedSelectedMenuitemDetail = selectedmenuitemdetail;
     if (dependentId > 0 && selectedmenuitemdetail) {
-      selectedmenuitemdetail.menuItemName = menuItemDetail?.itemName || "";
+      updatedSelectedMenuitemDetail = {
+        ...selectedmenuitemdetail,
+        menuItemName:
+          menuItemDetail?.itemName || selectedmenuitemdetail.menuItemName || "",
+      };
     }
     if (
       dependentId === 0 &&
@@ -311,7 +315,10 @@ const MenuItemModal = ({
       selectedtopping &&
       selectedtopping?.length > 0 &&
       selectedtopping?.[0].list.filter((x) => x.isCompulsory == true);
-    if (selectedmenuitemdetail && selectedmenuitemdetail?.cartid > 0) {
+    if (
+      updatedSelectedMenuitemDetail &&
+      updatedSelectedMenuitemDetail?.cartid > 0
+    ) {
       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
       var isValidateItem = true;
       if (
@@ -345,7 +352,7 @@ const MenuItemModal = ({
       if (isValidateItem) {
         let itemobj = FormatOrderObject({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
-          objselectedItem: selectedmenuitemdetail,
+          objselectedItem: updatedSelectedMenuitemDetail,
           menuItemDetail: menuItemDetail as GetMenuItemDetail,
           customerId: Number(customerId),
           total: Number(total),
@@ -392,13 +399,13 @@ const MenuItemModal = ({
         }
       }
     } else if (
-      selectedmenuitemdetail &&
+      updatedSelectedMenuitemDetail &&
       menuItemDetail?.topping != undefined &&
       menuItemDetail?.topping.length === 0
     ) {
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
-        objselectedItem: selectedmenuitemdetail,
+        objselectedItem: updatedSelectedMenuitemDetail,
         menuItemDetail: menuItemDetail,
         customerId: Number(customerId),
         total: total as number,
@@ -485,7 +492,7 @@ const MenuItemModal = ({
       ) {
         let itemobj = FormatOrderObject({
           objrestaurant: restaurantinfo as GetAllRestaurantInfo,
-          objselectedItem: selectedmenuitemdetail!,
+          objselectedItem: updatedSelectedMenuitemDetail!,
           menuItemDetail: menuItemDetail as GetMenuItemDetail,
           customerId: Number(customerId),
           total: total as number,
@@ -576,7 +583,7 @@ const MenuItemModal = ({
     ) {
       let itemobj = FormatOrderObject({
         objrestaurant: restaurantinfo as GetAllRestaurantInfo,
-        objselectedItem: selectedmenuitemdetail!,
+        objselectedItem: updatedSelectedMenuitemDetail!,
         menuItemDetail: menuItemDetail as GetMenuItemDetail,
         customerId: Number(customerId),
         total: total as number,

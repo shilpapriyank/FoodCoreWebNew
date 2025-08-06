@@ -122,6 +122,6 @@ export const FormatOrderObject = ({
     selectedDate: currentdate,
   };
 
-  //console.log("objorder from format order obj ", objorder);
+  console.log("objorder from format order obj ", objorder);
   return objorder;
 };

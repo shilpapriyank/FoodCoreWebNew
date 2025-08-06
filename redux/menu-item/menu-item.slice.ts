@@ -11,6 +11,7 @@ import {
   Category,
   DependantMenuList,
   GetMenuItemDetail,
+  GetSerachResult,
   MenuItem,
   Menuitems,
 } from "@/types/menuitem-types/menuitem.type";
@@ -23,10 +24,11 @@ export interface MenuItemState {
   selecteditemquantity: number;
   updateitemoptionincart: number;
   searchtext: string;
-  searchdata: {
-    menuItems: MenuItem[];
-    categories: Category[];
-  };
+  // searchdata: {
+  //   menuItems: MenuItem[];
+  //   categories: Category[];
+  // };
+  searchdata: GetSerachResult | null;
   dependentid: any;
   dependentitemids: DependantMenuList[];
   dependentqty: number;
@@ -38,10 +40,11 @@ const initialState: MenuItemState = {
   selecteditemquantity: 0,
   updateitemoptionincart: 0,
   searchtext: "",
-  searchdata: {
-    menuItems: [],
-    categories: [],
-  },
+  // searchdata: {
+  //   menuItems: [],
+  //   categories: [],
+  // },
+  searchdata: null,
   dependentid: 0,
   dependentitemids: [],
   dependentqty: 0,
@@ -220,10 +223,11 @@ const menuItemSlice = createSlice({
     },
     setSearchData: (
       state,
-      action: PayloadAction<{
-        menuItems: MenuItem[];
-        categories: Category[];
-      }>
+      // action: PayloadAction<{
+      //   menuItems: MenuItem[];
+      //   categories: Category[];
+      // }>
+      action: PayloadAction<GetSerachResult>
     ) => {
       state.searchdata = action.payload;
     },

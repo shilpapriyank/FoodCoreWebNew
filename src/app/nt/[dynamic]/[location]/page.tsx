@@ -45,7 +45,7 @@ export default function LocationPage() {
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
   let menuItemsWithCat = filterCategory(
-    searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
+    searchdata && searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
   );
 
@@ -74,7 +74,7 @@ export default function LocationPage() {
         OrderServices.getOrderTime({
           restaurantId: restaurantinfo?.restaurantId,
           locationId: restaurantinfo?.locationId,
-        }as any).then((response) => {
+        } as any).then((response) => {
           dispatch(isasap(true));
           const time = response?.ordertime?.split(":");
           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;

@@ -21,13 +21,11 @@ import {
 import CommonModal from "../../common/common-model.component";
 import {
   carttotaldata,
-  deleteCartItem,
   getCartItemCount,
-  orderinstruction,
   setCartItem,
+  setOrderInstruction,
   updateCartItem,
   updateCartItemCount,
-  updatequantity,
 } from "../../../../../redux/cart/cart.slice";
 import { setrewardpoint } from "../../../../../redux/rewardpoint/rewardpoint.slice";
 import { MenuItemServices } from "../../../../../redux/menu-item/menu-item.services";
@@ -37,6 +35,7 @@ import {
   setMenuItemDetailList,
 } from "../../../../../redux/menu-item/menu-item.slice";
 import CartSuboptionDisplay from "../../checkout/suboption-display.component";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 
 export const OrderItemsList = () => {
   const {
@@ -106,7 +105,7 @@ export const OrderItemsList = () => {
         customerId: customerId,
         rewardpoints: rpoint,
         redeemamount: ramount,
-        deliveryaddressId: deliveryId,
+        deliveryaddressId: deliveryaddressinfo?.deliveryaddressId,
         tipPercentage: Number(carttotal?.tipPercentage),
         tipAmount: carttotal?.tipAmount,
         ordertype: Number(ordertype),
@@ -123,7 +122,6 @@ export const OrderItemsList = () => {
   }, [update, deliveryaddressinfo, userinfo?.customerId, order?.checktime]);
 
   const clearRedeempoint = () => {
-    //debugger;
     CustomerServices.checkCustomerRewardPointsLocationBase(
       restaurantinfo?.restaurantId,
       customerId,
@@ -162,10 +160,14 @@ export const OrderItemsList = () => {
             redeemamount: "0",
             tipPercentage: String(carttotal?.tipPercentage),
             tipAmount: String(carttotal?.tipAmount),
+            // deliveryaddressId:
+            //   pickupordelivery === ORDERTYPE.Delivery &&
+            //   deliveryaddressinfo?.deliveryaddressId &&
+            //   Number(deliveryaddressinfo.deliveryaddressId),
             deliveryaddressId:
-              pickupordelivery === ORDERTYPE.Delivery &&
-              deliveryaddressinfo &&
-              deliveryaddressinfo.deliveryaddressId,
+              pickupordelivery === ORDERTYPE.Delivery
+                ? deliveryaddressinfo?.deliveryaddressId
+                : 0,
             ordertype: ordertype,
             requestId: order.deliveryRequestId,
             recievingTime: "",
@@ -180,7 +182,6 @@ export const OrderItemsList = () => {
   };
 
   const deletecartclick = (deleteitem: CartItemDetails) => {
-    //debugger;
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -190,7 +191,6 @@ export const OrderItemsList = () => {
       ramount = rpoint / rewardpoint.rewardvalue;
     }
     if (deleteitem != undefined) {
-      //debugger;
       CartServices.deleteCartItem(
         sessionId as string,
         deleteitem.cartid,
@@ -199,7 +199,7 @@ export const OrderItemsList = () => {
       ).then((response) => {
         if (response) {
           // dispatch({ type: CartTypes.DELETE_CART_ITEM, payload: response });
-          dispatch(deleteCartItem(response));
+          //dispatch(deleteCartItem(response));
 
           let cartItem = cartdata?.cartDetails?.cartItemDetails?.filter(
             (item) => item.dependentmenuitemid === 0
@@ -215,7 +215,7 @@ export const OrderItemsList = () => {
           if (cartItem?.length === 1 && deleteitem?.dependentmenuitemid === 0) {
             dispatch(updateCartItemCount());
           }
-          dispatch(orderinstruction(""));
+          dispatch(setOrderInstruction(""));
           let redeemPoint =
             rewardpoints?.redeemPoint > 0 ? rewardpoints?.redeemPoint : 0;
           let redeemAmount = 0;
@@ -265,7 +265,7 @@ export const OrderItemsList = () => {
 
   const editcartclick = (
     item: any,
-    menucategoryitem: any,
+    menucategoryitem: MainCategoryList,
     menuitemnameurl: string
   ) => {
     if (item != undefined) {
@@ -296,23 +296,31 @@ export const OrderItemsList = () => {
     cartid: number,
     dependentParentQty: number
   ) => {
-    // debugger;
     const plusState = currentQty + 1;
-    if (dependentParentQty > 0 && dependentParentQty < plusState) {
-      return;
-    }
-    let dcart: any[] = [];
-    let cdetail: any = cartdata;
-    cartdata?.cartDetails?.cartItemDetails?.map((data) => {
-      if (data.cartid === cartid) {
-        data.qty = plusState;
-        data.totalprice = data.unitprice * data.qty;
+
+    if (dependentParentQty > 0 && dependentParentQty < plusState) return;
+
+    const cdetail = structuredClone(cartdata);
+
+    if (!cdetail?.cartDetails?.cartItemDetails) return;
+
+    const dcart: CartItemDetails[] = cdetail.cartDetails.cartItemDetails.map(
+      (data: CartItemDetails) => {
+        if (data.cartid === cartid) {
+          return {
+            ...data,
+            qty: plusState,
+            totalprice: data.unitprice * plusState,
+          };
+        }
+        return data;
       }
-      dcart.push(data);
-    });
+    );
 
     cdetail.cartDetails.cartItemDetails = dcart;
+
     dispatch(setCartItem(cdetail));
+
     CartServices.updatequantity(
       sessionId as string,
       cartid,
@@ -322,9 +330,7 @@ export const OrderItemsList = () => {
       restaurantinfo?.restaurantId as number
     ).then((response) => {
       if (response) {
-        // dispatch(updateCartItem());
-        // dispatch(updateCartItemCount());
-        dispatch(updatequantity(response));
+        // dispatch(updatequantity(response));
         setTimeout(() => {
           setupdateQty(!updateQty);
         }, 100);
@@ -336,46 +342,52 @@ export const OrderItemsList = () => {
     currentQty: number,
     cartid: number,
     dependentParentQty: number,
-    item: any
+    item: CartItemDetails
   ) => {
-    //debugger;
     if (minQty === currentQty) {
       return;
     }
-    const minusState = currentQty - 1;
-    let dcart: CartItemDetails[] = [];
-    let cdetail = cartdata;
-    cartdata?.cartDetails?.cartItemDetails?.map((data) => {
-      if (data.cartid === cartid) {
-        data.qty = minusState;
-        data.totalprice = data.unitprice * data.qty;
-      } else if (data?.dependentmenuitemid > 0) {
-        //TODO: CHECK THE IS PARENT QTY IS LESS THEN DEPENDENT THEN NEED TO ALSO UPDATE THE DEPENDENT QTY
-        if (
-          item?.menuitemid === data?.dependentmenuitemid &&
-          minusState < data?.qty
-        ) {
-          data.qty = minusState;
-        }
-      } else {
-      }
-      dcart.push(data);
-    });
 
-    if (!cdetail) return;
+    const minusState = currentQty - 1;
+    const cdetail = structuredClone(cartdata);
+
+    if (!cdetail?.cartDetails?.cartItemDetails) return;
+
+    const dcart: CartItemDetails[] = cdetail.cartDetails.cartItemDetails.map(
+      (data: CartItemDetails) => {
+        if (data.cartid === cartid) {
+          data.qty = minusState;
+          data.totalprice = data.unitprice * data.qty;
+        } else if (data?.dependentmenuitemid > 0) {
+          if (
+            item?.menuitemid === data?.dependentmenuitemid &&
+            minusState < data?.qty
+          ) {
+            return {
+              ...data,
+              qty: minusState,
+              totalprice: data.unitprice * minusState,
+            };
+          }
+        }
+        return data;
+      }
+    );
+
     cdetail.cartDetails.cartItemDetails = dcart;
 
     dispatch(setCartItem(cdetail));
+
     CartServices.updatequantity(
       sessionId as string,
       cartid,
       minusState,
-      0 || "0",
+      "0",
       restaurantinfo?.defaultlocationId as number,
       restaurantinfo?.restaurantId as number
     ).then((response) => {
       if (response) {
-        dispatch(updatequantity(response));
+        //dispatch(updatequantity(response));
         setTimeout(() => {
           setupdateQty(!updateQty);
         }, 100);
@@ -383,8 +395,7 @@ export const OrderItemsList = () => {
     });
   };
 
-  const handlesetDeleteData = (data: any) => {
-    //debugger;
+  const handlesetDeleteData = (data: CartItemDetails) => {
     setdeleteItemData(data);
     setIsOpenModal(true);
   };
@@ -394,32 +405,31 @@ export const OrderItemsList = () => {
   }, [deleteItemData?.orderitemId, deleteItemData?.cartid]);
 
   const handleConfirmDeleteItem = useCallback(() => {
-    //debugger;
     deletecartclick(deleteItemData);
   }, [memoRiseddeleteItemData]);
 
-  const editItemClick = (item: any, depQty: any) => {
-    if (item != undefined) {
-      //setisProductItemPopup(false);
-      if (depQty > 0) {
-        dispatch(setDipendentItemQty(depQty));
-      }
-      MenuItemServices.getMenuItemList({
-        restaurantId: restaurantinfo?.restaurantId as number,
-        locationId: restaurantinfo?.defaultlocationId as number,
-        customerId: customerId,
-        menuitemId: item.menuitemid,
-        cartsessionId: sessionId as string,
-        cartId: item?.cartid,
-      }).then((response) => {
-        if (response) {
-          dispatch(setMenuItemDetailList(response));
-          dispatch(selectedMenuItem(item));
-          setTimeout(() => {}, 100);
-        }
-      });
-    }
-  };
+  // const editItemClick = (item: any, depQty: any) => {
+  //   if (item != undefined) {
+  //     //setisProductItemPopup(false);
+  //     if (depQty > 0) {
+  //       dispatch(setDipendentItemQty(depQty));
+  //     }
+  //     MenuItemServices.getMenuItemList({
+  //       restaurantId: restaurantinfo?.restaurantId as number,
+  //       locationId: restaurantinfo?.defaultlocationId as number,
+  //       customerId: customerId,
+  //       menuitemId: item.menuitemid,
+  //       cartsessionId: sessionId as string,
+  //       cartId: item?.cartid,
+  //     }).then((response) => {
+  //       if (response) {
+  //         dispatch(setMenuItemDetailList(response));
+  //         dispatch(selectedMenuItem(item));
+  //         setTimeout(() => {}, 100);
+  //       }
+  //     });
+  //   }
+  // };
 
   const handleToggle = (value: boolean) => {
     setcartdeleteconfirm(value);
