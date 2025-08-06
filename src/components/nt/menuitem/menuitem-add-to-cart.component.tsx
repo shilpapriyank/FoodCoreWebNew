@@ -14,7 +14,7 @@ import {
   setDipendentId,
   setDipendentIds,
   setDipendentItemQty,
-  setMenuCategoryData,
+  setMenuItemDetailList,
 } from "../../../../redux/menu-item/menu-item.slice";
 import { MenuItemServices } from "../../../../redux/menu-item/menu-item.services";
 import { FormatOrderObject } from "../common/format-order-object";
@@ -99,7 +99,6 @@ const MenuItemAddToCart = ({
   };
 
   const addtocartclick = (item: Menuitems) => {
-    //debugger;
     dispatch(selectedMenuItem(item as any));
     MenuItemServices.getMenuItemList({
       restaurantId: restaurantinfo?.restaurantId as number,
@@ -109,11 +108,10 @@ const MenuItemAddToCart = ({
       cartsessionId: String(cartsessionid),
       cartId: 0,
     }).then((response) => {
-      //debugger;
       if (response) {
         if (response) {
-          // console.log("add to cart click getMenuitemList response", response);
-          dispatch(setMenuCategoryData(response));
+          //dispatch(setMenuCategoryData(response));
+          dispatch(setMenuItemDetailList(response));
         }
         let menuItemDetail = response;
         let selectedsize =
@@ -145,22 +143,21 @@ const MenuItemAddToCart = ({
         ) {
           let itemobj = FormatOrderObject({
             objrestaurant: restaurantinfo as GetAllRestaurantInfo,
-            objselectedItem: item as any,
-            menuItemDetail,
-            customerId,
-            total,
+            objselectedItem: item,
+            menuItemDetail: menuItemDetail,
+            customerId: Number(customerId),
+            total: total,
             quantity: currentQty,
             sessionid: cartsessionid as string,
             orderType: ordertype,
             selectedtime: selecetdtime,
           });
+          console.log("item object from addtocartclick", itemobj)
           if (itemobj && itemobj != undefined) {
             MenuItemServices.addItemToCart({
               orderobj: itemobj,
               restaurantId: restaurantinfo?.restaurantId as number,
             }).then((response) => {
-              dispatch(addItemToCart(response));
-              // console.log("add item to cart response from if", response);
               if (response) {
                 dispatch(updateCartItemCount());
                 dispatch(
@@ -176,12 +173,12 @@ const MenuItemAddToCart = ({
                   locationId: restaurantinfo?.defaultlocationId as number,
                   restaurantId: restaurantinfo?.restaurantId as number,
                   cartId: 0,
-                  customerId: customerId,
-                  rewardpoints: Number(rewardpoints),
+                  customerId: userinfo ? userinfo?.customerId : 0,
+                  rewardpoints: rpoint,
                   redeemamount: ramount,
                   deliveryaddressId: 0,
-                  tipPercentage: 0,
                   tipAmount: 0,
+                  tipPercentage: 0,
                   ordertype: Number(ordertype),
                   selectedTime: selecetdtime,
                   requestId: deliveryRequestId,

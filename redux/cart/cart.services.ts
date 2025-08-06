@@ -14,6 +14,7 @@ import {
   CartOptionParams,
   CartTotal,
   GetCartItems,
+  GetCartItemsCount,
   GetCartItemsList,
 } from "@/types/cart-types/cartservice.type";
 
@@ -49,30 +50,29 @@ export class CartServices {
     selectedTime: string;
     requestId: string;
   }): Promise<GetCartItems | null> {
-    //debugger;
     responseclass = new ResponseModel();
     const methodName = "getCartItemList";
     const location = ENDPOINTS.GET_CART_ITEM;
 
     const data = {
       cartItem: {
-        cartsessionId,
+        cartsessionId: cartsessionId,
         locationId: locationId,
         restaurantId: restaurantId,
         cartId: cartId,
         customerId: customerId,
-        rewardpoints: rewardpoints ?? 0,
-        redeemamount: redeemamount ?? 0,
-        tipPercentage,
-        tipAmount,
+        rewardpoints: rewardpoints != undefined ? rewardpoints : 0,
+        redeemamount: redeemamount != undefined ? redeemamount : 0,
+        tipPercentage: tipPercentage,
+        tipAmount: tipAmount,
         deliveryaddressId:
-          deliveryaddressId && deliveryaddressId > 0
-            ? parseInt(deliveryaddressId.toString())
+          deliveryaddressId != undefined && deliveryaddressId > 0
+            ? deliveryaddressId
             : 0,
-        ordertype,
-        requestId,
-        selectedTime,
-        // recievingDate: getDate(),
+        ordertype: ordertype,
+        requestId: requestId,
+        selectedTime: selectedTime,
+        recievingDate: getDate(),
       },
     };
 
@@ -98,7 +98,7 @@ export class CartServices {
     locationId: number,
     restaurantId: number,
     customerId: number
-  ): Promise<any> {
+  ): Promise<GetCartItemsCount | 0> {
     responseclass = new ResponseModel();
     const methodName = "getCartItemCount";
     const location = ENDPOINTS.GET_CART_ITEM_COUNT;
@@ -131,8 +131,7 @@ export class CartServices {
     cartId: number,
     restaurantId: number,
     locationId: number
-  ): Promise<any | null> {
-    //debugger;
+  ): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "deleteCartItem";
     const location = ENDPOINTS.DELETE_CART_ITEM;
@@ -167,9 +166,9 @@ export class CartServices {
   }
 
   static async checkCustomerRewardPoints(
-    restaurantId: any,
+    restaurantId: number,
     customerId: number,
-    rewardpoints: any,
+    rewardpoints: number,
     amount: string
   ): Promise<ResponseModel | null> {
     responseclass = new ResponseModel();
@@ -179,7 +178,7 @@ export class CartServices {
     const data = {
       restaurantId: restaurantId,
       customerId: customerId,
-      rewardpoints: parseInt(rewardpoints),
+      rewardpoints: rewardpoints,
       amount: parseFloat(amount),
     };
 
@@ -216,7 +215,7 @@ export class CartServices {
     price: string,
     locationId: number,
     restaurantId: number
-  ): Promise<any | null> {
+  ): Promise<GetCartItemsCount | number> {
     responseclass = new ResponseModel();
     const methodName = "updatequantity";
     const location = ENDPOINTS.UPDATE_QUANTITY;
@@ -252,7 +251,7 @@ export class CartServices {
         ToasterPositions.TopRight,
         ToasterTypes.Error
       );
-      return null;
+      return 0;
     }
   }
 
@@ -266,7 +265,7 @@ export class CartServices {
     redeemamount?: string,
     tipPercentage?: string,
     tipAmount?: string,
-    deliveryaddressId?: any,
+    deliveryaddressId?: number,
     ordertype?: number,
     requestId?: string,
     recievingTime: string = "",
@@ -296,7 +295,7 @@ export class CartServices {
           tipAmount != undefined && tipAmount != "" ? parseFloat(tipAmount) : 0,
         deliveryaddressId:
           deliveryaddressId != undefined && deliveryaddressId > 0
-            ? parseInt(deliveryaddressId)
+            ? deliveryaddressId
             : 0,
         ordertype: ordertype,
         requestId: requestId,

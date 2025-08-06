@@ -66,7 +66,7 @@ const CategoryMenuItems = ({
   children,
   errorMessage,
 }: {
-  categoryslug: string;
+  categoryslug?: string;
   menuItemsWithCat: GetAllMenuCategoryItems[];
   children: ReactNode;
   errorMessage: string;
@@ -752,7 +752,8 @@ const CategoryMenuItems = ({
                     );
                   })}
                 {/* {((isShowSkeleton&&menuItemsWithCat?.length===0)|| (Object.keys(searchdata).length === 0 && errorMessage == "" && searchtext !== "")) && <FavouriteSkeleton />} */}
-                {Object.keys(searchdata).length === 0 &&
+                {searchdata &&
+                  Object.keys(searchdata).length === 0 &&
                   errorMessage == "" &&
                   searchtext !== "" && <FavouriteSkeleton />}
                 {errorMessage && (

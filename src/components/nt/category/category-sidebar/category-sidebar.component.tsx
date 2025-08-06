@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../../../../redux/hooks";
 import OrderItemsList from "./order-items-list.component";
 import { useParams, useRouter } from "next/navigation";
 import { RelatedItemsList } from "../../common/related-items/related-items-list";
+import { GetCartItemsCount } from "@/types/cart-types/cartservice.type";
 
 const CategorySidebar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -57,9 +58,9 @@ const CategorySidebar: React.FC = () => {
           {!isSchoolProgramEnabled && <OrderPreparationDetail />}
           <div className="card totalbox">
             <OrderItemsList />
-            {cart?.cartitemcount > 0 && <RelatedItemsList />}
+            {(cart?.cartitemcount as number) > 0 && <RelatedItemsList />}
             {/* <RelatedItemsList /> */}
-            {cart?.cartitemcount > 0 ? (
+            {(cart?.cartitemcount as number) > 0 ? (
               <a className="btn-default w-100" onClick={handleClick}>
                 {" "}
                 Go To Cart

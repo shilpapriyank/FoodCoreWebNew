@@ -256,6 +256,7 @@ export class MenuItemServices {
     customerId: number;
     serchQuery: string;
   }): Promise<GetSerachResult | null> {
+    //debugger;
     responseclass = new ResponseModel();
     const methodName = "getSerachResult";
     const location = ENDPOINTS.GET_SEARCH_RESULT;
