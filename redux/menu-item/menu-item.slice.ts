@@ -16,6 +16,7 @@ import {
   Menuitems,
 } from "@/types/menuitem-types/menuitem.type";
 import { RootState } from "../store";
+import { OrderObjType } from "@/types/cart-types/cartservice.type";
 
 // Types
 export interface MenuItemState {
@@ -29,7 +30,7 @@ export interface MenuItemState {
   //   categories: Category[];
   // };
   searchdata: GetSerachResult | null;
-  dependentid: any;
+  dependentid: number;
   dependentitemids: DependantMenuList[];
   dependentqty: number;
 }
@@ -140,7 +141,7 @@ export const addItemToCart = createAsyncThunk(
     orderobj,
     restaurantId,
   }: {
-    orderobj: any;
+    orderobj: OrderObjType;
     restaurantId: number;
   }) => {
     const response = await MenuItemServices.addItemToCart({
@@ -157,7 +158,7 @@ export const updateItemToCart = createAsyncThunk(
     orderobj,
     restaurantId,
   }: {
-    orderobj: any;
+    orderobj: OrderObjType;
     restaurantId: number;
   }) => {
     const response = await MenuItemServices.updateCartOrdersItem({
@@ -231,7 +232,7 @@ const menuItemSlice = createSlice({
     ) => {
       state.searchdata = action.payload;
     },
-    setDipendentId: (state, action: PayloadAction<any>) => {
+    setDipendentId: (state, action: PayloadAction<number>) => {
       state.dependentid = action.payload;
     },
     setDipendentIds: (state, action: PayloadAction<any[]>) => {

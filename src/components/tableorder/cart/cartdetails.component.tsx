@@ -43,8 +43,8 @@ const CartDetailsComponent: React.FC<CartDetailsProps> = ({ handleClose }) => {
   const tableDetail = tableorder.tabledetail;
   const [note, setNote] = useState<string>(tableorder.kitchencomment || "");
   const collectionName = generateTableName(
-    restaurantinfo?.restaurantId,
-    restaurantinfo?.defaultlocationId,
+    restaurantinfo?.restaurantId as number,
+    restaurantinfo?.defaultlocationId as number,
     process.env.NEXT_PUBLIC_ENV
   );
   const dispatch = useAppDispatch();

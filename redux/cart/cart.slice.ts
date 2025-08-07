@@ -275,7 +275,7 @@ export const carttotaldata = createAsyncThunk(
       rewardpoints?: string;
       redeemamount?: string;
       tipPercentage?: string;
-      tipAmount?: string;
+      tipAmount?: number;
       deliveryaddressId?: number;
       ordertype?: number;
       requestId?: string;
@@ -296,7 +296,7 @@ export const carttotaldata = createAsyncThunk(
       rewardpoints,
       redeemamount,
       tipPercentage,
-      checkIntegerValue(tipAmount),
+      checkIntegerValue(tipAmount as number),
       deliveryaddressId,
       ordertype,
       requestId,
@@ -360,7 +360,7 @@ export const getCartTotalData = createAsyncThunk(
       rewardpoints: string;
       redeemamount: string;
       tipPercentage: string;
-      tipAmount: string;
+      tipAmount: number;
       deliveryaddressId: number;
       ordertype: number;
       requestId: string;

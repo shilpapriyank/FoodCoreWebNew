@@ -19,6 +19,7 @@ import {
   GetThemeDetails,
 } from "@/components/common/utility";
 import { ORDER_TYPE } from "../utility";
+import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 
 export const RelatedItemsList = () => {
   const {
@@ -63,7 +64,7 @@ export const RelatedItemsList = () => {
       ),
     staleTime: 0,
     refetchOnWindowFocus: false,
-    enabled: cart?.cartitemcount > 0,
+    enabled: (cart?.cartitemcount as number) > 0,
   });
 
   const maincategoryList = main.maincategoryList;
@@ -110,7 +111,11 @@ export const RelatedItemsList = () => {
     }, 100);
   };
 
-  if (pathname.includes(PAGES.CHECKOUT) && data && cart?.cartitemcount > 0) {
+  if (
+    pathname.includes(PAGES.CHECKOUT) &&
+    data &&
+    (cart?.cartitemcount as number) > 0
+  ) {
     return (
       <div className="infobox">
         <h3 className="heading">SUGGESTIONS</h3>
@@ -146,7 +151,7 @@ export const RelatedItemsList = () => {
         )}
       </div>
     );
-  } else if (data && cart?.cartitemcount > 0) {
+  } else if (data && (cart?.cartitemcount as number) > 0) {
     return (
       <>
         <h3 className="heading">SUGGESTIONS</h3>

@@ -3,7 +3,6 @@ import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-p
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import React from "react";
 import { FacebookShareButton, FacebookIcon, WhatsappIcon } from "react-share";
-import ToastNotify from "../helpers/toastnotify/toast-notify.component";
 
 const ShareItemComponent = ({
   url,
@@ -68,7 +67,6 @@ const ShareItemComponent = ({
           </span>
         </div>
       </div>
-      <ToastNotify />
     </>
   );
 };

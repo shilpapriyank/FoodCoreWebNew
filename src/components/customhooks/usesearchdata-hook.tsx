@@ -1,18 +1,18 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import { GetThemeDetails, ORDER_TYPE, ThemeObj } from "../common/utility";
-import { useAppDispatch } from "../../../redux/hooks";
+import { GetThemeDetails, ORDERTYPE, ThemeObj } from "../common/utility";
 import { useReduxData } from "./useredux-data-hooks";
-import { useParams, useRouter } from "next/navigation";
 import {
   setSearchData,
   setSearchText,
 } from "../../../redux/menu-item/menu-item.slice";
 import { MenuItemServices } from "../../../redux/menu-item/menu-item.services";
 import { setSelectedCategory } from "../../../redux/category/category.slice";
+import { useAppDispatch } from "../../../redux/hooks";
+import { useParams, useRouter } from "next/navigation";
 
 export const useSearchData = (searchtext: string) => {
   const dispatch = useAppDispatch();
-  const [searchItem, setsearchItem] = useState<string>(searchtext);
+  const [searchItem, setsearchItem] = useState(searchtext);
   const { selecteddelivery, restaurantinfo, userinfo, menuitem } =
     useReduxData();
   let pickupordelivery = selecteddelivery.pickupordelivery;
@@ -21,7 +21,7 @@ export const useSearchData = (searchtext: string) => {
   const params = useParams();
   const { dynamic, location } = params;
   const [errorMessage, seterrorMessage] = useState(
-    searchtext !== "" && searchdata && Object.keys(searchdata).length === 0
+    searchtext !== "" && Object.keys(searchdata ?? {}).length === 0
       ? "Opps! No Items Found"
       : ""
   );
@@ -40,8 +40,8 @@ export const useSearchData = (searchtext: string) => {
       dispatch(setSearchText(searchItem));
       dispatch(
         setSearchData({
-          menuItems: [],
           categories: [],
+          menuItems: [],
         })
       );
       MenuItemServices.getSerachResult({
@@ -54,18 +54,18 @@ export const useSearchData = (searchtext: string) => {
           if (res && Object.keys(res).length > 0) {
             seterrorMessage("");
             let orderTypeCat = null;
-            if (pickupordelivery === ORDER_TYPE.PICKUP.text) {
-              orderTypeCat = res?.categories.filter(
+            if (pickupordelivery === ORDERTYPE.Pickup) {
+              orderTypeCat = res.categories.filter(
                 (item) => item.istakeoutavailable === true
               );
-            } else if (pickupordelivery === ORDER_TYPE.DELIVERY.text) {
-              orderTypeCat = res?.categories.filter(
+            } else if (pickupordelivery === ORDERTYPE.Delivery) {
+              orderTypeCat = res.categories.filter(
                 (item) => item.isdeliveryavailable === true
               );
             } else {
               orderTypeCat = res.categories;
             }
-            let avilableMenuItem = res?.menuItems.filter((item) => {
+            let avilableMenuItem = res.menuItems.filter((item) => {
               return orderTypeCat.some((cat) => cat.catId === item.catId);
             });
             res.categories = orderTypeCat;
@@ -76,7 +76,7 @@ export const useSearchData = (searchtext: string) => {
               router.push(
                 `/${selctedTheme?.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
               );
-              dispatch(setSelectedCategory(res?.categories[0]));
+              dispatch(setSelectedCategory(res.categories[0]));
             } else {
               const newCatWithMenuItems = orderTypeCat?.map((cat) => {
                 const menuItems = avilableMenuItem?.filter(
@@ -87,9 +87,7 @@ export const useSearchData = (searchtext: string) => {
                   menuitems: menuItems,
                 };
               });
-              //res.menuItems = newCatWithMenuItems;
-              res.menuItems = avilableMenuItem;
-              //res.categories = newCatWithMenuItems;
+              res.menuItems = newCatWithMenuItems as any;
               dispatch(setSearchData(res));
               router.push(
                 `/${selctedTheme.url}/${dynamic}/${location}/${res?.categories[0]?.categoryslug}`
@@ -112,8 +110,8 @@ export const useSearchData = (searchtext: string) => {
     seterrorMessage("");
     dispatch(
       setSearchData({
-        menuItems: [],
         categories: [],
+        menuItems: [],
       })
     );
   }

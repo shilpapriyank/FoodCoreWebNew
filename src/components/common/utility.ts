@@ -19,6 +19,7 @@ import {
 import {
   CartDetails,
   CartItemDetails,
+  PromotionData,
 } from "@/types/cart-types/cartservice.type";
 import {
   GetAllMenuCategoryItems,
@@ -302,7 +303,7 @@ export const checkCheckoutDisable = (
         isAnyPickupItemNotAvailable) ||
       (pickupordelivery === ORDER_TYPE.DELIVERY.text &&
         isAnydeliveryItemNotAvailable) ||
-      checkMenuItemTimeAvailability(cartItems as any)
+      checkMenuItemTimeAvailability(cartItems as CartItemDetails[])
     ) {
       return true;
     } else if (
@@ -712,10 +713,10 @@ export const isSeoDetail = (url: string) => {
   return isGetSeo;
 };
 
-export const checkIntegerValue = (value: any) => {
+export const checkIntegerValue = (value: number) => {
   let zero = 0;
   let intValue = value ?? zero;
-  intValue = intValue === "" ? zero : intValue;
+  //intValue = intValue === null ? zero : intValue;
   intValue = intValue === null ? 0 : intValue;
   return intValue;
 };
@@ -796,7 +797,7 @@ export const bindPlaceOrderObject = (
   isAsap: boolean,
   paymentType: string,
   restaurantinfo: GetAllRestaurantInfo,
-  promotionData: any,
+  promotionData: PromotionData,
   studentname: string,
   distance: any,
   pickupordelivery: string,
@@ -890,11 +891,12 @@ export const ORDERSTATUS = {
   FAILED: "Failed",
 };
 export const calulateTotal = (cartdata: CartDetails) => {
-  let total: any = 0;
+  let total: number = 0;
   cartdata?.cartItemDetails?.map((data) => {
     total += data?.totalprice;
   });
-  return parseFloat(total)?.toFixed(2);
+  //return parseFloat(total)?.toFixed(2);
+  return total
 };
 ////////////////////////////////////
 export const getCheckTimeArr = (

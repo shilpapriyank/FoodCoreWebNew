@@ -54,7 +54,6 @@ import {
   Type,
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 
 const MenuItemModal = ({
   isOpenModal,
@@ -508,7 +507,7 @@ const MenuItemModal = ({
             restaurantId: restaurantId,
           }).then((response) => {
             if (response) {
-              dispatch(setCartItem(response));
+              //dispatch(setCartItem(response));
               dispatch(
                 getCartItemCount({
                   cartsessionId: String(sessionid),
@@ -561,8 +560,12 @@ const MenuItemModal = ({
                   let removefirst = dependentItemList?.shift();
                   let remainingList = dependentItemList;
 
-                  dispatch(setDipendentId(removefirst?.DependantMenuItemId));
-                  dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+                  dispatch(
+                    setDipendentId(removefirst?.DependantMenuItemId as number)
+                  );
+                  dispatch(
+                    setDipendentId(removefirst?.DependantMenuItemId as number)
+                  );
                   dispatch(
                     setDipendentIds(remainingList as DependantMenuList[])
                   );
@@ -599,7 +602,7 @@ const MenuItemModal = ({
           restaurantId: restaurantId,
         }).then((response) => {
           if (response) {
-            dispatch(getCartItem(response));
+            //dispatch(getCartItem(response));
             dispatch(
               getCartItemCount({
                 cartsessionId: String(sessionid),
@@ -650,7 +653,9 @@ const MenuItemModal = ({
                     : menuItemDetail?.dependantMenuList;
                 let removefirst = dependentItemList?.shift();
                 let remainingList = dependentItemList;
-                dispatch(setDipendentId(removefirst?.DependantMenuItemId));
+                dispatch(
+                  setDipendentId(removefirst?.DependantMenuItemId as number)
+                );
                 dispatch(
                   setDipendentId(removefirst?.DependantMenuItemId as number)
                 );
@@ -821,7 +826,6 @@ const MenuItemModal = ({
         </div>
       </div>
       <div className="modal-backdrop fade show"></div>
-      <ToastNotify />
     </>
   );
 };

@@ -30,7 +30,7 @@ const CategoryHeader = () => {
     searchtext !== "" ? searchdata?.categories : maincategoryList;
   let pickupordelivery = selecteddelivery.pickupordelivery;
   const { filterCategory } = useUtility();
-  const catWithSearch = filterCategory(categoryListItems, pickupordelivery);
+  const catWithSearch = filterCategory(categoryListItems as any, pickupordelivery);
   const activeItemRef = useRef<HTMLLIElement | null>(null);
   const [activeSection, setActiveSection] = useState<string>("");
 

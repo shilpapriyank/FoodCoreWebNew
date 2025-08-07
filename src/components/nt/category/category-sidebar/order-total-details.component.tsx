@@ -52,7 +52,7 @@ const OrderTotalDetails = () => {
   return (
     <>
       {charges &&
-        cart?.cartitemcount > 0 &&
+        (cart?.cartitemcount as number) > 0 &&
         charges.subTotal != undefined &&
         charges.subTotal > 0 && (
           <>

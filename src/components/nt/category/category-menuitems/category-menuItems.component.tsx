@@ -58,7 +58,6 @@ import {
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
 import Login from "../../login-register/login.component";
-import ToastNotify from "../../helpers/toastnotify/toast-notify.component";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -770,7 +769,6 @@ const CategoryMenuItems = ({
           </div>
         </section>
       )}
-      <ToastNotify />
       <ScrollToTop />
       {/* <MenuItemDetail /> */}
       {openMenuItemModal && (

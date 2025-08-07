@@ -23,7 +23,6 @@ import {
   selectedItemSize,
   updateitemoption,
 } from "../../../../../../redux/menu-item/menu-item.slice";
-import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 
 const MenuItemOptions = ({
@@ -1158,7 +1157,6 @@ const MenuItemOptions = ({
           </div>
         </div>
       )}
-      <ToastNotify />
     </>
   );
 };

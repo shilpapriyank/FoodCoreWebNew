@@ -19,6 +19,7 @@ import { RestaurantsServices } from "../../../../../../redux/restaurants/restaur
 import { useParams, usePathname, useRouter } from "next/navigation";
 import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 import { useAppDispatch } from "../../../../../../redux/hooks";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 type ParamType = {
   restaurant: string;
@@ -44,39 +45,15 @@ export default function CategoryPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  let menuItemsWithCat = filterCategory(
-    searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
+  // let menuItemsWithCat = filterCategory(
+  //   searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
+  //   pickupordelivery
+  // );
+
+  const menuItemsWithCat = filterCategory(
+    (searchtext !== "" ? searchdata?.menuItems : categoryItemsList) ?? [],
     pickupordelivery
   );
-
-  //   useEffect(() => {
-  //     //CONDITION FOR THE categoryitemlist REDUX IS EMPTY AND USER DIRECT ENTER THE LINK IN THE BROWSER
-  //     if (categoryitemlist.length === 0 || (selectedmenuitemdetail.length === undefined && Object.keys(selectedmenuitemdetail).length === 0)) {
-  //         const catagerySelected = maincategoryList.filter(x =>x.categoryslug=== category)
-  //         dispatch(selectedCategory(catagerySelected[0]))
-  //         CategoryServices.getCategoryItemList(restaurantinfo.restaurantId, catagerySelected[0].catId, userinfo ? userinfo.customerId : 1, restaurantinfo.defaultlocationId).then(response => {
-
-  //             if (response) {
-  //                 selcetedCategoryList = response;
-  //                 dispatch({
-  //                     type: CategoryTypes.CATEGORY_ITEM_LIST,
-  //                     payload: response
-  //                 })
-  //                 let selectedCategoryItem;
-  //                 if (selcetedCategoryList !== undefined && selcetedCategoryList !== null) {
-  //                     selectedCategoryItem = selcetedCategoryList?.filter(x => x.menuitemId === parseInt(menuitemId))
-  //                     dispatch(selectedMenuItem(selectedCategoryItem[0]));
-  //                     dispatch(getMenuItemDetailes(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId, 0, 0, 0, 0));
-  //                     // dispatch(getMenuItemDetailes(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId, 0, selectedCategoryItem[0].menuitemId, 0, 0));
-  //                     setload(load + 1);
-  //                 }
-  //             }
-  //         })
-  //         // setload(load + 1)
-  //     } else {
-  //         setload(load + 1)
-  //     }
-  // }, []);
 
   useEffect(() => {
     if (rawParams) {
