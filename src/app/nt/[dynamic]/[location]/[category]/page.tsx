@@ -19,7 +19,6 @@ import { RestaurantsServices } from "../../../../../../redux/restaurants/restaur
 import { useParams, usePathname, useRouter } from "next/navigation";
 import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 import { useAppDispatch } from "../../../../../../redux/hooks";
-import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 type ParamType = {
   restaurant: string;

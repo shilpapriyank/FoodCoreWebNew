@@ -7,8 +7,19 @@ import { TimeSlotPillComponent } from "./timeslot-pill.component";
 import "swiper/swiper-bundle.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { OrderServices } from "../../../../redux/order/order.services";
-import { ORDER_TYPE, GetThemeDetails, getAsapLaterOnState, orderDisable, OrderType } from "../../common/utility";
-import { emptyordertime, isasap, setFutureOrderDay, setordertime } from "../../../../redux/order/order.slice";
+import {
+  ORDER_TYPE,
+  GetThemeDetails,
+  getAsapLaterOnState,
+  orderDisable,
+  OrderType,
+} from "../../common/utility";
+import {
+  emptyordertime,
+  isasap,
+  setFutureOrderDay,
+  setordertime,
+} from "../../../../redux/order/order.slice";
 import { useDispatch } from "react-redux";
 import {
   AsapLaterOnState,
@@ -43,7 +54,10 @@ import { setintialrewardpoints } from "../../../../redux/rewardpoint/rewardpoint
 import { v4 as uuidv4 } from "uuid";
 import { PAGES } from "../common/pages";
 import FutureDayComponent from "./future-day.component";
-import { DefaultLocation, GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import {
+  DefaultLocation,
+  GetAllRestaurantInfo,
+} from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 
@@ -116,11 +130,18 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const locationFullLink = `/${selectedTheme?.url}/${dynamic}/${locationUrl}/`;
   const dispatch = useAppDispatch();
-  const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(restaurantinfo?.defaultLocation as any,
+  const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
+    restaurantinfo?.defaultLocation as any,
     selecteddelivery?.pickupordelivery as OrderType | any,
-    restaurantWindowTime as RestaurantWindowTime | any);
-  const orderDisableData: OrderDisableData = orderDisable(restaurantinfo as GetAllRestaurantInfo, selecteddelivery, restaurantWindowTime as RestaurantWindowTimeNew[] | any);
-  const selectedDay: string = (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
+    restaurantWindowTime as RestaurantWindowTime | any
+  );
+  const orderDisableData: OrderDisableData = orderDisable(
+    restaurantinfo as GetAllRestaurantInfo,
+    selecteddelivery,
+    restaurantWindowTime as RestaurantWindowTimeNew[] | any
+  );
+  const selectedDay: string =
+    (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
   const [dayCloseError, setDayCloseError] = useState<string>("");
 
   useEffect(() => {
@@ -170,11 +191,11 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
             })
           );
           if (userinfo && userinfo?.customerId) {
-            deleteCartItemFromSessionId(
-              sessionid,
-              restaurantinfo.restaurantId,
-              defaultLocation?.locationId
-            );
+            deleteCartItemFromSessionId({
+              cartsessionId: sessionid as string,
+              restaurantId: restaurantinfo.restaurantId,
+              locationId: defaultLocation?.locationId as number,
+            });
             dispatch(emptycart() as any);
             dispatch(setintialrewardpoints(userinfo));
           }
@@ -337,22 +358,25 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   return (
     <>
       <div
-        className={`modal fade modal-your-order address-modal ${isOpenModal ? "show d-block" : ""
-          }`}
+        className={`modal fade modal-your-order address-modal ${
+          isOpenModal ? "show d-block" : ""
+        }`}
         style={{ display: "block" }}
         id="order-time-modal"
         aria-labelledby="order-time-modal-Label"
         aria-hidden="true"
       >
         <div
-          className={`modal-dialog modal-dialog-centered ${true ? "modal-dialog-scrollable" : ""
-            }`}
+          className={`modal-dialog modal-dialog-centered ${
+            true ? "modal-dialog-scrollable" : ""
+          }`}
         >
           <div className="modal-content pb-0">
-            <h5 className="modal-title" id="login-modal-Label">{`Schedule ${ordertype === ORDER_TYPE.DELIVERY.value
-              ? ORDER_TYPE.DELIVERY.text
-              : ORDER_TYPE.PICKUP.text
-              }`}</h5>
+            <h5 className="modal-title" id="login-modal-Label">{`Schedule ${
+              ordertype === ORDER_TYPE.DELIVERY.value
+                ? ORDER_TYPE.DELIVERY.text
+                : ORDER_TYPE.PICKUP.text
+            }`}</h5>
             <a
               className="btn-close close-time "
               id="close-modal "
@@ -378,8 +402,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               </div>
             )}
             <div
-              className={`modal-body ts-body ${dayCloseError !== "" ? "p-0 pb-2" : ""
-                }`}
+              className={`modal-body ts-body ${
+                dayCloseError !== "" ? "p-0 pb-2" : ""
+              }`}
             >
               <div className="time-slot">
                 <div className="row">
@@ -419,9 +444,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                   </> : <>{<p className='red-text text-center p-0'>{dayCloseError}</p>}</>}
                 </div> */}
                 <div className="row">
-                  {dayCloseError === '' ? (
+                  {dayCloseError === "" ? (
                     <>
-                      {(asapLaterOnState.isAsap && selectedDate === "Today") && (
+                      {asapLaterOnState.isAsap && selectedDate === "Today" && (
                         <>
                           {/* {console.log("Showing ASAP TimeSlotPillComponent")} */}
                           <TimeSlotPillComponent
@@ -436,23 +461,26 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                         </>
                       )}
 
-                      {(!loadTimeslot && loadSwipe) ? (
+                      {!loadTimeslot && loadSwipe ? (
                         <>
-                          {Array.isArray(timeSlots) && timeSlots?.map((time, index) => {
-                            return (
-                              time.StartSlotNew !== null && (
-                                <TimeSlotPillComponent
-                                  key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
-                                  time={time}
-                                  selectedTime={selectedTime || order.checktime}
-                                  name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                                  id={`slot-${index}`}
-                                  handleClickTimePill={handleClickTimePill}
-                                  label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                                />
-                              )
-                            );
-                          })}
+                          {Array.isArray(timeSlots) &&
+                            timeSlots?.map((time, index) => {
+                              return (
+                                time.StartSlotNew !== null && (
+                                  <TimeSlotPillComponent
+                                    key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
+                                    time={time}
+                                    selectedTime={
+                                      selectedTime || order.checktime
+                                    }
+                                    name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                                    id={`slot-${index}`}
+                                    handleClickTimePill={handleClickTimePill}
+                                    label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
+                                  />
+                                )
+                              );
+                            })}
                         </>
                       ) : (
                         <TimeSlotSkeletonComponent />
@@ -460,7 +488,9 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                     </>
                   ) : (
                     <>
-                      <p className="red-text text-center p-0">{dayCloseError}</p>
+                      <p className="red-text text-center p-0">
+                        {dayCloseError}
+                      </p>
                     </>
                   )}
                 </div>
@@ -469,7 +499,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
             <div className="row modal-footer position-sticky sticky-bottom border-top-0 footer-top-shadow">
               {order.isasap && asapTime !== "" && dayCloseError === "" && (
                 <h6 className="text-center fs-5">
-                  { }
+                  {}
                   {selectedDay},&nbsp;
                   {(order?.futureOrderDay as any)?.futureDate}, {asapTime}
                 </h6>
@@ -479,7 +509,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 timeOrErrorMessage === "" &&
                 dayCloseError === "" && (
                   <h6 className="text-center fs-5">
-                    { }
+                    {}
                     {selectedDay},&nbsp;
                     {(order?.futureOrderDay as any)?.futureDate},{" "}
                     {selectedTime || order?.checktime}
@@ -498,7 +528,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 )}
               <div className="d-grid gap-2 col-md-6 col-12 mx-auto mt-2">
                 {(selectedTime === "" && order?.checktime === "") ||
-                  dayCloseError !== "" ? (
+                dayCloseError !== "" ? (
                   <ButtonComponent
                     classname=" btn-default btn-orange opacity-50 no-drop"
                     textName="Schedule"

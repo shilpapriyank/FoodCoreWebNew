@@ -191,11 +191,11 @@ const LoadLocationDirectComponent = ({
           }) as any
         );
         if (userinfo && userinfo?.customerId) {
-          deleteCartItemFromSessionId(
-            sessionid,
-            restaurantinfo?.restaurantId,
-            restaurantinfo?.defaultLocation.locationId
-          );
+          deleteCartItemFromSessionId({
+            cartsessionId: sessionid as string,
+            restaurantId: restaurantinfo?.restaurantId,
+            locationId: restaurantinfo?.defaultLocation.locationId,
+          });
           // dispatch(emptycart());
           dispatch(setintialrewardpoints(userinfo as any));
         }
@@ -206,8 +206,8 @@ const LoadLocationDirectComponent = ({
             0,
             "0",
             String(restaurantinfo?.defaultLocation.locationId)
-          ).then((res: any) => {
-            if (res.status == 1) {
+          ).then((res) => {
+            if (res && res.status == 1) {
               let rewards = {
                 rewardvalue: rewardvalue,
                 rewardamount: parseFloat(
