@@ -1,86 +1,45 @@
 // -------old types before above it defined ---------------
+
+import { Topping } from "../menuitem-types/menuitem.type";
+
 export interface CartItem {
-  availability: boolean;
-  availabilityMessage: string | null;
-  cartid: number;
-  categorydeliveryavailable: boolean;
-  categoryhstapplied: boolean;
-  categoryisonlineavailable: boolean;
-  categoryisposavailable: boolean;
-  categoryname: string;
-  categoryslug: string;
-  categorytakeoutavailable: boolean;
-  categorytaxes: number;
-  currencysymbol: string;
-  dependentmenuitemid: number;
-  hstapplied: boolean;
-  imgUrl: string;
-  imgname: string;
-  isDiscountApply: number;
-  isdefaultprice: boolean;
-  isdelivery: number;
-  isfreeitem: boolean;
-  istakeaway: number;
-  iswaiting: number;
-  itemname: string;
-  locationid: number;
-  menuitemid: number;
-  menuitemslug: string;
-  minorder: number;
-  orderItemType: number;
-  orderitemId: number;
-  price: number;
-  pricetypeid: number;
-  promotionpercentage: number;
-  promotionpercentagecal: number;
-  promotionruletype: number;
-  promotiontitle: string;
-  qty: number;
+  menuid: number;
   restaurantId: number;
-  rewardpoints: number;
-  rewardvalue: number;
-  studentname: string;
-  subParameterPrice: number;
-  subParameters: any; // Can define properly if structure known
+  locationId: number;
+  cartId: number;
+  OrderItemType: number;
+  orderitemId: number;
+  qty: number;
+  price: number;
+  itemname: string;
+  netprice: number;
   subparameterid: number;
   subparametername: string;
-  systemAccessFee: number;
-  taxPercentage: number;
-  totalprice: number;
-  unitprice: number;
-  cartitemcount: number;
+  topsubparaid: number;
+  topsubparaname: string;
+  topprice: number;
+  dependentmenuitemid: number;
+  sessionid: string;
+  rewardpoints: number;
+  Toppings: Topping[];
+  OptionParameter: CartOptionParams[];
+  studentname: string;
 }
 
-export interface CartTotal {
-  PromotionData: PromotionData; // Define if structure known
-  cartCount: number;
-  cartTaxList: any; // Define if structure known
-  currencySymbol: string;
-  customerOrderCount: number;
-  deliveryAmount: number;
-  deliveryCharges: any; // Define if structure known
-  discountAmount: number;
-  discountPercentage: string;
-  discountType: string;
-  grandTotal: number;
-  hstTotal: number;
-  isDiscountApplied: boolean;
-  minOrderAmountForRewardPoint: any;
-  reedemAmount: number;
-  reedemPoints: number;
-  subTotal: number;
-  subTotalWithDiscount: number;
-  systemAccessFee: number;
-  taxPercentage: number;
-  tipAmount: number;
-  tipPercentage: number;
-  totalTip: number;
-  cartitemcount: number;
+export interface OrderObjType {
+  cart: CartItem[];
+  restaurantId: number;
+  locationId: number;
+  removecart: string;
+  cartsessionId: string;
+  orderType: number;
+  selectedTime: string;
+  selectedDate: string;
 }
 
 export interface PromotionData {
   promotionpercentage: number;
-  promotiontitle: any;
+  promotiontitle: string;
   promotionruletype: number;
   promotionpercentagecal: number;
   promotionappliedto: number;
@@ -151,7 +110,7 @@ export interface CartItemDetails {
   promotionpercentagecal: number;
   isfreeitem: boolean;
   availability: boolean;
-  availabilityMessage: any;
+  availabilityMessage: string;
   categoryhstapplied: boolean;
   categorytaxes: number;
 }
@@ -172,7 +131,7 @@ export interface CartTotal {
   tipAmount: number;
   cartCount: number;
   customerOrderCount: number;
-  minOrderAmountForRewardPoint: any;
+  minOrderAmountForRewardPoint: string;
   discountPercentage: string;
   discountType: string;
   currencySymbol: string;
@@ -198,123 +157,3 @@ export interface GetCartItemsCount {
 export interface GetCartItems {
   cartDetails: CartDetails;
 }
-
-// export interface CartDetails {
-//   // cartItemDetails: CartItemDetail[];
-//   //cartOptionParams: CartOptionParam[];
-//   cartTotal: CartTotal;
-// }
-
-// // ------new defined types ----------
-// ///getCartItems service types
-// export interface CartItems {
-//   cartDetails: CartDetails;
-// }
-
-// export interface CartDetails {
-//   cartItemDetails: CartItemDetail[];
-//   cartOptionParams: CartOptionParam[];
-//   cartTotal: CartTotal;
-// }
-
-// export interface CartItemDetail {
-//   categoryname: string;
-//   itemname: string;
-//   orderItemType: number;
-//   orderitemId: number;
-//   cartid: number;
-//   qty: number;
-//   subparameterid: number;
-//   price: number;
-//   unitprice: number;
-//   totalprice: number;
-//   rewardpoints: number;
-//   restaurantId: number;
-//   locationid: number;
-//   subparametername: string;
-//   rewardvalue: number;
-//   minorder: number;
-//   currencysymbol: string;
-//   istakeaway: number;
-//   isdelivery: number;
-//   iswaiting: number;
-//   isDiscountApply: number;
-//   imgname: string;
-//   imgUrl: string;
-//   menuitemid: number;
-//   taxPercentage: number;
-//   subParameters: any;
-//   subParameterPrice: number;
-//   systemAccessFee: number;
-//   hstapplied: boolean;
-//   pricetypeid: number;
-//   isdefaultprice: boolean;
-//   studentname: string;
-//   categorytakeoutavailable: boolean;
-//   categorydeliveryavailable: boolean;
-//   categoryisonlineavailable: boolean;
-//   categoryisposavailable: boolean;
-//   menuitemslug: string;
-//   categoryslug: string;
-//   dependentmenuitemid: number;
-//   promotionpercentage: number;
-//   promotiontitle: string;
-//   promotionruletype: number;
-//   promotionpercentagecal: number;
-//   isfreeitem: boolean;
-//   availability: boolean;
-//   availabilityMessage: any;
-//   categoryhstapplied: boolean;
-//   categorytaxes: number;
-// }
-
-// export interface CartOptionParam {
-//   cartid: number;
-//   suboptionId: number;
-//   title: string;
-//   price: number;
-//   pizzaside: string;
-//   quantity: number;
-//   optionId: number;
-//   optiontitle: string;
-//   paidQty: number;
-// }
-
-// export interface CartTotal {
-//   subTotal: number;
-//   reedemPoints: number;
-//   reedemAmount: number;
-//   discountAmount: number;
-//   deliveryAmount: number;
-//   subTotalWithDiscount: number;
-//   taxPercentage: number;
-//   totalTip: number;
-//   hstTotal: number;
-//   grandTotal: number;
-//   systemAccessFee: number;
-//   tipPercentage: number;
-//   tipAmount: number;
-//   cartCount: number;
-//   customerOrderCount: number;
-//   minOrderAmountForRewardPoint: string;
-//   discountPercentage: string;
-//   discountType: string;
-//   currencySymbol: string;
-//   deliveryCharges: any;
-//   cartTaxList: any;
-//   isDiscountApplied: boolean;
-//   PromotionData: PromotionData;
-// }
-
-// export interface PromotionData {
-//   promotionpercentage: number;
-//   promotiontitle: any;
-//   promotionruletype: number;
-//   promotionpercentagecal: number;
-//   promotionappliedto: number;
-// }
-
-// // ---------getCartItemsCount service types --------
-// export interface CartItemsCount {
-//   cartCount: number;
-// }

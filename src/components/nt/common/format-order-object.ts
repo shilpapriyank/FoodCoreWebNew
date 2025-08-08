@@ -1,4 +1,8 @@
-import { CartOptionParams } from "@/types/cart-types/cartservice.type";
+import {
+  CartItem,
+  CartOptionParams,
+  OrderObjType,
+} from "@/types/cart-types/cartservice.type";
 import {
   GetMenuItemDetail,
   Menuitems,
@@ -84,35 +88,72 @@ export const FormatOrderObject = ({
       });
     });
 
+  if (!selectedsize || !selectedtopping) {
+    return null;
+  }
+
   //console.log("lstcarttopping from formate order object", lstcarttopping);
+  let cartItem: CartItem = {
+    menuid: objselectedItem.menuitemId,
+    restaurantId: objrestaurant.restaurantId,
+    locationId: objrestaurant.defaultlocationId,
+    cartId: objselectedItem.cartid ?? 0,
+    OrderItemType: 0,
+    orderitemId: 0,
+    qty: quantity,
+    price: selectedsize?.price ?? 0,
+    itemname: objselectedItem.menuItemName ?? "Unknown Item",
+    netprice: total ?? 0,
+    subparameterid: selectedsize?.subparameterId ?? 0,
+    subparametername: selectedsize?.type ?? "",
+    topsubparaid: selectedtopping?.subparameterId ?? 0,
+    topsubparaname: "",
+    topprice: 0,
+    dependentmenuitemid: objselectedItem?.dependedItemId ?? 0,
+    sessionid,
+    rewardpoints: 0,
+    Toppings: [],
+    OptionParameter: lstcarttopping,
+    studentname,
+  };
+  // const objorder = {
+  //   cart: [
+  //     selectedsize &&
+  //       selectedtopping && {
+  //         menuid: objselectedItem.menuitemId,
+  //         restaurantId: objrestaurant.restaurantId,
+  //         locationId: objrestaurant.defaultlocationId,
+  //         cartId: objselectedItem.cartid ?? 0,
+  //         OrderItemType: 0,
+  //         orderitemId: 0,
+  //         qty: quantity,
+  //         price: selectedsize?.price ?? 0,
+  //         itemname: objselectedItem.menuItemName ?? "Unknown Item",
+  //         netprice: total ?? 0,
+  //         subparameterid: selectedsize?.subparameterId ?? 0,
+  //         subparametername: selectedsize?.type ?? "",
+  //         topsubparaid: selectedtopping?.subparameterId ?? 0,
+  //         topsubparaname: null,
+  //         topprice: null,
+  //         dependentmenuitemid: objselectedItem?.dependedItemId ?? 0,
+  //         sessionid,
+  //         rewardpoints: 0,
+  //         Toppings: [],
+  //         OptionParameter: lstcarttopping,
+  //         studentname,
+  //       },
+  //   ],
+  //   restaurantId: objrestaurant.restaurantId,
+  //   locationId: objrestaurant.defaultlocationId,
+  //   removecart: "",
+  //   cartsessionId: sessionid,
+  //   orderType,
+  //   selectedTime: selectedtime,
+  //   selectedDate: currentdate,
+  // };
 
   const objorder = {
-    cart: [
-      selectedsize &&
-        selectedtopping && {
-          menuid: objselectedItem.menuitemId,
-          restaurantId: objrestaurant.restaurantId,
-          locationId: objrestaurant.defaultlocationId,
-          cartId: objselectedItem.cartid ?? 0,
-          OrderItemType: 0,
-          orderitemId: 0,
-          qty: quantity,
-          price: selectedsize?.price ?? 0,
-          itemname: objselectedItem.menuItemName ?? "Unknown Item",
-          netprice: total ?? 0,
-          subparameterid: selectedsize?.subparameterId ?? 0,
-          subparametername: selectedsize?.type ?? "",
-          topsubparaid: selectedtopping?.subparameterId ?? 0,
-          topsubparaname: null,
-          topprice: null,
-          dependentmenuitemid: objselectedItem?.dependedItemId ?? 0,
-          sessionid,
-          rewardpoints: 0,
-          Toppings: [],
-          OptionParameter: lstcarttopping,
-          studentname,
-        },
-    ],
+    cart: [cartItem],
     restaurantId: objrestaurant.restaurantId,
     locationId: objrestaurant.defaultlocationId,
     removecart: "",

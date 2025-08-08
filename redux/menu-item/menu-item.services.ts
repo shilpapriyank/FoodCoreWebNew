@@ -6,6 +6,7 @@ import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+import { OrderObjType } from "@/types/cart-types/cartservice.type";
 import {
   AddOrDeleteFavorite,
   AddToCart,
@@ -180,9 +181,9 @@ export class MenuItemServices {
     orderobj,
     restaurantId,
   }: {
-    orderobj: any;
+    orderobj: OrderObjType;
     restaurantId: number;
-  }): Promise<any> {
+  }): Promise<string | null> {
     responseclass = new ResponseModel();
     const methodName = "addItemToCart";
     const location = ENDPOINTS.ADD_ITEM_TO_CART;
@@ -219,7 +220,7 @@ export class MenuItemServices {
     orderobj,
     restaurantId,
   }: {
-    orderobj: any;
+    orderobj: OrderObjType;
     restaurantId: number;
   }): Promise<UpdateItemToCart[] | null> {
     responseclass = new ResponseModel();
@@ -256,7 +257,6 @@ export class MenuItemServices {
     customerId: number;
     serchQuery: string;
   }): Promise<GetSerachResult | null> {
-    //debugger;
     responseclass = new ResponseModel();
     const methodName = "getSerachResult";
     const location = ENDPOINTS.GET_SEARCH_RESULT;
@@ -296,7 +296,7 @@ export class MenuItemServices {
     cartsessionId: string;
     restaurantId: number;
     locationId: number;
-  }): Promise<any | null> {
+  }): Promise<string> {
     responseclass = new ResponseModel();
     const methodName = "quickOrderaddToCart";
     const quickOrderUrl = ENDPOINTS.QUICK_ORDER_ADD_TO_CART;
@@ -321,7 +321,7 @@ export class MenuItemServices {
     ) {
       return responseclass.result;
     }
-    return null;
+    return "";
   }
 
   static async getAllMenuItemsPOS({

@@ -1,22 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Layout from "@/components/nt/layout/layout.component";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../redux/store";
-import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { useReduxData } from "../../../../components/customhooks/useredux-data-hooks";
 import { ORDER_TYPE } from "../../../../components/common/utility";
-import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import LoadLocationDirectComponent from "../../../../components/nt/common/loadlocation-direct.component";
 import CategoryMenuItems from "../../../../components/nt/category/category-menuitems/category-menuItems.component";
-import { useParams } from "next/navigation";
-import CategoryHeader from "@/components/nt/category/category-header/category-header";
-import { isasap, setordertime } from "../../../../../redux/order/order.slice";
-import { OrderServices } from "../../../../../redux/order/order.services";
+import CategoryHeader from "../../../../components/nt/category/category-header/category-header";
 import { useSearchData } from "../../../../components/customhooks/usesearchdata-hook";
 import SearchBarComponent from "../../../../components/nt/category/category-menuitems/search-bar.component";
 import useUtility from "../../../../components/customhooks/utility-hook";
+import { useParams } from "next/navigation";
 import { useAppDispatch } from "../../../../../redux/hooks";
+import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
+import { OrderServices } from "../../../../../redux/order/order.services";
+import { isasap, setordertime } from "../../../../../redux/order/order.slice";
+import Layout from "@/components/nt/layout/layout.component";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 export default function LocationPage() {
   const dispatch = useAppDispatch();
@@ -28,13 +27,15 @@ export default function LocationPage() {
     userinfo,
     order,
   } = useReduxData();
-  const params = useParams();
-  const { location } = params;
+
   const [isloadAdress, setisloadAdress] = useState<boolean>(true);
+  const { location } = useParams() ?? {};
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
+
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
+
   const {
     searchItem,
     handleChangeSearch,
@@ -42,18 +43,25 @@ export default function LocationPage() {
     handleClickCancel,
     handleSubmitSearch,
   } = useSearchData(searchtext);
+
   const { filterCategory } = useUtility();
-  let pickupordelivery = selecteddelivery.pickupordelivery;
-  let menuItemsWithCat = filterCategory(
-    searchdata && searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
+
+  const pickupordelivery = selecteddelivery.pickupordelivery;
+  // const menuItemsWithCat = filterCategory(
+  //   searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
+  //   pickupordelivery
+  // );
+
+  const menuItemsWithCat = filterCategory(
+    searchtext !== "" && searchdata ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery
   );
 
   useEffect(() => {
     if (
       selecteddelivery?.pickupordelivery === null ||
-      Object.keys(selecteddelivery?.pickupordelivery).length === 0 ||
-      selecteddelivery?.pickupordelivery === null
+      selecteddelivery?.pickupordelivery === "" ||
+      Object.keys(selecteddelivery?.pickupordelivery || {}).length === 0
     ) {
       dispatch(
         setpickupordelivery(
@@ -62,14 +70,13 @@ export default function LocationPage() {
             : ORDER_TYPE.PICKUP.text
         )
       );
-      // dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
     }
   }, []);
 
   useEffect(() => {
-    //if b2b restaurant
     if (b2b || isSchoolProgramEnabled) {
       dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
+
       if (order?.checktime === "") {
         OrderServices.getOrderTime({
           restaurantId: restaurantinfo?.restaurantId,
@@ -79,51 +86,45 @@ export default function LocationPage() {
           const time = response?.ordertime?.split(":");
           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;
           if (response) {
-            // dispatch({
-            //   type: OrderTypes.CHECK_ORDER_TIME,
-            //   payload: timeWithMeridian,
-            // });
             dispatch(setordertime(timeWithMeridian));
-            return;
           }
         });
       }
     }
   }, [userinfo]);
 
-  const loginButton = document.querySelector(".login-btn") as HTMLButtonElement;
   useEffect(() => {
+    const loginButton = document.querySelector(
+      ".login-btn"
+    ) as HTMLButtonElement;
     if (b2b && userinfo === null) {
       loginButton?.click();
     }
-  }, [userinfo, loginButton]);
+  }, [userinfo]);
 
   const handleChangeAddress = () => {
     setisloadAdress(false);
   };
 
   return (
-    <>
-      <Layout handleChangeAddress={handleChangeAddress} page={"location"}>
-        <LoadLocationDirectComponent isLoadAddressChangeUrl={isloadAdress}>
-          {!errorMessage && <CategoryHeader />}
-          {/* <CategoryHeader /> */}
-        </LoadLocationDirectComponent>
-        <CategoryMenuItems
-          menuItemsWithCat={menuItemsWithCat}
+    <Layout handleChangeAddress={handleChangeAddress} page={"location"}>
+      <LoadLocationDirectComponent isLoadAddressChangeUrl={isloadAdress}>
+        {!errorMessage && <CategoryHeader />}
+      </LoadLocationDirectComponent>
+
+      <CategoryMenuItems
+        menuItemsWithCat={menuItemsWithCat}
+        errorMessage={errorMessage}
+        categoryslug=""
+      >
+        <SearchBarComponent
+          searchItem={searchItem}
+          handleChangeSearch={handleChangeSearch}
           errorMessage={errorMessage}
-          categoryslug=""
-        >
-          <SearchBarComponent
-            searchItem={searchItem}
-            handleChangeSearch={handleChangeSearch}
-            errorMessage={errorMessage}
-            handleSubmitSearch={handleSubmitSearch}
-            handleClickCancel={handleClickCancel}
-          />
-        </CategoryMenuItems>
-        {/* {menuItemsWithCat?.length === 0 &&<h1></h1>} */}
-      </Layout>
-    </>
+          handleSubmitSearch={handleSubmitSearch}
+          handleClickCancel={handleClickCancel}
+        />
+      </CategoryMenuItems>
+    </Layout>
   );
 }

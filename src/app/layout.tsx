@@ -8,8 +8,9 @@ import { ThemeStyles } from "@/components/common/theme-styles";
 // import { ClientProviders } from "@/components/common/client-providers"
 import { ThemeScripts } from "@/components/common/theme-scripts";
 import { GetThemeDetails } from "@/components/common/utility";
-import dynamic from "next/dynamic";
 import ClientWrapper from "@/components/common/client-wrapper";
+import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
+import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 // const ClientProviders = dynamic(() => import('@/components/common/client-providers'), {
 //   ssr: false,
 // });
@@ -62,7 +63,10 @@ export default async function RootLayout({
       </head>
       <body>
         {/* Pass only serializable data to client components */}
-        <ClientWrapper>{children}</ClientWrapper>
+        <ClientWrapper>
+          <ToastNotify position={ToasterPositions.TopRight} />
+          {children}
+        </ClientWrapper>
 
         {/* Load theme-specific scripts */}
         <ThemeScripts themeType={themeType} />

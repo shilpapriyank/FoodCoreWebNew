@@ -159,7 +159,7 @@ export const OrderItemsList = () => {
             rewardpoints: "0",
             redeemamount: "0",
             tipPercentage: String(carttotal?.tipPercentage),
-            tipAmount: String(carttotal?.tipAmount),
+            tipAmount: carttotal?.tipAmount,
             // deliveryaddressId:
             //   pickupordelivery === ORDERTYPE.Delivery &&
             //   deliveryaddressinfo?.deliveryaddressId &&

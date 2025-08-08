@@ -264,7 +264,7 @@ export class CartServices {
     rewardpoints?: string,
     redeemamount?: string,
     tipPercentage?: string,
-    tipAmount?: string,
+    tipAmount?: number,
     deliveryaddressId?: number,
     ordertype?: number,
     requestId?: string,
@@ -292,7 +292,7 @@ export class CartServices {
             ? parseFloat(tipPercentage)
             : 0,
         tipAmount:
-          tipAmount != undefined && tipAmount != "" ? parseFloat(tipAmount) : 0,
+          tipAmount != undefined && tipAmount != null ? tipAmount : 0,
         deliveryaddressId:
           deliveryaddressId != undefined && deliveryaddressId > 0
             ? deliveryaddressId
@@ -483,7 +483,7 @@ export class CartServices {
     cartsessionId: string,
     restaurantId: number,
     locationId: number
-  ): Promise<any | null> {
+  ) {
     const responseclass = new ResponseModel();
     const methodName = "deleteCartItemFromSessionId";
     const location = ENDPOINTS.DELETE_CART_FROM_SESSIONID;

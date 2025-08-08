@@ -1,8 +1,15 @@
+import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function ToastNotify({ position }: any) {
+type PositionType = (typeof ToasterPositions)[keyof typeof ToasterPositions];
+
+type ToastNotifyProps = {
+  position: PositionType;
+};
+
+function ToastNotify({ position }: ToastNotifyProps) {
   return (
     <>
       <ToastContainer
