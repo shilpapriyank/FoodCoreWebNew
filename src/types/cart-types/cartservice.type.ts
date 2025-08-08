@@ -48,7 +48,8 @@ export interface PromotionData {
 export interface CartOptionParams {
   cartid: number;
   suboptionId: number;
-  Title: string;
+  //Title: string;
+  title: string;
   price: number;
   pizzaside: string;
   quantity: number;

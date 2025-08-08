@@ -42,7 +42,7 @@ export type MainCategoryList = {
 ////getRestaurantTime new defined types
 export interface RestaurantWindowTimeNew {
   time: string; // add this
-  isLastOrder: boolean;  // add this
+  isLastOrder: boolean; // add this
   deliveryTime: string[];
   pickupTime: string[];
   OrdDeliveryOpeningTime: any[];

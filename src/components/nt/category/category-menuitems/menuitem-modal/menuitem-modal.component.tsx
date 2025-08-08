@@ -799,7 +799,7 @@ const MenuItemModal = ({
                     />
                     <MenuItemAddCartBtn
                       addToCart={addToCart}
-                      currencySymbol={currencySymbol}
+                      currencySymbol={currencySymbol as string}
                       memorisedNetTotal={memorisedNetTotal}
                     />
                     {dependentId > 0 && (

@@ -4,7 +4,11 @@ import { ENDPOINTS } from "@/components/default/config";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import { GetAllLocationInfoNew } from "@/types/location-types/location.type";
 import { Metadata } from "@/types/metadata-types/metadata.type";
-import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import {
+  GetAllRestaurantInfo,
+  GetCurrentTimeType,
+  GetRestaurantThemeType,
+} from "@/types/restaurant-types/restaurant.type";
 import { ChooseTime } from "@/types/selectdelivery-types/selectdelivery.types";
 
 let responseclass = new ResponseModel();
@@ -182,7 +186,7 @@ export class RestaurantsServices {
   static async getCurrentTime(
     restaurantId: number,
     locationId: number
-  ): Promise<any | null> {
+  ): Promise<GetCurrentTimeType | null> {
     responseclass = new ResponseModel();
     const methodName = "getCurrentTime";
     const getCurrentTime = ENDPOINTS.GET_CURRENT_TIME;

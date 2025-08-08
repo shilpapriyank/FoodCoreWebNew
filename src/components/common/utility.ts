@@ -19,6 +19,8 @@ import {
 import {
   CartDetails,
   CartItemDetails,
+  CartOptionParams,
+  CartTotal,
   PromotionData,
 } from "@/types/cart-types/cartservice.type";
 import {
@@ -36,6 +38,8 @@ import {
 import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
 import { LoggedInUser } from "../../../redux/login/login.types";
+import { CartState } from "../../../redux/cart/cart.slice";
+import { RestaurantState } from "../../../redux/restaurants/restaurants.slice";
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -283,8 +287,8 @@ export const themeDefaultStyleArray: ThemeDefautStyle[] = [
 export const checkCheckoutDisable = (
   cartdata: CartDetails[],
   pickupordelivery: string,
-  dtotal: any
-): boolean => {
+  dtotal: boolean
+) => {
   if (
     pickupordelivery === ORDER_TYPE.PICKUP.text ||
     pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -309,7 +313,8 @@ export const checkCheckoutDisable = (
     } else if (
       dtotal !== undefined &&
       pickupordelivery === ORDER_TYPE.DELIVERY.text &&
-      dtotal === 0
+      dtotal === false
+      // dtotal === 0
     ) {
       return true;
     }
@@ -531,7 +536,8 @@ export interface RestaurantWindowTime {
 }
 
 export const getAsapLaterOnState = (
-  defaultLocation?: AddressList,
+  //defaultLocation?: AddressList,
+  defaultLocation?: DefaultLocation,
   pickupordelivery?: OrderType,
   restaurantWindowTime?: RestaurantWindowTimeNew
 ): AsapLaterOnState => {
@@ -724,17 +730,17 @@ export const checkIntegerValue = (value: number) => {
 export const handleSetDeliveryTypeError = (
   pickupordelivery: string,
   deliveryaddressinfo: DeliveryAddressInfo[],
-  carttotal: any,
+  carttotal: CartTotal,
   dcharges: any,
-  cart: any,
-  cartdata: any,
+  cart: CartState,
+  cartdata: CartDetails,
   isCartError: boolean
 ) => {
   let errorMessage = "";
   if (
     pickupordelivery === ORDER_TYPE.DELIVERY.text &&
     (deliveryaddressinfo?.length === 0 || deliveryaddressinfo === null) &&
-    (carttotal?.cartCount > 0 || cart?.cartitemcount > 0)
+    (carttotal?.cartCount > 0 || (cart?.cartitemcount as number) > 0)
   ) {
     errorMessage = "Please select delivery address.";
     // } else if ( dcharges && dcharges.isdelivery === 0 && dcharges.chargeType === "3" && dcharges.minOrderForAddress !== "0" && carttotal?.cartCount > 0)
@@ -769,6 +775,7 @@ export const handleSetDeliveryTypeError = (
     }
   } else if (
     dcharges &&
+    cart?.carttotal &&
     dcharges.minOrderForAddress > cart?.carttotal.subTotal &&
     carttotal?.cartCount > 0 &&
     cartdata?.cartItemDetails != undefined &&
@@ -896,7 +903,7 @@ export const calulateTotal = (cartdata: CartDetails) => {
     total += data?.totalprice;
   });
   //return parseFloat(total)?.toFixed(2);
-  return total
+  return total;
 };
 ////////////////////////////////////
 export const getCheckTimeArr = (
@@ -1033,63 +1040,6 @@ export const getUserLoginExpiryTime = () => {
   }
   return false;
 };
-
-// export const convert24HourTo12Hour = (time: any) => {
-//   let meridian = "am";
-//   let [hour, minute, second] = time?.split(":");
-//   if (hour > 12) {
-//     hour = hour - 12;
-//     meridian = "pm";
-//   }
-
-//   return [hour, minute, meridian];
-// };
-
-// export const checkWindowTimeExpires = (
-//   windowEndTime: string,
-//   currentTime: string,
-//   isLastOrder: any,
-//   isasap: boolean
-// ) => {
-//   let [time, windowMeridian] = getCheckTimeArr(
-//     currentTime,
-//     isLastOrder,
-//     windowEndTime,
-//     isasap
-//   );
-
-//   if (!time || !windowMeridian) {
-//     console.warn("Invalid time or windowMeridian from getCheckTimeArr");
-//     return false;
-//   }
-
-//   const [windowHour, windowMinute] = time.split(":");
-//   const [currentHour, currentMinute, meridian] =
-//     convert24HourTo12Hour(currentTime);
-
-//   const beginningTime = moment(
-//     `${currentHour}:${currentMinute}${meridian}`,
-//     "hh:mma"
-//   );
-
-//   const safeMeridian = (windowMeridian || "").toLowerCase();
-//   const endTime = moment(
-//     `${windowHour}:${windowMinute}${safeMeridian}`,
-//     "hh:mma"
-//   );
-
-//   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
-
-//   if (
-//     meridian.trim().toLowerCase() === "pm" &&
-//     isLastOrder &&
-//     safeMeridian === "am"
-//   ) {
-//     WindowTimeIsAvailable = true;
-//   }
-
-//   return WindowTimeIsAvailable;
-// };
 
 export const convert24HourTo12Hour = (
   time: string
@@ -1300,266 +1250,6 @@ export const getLocationFromUrl = (
   return locationDetail;
 };
 
-export function getMenuItemdetailFormate(data: any) {
-  const { PriceList, ...otherValue } = data;
-  const menuitemdetaillist = {
-    ...otherValue,
-    size: [],
-    topping: [],
-  };
-  const sizeDetail: any[] = [];
-  data?.PriceList?.forEach((size: any) => {
-    let sizeObj = {
-      currency: size.currencysymbol,
-      price: size.price,
-      sizeselected: data?.PriceList[0].subparameterId === size?.subparameterId,
-      subparameterId: size?.subparameterId,
-      textsize: "",
-      type: size?.type,
-    };
-    sizeDetail.push(sizeObj);
-  });
-  const topping: Topping[] = [];
-  data?.PriceList?.forEach((size: any) => {
-    let toppingObj = {
-      subparameterId: size?.subparameterId,
-      list: getSizeBaseOptionList(
-        size?.OptionList,
-        size?.subparameterId,
-        data?.PriceList[0].currencysymbol
-      ),
-    };
-    topping.push(toppingObj);
-  });
-  menuitemdetaillist.size = sizeDetail;
-  menuitemdetaillist.topping = topping;
-  return menuitemdetaillist;
-}
-
-export function getSizeBaseOptionList(
-  PriceList: any,
-  subparameterId: number,
-  currencysymbol: string
-) {
-  function isUnique(item: any, index: any, array: any) {
-    return (
-      index ===
-      array.findIndex((obj: any) => obj.parameterId === item.parameterId)
-    );
-  }
-  const uniqueList = PriceList.filter(isUnique);
-  let optionList: any = [];
-  uniqueList.forEach((option: any) => {
-    let OptionObj = {
-      displayStatus: true,
-      isCompulsory: option.isCompulsory,
-      isHalfPizza: option?.ishalfpizza,
-      maxSelection: option?.maxselection,
-      multipleSelectStatus: option?.isMultiselect,
-      name: option?.labelText,
-      optionId: option?.parameterId,
-      optionselected: uniqueList[0]?.parameterId === option?.parameterId,
-      priceStatus: option?.hasPrice, //need ask
-      selectAllStatus: option?.isSelectAll,
-      subparameterId: subparameterId,
-      toppingPriceForHalfPizza: option?.halfpizzaprice, //nedd ask
-      toppingValue: option?.toppingvalue,
-      halfPizzaPriceToppingPercentage: option?.halfpizzaprice ?? 0,
-      type: getOptionBaseType(PriceList, option, currencysymbol),
-    };
-    optionList.push(OptionObj);
-  });
-  return optionList;
-}
-
-function getOptionBaseType(PriceList: any, option: any, currencysymbol: any) {
-  const filteredSubOptionList = PriceList.filter(
-    (suboption: any) => suboption?.parameterId === option?.parameterId
-  );
-  const subOptionList: any = [];
-  filteredSubOptionList.forEach((subOption: any) => {
-    let subOptionObj = {
-      cals: subOption?.calorie,
-      currency: currencysymbol,
-      defaultSelection: "",
-      halfPizzaPriceToppingPercentage: subOption?.halfpizzaprice,
-      halfpizzaprice: subOption?.halfpizzaprice,
-      image: subOption?.suboptionimg,
-      name: subOption?.type,
-      optionId: option?.parameterId,
-      price: subOption?.price,
-      pizzaside: subOption.pizzaside,
-      subOptionToppingQuantity: subOption?.toppingquantity,
-      subOptionselected: false,
-      suboptionId: subOption?.typeid,
-      suboptioncategoryname: subOption?.suboptioncategory,
-      suboptionmaxselection: subOption?.suboptionmaxselection,
-      toppingValue: subOption?.toppingvalue,
-    };
-
-    subOptionList.push(subOptionObj);
-  });
-  return subOptionList;
-}
-
-export const generateTableName = (
-  restaurantId: number,
-  locationId: number,
-  env: any
-) => {
-  switch (env) {
-    case "development":
-      return `AllocatedTablesDev${restaurantId}_${locationId}`;
-    case "production":
-      return `AllocatedTables${restaurantId}_${locationId}`;
-    default:
-      return `AllocatedTablesDev${restaurantId}_${locationId}`;
-  }
-};
-
-export function getCustomerDetails(
-  user: LoggedInUser,
-  tableDetail: any,
-  serverId: number = 0
-) {
-  let customerId = user?.customerId ?? user?.othercustomerId;
-  const userName = user.firstName ?? user?.firstname;
-  const lastName = user.lastName ?? user?.lastname;
-  const tableDetailObj = getTableOrderDetailObj(tableDetail, serverId);
-  const userObjKey = userName === "Guest" ? "Customer" : "OtherCustomer";
-  const obj = {
-    [userObjKey]: {
-      [customerId]: {
-        customerId: customerId,
-        emailId: "",
-        firstname: userName,
-        lastname: lastName,
-        loyaltynumber: "",
-        mobile: "",
-        password: "",
-        phone: user.phone,
-        posTimeStamp: Date.now(),
-        totalRewardPoints: 0,
-      },
-    },
-    ...tableDetailObj,
-    addressId: 0,
-    appType: "dev",
-    // appVersion: "1.3.3, 120",
-    asap: true,
-    cardAmount: 0,
-    cardbrand: "",
-    cardtype: "",
-    cashAmount: 0,
-    cateringDepositCard: 0,
-    cateringDepositCash: 0,
-    cateringDepositVal: "",
-    cateringMessage: "",
-    cateringTenderedCard: 0,
-    cateringTenderedCash: 0,
-    cateringTip1Card: 0,
-    cateringTip1Cash: 0,
-    cusTime: moment(Date.now()).format("hh:mm a"),
-    customMins: "",
-    customerId: customerId,
-    customerName: userName,
-    deliveryCharges: 0,
-    deliveryDistance: 0,
-    discount: 0,
-    discountPer: 0,
-    firebaseInstanceId: "",
-    gratuityPercent: 0,
-    inTime: moment(Date.now()).format("hh:mm a"),
-    isCustomDeliveryCharges: false,
-    isOtherCustomer: true,
-    isToSetCurrentDeviceTag: false,
-    isToSplit: false,
-    isToSplitEqually: false,
-    kitchenComments: "",
-    lastChangedOn: 1708039888720,
-    lastUpdateByUser: "306",
-    lastUpdatedAt: 1269052044414099,
-    // locationId: 265,
-    // noOfPersons: 1,
-    paymentMode: 0,
-    persons: 1,
-    posOrderType: "Dine-In",
-    posTimeStamp: Date.now(),
-    posorderreferencenumner: "1708039647189",
-    redeemAmount: 0,
-    redeemPoints: 0,
-    // restaurantId: 33,
-    // serverId: 306,
-    splitTableName: "",
-    tableNo: tableDetail.tableno,
-    tendered: 0,
-    tip1: 0,
-    tip1Card: 0,
-    tip1Cash: 0,
-    tip2: 0,
-    // token: "du5B-ChgTrCSsauqXJKFGb:APA91bEAiJW2hSnyVhXF3I61sqCDxr8hBIDLHH3FVXvXPBeD5ElIxsD0DecMEFLHcjx8zxdFXv7CsJ16URxk7Mybfa6NAbLz0wN2w5ltXLv9nzzWsqc07DPNIQ8hf5hCuvDUibZmLgM2",
-    totalAmount: 0.6500000953674316,
-    versionCode: 120,
-    versionName: getVersion(), //add dynamic
-  };
-  return obj;
-}
-export function getTableOrderDetailObj(tableDetail: any, serverId: any = 0) {
-  const obj = {
-    tableId: tableDetail?.tableId,
-    appVersion: 0,
-    noOfPersons: 0,
-    restaurantId: tableDetail?.restaurantId,
-    serverId: serverId,
-    locationId: tableDetail?.locationId,
-    timestamp: Date.now(),
-    token: "",
-  };
-  return obj;
-}
-
-export const getEditItemKey = (cartData: any, menuItemId: any) => {
-  const ItemKey = cartData && Object.values(cartData).findIndex(menuItemId);
-};
-
-export const pushNotificationType = {
-  TABLE_SEND_TO_KITCHEN: "tblsendtokitchenstation",
-  TABLE_ORDER_READY_TO_PAY: "tblorderpaymentreadytopay",
-  TABLE_ORDER_NEED_HELP: "tblorderneedhelp",
-};
-
-export const NotificationSettingTypes = {
-  RESTAURANT: 1,
-  DRIVER: 2,
-  MANAGER: 3,
-  POS: 4,
-};
-
-// export const calculateFinalCount = (
-//   subOptionList: Type[],
-//   selectedOption: List
-// ) => {
-//   let finalcount = 0;
-//   var toppingcount = subOptionList?.filter((x) => x.subOptionselected === true);
-//   toppingcount?.map((tc) => {
-//     var topvalue =
-//       tc.toppingValue === "" || Number(tc.toppingValue) === 0
-//         ? 1
-//         : Number(tc.toppingValue);
-//     var calculatedtopvalue =
-//       selectedOption.isHalfPizza === true &&
-//       (tc.pizzaside === "L" || tc.pizzaside === "R")
-//         ? topvalue *
-//           (tc?.halfPizzaPriceToppingPercentage ||
-//           tc.halfPizzaPriceToppingPercentage === 0
-//             ? 1
-//             : tc.halfPizzaPriceToppingPercentage / 100)
-//         : topvalue;
-//     finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
-//   });
-//   return finalcount;
-// };
-
 export const calculateFinalCount = (
   subOptionList: Type[],
   selectedOption: List
@@ -1636,37 +1326,13 @@ export const calculateFinalCountWithPaid = (
   return finalcount;
 };
 
-export const calculateFinalCountTable = (
-  subOptionList: Type[],
-  selectedOption: List
-) => {
-  let finalcount = 0;
-  var toppingcount = subOptionList?.filter(
-    (x: any) => x.subOptionselected === true
-  );
-  toppingcount?.map((tc: any) => {
-    var topvalue =
-      tc.toppingValue === "" || parseInt(tc.toppingValue) === 0
-        ? 1
-        : parseInt(tc.toppingValue);
-    var calculatedtopvalue =
-      selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
-        ? topvalue *
-          (tc.halfpizzaprice === "" || parseInt(tc.halfpizzaprice) === 0
-            ? 1
-            : parseInt(tc.halfpizzaprice) / 100)
-        : topvalue;
-    finalcount = finalcount + tc.subOptionToppingQuantity * calculatedtopvalue;
-  });
-  return finalcount;
-};
-
-export const convertOptionToStrList = (...optionList: any) => {
-  const optionStrList: any = [];
-  optionList?.map((item: any) => {
+export const convertOptionToStrList = (
+  ...optionList: CartOptionParams[][]
+): string[] => {
+  const optionStrList: string[] = [];
+  optionList?.map((item) => {
     const str = item?.reduce(
-      (acc: any, cur: any, index: any) =>
+      (acc, cur, index) =>
         ` ${(acc += `${cur.quantity + cur.paidQty}x ${cur.title}${
           index === item.length - 1 ? "" : ","
         }${" "}`)}`,
@@ -1676,55 +1342,11 @@ export const convertOptionToStrList = (...optionList: any) => {
   });
   return optionStrList;
 };
-export const convertOptionToStrListTo = (...optionList: any) => {
-  const optionStrList: any = [];
-  optionList?.map((item: any) => {
-    const str = item?.reduce(
-      (acc: any, cur: any, index: any) =>
-        ` ${(acc += `${cur.toppingquantity + cur.paidQty}x ${cur.type}${
-          index === item.length - 1 ? "" : ","
-        }${" "}`)}`,
-      ""
-    );
-    optionStrList.push(str);
-  });
-  return optionStrList;
-};
-
-export const OS_TYPE = {
-  ANDROID: {
-    name: "android",
-    value: 1,
-  },
-  APPLE: {
-    name: "apple",
-    value: 2,
-  },
-  OTHER: {
-    name: "other",
-    value: 0,
-  },
-};
-export function checkOsType() {
-  var type = OS_TYPE.OTHER.value;
-  if (navigator.userAgent.indexOf("Win") != -1) type = OS_TYPE.OTHER.value;
-  // "Windows OS";
-  if (navigator.userAgent.indexOf("Mac") != -1) type = OS_TYPE.APPLE.value;
-  // "Macintosh";
-  if (navigator.userAgent.indexOf("Linux") != -1) type = OS_TYPE.OTHER.value;
-  // "Linux OS";
-  if (navigator.userAgent.indexOf("Android") != -1)
-    type = OS_TYPE.ANDROID.value;
-  if (navigator.userAgent.indexOf("like Mac") != -1) type = OS_TYPE.APPLE.value;
-  // "iOS";
-
-  return type;
-}
 
 export const getDependentParentQty = (
-  cartItems: any,
-  item: any,
-  index: any
+  cartItems: CartItemDetails[],
+  item: CartItemDetails,
+  index: number
 ) => {
   let qty = 0;
   if (item?.dependentmenuitemid > 0) {
@@ -1741,27 +1363,12 @@ export const getDependentParentQty = (
   return qty;
 };
 
-export const getHalfArrayLength = (arr: any) => {
-  const leftArray: any = [];
-  const rightArray: any = [];
-  const isOddNum = arr % 2 !== 0;
-  const halfLength = isOddNum ? (arr?.length + 1) / 2 : arr?.length / 2;
-
-  arr.map((item: any, index: any) => {
-    if (index + 1 < halfLength) {
-      leftArray.push(item);
-    } else {
-      rightArray.push(item);
-    }
-  });
-  return [leftArray, rightArray];
-};
-
 export const checkDisableWindow = (
   timeWindow: any,
-  enableFutureOrdering: any,
+  enableFutureOrdering: boolean,
   day: any
 ) => {
+  debugger;
   let isEnable = true;
   if (timeWindow && timeWindow.length === 0 && !enableFutureOrdering) {
     isEnable = false;
@@ -1794,8 +1401,9 @@ export function closeModal(myclass: any) {
   return;
 }
 export const GetCurrency = () => {
+  debugger
   const restaurantinfo = useSelector(
-    ({ restaurant }: any) => restaurant?.restaurantdetail
+    ({ restaurant }: {restaurant: RestaurantState}) => restaurant?.restaurantdetail
   );
   const location = restaurantinfo?.defaultLocation;
   return location?.currencysymbol;

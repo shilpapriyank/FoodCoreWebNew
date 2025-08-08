@@ -16,6 +16,7 @@ import { CustomerServices } from "../../../../../redux/customer/customer.service
 import {
   CartDetails,
   CartItemDetails,
+  CartOptionParams,
   GetCartItems,
 } from "@/types/cart-types/cartservice.type";
 import CommonModal from "../../common/common-model.component";
@@ -123,7 +124,7 @@ export const OrderItemsList = () => {
 
   const clearRedeempoint = () => {
     CustomerServices.checkCustomerRewardPointsLocationBase(
-      restaurantinfo?.restaurantId,
+      restaurantinfo?.restaurantId as number,
       customerId,
       0,
       "0",
@@ -448,7 +449,7 @@ export const OrderItemsList = () => {
             // <CartSuboptionDisplay
             //   subOption={Array.isArray(subOption) ? subOption : []}
             // />
-            <CartSuboptionDisplay subOption={subOption} />
+            <CartSuboptionDisplay subOption={subOption as CartOptionParams[]} />
           );
           let itemImage = getImagePath(
             data?.imgUrl,
@@ -458,7 +459,7 @@ export const OrderItemsList = () => {
             !cartdata?.cartDetails?.cartItemDetails?.[index + 1]
               ?.dependentmenuitemid;
           let dependentParentQty = getDependentParentQty(
-            cartdata?.cartDetails?.cartItemDetails,
+            cartdata?.cartDetails?.cartItemDetails as CartItemDetails[],
             data,
             index
           );
