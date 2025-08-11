@@ -15,7 +15,7 @@ import { checkOrderTime, setDeliveryRequestId } from "../order/order.slice";
 import { GetMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 
 // Define the cart item shape
-interface CartState {
+export interface CartState {
   cartitemdetail: GetCartItems | null;
   cartitemcount: GetCartItemsCount | number;
   carttotal: CartTotal | null;

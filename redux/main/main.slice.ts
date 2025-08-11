@@ -20,11 +20,14 @@ interface MainState {
   ischangelocation: boolean;
   restaurantWindowTime: RestaurantWindowTimeNew | null;
 
-  restaurantTimeByLocation: Record<string, {
-    status: "idle" | "loading" | "succeeded" | "failed";
-    data?: RestaurantWindowTimeNew;
-    error?: string;
-  }>;
+  restaurantTimeByLocation: Record<
+    string,
+    {
+      status: "idle" | "loading" | "succeeded" | "failed";
+      data?: RestaurantWindowTimeNew;
+      error?: string;
+    }
+  >;
 }
 
 const initialState: MainState = {
@@ -57,10 +60,15 @@ export const getSelectedRestaurantTime = createAsyncThunk<
   "main/getSelectedRestaurantTime",
   async ({ restaurantId, locationId }, thunkAPI) => {
     try {
-      const res = await MainServices.getSelectedRestaurantWindowTime(restaurantId, locationId);
+      const res = await MainServices.getSelectedRestaurantWindowTime(
+        restaurantId,
+        locationId
+      );
       return res ?? thunkAPI.rejectWithValue("No response from API");
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.message || "Failed to fetch window time");
+      return thunkAPI.rejectWithValue(
+        err.message || "Failed to fetch window time"
+      );
     }
   },
 
@@ -76,7 +84,6 @@ export const getSelectedRestaurantTime = createAsyncThunk<
     },
   }
 );
-
 
 export const refreshCategoryList = createAsyncThunk<
   void,
@@ -177,12 +184,13 @@ export const mainSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(
-      getMenuCategoryList.fulfilled,
-      (state, action: PayloadAction<MainCategoryList[]>) => {
-        state.maincategoryList = action.payload;
-      }
-    )
+    builder
+      .addCase(
+        getMenuCategoryList.fulfilled,
+        (state, action: PayloadAction<MainCategoryList[]>) => {
+          state.maincategoryList = action.payload;
+        }
+      )
       // getSelectedRestaurantTime calling only ones changes
       .addCase(getSelectedRestaurantTime.pending, (state, action) => {
         const { restaurantId, locationId } = action.meta.arg;
@@ -214,7 +222,7 @@ export const mainSlice = createSlice({
         };
         console.warn("Failed to fetch restaurant time:", action.payload);
       });
-  }
+  },
 });
 
 export const {
@@ -228,4 +236,4 @@ export const {
   getPromotionCategoryData,
 } = mainSlice.actions;
 
-export default mainSlice.reducer; 
+export default mainSlice.reducer;

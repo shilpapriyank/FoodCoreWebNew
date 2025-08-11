@@ -299,9 +299,9 @@ export class CustomerServices {
   }
 
   static async checkCustomerRewardPointsLocationBase(
-    restaurantId: any,
+    restaurantId: number,
     customerId: number,
-    rewardpoints: any,
+    rewardpoints: number,
     amount: string,
     locationId: string
   ) {
@@ -312,7 +312,7 @@ export class CustomerServices {
       model: {
         restaurantId: restaurantId,
         customerId: customerId,
-        rewardpoints: parseInt(rewardpoints),
+        rewardpoints: rewardpoints,
         amount: parseFloat(amount),
         locationId: locationId,
       },
@@ -377,8 +377,8 @@ export class CustomerServices {
     const methodName = "updateVerifiedPhoneNumber";
     const endPoint = ENDPOINTS.CHECK_EXIST_CUSTOMER_PHONE_NUMBER;
     const data = {
-      checkPhoneRequestModel
-    }
+      checkPhoneRequestModel,
+    };
     responseclass = await handleAxiosPostAsync(
       data,
       endPoint,
@@ -386,11 +386,13 @@ export class CustomerServices {
       true,
       checkPhoneRequestModel?.restaurantId
     );
-    if (responseclass.result != null && responseclass.status === API_RESPONSE_STATUS.SUCCESS) {
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
       return responseclass;
     } else {
       return responseclass;
     }
   }
- 
 }

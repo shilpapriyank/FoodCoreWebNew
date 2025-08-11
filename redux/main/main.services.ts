@@ -146,7 +146,7 @@ export class MainServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result as RestaurantWindowTime[];
+      return responseclass.result as RestaurantWindowTimeNew[];
     } else {
       return null;
     }

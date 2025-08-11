@@ -1,21 +1,22 @@
 import React from "react";
 import { convertOptionToStrList } from "../../common/utility";
 import { CARTPAGEMESSAGE } from "../helpers/static-message/cart-message";
+import { CartOptionParams } from "@/types/cart-types/cartservice.type";
 
-const CartSuboptionDisplay = ({ subOption }: any) => {
-  const leftPizzaSuboption = subOption.filter(
-    (sub: any) => sub.pizzaside === "L"
-  );
-  const rightPizzaSuboption = subOption.filter(
-    (sub: any) => sub.pizzaside === "R"
-  );
-  function CheckRegular(sub: any) {
+const CartSuboptionDisplay = ({
+  subOption,
+}: {
+  subOption: CartOptionParams[];
+}) => {
+  const leftPizzaSuboption = subOption.filter((sub) => sub.pizzaside === "L");
+  const rightPizzaSuboption = subOption.filter((sub) => sub.pizzaside === "R");
+  function CheckRegular(sub: CartOptionParams) {
     return (
       sub?.pizzaside !== "L" && sub?.pizzaside !== "R" && sub?.pizzaside !== "F"
     );
   }
 
-  const fullSuboption = subOption.filter((sub: any) => sub?.pizzaside === "F");
+  const fullSuboption = subOption.filter((sub) => sub?.pizzaside === "F");
   const regularSuboption = subOption.filter(CheckRegular);
   const [leftString, rightString, fullString, regularStr] =
     convertOptionToStrList(
