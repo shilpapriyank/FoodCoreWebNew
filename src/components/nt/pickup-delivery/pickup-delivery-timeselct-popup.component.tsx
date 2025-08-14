@@ -27,6 +27,7 @@ import {
   OrderType,
   checkWindowTimeExpires,
   getAsapLaterOnState,
+  getOrderTypeFromText,
 } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import handleNotify from "../../default/helpers/toaster/toaster-notify";
@@ -167,10 +168,13 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   let minute;
   let meridiem;
   load = true;
+
+  const orderType = getOrderTypeFromText(selecteddelivery?.pickupordelivery);
+  if (orderType === undefined) throw new Error("Invalid order type");
   const restaurantWindowTime = main.restaurantWindowTime;
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
     restaurantinfo?.defaultLocation as DefaultLocation,
-    selecteddelivery?.pickupordelivery as OrderType | any,
+    orderType,
     restaurantWindowTime as RestaurantWindowTime
   );
   const redirectPrevPage = searchParams.get("redirectcart") === "true";

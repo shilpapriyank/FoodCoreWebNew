@@ -11,12 +11,10 @@ import {
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 
-type PickupDeliveryButtonProps = {
-  handleChangeOrderType: (type: any) => void;
-};
-
-const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
+const PickupDeliveryButton = ({
   handleChangeOrderType,
+}: {
+  handleChangeOrderType: (type: string) => void;
 }) => {
   const { restaurantinfo, selecteddelivery, main } = useReduxData();
   const dispatch = useAppDispatch();

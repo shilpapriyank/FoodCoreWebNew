@@ -158,3 +158,15 @@ export interface GetCartItemsCount {
 export interface GetCartItems {
   cartDetails: CartDetails;
 }
+
+export interface DeliveryChargesTypes {
+  chargetype: string;
+  deliverycharges: string;
+  distance: number;
+  geoMinOrderAmount: string;
+  isdelivery: string;
+  isGeoFencing: boolean;
+  maxkms: string;
+  returnMessage: string;
+  minOrderForAddress: number;
+}

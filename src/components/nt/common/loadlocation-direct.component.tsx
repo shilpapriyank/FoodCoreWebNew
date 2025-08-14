@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import { GetThemeDetails, ORDER_TYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
@@ -9,7 +9,6 @@ import { LocationServices } from "../../../../redux/location/location.services";
 import { RestaurantsTypes } from "../../../../redux/restaurants/restaurants.types";
 import {
   getSelectedRestaurantTime,
-  refreshCategoryList,
 } from "../../../../redux/main/main.slice";
 import {
   restaurantAllLocation,
@@ -31,12 +30,14 @@ import {
   setrewardpoint,
 } from "../../../../redux/rewardpoint/rewardpoint.slice";
 import { useAppDispatch } from "../../../../redux/hooks";
-// import useLoadCatData from '../../customhooks/useloadcatdata-hook';
 
 const LoadLocationDirectComponent = ({
   children,
   isLoadAddressChangeUrl = true,
-}: any) => {
+}: {
+  children?: ReactNode;
+  isLoadAddressChangeUrl?: boolean;
+}) => {
   const {
     restaurantinfo,
     sessionid,
@@ -129,7 +130,7 @@ const LoadLocationDirectComponent = ({
         let urlLocation = addressList?.find(
           (item) => item.locationURL === location
         );
-        handleClickChangeLocation(urlLocation?.locationId);
+        handleClickChangeLocation(urlLocation?.locationId as number);
       } else {
         router.push(`/${selctedTheme?.url}/${dynamic}/error`);
       }
@@ -140,7 +141,7 @@ const LoadLocationDirectComponent = ({
     isLoadAddress,
   ]);
 
-  const handleClickChangeLocation = (lid: any) => {
+  const handleClickChangeLocation = (lid: number) => {
     setisLoad(false);
     LocationServices.changeRestaurantLocation(
       restaurantinfo?.restaurantId as number,
@@ -170,8 +171,8 @@ const LoadLocationDirectComponent = ({
         dispatch(
           getSelectedRestaurantTime({
             restaurantId: restaurantinfo?.restaurantId,
-            locationId: restaurantinfo?.locationId as any,
-          }) as any
+            locationId: restaurantinfo?.locationId,
+          })
         );
         if (userinfo && userinfo?.customerId) {
           deleteCartItemFromSessionId({
@@ -179,7 +180,7 @@ const LoadLocationDirectComponent = ({
             restaurantId: restaurantinfo?.restaurantId,
             locationId: restaurantinfo?.defaultLocation.locationId,
           });
-          dispatch(setintialrewardpoints(userinfo as any));
+          dispatch(setintialrewardpoints(userinfo));
         }
         if (userinfo && userinfo?.customerId) {
           CustomerServices.checkCustomerRewardPointsLocationBase(
@@ -211,7 +212,7 @@ const LoadLocationDirectComponent = ({
             customerId: userinfo?.customerId ?? 0,
             categories: "",
             selectedCategoryUrl: "",
-          }) as any
+          })
         );
         setisLoad(true);
 

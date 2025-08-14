@@ -51,61 +51,23 @@ export const getMenuCategoryList = createAsyncThunk<
   return response as MainCategoryList[];
 });
 
-// export const getSelectedRestaurantTime = createAsyncThunk<
-//   //any,
-//   RestaurantWindowTime,
-//   { restaurantId: number; locationId: number },
-//   { rejectValue: string; state: RootState }
-// >(
-//   "main/getSelectedRestaurantTime",
-//   async ({ restaurantId, locationId }, thunkAPI) => {
-//     try {
-//       const res = await MainServices.getSelectedRestaurantWindowTime(
-//         restaurantId,
-//         locationId
-//       );
-//       return res ?? thunkAPI.rejectWithValue("No response from API");
-//     } catch (err: any) {
-//       return thunkAPI.rejectWithValue(
-//         err.message || "Failed to fetch window time"
-//       );
-//     }
-//   },
-
-//   {
-//     // Rename to avoid duplicate identifiers
-//     condition: (args, { getState }) => {
-//       const { restaurantId, locationId } = args;
-//       const key = `${restaurantId}-${locationId}`;
-//       const state = getState();
-//       const entry = state.main.restaurantTimeByLocation?.[key];
-
-//       return !entry || entry.status === "failed";
-//     },
-//   }
-// );
-
 export const getSelectedRestaurantTime = createAsyncThunk<
-  RestaurantWindowTime,
-  { restaurantId: number; locationId: number },
-  { rejectValue: string }
+  RestaurantWindowTime, // Return type on success
+  { restaurantId: number; locationId: number } // Input argument when dispatching
 >(
-  "main/getSelectedRestaurantTime",
-  async ({ restaurantId, locationId }, thunkAPI) => {
-    try {
-      const res = await MainServices.getSelectedRestaurantWindowTime(
-        restaurantId,
-        locationId
-      );
-      if (res) {
-        return res;
-      } else {
-        return thunkAPI.rejectWithValue("No response from API");
-      }
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(
-        err.message || "Failed to fetch window time"
-      );
+  "main/getSelectedRestaurantTime", //action type string and second arg called payload creator
+  async (
+    { restaurantId, locationId }, //input args from payload creator
+    thunkAPI //this thunk api that gives us helper function like reject with values, dispatch etc from payload creator
+  ) => {
+    const res = await MainServices.getSelectedRestaurantWindowTime(
+      restaurantId,
+      locationId
+    );
+    if (res) {
+      return res;
+    } else {
+      return thunkAPI.rejectWithValue("No response from API");
     }
   }
 );
@@ -219,38 +181,6 @@ export const mainSlice = createSlice({
       .addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
         state.restaurantWindowTime = action.payload;
       });
-
-    // getSelectedRestaurantTime calling only ones changes
-    // .addCase(getSelectedRestaurantTime.pending, (state, action) => {
-    //   const { restaurantId, locationId } = action.meta.arg;
-    //   const key = `${restaurantId}-${locationId}`;
-    //   state.restaurantTimeByLocation[key] = { status: "loading" };
-    // })
-
-    // .addCase(getSelectedRestaurantTime.fulfilled, (state, action) => {
-    //   const { restaurantId, locationId } = action.meta.arg;
-    //   const key = `${restaurantId}-${locationId}`;
-    //   state.restaurantTimeByLocation[key] = {
-    //     status: "succeeded",
-    //     data: action.payload,
-    //   };
-    //   state.restaurantWindowTime = action.payload;
-    // })
-    // .addCase(getSelectedRestaurantTime.rejected, (state, action) => {
-    //   const { restaurantId, locationId } = action.meta.arg;
-    //   const key = `${restaurantId}-${locationId}`;
-
-    //   //getSelectedRestaurantTime calling only ones changes
-    //   if (!state.restaurantTimeByLocation) {
-    //     state.restaurantTimeByLocation = {};
-    //   }
-
-    //   state.restaurantTimeByLocation[key] = {
-    //     status: "failed",
-    //     error: action.payload || "Unknown error",
-    //   };
-    //   console.warn("Failed to fetch restaurant time:", action.payload);
-    // });
   },
 });
 

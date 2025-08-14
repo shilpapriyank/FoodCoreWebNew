@@ -35,7 +35,7 @@ export interface TimeSlotPopupComponentProps {
   futureDateList: FutureDateType[];
   handleToggleTimeSlotModal?: () => void;
   enablefutureordering: boolean;
-  locationId: string;
+  locationId: number;
   clearData?: () => void;
   isRedirectMenu?: boolean;
   isload?: boolean;

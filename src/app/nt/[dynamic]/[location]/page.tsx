@@ -15,7 +15,6 @@ import { setpickupordelivery } from "../../../../../redux/selected-delivery-data
 import { OrderServices } from "../../../../../redux/order/order.services";
 import { isasap, setordertime } from "../../../../../redux/order/order.slice";
 import Layout from "@/components/nt/layout/layout.component";
-import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 export default function LocationPage() {
   const dispatch = useAppDispatch();
