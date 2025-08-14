@@ -37,16 +37,20 @@ import { RestaurantsServices } from "../../../../redux/restaurants/restaurants.s
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
 import {
   DefaultLocation,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
-import { AddressList } from "@/types/location-types/location.type";
+import {
+  AddressList,
+  DeliveryTime,
+  PickupTime,
+} from "@/types/location-types/location.type";
 import {
   AsapLaterOnState,
   TimeSlot,
 } from "@/types/timeslot-types/timeslot.types";
+import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
@@ -104,10 +108,6 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const restaurantslocationlistwithtime =
     restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime.addressList ?? [];
-  // console.log(
-  //   "address list from pickup and delivery time select popup component.tsx",
-  //   addressList
-  // );
   const pickupordelivery = selecteddelivery?.pickupordelivery
     ? Object.keys(selecteddelivery?.pickupordelivery).length > 0
       ? selecteddelivery?.pickupordelivery
@@ -116,32 +116,20 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const defaultLocation = addressList?.find(
     (location: AddressList) => location.locationId === locationId
   );
-  const pickupWindow = defaultLocation?.pickupTime as TimeSlot[] | undefined;
-  const deliveryWindow = defaultLocation?.deliveryTime as
-    | TimeSlot[]
-    | undefined;
+  const pickupWindow = defaultLocation?.pickupTime as PickupTime[];
+  const deliveryWindow = defaultLocation?.deliveryTime as DeliveryTime[];
   const isTakeOutAsap = defaultLocation?.isTakeOutAsap;
   const isTakeOutPickupTime = defaultLocation?.isTakeOutPickupTime;
   const isDeliveryPickupTime = defaultLocation?.isDeliveryPickupTime;
   const isDeliveryAsap = defaultLocation?.isDeliveryAsap;
   const selecetdtime = order.checktime;
-  // const lastPickupTIme =
-  //   pickupWindow &&
-  //   pickupWindow?.length > 0 &&
-  //   pickupWindow?.[pickupWindow?.length - 1];
-  const lastPickupTime = pickupWindow?.[pickupWindow.length - 1];
-
-  // const lastDeliveryTime =
-  //   deliveryWindow &&
-  //   deliveryWindow?.length > 0 &&
-  //   deliveryWindow?.[deliveryWindow?.length - 1];
+  const lastPickupTime = pickupWindow?.length
+    ? pickupWindow[pickupWindow.length - 1]
+    : undefined;
   const lastDeliveryTime = deliveryWindow?.[deliveryWindow.length - 1];
-
-  // const pickupEndTime = lastPickupTIme && lastPickupTIme?.time.split("-")[1];
-  // const deliveryEndTime = lastDeliveryTime && lastDeliveryTime?.time.split("-")[1];
-  const pickupEndTime = lastPickupTime?.EndSlotNew ?? "";
-  const deliveryEndTime = lastDeliveryTime?.EndSlotNew ?? "";
-
+  const pickupEndTime: string | undefined = lastPickupTime?.time?.split("-")[1];
+  const deliveryEndTime: string | undefined =
+    lastDeliveryTime?.time?.split("-")[1];
   let selectedAsap =
     clearData === false && order.isasap === true ? true : false;
   let selectedLateron =
@@ -164,7 +152,9 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const [Meridiem, setMeridiem] = useState<string>();
   const [isTimeLoad, setisTimeLoad] = useState<boolean>(false);
   const customerId = userinfo?.customerId ?? 0;
-  const [defaultLoactionId, setdefaultLoactionId] = useState<number | null>();
+  const [defaultLoactionId, setdefaultLoactionId] = useState<number>(
+    restaurantinfo?.defaultlocationId as number
+  );
   var ordertype =
     selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text ? 2 : 1;
   let selectedAddress =
@@ -181,9 +171,8 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
     restaurantinfo?.defaultLocation as DefaultLocation,
     selecteddelivery?.pickupordelivery as OrderType | any,
-    restaurantWindowTime as RestaurantWindowTimeNew | any
+    restaurantWindowTime as RestaurantWindowTime
   );
-
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const { deliveryRequestId } = order;
   const defaultRequestId = "";
@@ -191,6 +180,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const [isDeliveryWindowAvailable, setisDeliveryWindowAvailable] =
     useState(true);
   const enablefutureordering = defaultLocation?.enablefutureordering;
+
   useEffect(() => {
     if (Hour === "" && !isTimeLoad) {
       if (selecetdtime !== undefined && selecetdtime !== "") {
@@ -208,7 +198,6 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       return;
     } else {
       setisAsap(false);
-
       setTimeOrErrorMessage("");
       dispatch(isasap(false));
       setActiveButtonClass("");
@@ -225,25 +214,25 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       restaurantinfo?.defaultlocationId as number
     ).then((res) => {
       const responseTime = res?.datetime.split(" ").reverse()[0];
-      if (pickupWindow?.length) {
-        const isValidPickup = checkWindowTimeExpires(
-          pickupEndTime ?? "",
+      if (pickupWindow?.length && pickupEndTime) {
+        const isValid = checkWindowTimeExpires(
+          pickupEndTime,
           responseTime as string,
-          isAsap,
-          restaurantinfo as GetAllRestaurantInfo,
-          lastPickupTime?.isLastOrder ?? false
+          //isAsap
+          //restaurantinfo as GetAllRestaurantInfo,
+          lastPickupTime?.isLastOrder
         );
-        setisPickupWindowAvailable(isValidPickup);
+        setisPickupWindowAvailable(isValid);
       }
       if (deliveryEndTime?.length) {
-        const isValidDelivery = checkWindowTimeExpires(
+        const isValid = checkWindowTimeExpires(
           deliveryEndTime ?? "",
           responseTime as string,
-          isAsap,
-          restaurantinfo as GetAllRestaurantInfo,
-          lastDeliveryTime?.isLastOrder ?? false
+          // isAsap
+          // restaurantinfo as GetAllRestaurantInfo,
+          lastDeliveryTime?.isLastOrder
         );
-        setisDeliveryWindowAvailable(isValidDelivery);
+        setisDeliveryWindowAvailable(isValid);
       }
     });
   }, [defaultLocation?.locationId]);
@@ -288,6 +277,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     } else {
     }
   };
+
   const handleAsapClick = () => {
     if (
       ordertype === ORDER_TYPE.DELIVERY.value &&
@@ -374,11 +364,11 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     setisLaterOn(true);
     let hour =
       Meridiem === "AM"
-        ? parseInt(Hour)
-        : parseInt(Hour) + 12 === 24
+        ? Number(Hour)
+        : Number(Hour) + 12 === 24
         ? 12
-        : parseInt(Hour) + 12;
-    let Time = `${hour}:${parseInt(Minute)}`;
+        : Number(Hour) + 12;
+    let Time = `${hour}:${Number(Minute)}`;
     setTimeOrErrorMessage("");
     setsuccessMessage("");
     setActiveButtonClass("lateron");
@@ -463,19 +453,15 @@ const PickupDeliveryTimeSelectPopup: React.FC<
           let id = uuidv4();
           dispatch(createSessionId(id));
           setdefaultLoactionId(lid);
-          // dispatch(refreshCategoryList(restaurantinfo, lid));
-          // dispatch(getSelectedRestaurantTime(restaurantinfo.restaurantId, lid))
           if (userinfo && userinfo?.customerId) {
             deleteCartItemFromSessionId({
               cartsessionId: sessionid as string,
               restaurantId: restaurantinfo?.restaurantId as number,
               locationId: defaultLocation?.locationId as number,
             });
-            // dispatch(emptycart());
-            // dispatch(setintialrewardpoints(userinfo));
           }
         }
-        redirectOnTimeSelected(); //locationUrl
+        redirectOnTimeSelected();
       }
     });
   };
@@ -717,7 +703,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
           )}
         </div>
       </div>
-      {/* <div className="modal-backdrop fade show"></div> */}
+      {isOpenModal && <div className="modal-backdrop fade show"></div>}
     </>
   );
 };

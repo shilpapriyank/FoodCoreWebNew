@@ -20,7 +20,6 @@ import {
   setFutureOrderDay,
   setordertime,
 } from "../../../../redux/order/order.slice";
-import { useDispatch } from "react-redux";
 import {
   AsapLaterOnState,
   FutureOrderDay,
@@ -28,8 +27,6 @@ import {
   TimeSlot,
   TimeSlotPopupComponentProps,
 } from "@/types/timeslot-types/timeslot.types";
-import { AppDispatch, RootState } from "../../../../redux/store";
-import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { OrderTypes } from "../../../../redux/order/order.type";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
@@ -58,8 +55,8 @@ import {
   DefaultLocation,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
-import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 
 const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   futureDateList,
@@ -138,7 +135,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const orderDisableData: OrderDisableData = orderDisable(
     restaurantinfo as GetAllRestaurantInfo,
     selecteddelivery,
-    restaurantWindowTime as RestaurantWindowTimeNew[] | any
+    restaurantWindowTime as RestaurantWindowTime
   );
   const selectedDay: string =
     (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";

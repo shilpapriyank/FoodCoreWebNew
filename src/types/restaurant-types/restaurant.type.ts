@@ -1,7 +1,7 @@
 ///getAllRestaurantInfo types
 
 import { ThemeType } from "../common-types/common.types";
-import { RestaurantWindowTimeNew } from "../mainservice-types/mainservice.type";
+import { RestaurantWindowTime } from "../utility-types/utility.types";
 
 export interface GetAllRestaurantInfo {
   restaurantname: string;
@@ -25,7 +25,7 @@ export interface GetAllRestaurantInfo {
   locationIds: number[];
   defaultlocationId: number;
   defaultLocation: DefaultLocation;
-  restaurantWindowTime: RestaurantWindowTimeNew;
+  restaurantWindowTime: RestaurantWindowTime;
   enableotpauthentication: boolean;
   smsapigateway: number;
   googleplacekey: string;
