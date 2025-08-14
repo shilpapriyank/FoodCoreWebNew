@@ -144,7 +144,7 @@ export interface ParameterByTextSizeList {
 //   timezoneoffset: string;
 // }
 export interface AddressList {
-  restaurantName: string | null;
+  restaurantName: string;
   locationId: number;
   locationName: string;
   address1: string;
@@ -154,22 +154,22 @@ export interface AddressList {
   ISDCode: string;
   IsPayByCash: boolean;
   Lastordertime: boolean[];
-  NextClosingTime: string | null;
-  NextDeilveryAvailable: string | null;
-  NextLastordertime: string | null;
-  NextOpeningTime: string | null;
-  NextOrdDeliveryClosingTime: string | null;
-  NextOrdDeliveryOpeningTime: string | null;
-  NextTakeoutAvailable: string | null;
-  NextTakeoutDeliveryClosingTime: string | null;
-  NextTakeoutDeliveryOpeningTime: string | null;
+  NextClosingTime: string;
+  NextDeilveryAvailable: string;
+  NextLastordertime: string;
+  NextOpeningTime: string;
+  NextOrdDeliveryClosingTime: string;
+  NextOrdDeliveryOpeningTime: string;
+  NextTakeoutAvailable: string;
+  NextTakeoutDeliveryClosingTime: string;
+  NextTakeoutDeliveryOpeningTime: string;
   OpeningTime: string[];
   OrdDeliveryClosingTime: string[];
   OrdDeliveryClosingTimeV1: string[]; // define if possible //any[]
   OrdDeliveryOpeningTime: string[];
   OrdDeliveryOpeningTimeV1: string[]; // define if possible
   SystemAccessFee: number;
-  TakeourDeliveryClosingTime: string | null;
+  TakeourDeliveryClosingTime: string;
   TakeoutAvailable: boolean[];
   TakeoutDeliveryClosingTime: string[];
   TakeoutDeliveryClosingTimeV1: string[];
@@ -189,14 +189,14 @@ export interface AddressList {
   defaultmenuitemimage: string;
   defaultordertype: boolean;
   defaultsuboptionimage: string;
-  deliverPartnerName: string | null;
+  deliverPartnerName: string;
   deliverPartnerStatus: boolean;
   deliveryDays: number;
-  deliveryService: string | null;
+  deliveryService: string;
   deliverySpecialHoursList: { date: string; open: string; close: string }[];
-  deliveryTime: string[]; // define type //any[]
+  deliveryTime: DeliveryTime[]; // define type //any[]
   delivery_hour: string[]; // define type //any[]
-  deliveryslots: string;  //any[]
+  deliveryslots: string; //any[]
   displaylistview: boolean;
   distance: number;
   email: string;
@@ -204,9 +204,9 @@ export interface AddressList {
   enablefutureordering: boolean;
   facebookUrl: string;
   fax: string;
-  futureOrderingDayDates: string[];//any[]; // define structure
+  futureOrderingDayDates: string[]; //any[]; // define structure
   googlePayEnable: boolean;
-  hstgstnumber: string | null;
+  hstgstnumber: string;
   instagramUrl: string;
   isDelivery: boolean;
   isDeliveryAsap: boolean;
@@ -228,7 +228,12 @@ export interface AddressList {
   latitude: number;
   locationTime: string;
   locationTimeList: Record<string, string>; // any
-  locationTimesList: { open: string; close: string; day: string; type: string }[];// any[]; // define if needed
+  locationTimesList: {
+    open: string;
+    close: string;
+    day: string;
+    type: string;
+  }[]; // any[]; // define if needed
   locationURL: string;
   longitude: number;
   maxLikeInMonth: number;
@@ -244,18 +249,18 @@ export interface AddressList {
   offerList: any[];
   openTableActive: boolean;
   openTableUrl: string;
-  orderDisableTypeMessage: string | null;
+  orderDisableTypeMessage: string;
   orderingMessage: string;
   ordersubmittime: number;
   phone: string;
   pickupDays: number;
-  pickupTime: string  //any[];
-  pickup_hour: string  //any[];
+  pickupTime: PickupTime[]; //any[];
+  pickup_hour: string; //any[];
   rewardpointAllow: number;
   stateName: string;
   stripePublishKey: string;
   takeawayextratime: number;
-  takeoutSpecialHoursList: { date: string; open: string; close: string }[];// any; // define if needed
+  takeoutSpecialHoursList: { date: string; open: string; close: string }[]; // any; // define if needed
   takeoutslots: string[];
   timeSlotDuration: number;
   timeduration: number;
@@ -265,7 +270,6 @@ export interface AddressList {
   todayDayName: string;
   zipcode: string;
 }
-
 
 export interface LocationTimesList {
   Day: string;

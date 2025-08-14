@@ -28,6 +28,7 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
   restaurantsdetail,
+  restaurantstiming,
   setAppVersion,
 } from "../../../redux/restaurants/restaurants.slice";
 import { PAGES } from "../nt/common/pages";
@@ -212,7 +213,12 @@ const RestaurantComponent = ({
             locationId: newselectedRestaurant.defaultlocationId,
           })
         );
-
+        dispatch(
+          restaurantstiming({
+            restaurantId: newselectedRestaurant.restaurantId,
+            locationId: newselectedRestaurant.defaultlocationId,
+          })
+        );
         if (
           cart?.cartitemdetail?.cartDetails?.cartItemDetails &&
           cart?.cartitemdetail?.cartDetails?.cartItemDetails[0] !== undefined
@@ -406,4 +412,3 @@ const RestaurantComponent = ({
 export default dynamic(() => Promise.resolve(React.memo(RestaurantComponent)), {
   ssr: true,
 });
-

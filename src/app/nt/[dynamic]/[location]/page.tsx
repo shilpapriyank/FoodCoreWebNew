@@ -81,7 +81,7 @@ export default function LocationPage() {
         OrderServices.getOrderTime({
           restaurantId: restaurantinfo?.restaurantId,
           locationId: restaurantinfo?.locationId,
-        } as any).then((response) => {
+        }).then((response) => {
           dispatch(isasap(true));
           const time = response?.ordertime?.split(":");
           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;

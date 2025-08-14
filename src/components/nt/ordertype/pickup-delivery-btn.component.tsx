@@ -9,9 +9,7 @@ import {
   ORDER_TYPE,
 } from "../../common/utility";
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../redux/store";
-import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
+import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 
 type PickupDeliveryButtonProps = {
   handleChangeOrderType: (type: any) => void;
@@ -23,11 +21,8 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
   const { restaurantinfo, selecteddelivery, main } = useReduxData();
   const dispatch = useAppDispatch();
   let location = restaurantinfo?.defaultLocation?.locationURL;
-  // const restaurantWindowTime = (main.restaurantWindowTime?.[0] ??
-  //   null) as RestaurantWindowTimeNew;
-  const restaurantWindowTime = (main.restaurantWindowTime ??
-    null) as RestaurantWindowTimeNew;
-  //const restaurantWindowTime = main.restaurantWindowTime as RestaurantWindowTimeNew;
+  const restaurantWindowTime =
+    main.restaurantWindowTime as RestaurantWindowTime;
   const pickupWindow =
     restaurantWindowTime &&
     restaurantWindowTime.pickupTime &&
@@ -52,12 +47,12 @@ const PickupDeliveryButton: React.FC<PickupDeliveryButtonProps> = ({
   // let locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
   const { isFutureOrder, futureDay } = useFutureOrder();
   const isEnableDelivery = checkDisableWindow(
-    deliveryWindow,
+    deliveryWindow as string[],
     isFutureOrder as boolean,
     (futureDay as any)?.futureDay
   );
   const isEnablePickup = checkDisableWindow(
-    pickupWindow,
+    pickupWindow as string[],
     isFutureOrder as boolean,
     (futureDay as any)?.futureDay
   );

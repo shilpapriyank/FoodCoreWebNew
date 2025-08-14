@@ -40,24 +40,24 @@ export type MainCategoryList = {
 };
 
 ////getRestaurantTime new defined types
-export interface RestaurantWindowTimeNew {
-  time: string; // add this
-  isLastOrder: boolean; // add this
-  deliveryTime: string[];
-  pickupTime: string[];
-  OrdDeliveryOpeningTime: any[];
-  OrdDeliveryOpeningTimeV1: OrdDeliveryOpeningTimeV1[];
-  OrdDeliveryClosingTime: any[];
-  OrdDeliveryClosingTimeV1: OrdDeliveryClosingTimeV1[];
-  TakeoutDeliveryOpeningTime: any[];
-  TakeoutDeliveryOpeningTimeV1: TakeoutDeliveryOpeningTimeV1[];
-  TakeoutDeliveryClosingTime: any[];
-  TakeoutDeliveryClosingTimeV1: TakeoutDeliveryClosingTimeV1[];
-  deliveryOpeningWindowTime: any;
-  deliveryClosingWindowTime: any;
-  isDeliveryClosed: boolean;
-  isPickupClosed: boolean;
-}
+// export interface RestaurantWindowTimeNew {
+//   time: string; // add this
+//   isLastOrder: boolean; // add this
+//   deliveryTime: string[];
+//   pickupTime: string[];
+//   OrdDeliveryOpeningTime: any[];
+//   OrdDeliveryOpeningTimeV1: OrdDeliveryOpeningTimeV1[];
+//   OrdDeliveryClosingTime: any[];
+//   OrdDeliveryClosingTimeV1: OrdDeliveryClosingTimeV1[];
+//   TakeoutDeliveryOpeningTime: any[];
+//   TakeoutDeliveryOpeningTimeV1: TakeoutDeliveryOpeningTimeV1[];
+//   TakeoutDeliveryClosingTime: any[];
+//   TakeoutDeliveryClosingTimeV1: TakeoutDeliveryClosingTimeV1[];
+//   deliveryOpeningWindowTime: any;
+//   deliveryClosingWindowTime: any;
+//   isDeliveryClosed: boolean;
+//   isPickupClosed: boolean;
+// }
 
 export interface OrdDeliveryOpeningTimeV1 {
   DeliveryTakeoutTiming: string;

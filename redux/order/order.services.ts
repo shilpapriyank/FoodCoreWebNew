@@ -177,7 +177,7 @@ export class OrderServices {
   }: {
     restaurantId: number;
     locationId: number;
-    ordertype: number;
+    ordertype?: number;
   }) {
     responseclass = new ResponseModel();
     const methodName = "getOrderTime";
