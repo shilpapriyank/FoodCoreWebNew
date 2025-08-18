@@ -3,7 +3,11 @@ import { ORDER_TYPE, getAsapLaterOnState } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
-import { AddressList } from "@/types/location-types/location.type";
+import {
+  AddressList,
+  DeliveryTime,
+  PickupTime,
+} from "@/types/location-types/location.type";
 import { DefaultLocation } from "@/types/restaurant-types/restaurant.type";
 
 interface AsapLateronButtonProps {
@@ -12,8 +16,8 @@ interface AsapLateronButtonProps {
   activeButtonClass: "asap" | "lateron" | "";
   isTakeOutPickupTime: boolean;
   defaultLocation: Record<string, any>;
-  pickupWindow: any;
-  deliveryWindow: any;
+  pickupWindow: PickupTime[];
+  deliveryWindow: DeliveryTime[];
   isTakeOutAsap: boolean;
   isDeliveryWindowAvailable: boolean;
   isPickupWindowAvailable: boolean;

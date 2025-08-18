@@ -123,7 +123,7 @@ const OrderTypeSelect = ({
             userinfo.customerId,
             0,
             "0",
-            String(updatedRestaurantInfo.defaultLocation.locationId)
+            updatedRestaurantInfo.defaultLocation.locationId
           );
 
         if (rewardRes?.status === 1) {

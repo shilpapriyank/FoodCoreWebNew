@@ -420,7 +420,11 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     handlesave(hour, minute, meridiem);
   };
 
-  const handleClick = async (lid: any, locationUrl: any, isPickup: boolean) => {
+  const handleClick = async (
+    lid: number,
+    locationUrl: any,
+    isPickup: boolean
+  ) => {
     LocationServices.changeRestaurantLocation(
       restaurantinfo?.restaurantId as number,
       lid
@@ -505,7 +509,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
 
         if (ordertype === 1 || ordertype === 2) {
           if (isRedirectMenu) {
-            handleClick(locationId, locationUrl, true);
+            handleClick(locationId as number, locationUrl, true);
             handleToggleTimingModal(false);
           } else if (ordertype === 2) {
             setTimeout(() => {
@@ -527,7 +531,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
 
     handleToggleTimingModal(false);
     if (isRedirectMenu === true) {
-      handleClick(locationId, locationUrl, true);
+      handleClick(locationId as number, locationUrl, true);
       handleToggleTimingModal(false);
       return;
     }
@@ -692,13 +696,13 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                   </>
                 )}
                 <PickupdeliveryWindowTime
-                  defaultLocation={defaultLocation}
+                  defaultLocation={defaultLocation as AddressList}
                   isDeliveryAsap={isDeliveryAsap as boolean}
                   isTakeOutAsap={isTakeOutAsap as boolean}
                   isDeliveryPickupTime={isDeliveryPickupTime as boolean}
                   isTakeOutPickupTime={isTakeOutPickupTime as boolean} // Add this
-                  pickupWindow={pickupWindow as any}
-                  deliveryWindow={deliveryWindow as any}
+                  pickupWindow={pickupWindow}
+                  deliveryWindow={deliveryWindow}
                   isDeliveryWindowAvailable={isDeliveryWindowAvailable}
                   isPickupWindowAvailable={isPickupWindowAvailable}
                 />

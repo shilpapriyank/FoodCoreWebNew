@@ -152,7 +152,6 @@ const MenuItemAddToCart = ({
             orderType: ordertype,
             selectedtime: selecetdtime,
           });
-          console.log("item object from addtocartclick", itemobj)
           if (itemobj && itemobj != undefined) {
             MenuItemServices.addItemToCart({
               orderobj: itemobj,

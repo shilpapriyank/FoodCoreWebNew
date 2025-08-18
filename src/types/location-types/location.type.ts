@@ -21,128 +21,6 @@ export interface ParameterByTextSizeList {
   FontFamily: string;
 }
 
-// export interface AddressList {
-//   restaurantName: string;
-//   locationId: number;
-//   locationName: string;
-//   address1: string;
-//   countryName: string;
-//   stateName: string;
-//   cityName: string;
-//   phone: string;
-//   mobile: string;
-//   fax: string;
-//   zipcode: string;
-//   email: string;
-//   maxLikeInMonth: number;
-//   bookingTimeLimit: number;
-//   ordersubmittime: number;
-//   minorder: number;
-//   minimumdeliveryorder: number;
-//   minimumtakeoutorder: number;
-//   takeawayextratime: number;
-//   isLocationActive: number;
-//   locationTime?: string;
-//   minDeliveryCharge: string;
-//   isTableReservation: boolean;
-//   locationTimeList: any;
-//   locationTimesList: LocationTimesList[];
-//   isOrderingDisable: boolean;
-//   orderingMessage: string;
-//   offerList?: OfferList[];
-//   cultureName: string;
-//   currencySymbol: string;
-//   currencyCode: string;
-//   countryCode: string;
-//   ISDCode: string;
-//   isDelivery: boolean;
-//   isTakeaway: boolean;
-//   locationURL: string;
-//   isPayByCard: boolean;
-//   IsPayByCash: boolean;
-//   isNextOrderingEnable: boolean;
-//   OpeningTime: string[];
-//   NextOpeningTime: any;
-//   ClosingTime: string[];
-//   NextClosingTime: any;
-//   orderDisableTypeMessage: any;
-//   SystemAccessFee: number;
-//   deliveryTime: DeliveryTime[];
-//   pickupTime: PickupTime[];
-//   OrdDeliveryOpeningTime: string[];
-//   OrdDeliveryOpeningTimeV1: OrdDeliveryOpeningTimeV1[];
-//   NextOrdDeliveryOpeningTime: any;
-//   OrdDeliveryClosingTime: string[];
-//   OrdDeliveryClosingTimeV1: OrdDeliveryClosingTimeV1[];
-//   NextOrdDeliveryClosingTime: any;
-//   TakeoutDeliveryOpeningTime: string[];
-//   TakeoutDeliveryOpeningTimeV1: TakeoutDeliveryOpeningTimeV1[];
-//   NextTakeoutDeliveryOpeningTime: any;
-//   TakeoutDeliveryClosingTime: string[];
-//   TakeoutDeliveryClosingTimeV1: TakeoutDeliveryClosingTimeV1[];
-//   TakeourDeliveryClosingTime: any;
-//   NextTakeoutDeliveryClosingTime: any;
-//   Lastordertime: boolean[];
-//   NextLastordertime: any;
-//   DeilveryAvailable: boolean[];
-//   NextDeilveryAvailable: any;
-//   TakeoutAvailable: boolean[];
-//   NextTakeoutAvailable: any;
-//   pickup_hour: PickupHour[];
-//   delivery_hour: DeliveryHour[];
-//   latitude: number;
-//   longitude: number;
-//   distance: number;
-//   maxdeliverymiles: number;
-//   isDeliveryOrderingDisable: boolean;
-//   isTakeoutOrderingDisable: boolean;
-//   takeoutSpecialHoursList: any;
-//   deliverySpecialHoursList: any;
-//   openTableActive: boolean;
-//   openTableUrl: string;
-//   isDeliveryAsap: boolean;
-//   isDeliveryPickupTime: boolean;
-//   isTakeOutAsap: boolean;
-//   isTakeOutPickupTime: boolean;
-//   rewardpointAllow: number;
-//   isEnableTip: boolean;
-//   todayDayName: string;
-//   isDisplaySummaryAto: boolean;
-//   googlePayEnable: boolean;
-//   applePayEnable: boolean;
-//   stripePublishKey?: string;
-//   hstgstnumber: any;
-//   TempoApp: boolean;
-//   defaultmenucategoryimage?: string;
-//   defaultmenuitemimage?: string;
-//   defaultsuboptionimage?: string;
-//   cashdrawerbuttononpos: boolean;
-//   isSupplyChainEnable: boolean;
-//   pickupDays: number;
-//   deliveryDays: number;
-//   enableTimeSlot: boolean;
-//   timeSlotDuration: number;
-//   deliveryService: any;
-//   deliverPartnerName: any;
-//   deliverPartnerStatus: boolean;
-//   displaylistview: boolean;
-//   isUseFoodCoreDriver: boolean;
-//   tipYourDriver: string;
-//   minTipPercentage: number;
-//   minTipTextMessage?: string;
-//   facebookUrl: string;
-//   instagramUrl: string;
-//   enablefutureordering: boolean;
-//   noofdaysfutureordering: number;
-//   timeduration: number;
-//   defaultordertype: boolean;
-//   b2btype: boolean;
-//   futureOrderingDayDates: FutureOrderingDayDate[];
-//   deliveryslots: any;
-//   takeoutslots: any;
-//   timezone: string;
-//   timezoneoffset: string;
-// }
 export interface AddressList {
   restaurantName: string;
   locationId: number;
@@ -165,9 +43,9 @@ export interface AddressList {
   NextTakeoutDeliveryOpeningTime: string;
   OpeningTime: string[];
   OrdDeliveryClosingTime: string[];
-  OrdDeliveryClosingTimeV1: string[]; // define if possible //any[]
+  OrdDeliveryClosingTimeV1: string[];
   OrdDeliveryOpeningTime: string[];
-  OrdDeliveryOpeningTimeV1: string[]; // define if possible
+  OrdDeliveryOpeningTimeV1: string[];
   SystemAccessFee: number;
   TakeourDeliveryClosingTime: string;
   TakeoutAvailable: boolean[];
@@ -194,9 +72,9 @@ export interface AddressList {
   deliveryDays: number;
   deliveryService: string;
   deliverySpecialHoursList: { date: string; open: string; close: string }[];
-  deliveryTime: DeliveryTime[]; // define type //any[]
-  delivery_hour: string[]; // define type //any[]
-  deliveryslots: string; //any[]
+  deliveryTime: DeliveryTime[];
+  delivery_hour: string[];
+  deliveryslots: string;
   displaylistview: boolean;
   distance: number;
   email: string;
@@ -204,7 +82,7 @@ export interface AddressList {
   enablefutureordering: boolean;
   facebookUrl: string;
   fax: string;
-  futureOrderingDayDates: string[]; //any[]; // define structure
+  futureOrderingDayDates: string[];
   googlePayEnable: boolean;
   hstgstnumber: string;
   instagramUrl: string;
@@ -227,13 +105,13 @@ export interface AddressList {
   isUseFoodCoreDriver: boolean;
   latitude: number;
   locationTime: string;
-  locationTimeList: Record<string, string>; // any
+  locationTimeList: Record<string, string>;
   locationTimesList: {
     open: string;
     close: string;
     day: string;
     type: string;
-  }[]; // any[]; // define if needed
+  }[];
   locationURL: string;
   longitude: number;
   maxLikeInMonth: number;
@@ -254,13 +132,13 @@ export interface AddressList {
   ordersubmittime: number;
   phone: string;
   pickupDays: number;
-  pickupTime: PickupTime[]; //any[];
-  pickup_hour: string; //any[];
+  pickupTime: PickupTime[]; 
+  pickup_hour: string; 
   rewardpointAllow: number;
   stateName: string;
   stripePublishKey: string;
   takeawayextratime: number;
-  takeoutSpecialHoursList: { date: string; open: string; close: string }[]; // any; // define if needed
+  takeoutSpecialHoursList: { date: string; open: string; close: string }[]; 
   takeoutslots: string[];
   timeSlotDuration: number;
   timeduration: number;

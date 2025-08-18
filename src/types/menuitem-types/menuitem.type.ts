@@ -80,7 +80,7 @@ export interface List {
   isCompulsory: boolean;
   isHalfPizza: boolean;
   toppingPriceForHalfPizza: number;
-  toppingValue: number;
+  toppingValue: string;
   displayStatus: boolean;
   type: Type[];
   isprintonly: boolean;
@@ -266,4 +266,3 @@ export interface MenuItemsCommon {
   originalPrice: number;
   isMenuCategoryDiscountApplied: boolean;
 }
-

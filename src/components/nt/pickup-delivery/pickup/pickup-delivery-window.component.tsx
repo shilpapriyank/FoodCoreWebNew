@@ -5,15 +5,20 @@ import {
 } from "@/components/helpers/static-message/pickupconfirmation2-message";
 import { ORDER_TYPE } from "../../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import {
+  AddressList,
+  DeliveryTime,
+  PickupTime,
+} from "@/types/location-types/location.type";
 
 interface Props {
-  defaultLocation: any;
+  defaultLocation: AddressList;
   isDeliveryAsap: boolean;
   isDeliveryPickupTime: boolean;
   isTakeOutAsap: boolean;
   isTakeOutPickupTime: boolean;
-  deliveryWindow: any[];
-  pickupWindow: any[];
+  deliveryWindow: DeliveryTime[];
+  pickupWindow: PickupTime[];
   isDeliveryWindowAvailable: boolean;
   isPickupWindowAvailable: boolean;
 }

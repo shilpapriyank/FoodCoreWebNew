@@ -7,9 +7,7 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
 import { RestaurantsTypes } from "../../../../redux/restaurants/restaurants.types";
-import {
-  getSelectedRestaurantTime,
-} from "../../../../redux/main/main.slice";
+import { getSelectedRestaurantTime } from "../../../../redux/main/main.slice";
 import {
   restaurantAllLocation,
   restaurantsdetail,
@@ -188,7 +186,7 @@ const LoadLocationDirectComponent = ({
             userinfo.customerId,
             0,
             "0",
-            String(restaurantinfo?.defaultLocation.locationId)
+            restaurantinfo?.defaultLocation.locationId
           ).then((res) => {
             if (res && res.status == 1) {
               let rewards = {

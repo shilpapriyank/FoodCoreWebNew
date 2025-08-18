@@ -69,10 +69,11 @@ export const OrderItemsList = () => {
     pickupordelivery === ORDER_TYPE.DELIVERY.text
       ? ORDER_TYPE.DELIVERY.value
       : ORDER_TYPE.PICKUP.value;
-
   let rewardvalue = rewardpoints?.rewardvalue;
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [deleteItemData, setdeleteItemData] = useState<any | null>(null);
+  const [deleteItemData, setdeleteItemData] = useState<CartItemDetails | null>(
+    null
+  );
   const [updateQty, setupdateQty] = useState<boolean>(false);
   const minQty = 1;
   const [cartdeleteconfirm, setcartdeleteconfirm] = useState<boolean>(false);
@@ -128,7 +129,7 @@ export const OrderItemsList = () => {
       customerId,
       0,
       "0",
-      String(restaurantinfo?.defaultlocationId)
+      restaurantinfo?.defaultlocationId as number
     ).then((response) => {
       if (response && response.status == 1) {
         let rewards = {
@@ -406,31 +407,8 @@ export const OrderItemsList = () => {
   }, [deleteItemData?.orderitemId, deleteItemData?.cartid]);
 
   const handleConfirmDeleteItem = useCallback(() => {
-    deletecartclick(deleteItemData);
+    deletecartclick(deleteItemData as CartItemDetails);
   }, [memoRiseddeleteItemData]);
-
-  // const editItemClick = (item: any, depQty: any) => {
-  //   if (item != undefined) {
-  //     //setisProductItemPopup(false);
-  //     if (depQty > 0) {
-  //       dispatch(setDipendentItemQty(depQty));
-  //     }
-  //     MenuItemServices.getMenuItemList({
-  //       restaurantId: restaurantinfo?.restaurantId as number,
-  //       locationId: restaurantinfo?.defaultlocationId as number,
-  //       customerId: customerId,
-  //       menuitemId: item.menuitemid,
-  //       cartsessionId: sessionId as string,
-  //       cartId: item?.cartid,
-  //     }).then((response) => {
-  //       if (response) {
-  //         dispatch(setMenuItemDetailList(response));
-  //         dispatch(selectedMenuItem(item));
-  //         setTimeout(() => {}, 100);
-  //       }
-  //     });
-  //   }
-  // };
 
   const handleToggle = (value: boolean) => {
     setcartdeleteconfirm(value);

@@ -303,7 +303,7 @@ export class CustomerServices {
     customerId: number,
     rewardpoints: number,
     amount: string,
-    locationId: string
+    locationId: number
   ) {
     responseclass = new ResponseModel();
     const methodName = "checkCustomerRewardPointsLocation";

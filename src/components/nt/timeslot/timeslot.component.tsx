@@ -396,7 +396,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                       <>
                         <FutureDayComponent
                           ordertype={ordertype}
-                          order={order as any}
+                          order={order}
                           selectedDate={selectedDate}
                           enablefutureordering={enablefutureordering}
                           futureDateList={futureDateList}
@@ -417,39 +417,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 <div className="row">
                   <div className="col-12 mb-2"></div>
                 </div>
-                {/* <div className="row">
-                  {dayCloseError === '' ? <>  {
-                     (asapLaterOnState.isAsap && selectedDate === "Today") &&
-                    <TimeSlotPillComponent
-                      time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
-                      id={"C"}
-                      name="ASAP - ASAP"
-                      label="As Soon As Possible"
-                      handleClickTimePill={handleClickAsap}
-                      isDisable={asapLaterOnState.isDisableAsapLateron}
-                      selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
-                    />
-                  }
-                    {(!loadTimeslot && loadSwipe) ? <>
-                      {timeSlots && timeSlots?.map((time, index) => {
-                        return <>{time.StartSlotNew !== null &&
-                          <TimeSlotPillComponent
-                            time={time}
-                            selectedTime={selectedTime || order.checktime}
-                            name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                            id={`slot-${index}`}
-                            handleClickTimePill={handleClickTimePill}
-                            label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-                            key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
-                          />
-                        }
-                        </>
-                      })}
-                    </> :
-                      <TimeSlotSkeletonComponent />
-                    }
-                  </> : <>{<p className='red-text text-center p-0'>{dayCloseError}</p>}</>}
-                </div> */}
+
                 <div className="row">
                   {dayCloseError === "" ? (
                     <>

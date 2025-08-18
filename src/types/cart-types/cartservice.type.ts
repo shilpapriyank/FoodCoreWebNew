@@ -116,6 +116,21 @@ export interface CartItemDetails {
   categorytaxes: number;
 }
 
+export interface DeliveryChargesTypes {
+  returnMessage: string;
+  isdelivery: string;
+  deliveryService: string;
+  dropofTime: string;
+  requestId: string;
+  DeliveryCharges: string;
+  maxkms: string;
+  IsGeoFencing: number;
+  GeoMinOrderAmount: string;
+  distance: number;
+  header: string;
+  minOrderForAddress: string;
+}
+
 export interface CartTotal {
   subTotal: number;
   reedemPoints: number;
@@ -159,14 +174,14 @@ export interface GetCartItems {
   cartDetails: CartDetails;
 }
 
-export interface DeliveryChargesTypes {
-  chargetype: string;
-  deliverycharges: string;
-  distance: number;
-  geoMinOrderAmount: string;
-  isdelivery: string;
-  isGeoFencing: boolean;
-  maxkms: string;
-  returnMessage: string;
-  minOrderForAddress: number;
-}
+// export interface DeliveryChargesTypes {
+//   chargetype: string;
+//   deliverycharges: string;
+//   distance: number;
+//   geoMinOrderAmount: string;
+//   isdelivery: string;
+//   isGeoFencing: boolean;
+//   maxkms: string;
+//   returnMessage: string;
+//   minOrderForAddress: number;
+// }
