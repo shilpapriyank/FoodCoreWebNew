@@ -36,20 +36,18 @@ import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 import { LocationServices } from "../../../../redux/location/location.services";
 
-interface OrderTypeSelectProps {
-  isOpenModal: boolean;
-  handleToggleOrderTypeModal: (open: boolean) => void;
-  handleToggleTimingModal?: (open: boolean) => void;
-  handleChangeAddress?: () => void;
-  handleToggleAddAddressModal: (open: boolean) => void;
-}
-
-const OrderTypeSelect: React.FC<OrderTypeSelectProps> = ({
+const OrderTypeSelect = ({
   isOpenModal,
   handleToggleOrderTypeModal,
   handleToggleTimingModal,
   handleChangeAddress,
   handleToggleAddAddressModal,
+}: {
+  isOpenModal: boolean;
+  handleToggleOrderTypeModal: (open: boolean) => void;
+  handleToggleTimingModal?: (open: boolean) => void;
+  handleChangeAddress?: () => void;
+  handleToggleAddAddressModal: (open: boolean) => void;
 }) => {
   const dispatch = useAppDispatch();
   const params = useParams();

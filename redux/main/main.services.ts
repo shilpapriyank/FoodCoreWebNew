@@ -5,7 +5,6 @@ import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import {
   MainCategoryList,
   RestaurantWindowTime,
-  RestaurantWindowTimeNew,
 } from "@/types/mainservice-types/mainservice.type";
 
 let responseclass = new ResponseModel();
@@ -122,7 +121,7 @@ export class MainServices {
   static async getSelectedRestaurantWindowTime(
     restaurantId: number,
     locationId: number
-  ): Promise<RestaurantWindowTimeNew[] | null> {
+  ): Promise<RestaurantWindowTime | null> {
     responseclass = new ResponseModel();
     const methodName = "getSelectedRestaurantWindowTime";
     const selecetdrestaurant = ENDPOINTS.GET_SELECTED_RESTAURANT_TIME;
@@ -146,7 +145,7 @@ export class MainServices {
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
     ) {
-      return responseclass.result as RestaurantWindowTimeNew[];
+      return responseclass.result as RestaurantWindowTime;
     } else {
       return null;
     }

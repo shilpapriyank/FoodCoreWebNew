@@ -11,6 +11,7 @@ import { GetThemeDetails } from "@/components/common/utility";
 import ClientWrapper from "@/components/common/client-wrapper";
 import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
+import moment from "moment";
 // const ClientProviders = dynamic(() => import('@/components/common/client-providers'), {
 //   ssr: false,
 // });
@@ -31,6 +32,12 @@ function serializeRestaurantData(data: any) {
     // Add other serializable properties you need
     // Avoid passing class instances, functions, or complex objects
   };
+}
+
+if (typeof window !== "undefined") {
+  (window as any).$ = $;
+  (window as any).jQuery = $;
+  (window as any).moment = moment;
 }
 
 export default async function RootLayout({

@@ -15,7 +15,6 @@ import { setpickupordelivery } from "../../../../../redux/selected-delivery-data
 import { OrderServices } from "../../../../../redux/order/order.services";
 import { isasap, setordertime } from "../../../../../redux/order/order.slice";
 import Layout from "@/components/nt/layout/layout.component";
-import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 export default function LocationPage() {
   const dispatch = useAppDispatch();
@@ -81,7 +80,7 @@ export default function LocationPage() {
         OrderServices.getOrderTime({
           restaurantId: restaurantinfo?.restaurantId,
           locationId: restaurantinfo?.locationId,
-        } as any).then((response) => {
+        }).then((response) => {
           dispatch(isasap(true));
           const time = response?.ordertime?.split(":");
           const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`;

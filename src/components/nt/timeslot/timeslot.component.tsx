@@ -13,6 +13,7 @@ import {
   getAsapLaterOnState,
   orderDisable,
   OrderType,
+  getOrderTypeFromText,
 } from "../../common/utility";
 import {
   emptyordertime,
@@ -20,7 +21,6 @@ import {
   setFutureOrderDay,
   setordertime,
 } from "../../../../redux/order/order.slice";
-import { useDispatch } from "react-redux";
 import {
   AsapLaterOnState,
   FutureOrderDay,
@@ -28,8 +28,6 @@ import {
   TimeSlot,
   TimeSlotPopupComponentProps,
 } from "@/types/timeslot-types/timeslot.types";
-import { AppDispatch, RootState } from "../../../../redux/store";
-import { RestaurantWindowTime } from "@/types/utility-types/utility.types";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { OrderTypes } from "../../../../redux/order/order.type";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
@@ -58,8 +56,9 @@ import {
   DefaultLocation,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
-import { RestaurantWindowTimeNew } from "@/types/mainservice-types/mainservice.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
+import { AddressList } from "@/types/location-types/location.type";
 
 const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   futureDateList,
@@ -110,7 +109,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       : selecteddelivery?.selecteddeliveryaddress;
   const restaurantWindowTime = main.restaurantWindowTime;
   const defaultLocation = addressList?.find(
-    (location: any) => location.locationId === locationId
+    (location: AddressList) => location.locationId === locationId
   );
   const [timeOrErrorMessage, setTimeOrErrorMessage] = useState<string>("");
   const [isConfirmDisable, setisConfirmDisable] = useState<boolean>(false);
@@ -130,15 +129,21 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const redirectPrevPage = searchParams.get("redirectcart") === "true";
   const locationFullLink = `/${selectedTheme?.url}/${dynamic}/${locationUrl}/`;
   const dispatch = useAppDispatch();
+  const convertedOrderType = getOrderTypeFromText(
+    selecteddelivery?.pickupordelivery
+  );
+  if (convertedOrderType === undefined) throw new Error("Invalid order type");
+
   const asapLaterOnState: AsapLaterOnState = getAsapLaterOnState(
-    restaurantinfo?.defaultLocation as any,
-    selecteddelivery?.pickupordelivery as OrderType | any,
-    restaurantWindowTime as RestaurantWindowTime | any
+    restaurantinfo?.defaultLocation as DefaultLocation,
+    convertedOrderType,
+    //selecteddelivery?.pickupordelivery as OrderType, // i add above line to solve this line error
+    restaurantWindowTime as RestaurantWindowTime
   );
   const orderDisableData: OrderDisableData = orderDisable(
     restaurantinfo as GetAllRestaurantInfo,
     selecteddelivery,
-    restaurantWindowTime as RestaurantWindowTimeNew[] | any
+    restaurantWindowTime as RestaurantWindowTime
   );
   const selectedDay: string =
     (order?.futureOrderDay as FutureOrderDay)?.futureDay || "";
@@ -146,7 +151,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
 
   useEffect(() => {
     let date = new Date();
-    setcurrentDate(date as any);
+    setcurrentDate(date);
   }, []);
 
   const handleClick = async (
@@ -171,7 +176,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         dispatch(restaurantsdetail(restaurantinfo));
         let oldLocationId = getLocationIdFromStorage();
         if (oldLocationId !== restaurantinfo.defaultlocationId) {
-          dispatch(clearRedux(false as any) as any);
+          dispatch(clearRedux(false));
           if (isPickup === true) {
             dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
           }
@@ -182,7 +187,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
             refreshCategoryList({
               newselectedRestaurant: restaurantinfo,
               customerId: lid,
-            }) as any
+            })
           );
           dispatch(
             getSelectedRestaurantTime({
@@ -196,7 +201,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               restaurantId: restaurantinfo.restaurantId,
               locationId: defaultLocation?.locationId as number,
             });
-            dispatch(emptycart() as any);
+            dispatch(emptycart());
             dispatch(setintialrewardpoints(userinfo));
           }
         }
@@ -226,7 +231,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     ) {
       handleClickDate(futureDateList?.[0]);
     } else {
-      handleClickDate(order?.futureOrderDay as any);
+      handleClickDate(order?.futureOrderDay);
     }
   }, []);
 
@@ -282,7 +287,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     setselectedTime(`${time?.StartSlotNew} - ${time?.EndSlotNew}`);
   };
 
-  const handleTimeClick = (time: any): void => {
+  const handleTimeClick = (time: TimeSlot): void => {
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
       locationId: Number(defaultLocation?.locationId),
@@ -300,7 +305,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               locationId: defaultLocation?.locationId as number,
               recievingTime: time[0],
               recieving: time[1],
-              flg: ordertype as any,
+              flg: ordertype,
               obj: selectedAddress as DeliveryAddressInput,
               requestId: requestID as any,
             }).then((response) => {
@@ -335,7 +340,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
 
   const handleClickAsap = (time: TimeSlot): void => {
     dispatch(isasap(true));
-    handleTimeClick(time as any);
+    handleTimeClick(time);
     setselectedTime(`${time.StartSlotNew}-${time?.EndSlotNew}`);
   };
 
@@ -388,14 +393,16 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                 <div className="col-12 pe-0 mt-2">
                   <div className="swiper-container">
                     {loadSwipe && (
-                      <FutureDayComponent
-                        ordertype={ordertype}
-                        order={order as any}
-                        selectedDate={selectedDate}
-                        enablefutureordering={enablefutureordering}
-                        futureDateList={futureDateList}
-                        handleClickDate={handleClickDate}
-                      />
+                      <>
+                        <FutureDayComponent
+                          ordertype={ordertype}
+                          order={order as any}
+                          selectedDate={selectedDate}
+                          enablefutureordering={enablefutureordering}
+                          futureDateList={futureDateList}
+                          handleClickDate={handleClickDate}
+                        />
+                      </>
                     )}
                   </div>
                 </div>

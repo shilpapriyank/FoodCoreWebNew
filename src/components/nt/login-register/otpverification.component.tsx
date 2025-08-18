@@ -87,7 +87,7 @@ const OtpVerificationComponent: React.FC<Props> = ({
     parseInt(process.env.NEXT_PUBLIC_OTP_DURATION || "60")
   );
   const dynamic = params.dynamic;
-  const location = params.location; 
+  const location = params.location;
   const [minutes, setMinutes] = useState<number>(otpTime.minute);
   const [seconds, setSeconds] = useState<number>(otpTime.second);
   const [otp, setOtp] = useState<any>("");
@@ -284,17 +284,17 @@ const OtpVerificationComponent: React.FC<Props> = ({
           }).then((responsedata) => {
             if (
               responsedata !== null &&
-              responsedata.customerDetails !== null &&
-              responsedata.customerDetails !== undefined
+              responsedata.result.customerDetails !== null &&
+              responsedata.result.customerDetails !== undefined
             ) {
               // dispatch({
               //   type: LoginTypes.USER_DETAIL,
               //   payload: responsedata.customerDetails,
               // });
-              dispatch(setUserDetail(responsedata.customerDetails));
+              dispatch(setUserDetail(responsedata.result.customerDetails));
 
               if (addressmodel && Object.keys(addressmodel).length > 0) {
-                const { customerId } = responsedata?.customerDetails;
+                const { customerId } = responsedata?.result.customerDetails;
                 if (customerId > 0) {
                   DeliveryAddressServices.getDeliveryAddress(
                     customerId,
@@ -315,14 +315,16 @@ const OtpVerificationComponent: React.FC<Props> = ({
                   });
                 }
               }
-              if (!responsedata.customerDetails.isVerified) {
+              if (!responsedata.result.customerDetails.isVerified) {
                 handleToggle(false, "openRegisterModal");
                 handleToggleAccountConfirm(true);
               } else {
                 handleToggle(false, "openRegisterModal");
               }
-              if (responsedata.customerDetails) {
-                dispatch(setintialrewardpoints(responsedata.customerDetails));
+              if (responsedata.result.customerDetails) {
+                dispatch(
+                  setintialrewardpoints(responsedata.result.customerDetails)
+                );
               }
             }
           });
@@ -353,7 +355,7 @@ const OtpVerificationComponent: React.FC<Props> = ({
             ToasterTypes.Success
           );
         })
-        .catch((err) => { });
+        .catch((err) => {});
     }
     if (
       restaurantinfo?.smsapigateway === SMS_API_TYPE.TWILIO.value &&
@@ -399,7 +401,7 @@ const OtpVerificationComponent: React.FC<Props> = ({
             handleClickValidateOTP(true);
           }
         })
-        .catch((err) => { });
+        .catch((err) => {});
     }
     if (
       restaurantinfo?.smsapigateway === SMS_API_TYPE.TWILIO.value &&
@@ -458,8 +460,9 @@ const OtpVerificationComponent: React.FC<Props> = ({
   return (
     <>
       <div
-        className={`modal modal-your-order loginmodal fade ${isOpenModal ? "show d-block" : ""
-          }`}
+        className={`modal modal-your-order loginmodal fade ${
+          isOpenModal ? "show d-block" : ""
+        }`}
         id="otp-modal"
         tabIndex={-1}
         aria-labelledby="otp-modall-Label"

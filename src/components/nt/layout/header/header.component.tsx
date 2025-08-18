@@ -401,7 +401,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             restaurantinfo?.defaultLocation?.enablefutureordering as any
           }
           isOpenModal={true}
-          locationId={String(restaurantinfo?.defaultlocationId)}
+          locationId={restaurantinfo?.defaultlocationId as number}
           locationUrl={restaurantinfo?.defaultLocation?.locationURL as string} //Add this
         />
       )}

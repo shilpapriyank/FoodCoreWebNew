@@ -28,6 +28,7 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
   restaurantsdetail,
+  restaurantstiming,
   setAppVersion,
 } from "../../../redux/restaurants/restaurants.slice";
 import { PAGES } from "../nt/common/pages";
@@ -50,7 +51,6 @@ import {
   GetAllRestaurantInfo,
   Seodetails,
 } from "@/types/restaurant-types/restaurant.type";
-import { ParamValue } from "next/dist/server/request/params";
 
 interface Props {
   children: ReactNode;
@@ -148,12 +148,6 @@ const RestaurantComponent = ({
     const newselectedRestaurant = response[0];
     if (newselectedRestaurant?.defaultLocation === null) {
       handleSetThemeStyleDynamic(newselectedRestaurant);
-      // let selectedTheme = GetThemeDetails(newselectedRestaurant?.themetype);
-      // setthemeUrl(selectedTheme?.url as string);
-      // dispatch(restaurantsdetail(newselectedRestaurant));
-      // router.push(
-      //   `/${selectedTheme?.url as string}/${dynamic}/${PAGES.REST_CLOSE}`
-      // );
       let selectedTheme = GetThemeDetails(newselectedRestaurant.themetype);
       setthemeUrl((selectedTheme as ThemeType)?.url);
       dispatch(restaurantsdetail(newselectedRestaurant));
@@ -169,7 +163,7 @@ const RestaurantComponent = ({
         (tableOrderTheme as ThemeType).url
       );
       if (!isSameRestaurant) {
-        dispatch(clearRedux(true) as any);
+        dispatch(clearRedux(true));
         let rewardpoints = {
           rewardvalue: 0,
           rewardamount: 0,
@@ -212,7 +206,12 @@ const RestaurantComponent = ({
             locationId: newselectedRestaurant.defaultlocationId,
           })
         );
-
+        dispatch(
+          restaurantstiming({
+            restaurantId: newselectedRestaurant.restaurantId,
+            locationId: newselectedRestaurant.defaultlocationId,
+          })
+        );
         if (
           cart?.cartitemdetail?.cartDetails?.cartItemDetails &&
           cart?.cartitemdetail?.cartDetails?.cartItemDetails[0] !== undefined
@@ -235,7 +234,6 @@ const RestaurantComponent = ({
     setisInvalidRestaurant(true);
     const selectedTheme = GetThemeDetailsByName(themetype);
     setthemeUrl(selectedTheme?.url as string);
-    // setthemeUrl((selectedTheme as ThemeType).url);
   };
 
   //this use effect call same api more than on time
@@ -267,7 +265,7 @@ const RestaurantComponent = ({
     if (pathname.includes(ThemeObj.FD123456)) {
       setloadPaymentScreen(true);
     }
-  }, [dynamic, pathname]); ///removed dependencies [dynamic, pathname]
+  }, [dynamic, pathname]);
 
   // const fetchData = async () => {
   //   try {
@@ -321,7 +319,7 @@ const RestaurantComponent = ({
         restaurantinfo?.restaurantId !== restaurantId ||
         (userinfo !== null && userLoginExpire == true)
       ) {
-        dispatch(clearRedux(true) as any);
+        dispatch(clearRedux(true));
         let rewardpoints = {
           rewardvalue: 0,
           rewardamount: 0,
@@ -347,11 +345,6 @@ const RestaurantComponent = ({
         let linkLoacationurl = formatStringToURLWithBlankSpace(
           location as string
         );
-        //   (selectedTheme as ThemeType).name === ThemeObj.default
-        //     ? restaurantslocationlist?.addressList
-        //     : restaurantslocationlistwithtime?.addressList;
-        // if (restaurantslocationlist?.addressList !== undefined) {
-        //   let linkLoacationurl = formatStringToURLWithBlankSpace(location as any);
         addressList?.map((locations: AddressList) => {
           let locationURL = formatStringToURLWithBlankSpace(
             locations.locationURL
@@ -406,4 +399,3 @@ const RestaurantComponent = ({
 export default dynamic(() => Promise.resolve(React.memo(RestaurantComponent)), {
   ssr: true,
 });
-

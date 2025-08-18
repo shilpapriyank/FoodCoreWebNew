@@ -108,7 +108,6 @@ export default function CategoryPage() {
   return (
     <>
       <Head>
-        {/* <title>{title}</title> */}
         <meta name="description" content="Online description" />
       </Head>
       <LoadLocationDirectComponent>

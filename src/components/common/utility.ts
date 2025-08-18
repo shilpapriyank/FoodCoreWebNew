@@ -14,13 +14,14 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 import { AddressList } from "@/types/location-types/location.type";
 import {
   MainCategoryList,
-  RestaurantWindowTimeNew,
+  RestaurantWindowTime,
 } from "@/types/mainservice-types/mainservice.type";
 import {
   CartDetails,
   CartItemDetails,
   CartOptionParams,
   CartTotal,
+  DeliveryChargesTypes,
   PromotionData,
 } from "@/types/cart-types/cartservice.type";
 import {
@@ -28,7 +29,6 @@ import {
   GetMenuItemDetail,
   List,
   Size,
-  Topping,
   Type,
 } from "@/types/menuitem-types/menuitem.type";
 import {
@@ -37,7 +37,6 @@ import {
 } from "@/types/restaurant-types/restaurant.type";
 import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
-import { LoggedInUser } from "../../../redux/login/login.types";
 import { CartState } from "../../../redux/cart/cart.slice";
 import { RestaurantState } from "../../../redux/restaurants/restaurants.slice";
 
@@ -449,7 +448,7 @@ export const openCloseOption = (
 export const orderDisable = (
   restaurantinfo: GetAllRestaurantInfo,
   deliveryaddressinfo: DeliveryAddressInfo,
-  restaurantWindowTime: RestaurantWindowTimeNew
+  restaurantWindowTime: RestaurantWindowTime
 ) => {
   const pickupWindow =
     restaurantWindowTime &&
@@ -530,16 +529,11 @@ export interface AsapLaterOnState {
   isLateron: boolean;
 }
 
-export interface RestaurantWindowTime {
-  pickupTime?: string[];
-  deliveryTime?: string[];
-}
-
 export const getAsapLaterOnState = (
   //defaultLocation?: AddressList,
   defaultLocation?: DefaultLocation,
   pickupordelivery?: OrderType,
-  restaurantWindowTime?: RestaurantWindowTimeNew
+  restaurantWindowTime?: RestaurantWindowTime
 ): AsapLaterOnState => {
   if (!defaultLocation || pickupordelivery === undefined) {
     return {
@@ -682,6 +676,13 @@ export const ORDER_TIME_TYPE: OrderTimeTypes = {
   },
 };
 
+//this is helper function that convert the ordertype string to number for pass getAsapLaterOnState
+export const getOrderTypeFromText = (text: string): OrderType | undefined => {
+  if (text === ORDER_TYPE.PICKUP.text) return ORDER_TYPE.PICKUP.value;
+  if (text === ORDER_TYPE.DELIVERY.text) return ORDER_TYPE.DELIVERY.value;
+  return undefined;
+};
+
 export const getOrderTimeType = (text: string) => {
   return Object.values(ORDER_TIME_TYPE).find((item) => item.text === text);
 };
@@ -731,7 +732,7 @@ export const handleSetDeliveryTypeError = (
   pickupordelivery: string,
   deliveryaddressinfo: DeliveryAddressInfo[],
   carttotal: CartTotal,
-  dcharges: any,
+  dcharges: DeliveryChargesTypes,
   cart: CartState,
   cartdata: CartDetails,
   isCartError: boolean
@@ -746,8 +747,8 @@ export const handleSetDeliveryTypeError = (
     // } else if ( dcharges && dcharges.isdelivery === 0 && dcharges.chargeType === "3" && dcharges.minOrderForAddress !== "0" && carttotal?.cartCount > 0)
   } else if (
     dcharges &&
-    parseInt(dcharges.isdelivery) === 0 &&
-    carttotal.subTotal < parseFloat(dcharges.minOrderForAddress) &&
+    parseInt(dcharges?.isdelivery) === 0 &&
+    carttotal.subTotal < dcharges.minOrderForAddress &&
     carttotal?.cartCount > 0 &&
     isCartError
   ) {
@@ -905,21 +906,14 @@ export const calulateTotal = (cartdata: CartDetails) => {
   //return parseFloat(total)?.toFixed(2);
   return total;
 };
-////////////////////////////////////
+
 export const getCheckTimeArr = (
   orderTime: string,
-  restaurantinfo: GetAllRestaurantInfo,
-  orderDate: string,
-  isasap: boolean
-): string[] => {
-  const Time: string[] = [];
-
-  // Early return if orderTime is invalid
-  if (!orderTime || typeof orderTime !== "string" || orderTime.trim() === "") {
-    return ["", "", orderDate];
-  }
-
-  // Case 1: Third-party delivery (DoorDash / UberEats)
+  restaurantinfo?: GetAllRestaurantInfo,
+  orderDate?: string,
+  isasap?: boolean
+) => {
+  let Time = [];
   if (
     (restaurantinfo?.defaultLocation?.deliveryService ===
       DELIVERYSERVICES.DOORDASH ||
@@ -1067,160 +1061,32 @@ export const convert24HourTo12Hour = (
   return [hour.toString().padStart(2, "0"), minute.padStart(2, "0"), meridian];
 };
 
-// export const checkWindowTimeExpires = (
-//   windowEndTime: string,
-//   currentTime: string,
-//   isasap: boolean = false,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   isLastOrder: boolean = false
-// ): boolean => {
-//   const [time, windowMeridian] = getCheckTimeArr(
-//     currentTime,
-//     restaurantinfo,
-//     windowEndTime,
-//     isasap
-//   );
-//   if (!time || !windowMeridian) {
-//     console.warn("Invalid time or meridian from getCheckTimeArr");
-//     return false;
-//   }
-
-//   const [windowHour, windowMinute] = time.split(":");
-//   const [currentHour, currentMinute, meridian] = convert24HourTo12Hour(currentTime);
-
-//   const beginningTime = moment(`${currentHour}:${currentMinute}${meridian}`, "hh:mma");
-//   const endTime = moment(`${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`, "hh:mma");
-
-//   let isAvailable = beginningTime.isBefore(endTime);
-
-//   if (
-//     meridian.trim().toLowerCase() === "pm" &&
-//     isLastOrder &&
-//     windowMeridian.trim().toLowerCase() === "am"
-//   ) {
-//     isAvailable = true;
-//   }
-
-//   return isAvailable;
-// };
-
-// // last changes
-// export const checkWindowTimeExpires = (
-//   windowEndTime: string,
-//   currentTime: string,
-//   isasap: boolean = false,
-//   restaurantinfo: GetAllRestaurantInfo,
-//   isLastOrder: boolean = false
-// ): boolean => {
-//   const [time, windowMeridian] = getCheckTimeArr(
-//     currentTime,
-//     restaurantinfo,
-//     windowEndTime,
-//     isasap
-//   );
-
-//   //  Defensive check: empty or malformed response
-//   if (
-//     !time || !windowMeridian ||
-//     typeof time !== "string" || typeof windowMeridian !== "string" ||
-//     !time.includes(":")
-//   ) {
-//     console.warn("Invalid time or meridian from getCheckTimeArr", {
-//       time,
-//       windowMeridian,
-//       input: { currentTime, windowEndTime, isasap, restaurantinfo },
-//     });
-//     return false;
-//   }
-
-//   const [windowHour, windowMinute] = time.split(":");
-
-//   const [currentHour, currentMinute, meridian] =
-//     convert24HourTo12Hour(currentTime);
-
-//   const beginningTime = moment(
-//     `${currentHour}:${currentMinute}${meridian}`,
-//     "hh:mma"
-//   );
-
-//   const endTime = moment(
-//     `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
-//     "hh:mma"
-//   );
-
-//   let isAvailable = beginningTime.isBefore(endTime);
-
-//   if (
-//     meridian.trim().toLowerCase() === "pm" &&
-//     isLastOrder &&
-//     windowMeridian.trim().toLowerCase() === "am"
-//   ) {
-//     isAvailable = true;
-//   }
-
-//   return isAvailable;
-// };
-
 export const checkWindowTimeExpires = (
   windowEndTime: string,
   currentTime: string,
-  isasap: boolean,
-  restaurantinfo: GetAllRestaurantInfo,
   isLastOrder: boolean = false
-): boolean => {
-  console.log("checkWindowTimeExpires called with:", {
-    windowEndTime,
-    currentTime,
-    isasap,
-    isLastOrder,
-    restaurantinfo,
-  });
-
-  const [time, windowMeridian] = getCheckTimeArr(
-    currentTime,
-    restaurantinfo,
-    windowEndTime,
-    isasap
-  );
-
-  if (
-    !time ||
-    !windowMeridian ||
-    typeof time !== "string" ||
-    typeof windowMeridian !== "string" ||
-    !time.includes(":")
-  ) {
-    console.warn("Invalid output from getCheckTimeArr:", {
-      time,
-      windowMeridian,
-      input: { currentTime, windowEndTime, isasap, restaurantinfo },
-    });
-    return false;
-  }
-
-  const [windowHour, windowMinute] = time.split(":");
+) => {
+  let [time, windowMeridian] = getCheckTimeArr(windowEndTime);
+  const [windowHour, windowMinute] = (time as string).split(":");
   const [currentHour, currentMinute, meridian] =
     convert24HourTo12Hour(currentTime);
-
-  const beginningTime = moment(
+  //check window expiry time
+  var beginningTime = moment(
     `${currentHour}:${currentMinute}${meridian}`,
     "hh:mma"
   );
-  const endTime = moment(
-    `${windowHour}:${windowMinute}${windowMeridian.toLowerCase()}`,
+  var endTime = moment(
+    `${windowHour}:${windowMinute}${windowMeridian?.toLowerCase()}`,
     "hh:mma"
   );
-
   let WindowTimeIsAvailable = beginningTime.isBefore(endTime);
-
   if (
     meridian.trim().toLowerCase() === "pm" &&
     isLastOrder &&
-    windowMeridian.trim().toLowerCase() === "am"
+    windowMeridian?.trim().toLowerCase() === "am"
   ) {
     WindowTimeIsAvailable = true;
   }
-
   return WindowTimeIsAvailable;
 };
 
@@ -1297,10 +1163,10 @@ export const calculateFinalCountWithPaid = (
   let finalcount = 0;
 
   const toppingcount = subOptionList?.filter(
-    (x: any) => x.subOptionselected === true
+    (x) => x.subOptionselected === true
   );
 
-  toppingcount?.forEach((tc: any) => {
+  toppingcount?.forEach((tc) => {
     const topvalue =
       tc.toppingValue === "" || parseInt(tc.toppingValue) === 0
         ? 1
@@ -1310,14 +1176,15 @@ export const calculateFinalCountWithPaid = (
       selectedOption.isHalfPizza === true &&
       (tc.pizzaside === "L" || tc.pizzaside === "R")
         ? topvalue *
-          (tc.halfPizzaPriceToppingPercentage === "" ||
-          parseInt(tc.halfPizzaPriceToppingPercentage) === 0
+          (tc.halfPizzaPriceToppingPercentage === 0 ||
+          tc.halfPizzaPriceToppingPercentage === undefined ||
+          tc.halfPizzaPriceToppingPercentage === null
             ? 1
-            : parseInt(tc.halfPizzaPriceToppingPercentage) / 100)
+            : tc.halfPizzaPriceToppingPercentage / 100)
         : topvalue;
 
-    const paidQty = parseInt(tc.paidQty) || 0;
-    const subQty = parseInt(tc.subOptionToppingQuantity) || 0;
+    const paidQty = Number(tc.paidQty) || 0;
+    const subQty = Number(tc.subOptionToppingQuantity) || 0;
     const payableQty = Math.max(subQty - paidQty, 0); // only count paid portion
 
     finalcount += payableQty * calculatedtopvalue;
@@ -1364,11 +1231,10 @@ export const getDependentParentQty = (
 };
 
 export const checkDisableWindow = (
-  timeWindow: any,
+  timeWindow: string[],
   enableFutureOrdering: boolean,
-  day: any
+  day: string
 ) => {
-  debugger;
   let isEnable = true;
   if (timeWindow && timeWindow.length === 0 && !enableFutureOrdering) {
     isEnable = false;
@@ -1395,15 +1261,15 @@ export const CUSTOMER_TYPE = {
   DISCOUNT: 2,
 };
 
-export function closeModal(myclass: any) {
+export function closeModal(myclass: string) {
   $(`.${myclass}`).click();
   //document.getElementsByClassName(myclass).click();
   return;
 }
 export const GetCurrency = () => {
-  debugger
   const restaurantinfo = useSelector(
-    ({ restaurant }: {restaurant: RestaurantState}) => restaurant?.restaurantdetail
+    ({ restaurant }: { restaurant: RestaurantState }) =>
+      restaurant?.restaurantdetail
   );
   const location = restaurantinfo?.defaultLocation;
   return location?.currencysymbol;
@@ -1420,7 +1286,7 @@ export const PAYMENT_TYPE = {
   },
 };
 
-export function scrollToElementWithOffset(elementId: any): void {
+export function scrollToElementWithOffset(elementId: string): void {
   const element = document.getElementById(elementId);
   if (!element) {
     return;
@@ -1435,27 +1301,6 @@ export function scrollToElementWithOffset(elementId: any): void {
   });
 }
 
-type DebouncedFunction = (...args: unknown[]) => void;
-
-export function debounce(
-  func: DebouncedFunction,
-  delay: number
-): DebouncedFunction {
-  let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
-  return function (this: any, ...args: any): void {
-    // Clear the existing timeout
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    // Set a new timeout
-    timeoutId = setTimeout(() => {
-      func.apply(this, args); // Call the function with the correct `this` and arguments
-    }, delay);
-  };
-}
-
 export const TOOLTIP_MSG = {
   QUICKORDER: "click for quick order",
   ADDTOCART_BTN: "Add to cart",
@@ -1466,24 +1311,6 @@ export const TOOLTIP_MSG = {
 export const PAYMENT_VIEW = {
   WEBVIEW: "webview",
   EXTERNAL: "external",
-};
-
-export const groupOption = (items: any) => {
-  const groupedOptions: any = {};
-
-  items.forEach((item: any) => {
-    const optionId = item.optionId;
-    if (!groupedOptions[optionId]) {
-      groupedOptions[optionId] = {
-        optionId: optionId,
-        suboptions: [],
-      };
-    }
-    groupedOptions[optionId].suboptions.push(item);
-  });
-
-  // Convert grouped object to array if needed
-  return Object.values(groupedOptions);
 };
 
 export const calculateNettotal = (
