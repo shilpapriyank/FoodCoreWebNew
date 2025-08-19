@@ -87,49 +87,41 @@ export class LocationServices {
     }
   }
 
-  // static changeLocCache = new Map<string, Promise<any>>();
-
   static async changeRestaurantLocation(
     restaurantId: number,
     locationId: number
   ) {
-    // const key = `${restaurantId}-${locationId}`;
-    // if (LocationServices.changeLocCache.has(key)) {
-    //   return LocationServices.changeLocCache.get(key)!;
-    // }
-
-    // const requestPromise = (async () => {
-      responseclass = new ResponseModel();
-      const methodName = "getLocationInfoById";
-      const location = ENDPOINTS.LOCATION_BY_ID;
-      const data = JSON.stringify({
-        restaurantId: restaurantId,
-        locationId: locationId,
-      });
-      responseclass = await handleAxiosPostAsync(
-        data,
-        location,
-        methodName,
-        true,
-        restaurantId
-      );
-      if (
-        responseclass.result != null &&
-        responseclass.status === API_RESPONSE_STATUS.SUCCESS
-      ) {
-        return responseclass.result;
-      } else {
-        return responseclass;
-      }
+    responseclass = new ResponseModel();
+    const methodName = "getLocationInfoById";
+    const location = ENDPOINTS.LOCATION_BY_ID;
+    const data = JSON.stringify({
+      restaurantId: restaurantId,
+      locationId: locationId,
+    });
+    responseclass = await handleAxiosPostAsync(
+      data,
+      location,
+      methodName,
+      true,
+      restaurantId
+    );
+    if (
+      responseclass.result != null &&
+      responseclass.status === API_RESPONSE_STATUS.SUCCESS
+    ) {
+      return responseclass.result;
+    } else {
+      return responseclass;
     }
   }
-  //   })();
+}
+//   })();
 
-  //   LocationServices.changeLocCache.set(key, requestPromise);
-  //   requestPromise.catch(() => {
-  //     LocationServices.changeLocCache.delete(key);
-  //   });
+//   LocationServices.changeLocCache.set(key, requestPromise);
+//   requestPromise.catch(() => {
+//     LocationServices.changeLocCache.delete(key);
+//   });
 
-  //   return requestPromise;
-  // }
+//   return requestPromise;
+// }
 //}

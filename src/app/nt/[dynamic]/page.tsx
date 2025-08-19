@@ -6,16 +6,6 @@ import React, { useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { GetThemeDetails, ThemeObj } from "@/components/common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { ThemeType } from "@/types/common-types/common.types";
-
-interface Location {
-  locationURL: string;
-}
-
-interface RestaurantInfo {
-  themetype: number;
-  defaultLocation: Location;
-}
 
 const Page: React.FC = () => {
   const router = useRouter();
@@ -24,18 +14,13 @@ const Page: React.FC = () => {
 
   // dynamic param comes from segment in folder name
   const dynamic = pathname?.split("/").pop() || ""; // or get from searchParams if query string
-
-  const { restaurantinfo } = useReduxData() as {
-    restaurantinfo: RestaurantInfo | null;
-  };
+  const { restaurantinfo } = useReduxData();
 
   useEffect(() => {
     let routepath = "";
     if (!dynamic || !restaurantinfo) return;
 
-    const selectedTheme = GetThemeDetails(
-      restaurantinfo.themetype
-    );
+    const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
 
     if (!selectedTheme) return;
     if (selectedTheme.name === ThemeObj.dominos) {

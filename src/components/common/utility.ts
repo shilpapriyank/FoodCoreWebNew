@@ -43,6 +43,7 @@ import { RestaurantState } from "../../../redux/restaurants/restaurants.slice";
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
 };
+
 export const ThemeObj = {
   default: "default",
   dominos: "dominos",

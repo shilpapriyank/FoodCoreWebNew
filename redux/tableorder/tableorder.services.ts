@@ -108,7 +108,7 @@ export class TableOrderServices {
     }
 
     static async sendTablePushnotification(
-        locationId: string,
+        locationId: number,
         restaurantId: number,
         tableno: string,
         tableId: string,

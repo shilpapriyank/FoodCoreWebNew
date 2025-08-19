@@ -1,6 +1,4 @@
 ///getAllRestaurantInfo types
-
-import { ThemeType } from "../common-types/common.types";
 import { RestaurantWindowTime } from "../utility-types/utility.types";
 
 export interface GetAllRestaurantInfo {

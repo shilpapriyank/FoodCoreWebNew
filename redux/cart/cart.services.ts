@@ -16,6 +16,7 @@ import {
   GetCartItems,
   GetCartItemsCount,
   GetCartItemsList,
+  OrderObjType,
 } from "@/types/cart-types/cartservice.type";
 
 let responseclass = new ResponseModel();
@@ -291,8 +292,7 @@ export class CartServices {
           tipPercentage != undefined && tipPercentage != ""
             ? parseFloat(tipPercentage)
             : 0,
-        tipAmount:
-          tipAmount != undefined && tipAmount != null ? tipAmount : 0,
+        tipAmount: tipAmount != undefined && tipAmount != null ? tipAmount : 0,
         deliveryaddressId:
           deliveryaddressId != undefined && deliveryaddressId > 0
             ? deliveryaddressId
@@ -358,7 +358,7 @@ export class CartServices {
   }
 
   static async cartcheckout(
-    itemobj: any,
+    itemobj: OrderObjType,
     restaurantId: number
   ): Promise<any | null> {
     responseclass = new ResponseModel();

@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "../../../../../../redux/hooks";
 import { FavouritesServices } from "../../../../../../redux/favourites/favourites.services";
 import { selectedMenuItem } from "../../../../../../redux/menu-item/menu-item.slice";
+import { Menuitems } from "@/types/menuitem-types/menuitem.type";
 
 const FavouritePage = () => {
   const { restaurantinfo, userinfo } = useReduxData();
@@ -34,23 +35,20 @@ const FavouritePage = () => {
     refetchOnWindowFocus: false,
   });
 
-  const orderNowClick = useCallback(
-    (item: any) => {
-      if (item != undefined) {
-        const updatedItem = { ...item, isFavoriteMenu: true };
-        dispatch(selectedMenuItem(updatedItem));
-        setisProductItemPopup(true);
-      }
-    },
-    []
-  );
+  const orderNowClick = useCallback((item: any) => {
+    if (item != undefined) {
+      const updatedItem = { ...item, isFavoriteMenu: true };
+      dispatch(selectedMenuItem(updatedItem));
+      setisProductItemPopup(true);
+    }
+  }, []);
 
   const selectedFavoriteClick = useCallback(
-    (selectedItem: any) => {
+    (selectedItem: Menuitems) => {
       FavouritesServices.deletefavorite(
         userinfo?.customerId as number,
         restaurantinfo?.restaurantId as number,
-        selectedItem.menuitemid
+        selectedItem.menuitemId
       ).then(() => {
         refetch();
       });
@@ -85,7 +83,7 @@ const FavouritePage = () => {
                   {isLoading ? (
                     <FavouriteSkeleton />
                   ) : data && data.length > 0 ? (
-                    data.map((item: any, index: number) => (
+                    data.map((item: Menuitems, index: number) => (
                       <FavouriteItem
                         key={index}
                         item={item}

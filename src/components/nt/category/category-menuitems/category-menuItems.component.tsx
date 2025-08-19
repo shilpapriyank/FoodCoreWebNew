@@ -183,7 +183,6 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
-      console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
       dispatch(
         selectedMenuItem({
@@ -203,10 +202,6 @@ const CategoryMenuItems = ({
         cartId: 0,
       }).then((response) => {
         if (response) {
-          console.log(
-            "response of getMenuItemList in  dependentId condi",
-            response
-          );
           dispatch(setMenuItemDetailList(response));
         }
       });
@@ -418,7 +413,7 @@ const CategoryMenuItems = ({
     setopenDependentList(false);
   };
 
-  const handleOnCheck = (id: any) => {
+  const handleOnCheck = (id: DependantMenuList) => {
     if (selectedDependentItems.includes(id)) {
       let item = selectedDependentItems.filter((item) => item !== id);
       setselectedDependentItems([...item]);
@@ -509,11 +504,11 @@ const CategoryMenuItems = ({
                         {viewType === ViewTypeEnum.LIST && (
                           <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
                             {category?.menuitems?.map(
-                              (menu: any, index: any) => {
+                              (menu: Menuitems, index: number) => {
                                 let shareUrl = `${window.location.origin}/${selectedTheme?.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
-                                const isRegular =
-                                  menu?.typeid === 0 &&
-                                  menu?.isdefaultprice === 1;
+                                // const isRegular =
+                                //   menu?.typeid === 0 &&
+                                //   menu?.isdefaultprice === 1;
                                 const imgSrc = getImagePath(
                                   menu.imgurl,
                                   defaultLocation?.defaultmenuitemimage
@@ -525,9 +520,7 @@ const CategoryMenuItems = ({
                                   >
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
-                                        {menu &&
-                                        (menu?.isregular === true ||
-                                          isRegular) ? (
+                                        {menu && menu?.isregular === true ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -683,7 +676,7 @@ const CategoryMenuItems = ({
 
                         {viewType === ViewTypeEnum.GRID && (
                           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
-                            {category?.menuitems?.map((menu: any) => {
+                            {category?.menuitems?.map((menu: Menuitems) => {
                               const imgSrc = getImagePath(
                                 menu.imgurl,
                                 defaultLocation?.defaultmenuitemimage

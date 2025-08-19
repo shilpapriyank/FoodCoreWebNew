@@ -398,7 +398,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
               ?.futureOrderingDayDates as FutureDateType[]
           }
           enablefutureordering={
-            restaurantinfo?.defaultLocation?.enablefutureordering as any
+            restaurantinfo?.defaultLocation?.enablefutureordering as boolean
           }
           isOpenModal={true}
           locationId={restaurantinfo?.defaultlocationId as number}
@@ -444,7 +444,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             <h6 className="mt-2">
               You have{" "}
               <span className="color-dynamic fs-5">
-                {(userinfo as any).totalRewardPoints}
+                {(userinfo as LoggedInUser).totalRewardPoints}
               </span>{" "}
               reward points, worth{" "}
               <span className="color-dynamic fs-5">

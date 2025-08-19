@@ -1,3 +1,5 @@
+import { List, Topping } from "@/types/menuitem-types/menuitem.type";
+
 export enum ViewTypeEnum {
   GRID = "grid",
   LIST = "list",
@@ -129,3 +131,10 @@ export const leftRightArray = (data: any) => {
   }
   return { rigtharray, leftarray };
 };
+
+// export const leftRightArray = <T>(data: T[]) => {
+//   const half = Math.ceil(data.length / 2);
+//   const rigtharray = data.slice(0, half);
+//   const leftarray = data.slice(half);
+//   return { rigtharray, leftarray };
+// };

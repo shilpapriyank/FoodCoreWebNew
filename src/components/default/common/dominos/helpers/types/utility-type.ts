@@ -32,11 +32,6 @@ export interface OrderDisableObj {
   errormessage: string;
 }
 
-// export interface RestaurantWindowTime {
-//   pickupTime?: any[];
-//   deliveryTime?: any[];
-// }
-
 export interface RestaurantInfo {
   defaultLocation: {
     isOrderingDisable?: boolean;
@@ -72,7 +67,7 @@ export interface CheckTimeStatusResult {
   message?: string;
 }
 
- export interface FutureOrderDay {
+export interface FutureOrderDay {
   fullDay: string;
-  [key: string]: any; 
+  [key: string]: any;
 }

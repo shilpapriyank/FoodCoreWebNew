@@ -547,7 +547,7 @@ const MenuItemOptions = ({
     optionId: number,
     quantity: number,
     suboptionId: number,
-    operator: any
+    operator: string
   ) => {
     let isFreeCountCalculation = true;
     const optionDetails = selectedtopping?.list?.find(
@@ -790,7 +790,7 @@ const MenuItemOptions = ({
     }
   };
 
-  const increment = (optionId: number, data: any) => {
+  const increment = (optionId: number, data: Type) => {
     let isFreeCountCalculation = true;
 
     const optionDetails = selectedtopping?.list?.find(
@@ -827,15 +827,14 @@ const MenuItemOptions = ({
     } else if (data.suboptionmaxselection > 0 && isFreeCountCalculation) {
       // const plusState = data.subOptionToppingQuantity + 1;
       var topvalue =
-        data.toppingValue === "" || data.toppingValue === 0
+        data.toppingValue === "" || Number(data.toppingValue) === 0
           ? 1
-          : data.toppingValue;
+          : Number(data.toppingValue);
       var calculatedtopvalue =
         selectedoption?.[0].isHalfPizza === true &&
         (data.pizzaside === "L" || data.pizzaside === "R")
           ? topvalue *
-            (data.halfPizzaPriceToppingPercentage === "" ||
-            data.halfPizzaPriceToppingPercentage === 0
+            (data.halfPizzaPriceToppingPercentage === 0
               ? 1
               : data.halfPizzaPriceToppingPercentage / 100)
           : topvalue;
@@ -850,15 +849,14 @@ const MenuItemOptions = ({
       }
     } else if (data.suboptionmaxselection > 0) {
       var topvalue =
-        data.toppingValue === "" || data.toppingValue === 0
+        data.toppingValue === "" || Number(data.toppingValue) === 0
           ? 1
-          : data.toppingValue;
+          : Number(data.toppingValue);
       var calculatedtopvalue =
         selectedoption?.[0].isHalfPizza === true &&
         (data.pizzaside === "L" || data.pizzaside === "R")
           ? topvalue *
-            (data.halfPizzaPriceToppingPercentage === "" ||
-            data.halfPizzaPriceToppingPercentage === 0
+            (data.halfPizzaPriceToppingPercentage === 0
               ? 1
               : data.halfPizzaPriceToppingPercentage / 100)
           : topvalue;
@@ -880,7 +878,7 @@ const MenuItemOptions = ({
     selectedquantityClick(optionId, plusState, data.suboptionId, "+");
   };
 
-  const decrement = (optionId: number, data: any, isRadioButton: boolean) => {
+  const decrement = (optionId: number, data: Type, isRadioButton: boolean) => {
     if (minQty === data.subOptionToppingQuantity) {
       selectedquantityClick(optionId, minQty, data.suboptionId, "-");
       return;
