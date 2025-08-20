@@ -179,6 +179,7 @@ const OrderTypeSelect = ({
       console.error("Error in changing restaurant location:", error);
     }
   };
+
   const handleClickConfirm = () => {
     if (
       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
@@ -190,6 +191,7 @@ const OrderTypeSelect = ({
       handleToggleOrderTypeModal(false);
     }
   };
+
   const handleClickAddNewAddress = () => {
     handleToggleOrderTypeModal(false);
     handleToggleAddAddressModal(true);

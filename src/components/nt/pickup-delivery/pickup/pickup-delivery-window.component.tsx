@@ -81,7 +81,7 @@ const PickupdeliveryWindowTime: React.FC<Props> = ({
                       if (!time.isClosed) {
                         return <div key={index}> {time.time} </div>;
                       } else {
-                        return <></>;
+                        return <> </>;
                       }
                     })}
                 </>

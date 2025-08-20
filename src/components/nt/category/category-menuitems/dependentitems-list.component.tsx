@@ -1,12 +1,17 @@
 import React, { Fragment } from "react";
 import useUtility from "../../../customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { DependantMenuList } from "@/types/menuitem-types/menuitem.type";
 
 const DependentItemListComponent = ({
   dependantMenuList,
   handleOnCheck,
   selectedDependentItems,
-}: any) => {
+}: {
+  dependantMenuList: DependantMenuList[];
+  handleOnCheck: (item: DependantMenuList) => void;
+  selectedDependentItems: DependantMenuList[];
+}) => {
   const { isDisplayPrice } = useUtility();
   const { restaurantinfo } = useReduxData();
   const currencysymbol = restaurantinfo?.defaultLocation?.currencysymbol;
@@ -33,9 +38,9 @@ const DependentItemListComponent = ({
                   className="form-check-input cursor-pointer dependent-check"
                   checked={selectedDependentItems.includes(item)}
                   name={`${item}`}
-                  value={item}
+                  value={`{item.DependantMenuItemId}`}
                   type="checkbox"
-                  id={item}
+                  id={`item.DependantMenuItemId`}
                   //defaultValue
                   onChange={(e) => handleOnCheck(item)}
                 />

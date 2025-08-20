@@ -183,6 +183,7 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
+      console.log("dependentId", dependentId);
       setopenMenuItemModal(true);
       dispatch(
         selectedMenuItem({
@@ -428,7 +429,6 @@ const CategoryMenuItems = ({
       menuitem?.dependentqty > 0
         ? menuitem?.dependentqty
         : menuitem?.selecteditemquantity;
-    console.log("first from on next click", first);
     dispatch(setDipendentItemQty(depQty));
     dispatch(setDipendentId(first?.DependantMenuItemId));
     dispatch(setDipendentIds(remainingList));
@@ -504,11 +504,11 @@ const CategoryMenuItems = ({
                         {viewType === ViewTypeEnum.LIST && (
                           <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
                             {category?.menuitems?.map(
-                              (menu: Menuitems, index: number) => {
+                              (menu: any, index: any) => {
                                 let shareUrl = `${window.location.origin}/${selectedTheme?.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
-                                // const isRegular =
-                                //   menu?.typeid === 0 &&
-                                //   menu?.isdefaultprice === 1;
+                                const isRegular =
+                                  menu?.typeid === 0 &&
+                                  menu?.isdefaultprice === 1;
                                 const imgSrc = getImagePath(
                                   menu.imgurl,
                                   defaultLocation?.defaultmenuitemimage
@@ -520,7 +520,9 @@ const CategoryMenuItems = ({
                                   >
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
-                                        {menu && menu?.isregular === true ? (
+                                        {menu &&
+                                        (menu?.isregular === true ||
+                                          isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -639,7 +641,7 @@ const CategoryMenuItems = ({
                                       <div className="img">
                                         {imgSrc ? (
                                           <LazyLoadImage
-                                            src={imgSrc}
+                                            src={imgSrc ?? ""}
                                             style={{ maxHeight: "136px" }}
                                             effect="blur"
                                             wrapperProps={{
@@ -676,7 +678,7 @@ const CategoryMenuItems = ({
 
                         {viewType === ViewTypeEnum.GRID && (
                           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
-                            {category?.menuitems?.map((menu: Menuitems) => {
+                            {category?.menuitems?.map((menu: any) => {
                               const imgSrc = getImagePath(
                                 menu.imgurl,
                                 defaultLocation?.defaultmenuitemimage
@@ -694,7 +696,7 @@ const CategoryMenuItems = ({
                                           //   menu.imgurl,
                                           //   defaultLocation?.defaultmenuitemimage
                                           // )}
-                                          src={imgSrc}
+                                          src={imgSrc ?? ""}
                                           style={{ maxHeight: "136px" }}
                                           effect="blur"
                                           wrapperProps={{
@@ -710,9 +712,9 @@ const CategoryMenuItems = ({
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="Open item"
-                                        // onClick={(e) =>
-                                        //   handleClickItem(e, menu)
-                                        // }
+                                        onClick={(e) =>
+                                          handleClickItem(e, menu)
+                                        }
                                       ></a>
                                     </div>
                                     <div className="text">
@@ -800,10 +802,7 @@ const CategoryMenuItems = ({
           <DependentItemListComponent
             selectedDependentItems={selectedDependentItems}
             handleOnCheck={handleOnCheck}
-            dependantMenuList={
-              menuItemDetail?.dependantMenuList ??
-              menuItemDetail?.dependantMenuList
-            }
+            dependantMenuList={menuItemDetail?.dependantMenuList ?? []}
           />
         </CommonModal>
       )}

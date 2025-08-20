@@ -26,14 +26,16 @@ export const RelatedItem = ({
       }}
     >
       <div className="img">
-        <LazyLoadImage
-          src={itemImage}
-          effect="blur"
-          wrapperProps={{
-            style: { transitionDelay: "1s" },
-          }}
-          alt={relativeItem.menuItemName}
-        />
+        {itemImage ? (
+          <LazyLoadImage
+            src={itemImage}
+            effect="blur"
+            wrapperProps={{
+              style: { transitionDelay: "1s" },
+            }}
+            alt={relativeItem.menuItemName}
+          />
+        ) : null}
       </div>
       <div className="text">
         <p>

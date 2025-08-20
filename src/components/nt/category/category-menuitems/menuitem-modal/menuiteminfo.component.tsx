@@ -60,11 +60,13 @@ const MenuItemInfo = ({
       </div>
       <div className="col-lg-4 text-end p-0 col-md-4 col-12 ">
         <div className="zoomable cursor-zoom">
-          <img
-            className=" itemimg zoomable__img cursor-zoom"
-            src={getImagePath(img, defaultLocation?.defaultmenuitemimage)}
-            alt={name ? name : undefined}
-          />
+          {img ? (
+            <img
+              className=" itemimg zoomable__img cursor-zoom"
+              src={getImagePath(img, defaultLocation?.defaultmenuitemimage)}
+              alt={name ? name : undefined}
+            />
+          ) : null}
         </div>
         <div className="d-flex justify-content-start"></div>
       </div>

@@ -553,19 +553,27 @@ const MenuItemModal = ({
                     menuItemDetail?.dependantMenuList !== null) ||
                   dependentIds?.length > 0
                 ) {
-                  let dependentItemList =
+                  let originalDependentMenuList =
                     dependentIds?.length > 0
                       ? dependentIds
-                      : menuItemDetail?.dependantMenuList;
-                  let removefirst = dependentItemList?.shift();
-                  let remainingList = dependentItemList;
+                      : menuItemDetail?.dependantMenuList ?? [];
+
+                  let clonedDependentMenuList = [...originalDependentMenuList];
+                  let removefirst = clonedDependentMenuList.shift();
+                  let remainingList = clonedDependentMenuList;
+                  // let dependentItemList =
+                  //   dependentIds?.length > 0
+                  //     ? dependentIds
+                  //     : menuItemDetail?.dependantMenuList;
+                  // let removefirst = dependentItemList?.shift();
+                  // let remainingList = dependentItemList;
 
                   dispatch(
                     setDipendentId(removefirst?.DependantMenuItemId as number)
                   );
-                  dispatch(
-                    setDipendentId(removefirst?.DependantMenuItemId as number)
-                  );
+                  // dispatch(
+                  //   setDipendentId(removefirst?.DependantMenuItemId as number)
+                  // );
                   dispatch(
                     setDipendentIds(remainingList as DependantMenuList[])
                   );
@@ -647,12 +655,20 @@ const MenuItemModal = ({
                   menuItemDetail?.dependantMenuList !== null) ||
                 dependentIds?.length > 0
               ) {
-                let dependentItemList =
+                // let dependentItemList =
+                //   dependentIds?.length > 0
+                //     ? dependentIds
+                //     : menuItemDetail?.dependantMenuList;
+                // let removefirst = dependentItemList?.shift();
+                // let remainingList = dependentItemList;
+                let originalDependentMenuList =
                   dependentIds?.length > 0
                     ? dependentIds
-                    : menuItemDetail?.dependantMenuList;
-                let removefirst = dependentItemList?.shift();
-                let remainingList = dependentItemList;
+                    : menuItemDetail?.dependantMenuList ?? [];
+
+                let clonedDependentMenuList = [...originalDependentMenuList];
+                let removefirst = clonedDependentMenuList.shift();
+                let remainingList = clonedDependentMenuList;
                 dispatch(
                   setDipendentId(removefirst?.DependantMenuItemId as number)
                 );

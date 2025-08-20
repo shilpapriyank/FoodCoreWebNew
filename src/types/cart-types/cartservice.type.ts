@@ -128,7 +128,7 @@ export interface DeliveryChargesTypes {
   GeoMinOrderAmount: string;
   distance: number;
   header: string;
-  minOrderForAddress: string;
+  minOrderForAddress: number;
 }
 
 export interface CartTotal {
