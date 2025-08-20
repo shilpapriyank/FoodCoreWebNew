@@ -21,10 +21,11 @@ import PickupdeliveryWindowTime from "./pickup/pickup-delivery-window.component"
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
 import {
+  ASAP_LATER_BTN_ENUM,
   DELIVERYSERVICES,
   GetThemeDetails,
+  MERIDIEM_TIME_ENUM,
   ORDER_TYPE,
-  OrderType,
   checkWindowTimeExpires,
   getAsapLaterOnState,
   getOrderTypeFromText,
@@ -47,17 +48,15 @@ import {
   DeliveryTime,
   PickupTime,
 } from "@/types/location-types/location.type";
-import {
-  AsapLaterOnState,
-  TimeSlot,
-} from "@/types/timeslot-types/timeslot.types";
+import { AsapLaterOnState } from "@/types/timeslot-types/timeslot.types";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
+import DateTimePickerWrapper from "@/components/common/datetimepicker-wrapper.component";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
   handleToggleTimingModal: (value: boolean) => void;
   isRedirectMenu?: boolean;
-  locationId: string | number;
+  locationId: number;
   isload: boolean;
   locationUrl: string;
   clearMeaage: () => void;
@@ -124,11 +123,11 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const isDeliveryPickupTime = defaultLocation?.isDeliveryPickupTime;
   const isDeliveryAsap = defaultLocation?.isDeliveryAsap;
   const selecetdtime = order.checktime;
-  const lastPickupTime = pickupWindow?.length
+  const lastPickupTIme = pickupWindow?.length
     ? pickupWindow[pickupWindow.length - 1]
     : undefined;
   const lastDeliveryTime = deliveryWindow?.[deliveryWindow.length - 1];
-  const pickupEndTime: string | undefined = lastPickupTime?.time?.split("-")[1];
+  const pickupEndTime: string | undefined = lastPickupTIme?.time?.split("-")[1];
   const deliveryEndTime: string | undefined =
     lastDeliveryTime?.time?.split("-")[1];
   let selectedAsap =
@@ -137,9 +136,17 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     clearData === false && order.isasap === false ? true : false;
   const [isAsap, setisAsap] = useState<boolean>(selectedAsap);
   const [isLaterOn, setisLaterOn] = useState<boolean>(selectedLateron);
-  const [activeButtonClass, setActiveButtonClass] = useState<
-    "" | "asap" | "lateron"
-  >(clearData === false ? (order.isasap === true ? "asap" : "lateron") : "");
+  // const [activeButtonClass, setActiveButtonClass] = useState(
+  //   clearData === false ? (order.isasap === true ? "asap" : "lateron") : ""
+  // );
+  const [activeButtonClass, setActiveButtonClass] =
+    useState<ASAP_LATER_BTN_ENUM>(
+      clearData === false
+        ? order.isasap === true
+          ? ASAP_LATER_BTN_ENUM.ASAP
+          : ASAP_LATER_BTN_ENUM.LATER_ON
+        : ASAP_LATER_BTN_ENUM.NONE
+    );
   const [timeOrErrorMessage, setTimeOrErrorMessage] = useState<string>("");
   const [orderTime, setOrderTime] = useState<string>("");
   const [currentDate, setcurrentDate] = useState<Date | undefined>();
@@ -150,7 +157,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   );
   const [Hour, setHour] = useState<string>("");
   const [Minute, setMinute] = useState<string>("");
-  const [Meridiem, setMeridiem] = useState<string>();
+  const [Meridiem, setMeridiem] = useState<MERIDIEM_TIME_ENUM>();
   const [isTimeLoad, setisTimeLoad] = useState<boolean>(false);
   const customerId = userinfo?.customerId ?? 0;
   const [defaultLoactionId, setdefaultLoactionId] = useState<number>(
@@ -204,7 +211,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       setisAsap(false);
       setTimeOrErrorMessage("");
       dispatch(isasap(false));
-      setActiveButtonClass("");
+      setActiveButtonClass(ASAP_LATER_BTN_ENUM.NONE);
       dispatch(emptyordertime());
       setisLaterOn(false);
     }
@@ -224,13 +231,13 @@ const PickupDeliveryTimeSelectPopup: React.FC<
           responseTime as string,
           //isAsap
           //restaurantinfo as GetAllRestaurantInfo,
-          lastPickupTime?.isLastOrder
+          lastPickupTIme?.isLastOrder
         );
         setisPickupWindowAvailable(isValid);
       }
-      if (deliveryEndTime?.length) {
+      if (deliveryEndTime?.length > 0) {
         const isValid = checkWindowTimeExpires(
-          deliveryEndTime ?? "",
+          deliveryEndTime,
           responseTime as string,
           // isAsap
           // restaurantinfo as GetAllRestaurantInfo,
@@ -241,40 +248,40 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     });
   }, [defaultLocation?.locationId]);
 
-  useEffect(() => {
-    if (
-      document.getElementById("datetimepicker4") !== null &&
-      isLaterOn === true &&
-      document.getElementById("datetimepicker4") !== undefined &&
-      isTimeLoad &&
-      !defaultLocation?.isOrderingDisable
-    ) {
-      let hour =
-        Meridiem === "AM"
-          ? parseInt(Hour)
-          : parseInt(Hour) + 12 === 24
-          ? 12
-          : parseInt(Hour) + 12;
-      let Time = `${hour}:${parseInt(Minute)}`;
+  // useEffect(() => {
+  //   if (
+  //     document.getElementById("datetimepicker4") !== null &&
+  //     isLaterOn === true &&
+  //     document.getElementById("datetimepicker4") !== undefined &&
+  //     isTimeLoad &&
+  //     !defaultLocation?.isOrderingDisable
+  //   ) {
+  //     let hour =
+  //       Meridiem === "AM"
+  //         ? parseInt(Hour)
+  //         : parseInt(Hour) + 12 === 24
+  //         ? 12
+  //         : parseInt(Hour) + 12;
+  //     let Time = `${hour}:${parseInt(Minute)}`;
 
-      ($("#datetimepicker4") as any)
-        ?.datetimepicker({
-          format: "LT",
-          inline: true,
-        })
-        .on("dp.change", function (ev: any) {
-          setTimeOrErrorMessage("");
-          setisConfirmDisable(false);
-        });
-      $("#datetimepicker4")?.data("DateTimePicker").date(Time, "HH:mm");
-    }
-  }, [
-    document.getElementById("datetimepicker4"),
-    isLaterOn,
-    isTimeLoad,
-    Hour,
-    Minute,
-  ]);
+  //     $("#datetimepicker4")
+  //       ?.datetimepicker({
+  //         format: "LT",
+  //         inline: true,
+  //       })
+  //       .on("dp.change", function (ev: any) {
+  //         setTimeOrErrorMessage("");
+  //         setisConfirmDisable(false);
+  //       });
+  //     $("#datetimepicker4")?.data("DateTimePicker").date(Time, "HH:mm");
+  //   }
+  // }, [
+  //   document.getElementById("datetimepicker4"),
+  //   isLaterOn,
+  //   isTimeLoad,
+  //   Hour,
+  //   Minute,
+  // ]);
 
   const redirectOnTimeSelected = () => {
     if (isRedirectMenu) {
@@ -296,7 +303,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       return;
     }
     setisConfirmDisable(true);
-    setActiveButtonClass("asap");
+    setActiveButtonClass(ASAP_LATER_BTN_ENUM.ASAP);
     setisAsap(true);
     setisLaterOn(false);
     handleTimeClick();
@@ -307,7 +314,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       locationId: Number(defaultLocation?.locationId),
       ordertype: ordertype,
       obj: selectedAddress,
-      requestId: id,
+      requestId: defaultRequestId,
     }).then((gettimeresponse) => {
       setTimeout(() => {
         if (gettimeresponse?.result) {
@@ -367,18 +374,19 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     handleCurrentTime();
     setisLaterOn(true);
     let hour =
-      Meridiem === "AM"
-        ? Number(Hour)
-        : Number(Hour) + 12 === 24
+      Meridiem === MERIDIEM_TIME_ENUM.AM
+        ? parseInt(Hour)
+        : parseInt(Hour) + 12 === 24
         ? 12
-        : Number(Hour) + 12;
-    let Time = `${hour}:${Number(Minute)}`;
+        : parseInt(Hour) + 12;
+    let Time = `${hour}:${parseInt(Minute)}`;
     setTimeOrErrorMessage("");
     setsuccessMessage("");
-    setActiveButtonClass("lateron");
+    setActiveButtonClass(ASAP_LATER_BTN_ENUM.LATER_ON);
     setisAsap(false);
     setisConfirmDisable(false);
   };
+
   function handleCurrentTime() {
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
@@ -423,7 +431,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const handleClick = async (
     lid: number,
     locationUrl: any,
-    isPickup: boolean
+    isPickup?: boolean
   ) => {
     LocationServices.changeRestaurantLocation(
       restaurantinfo?.restaurantId as number,
@@ -473,57 +481,59 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       }
     });
   };
-  const handlesave = async (
-    hour: string,
-    minute: string,
-    meridiem: string
-  ): Promise<void> => {
-    try {
-      const recievingTime = `${parseInt(hour)}:${parseInt(minute)}`;
-      const response: OrderTimeResponse = await OrderServices.checkOrderTime({
-        restaurantId: Number(restaurantinfo?.restaurantId),
-        locationId: Number(defaultLocation?.locationId),
-        recievingTime,
-        recieving: meridiem,
-        flg: ordertype,
-        obj: selectedAddress,
-        requestId: defaultRequestId,
-      });
 
-      if (response.result != null) {
-        const { status, message } = response.result;
-        const timedisplay = `${hour}:${minute} ${meridiem}`;
-
-        if (status !== "success") {
-          setTimeOrErrorMessage(message);
+  const handlesave = (hour: string, minute: string, meridiem: string) => {
+    OrderServices.checkOrderTime({
+      restaurantId: restaurantinfo?.restaurantId as number,
+      locationId: defaultLocation?.locationId as number,
+      recievingTime: parseInt(hour) + ":" + parseInt(minute),
+      recieving: meridiem,
+      flg: ordertype,
+      obj: selectedAddress,
+      requestId: defaultRequestId,
+    }).then((response) => {
+      if (response.result != undefined && response.result !== null) {
+        if (response.result.status !== "success") {
+          setTimeOrErrorMessage(response.result.message);
           setisConfirmDisable(true);
           setsuccessMessage("");
           dispatch(setordertime(""));
-          return;
         }
+        if (response.result.status === "success") {
+          dispatch(isasap(false));
 
-        dispatch(isasap(false));
-        setTimeOrErrorMessage("");
-        setsuccessMessage(message);
-        dispatch(setordertime(timedisplay));
-
-        if (ordertype === 1 || ordertype === 2) {
-          if (isRedirectMenu) {
-            handleClick(locationId as number, locationUrl, true);
-            handleToggleTimingModal(false);
-          } else if (ordertype === 2) {
-            setTimeout(() => {
+          let timedisplay = hour + ":" + minute + " " + meridiem;
+          if (ordertype == 1) {
+            setTimeOrErrorMessage("");
+            setsuccessMessage(response.result.message);
+            dispatch(setordertime(timedisplay));
+            if (isRedirectMenu === true) {
+              // FROM THE PICKUP POPUP TIME SELCTION
+              handleClick(locationId as number, locationUrl);
               handleToggleTimingModal(false);
-              redirectOnTimeSelected();
-            }, 1000);
-          } else {
+            }
             handleToggleTimingModal(false);
+          }
+          if (ordertype == 2) {
+            if (response.result?.message) {
+              setTimeOrErrorMessage("");
+              setsuccessMessage(response.result.message);
+              dispatch(setordertime(timedisplay));
+              if (isRedirectMenu === true) {
+                // FROM THE PICKUP POPUP TIME SELCTION
+                handleClick(locationId as number, locationUrl);
+                handleToggleTimingModal(false);
+              } else {
+                setTimeout(() => {
+                  handleToggleTimingModal(false);
+                  redirectOnTimeSelected();
+                }, 1000);
+              }
+            }
           }
         }
       }
-    } catch (error) {
-      // console.error("Error in handlesave:", error);
-    }
+    });
   };
 
   const handleAsapConfirmClick = () => {
@@ -654,9 +664,19 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                             id="datepicker"
                           >
                             <h4>{DELIVERYPAGEMESSAGE.SELECT_TIME}</h4>
-                            <div
+                            {/* <div
                               className="d-block mx-auto"
                               id="datetimepicker4"
+                            /> */}
+                            <DateTimePickerWrapper
+                              hour={Hour}
+                              minute={Minute}
+                              meridiem={Meridiem as MERIDIEM_TIME_ENUM}
+                              isDisabled={
+                                defaultLocation?.isOrderingDisable ?? false
+                              }
+                              setTimeOrErrorMessage={setTimeOrErrorMessage}
+                              setIsConfirmDisable={setisConfirmDisable}
                             />
                           </div>
                           {timeOrErrorMessage !== "" && (

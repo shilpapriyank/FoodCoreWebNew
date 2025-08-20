@@ -92,7 +92,6 @@ export const FormatOrderObject = ({
     return null;
   }
 
-  //console.log("lstcarttopping from formate order object", lstcarttopping);
   let cartItem: CartItem = {
     menuid: objselectedItem.menuitemId,
     restaurantId: objrestaurant.restaurantId,
@@ -163,6 +162,5 @@ export const FormatOrderObject = ({
     selectedDate: currentdate,
   };
 
-  console.log("objorder from format order obj ", objorder);
   return objorder;
 };

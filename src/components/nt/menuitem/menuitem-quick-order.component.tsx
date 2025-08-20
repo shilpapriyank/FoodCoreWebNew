@@ -3,8 +3,15 @@ import { useDispatch } from "react-redux";
 import { ORDER_TYPE, TOOLTIP_MSG } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
+import { Menuitems } from "@/types/menuitem-types/menuitem.type";
 
-const MenuItemQuickOrder = ({ item, quickOrderClick }: any) => {
+const MenuItemQuickOrder = ({
+  item,
+  quickOrderClick,
+}: {
+  item: Menuitems;
+  quickOrderClick: (item: Menuitems) => void;
+}) => {
   const { selecteddelivery, restaurantinfo } = useReduxData();
   const router = useRouter();
   const params = useParams();

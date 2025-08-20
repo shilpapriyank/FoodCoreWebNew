@@ -1,5 +1,9 @@
 import React from "react";
-import { ORDER_TYPE, getAsapLaterOnState } from "../../common/utility";
+import {
+  ASAP_LATER_BTN_ENUM,
+  ORDER_TYPE,
+  getAsapLaterOnState,
+} from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
@@ -13,7 +17,7 @@ import { DefaultLocation } from "@/types/restaurant-types/restaurant.type";
 interface AsapLateronButtonProps {
   handleAsapClick: () => void;
   handleLaterOnClick: () => void;
-  activeButtonClass: "asap" | "lateron" | "";
+  activeButtonClass: ASAP_LATER_BTN_ENUM;
   isTakeOutPickupTime: boolean;
   defaultLocation: Record<string, any>;
   pickupWindow: PickupTime[];
@@ -64,7 +68,7 @@ export const AsapLateronButtonComponent: React.FC<AsapLateronButtonProps> = ({
             <div className="col-lg-6 col-sm-6 col-6">
               <a
                 className={`btn-default w-100 show-me ${
-                  activeButtonClass === "asap" && "btn-orange"
+                  activeButtonClass === ASAP_LATER_BTN_ENUM.ASAP && "btn-orange"
                 }`}
                 make-it-active="yes"
                 show-this="asap-date-form"
@@ -80,7 +84,8 @@ export const AsapLateronButtonComponent: React.FC<AsapLateronButtonProps> = ({
             <div className="col-lg-6 col-sm-6 col-6">
               <a
                 className={`btn-default w-100 show-me ${
-                  activeButtonClass === "lateron" && "btn-orange"
+                  activeButtonClass === ASAP_LATER_BTN_ENUM.LATER_ON &&
+                  "btn-orange"
                 }`}
                 make-it-active="yes"
                 show-this="later-date-form"

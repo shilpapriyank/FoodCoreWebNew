@@ -34,12 +34,6 @@ function serializeRestaurantData(data: any) {
   };
 }
 
-if (typeof window !== "undefined") {
-  (window as any).$ = $;
-  (window as any).jQuery = $;
-  (window as any).moment = moment;
-}
-
 export default async function RootLayout({
   children,
 }: {
