@@ -1,11 +1,7 @@
 "use client";
 
 import React, { ReactNode, useEffect } from "react";
-import {
-  fixedLengthString,
-  getImagePath,
-  ViewTypeEnum,
-} from "../../common/utility";
+import { fixedLengthString, getImagePath } from "../../common/utility";
 import CategorySidebar from "../category-sidebar/category-sidebar.component";
 import { useState } from "react";
 import GridListButton from "../../../common/gridlistbutton.component";
@@ -23,6 +19,9 @@ import {
 import {
   addFavorite,
   deleteFavorite,
+  getMenuItemDetailes,
+  removeMenuItem,
+  removeMenuItemSelectedData,
   selectedMenuItem,
   setDipendentId,
   setDipendentIds,
@@ -58,6 +57,7 @@ import {
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
 import Login from "../../login-register/login.component";
+import { ViewTypeEnum } from "@/components/common/enums";
 
 const CategoryMenuItems = ({
   categoryslug,
@@ -183,7 +183,7 @@ const CategoryMenuItems = ({
 
   useEffect(() => {
     if (dependentId > 0) {
-      console.log("dependentId", dependentId);
+      dispatch(removeMenuItem()); ///add this dispatch to remove the menuitemdetail state thatshowsthe previously selected menuitem detail
       setopenMenuItemModal(true);
       dispatch(
         selectedMenuItem({
@@ -255,6 +255,7 @@ const CategoryMenuItems = ({
   }, [menuItemsWithCat, menuitemId]);
 
   const handleClickItem = (e: React.MouseEvent, item: Menuitems) => {
+    dispatch(removeMenuItem());
     dispatch(selectedMenuItem(item));
     if (isSchoolProgramEnabled) {
       setisStudentPopUp(true);

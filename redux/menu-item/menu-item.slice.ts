@@ -82,7 +82,7 @@ export const getMenuItemDetailes = createAsyncThunk<
     });
 
     if (Array.isArray(response)) {
-      return response[0] as GetMenuItemDetail; // return only the first item
+      return response as GetMenuItemDetail; // return only the first item
     }
 
     throw new Error("No menu item found");

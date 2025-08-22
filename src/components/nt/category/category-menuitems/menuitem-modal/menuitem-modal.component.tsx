@@ -12,7 +12,6 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useParams, useRouter } from "next/navigation";
 import {
   addFavorite,
-  addItemToCart,
   deleteFavorite,
   getMenuItemDetailes,
   removeMenuItem,
@@ -35,12 +34,10 @@ import { MenuItemServices } from "../../../../../../redux/menu-item/menu-item.se
 import MenuItemFooter from "./menuitem-footer.component";
 import MenuItemSize from "./menuitem-size.component";
 import MenuItemInfo from "./menuiteminfo.component";
-import { MenuItemTypes } from "../../../../../../redux/menu-item/menuitem.type";
 import { FormatOrderObject } from "@/components/nt/common/format-order-object";
 import {
   getCartItem,
   getCartItemCount,
-  setCartItem,
 } from "../../../../../../redux/cart/cart.slice";
 import MenuItemOptions from "./menuitem-options.component";
 import MenuItemAddCartBtn from "./menuitem-addtocart.component";
@@ -55,16 +52,16 @@ import {
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
-const MenuItemModal = ({
-  isOpenModal,
-  handleToggleDependnt,
-  handleToggleMenuItem,
-  isPreLoaded = false,
-}: {
+const MenuItemModal: React.FC<{
   isOpenModal?: boolean;
   handleToggleDependnt?: (value: boolean) => void;
   handleToggleMenuItem: (value: boolean) => void;
   isPreLoaded?: boolean;
+}> = ({
+  isOpenModal,
+  handleToggleDependnt,
+  handleToggleMenuItem,
+  isPreLoaded = false,
 }) => {
   const {
     menuitem,

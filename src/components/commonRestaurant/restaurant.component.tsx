@@ -52,17 +52,11 @@ import {
   Seodetails,
 } from "@/types/restaurant-types/restaurant.type";
 
-interface Props {
+const RestaurantComponent: React.FC<{
   children: ReactNode;
   metaDataRestaurant?: Seodetails;
   themetype?: string;
-}
-
-const RestaurantComponent = ({
-  children,
-  metaDataRestaurant,
-  themetype,
-}: Props) => {
+}> = ({ children, metaDataRestaurant, themetype }) => {
   const hasFetchedRestaurant = useRef(false);
   const { restaurant, cart, metadata, category, userinfo, order, sessionid } =
     useReduxData();
@@ -99,9 +93,7 @@ const RestaurantComponent = ({
     metaDataRestaurant && metaDataRestaurant?.imageurl !== ""
       ? metaDataRestaurant.imageurl
       : restaurantinfo?.logo;
-
   let selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-
   const seoDefaultData = {
     title: `Online Ordering || ${restaurantname}`,
     description: "Online Ordering",
@@ -189,9 +181,9 @@ const RestaurantComponent = ({
       setRestaurantIdInStorage(newselectedRestaurant.restaurantId);
       setRestaurantNameInStorage(newselectedRestaurant.restaurantname);
       const loadCat = await loadCatData({
-        newselectedRestaurant,
-        isTableOrderTheme,
-        categoryitemlist,
+        newselectedRestaurant: newselectedRestaurant,
+        isTableOrder: isTableOrderTheme,
+        categoryitemlist: categoryitemlist,
       });
       if (loadCat) {
         if (isTableOrderTheme) {

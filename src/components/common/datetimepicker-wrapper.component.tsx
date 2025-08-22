@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
 import "bootstrap";
 import "eonasdan-bootstrap-datetimepicker";
-import { MERIDIEM_TIME_ENUM } from "./utility";
+import { MERIDIEM_TIME_ENUM } from "./enums";
 
 interface Props {
   hour: string;
@@ -51,32 +51,6 @@ export default function DateTimePickerWrapper({
       $("#datetimepicker4")?.data("DateTimePicker").date(Time, "HH:mm");
     }
   }, [document.getElementById("datetimepicker4")]);
-
-  //   useEffect(() => {
-  //     const element = $("#datetimepicker4");
-  //     if (!element.length || isDisabled || !hour || !minute || !meridiem) return;
-
-  //     const parsedHour =
-  //       meridiem === "AM"
-  //         ? parseInt(hour)
-  //         : parseInt(hour) + 12 === 24
-  //         ? 12
-  //         : parseInt(hour) + 12;
-
-  //     const time = `${parsedHour}:${parseInt(minute)}`;
-
-  //     element
-  //       .datetimepicker({
-  //         format: "LT",
-  //         inline: true,
-  //       })
-  //       .on("dp.change", () => {
-  //         setTimeOrErrorMessage("");
-  //         setIsConfirmDisable(false);
-  //       });
-
-  //     element.data("DateTimePicker").date(time, "HH:mm");
-  //   }, [hour, minute, meridiem, isDisabled]);
 
   return <div className="d-block mx-auto" id="datetimepicker4" />;
 }

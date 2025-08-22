@@ -1,7 +1,7 @@
 import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
 
-interface OptionHeaderProps {
+const OptionHeader: React.FC<{
   isOnLoadExpand: boolean;
   remainCount: React.ReactNode;
   item: List;
@@ -9,9 +9,7 @@ interface OptionHeaderProps {
   iscompletecheck: boolean;
   index: number;
   isOpenFirst: boolean;
-}
-
-const OptionHeader = ({
+}> = ({
   isOnLoadExpand,
   remainCount,
   item,
@@ -19,7 +17,7 @@ const OptionHeader = ({
   iscompletecheck,
   index,
   isOpenFirst,
-}: OptionHeaderProps) => {
+}) => {
   return (
     <div className="card-header accordion-header" id="accordionCrust">
       <button

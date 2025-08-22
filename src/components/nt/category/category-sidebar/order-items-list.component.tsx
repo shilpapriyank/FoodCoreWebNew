@@ -443,7 +443,7 @@ export const OrderItemsList = () => {
           );
 
           return (
-            <React.Fragment key={data.cartid || index}>
+            <React.Fragment key={`${data.cartid}-${index}`}>
               <h6>
                 {" "}
                 {data.itemname + " - " + data.subparametername}{" "}

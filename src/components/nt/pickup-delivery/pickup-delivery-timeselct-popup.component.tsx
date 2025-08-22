@@ -21,10 +21,8 @@ import PickupdeliveryWindowTime from "./pickup/pickup-delivery-window.component"
 import { setpickupordelivery } from "../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { LocationServices } from "../../../../redux/location/location.services";
 import {
-  ASAP_LATER_BTN_ENUM,
   DELIVERYSERVICES,
   GetThemeDetails,
-  MERIDIEM_TIME_ENUM,
   ORDER_TYPE,
   checkWindowTimeExpires,
   getAsapLaterOnState,
@@ -51,6 +49,10 @@ import {
 import { AsapLaterOnState } from "@/types/timeslot-types/timeslot.types";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 import DateTimePickerWrapper from "@/components/common/datetimepicker-wrapper.component";
+import {
+  ASAP_LATER_BTN_ENUM,
+  MERIDIEM_TIME_ENUM,
+} from "@/components/common/enums";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;

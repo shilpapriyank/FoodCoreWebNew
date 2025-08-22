@@ -25,18 +25,13 @@ import {
 } from "../../../../../../redux/menu-item/menu-item.slice";
 import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 
-const MenuItemOptions = ({
-  isExpand,
-  isLoad,
-  count,
-}: {
+const MenuItemOptions: React.FC<{
   isExpand: boolean;
   isLoad: boolean;
   count: number;
-}) => {
+}> = ({ isExpand, isLoad, count }) => {
   const { menuitem } = useReduxData();
   const dispatch = useAppDispatch();
-  // let updateitemoptionincart = useSelector(({ updateitemoptionincart }) => updateitemoptionincart, shallowEqual);
   let menuItemDetail = menuitem?.menuitemdetaillist;
   let selectedsize = menuItemDetail?.size.find((x) => x.sizeselected === true);
   let selectedtopping = menuItemDetail?.topping?.find(

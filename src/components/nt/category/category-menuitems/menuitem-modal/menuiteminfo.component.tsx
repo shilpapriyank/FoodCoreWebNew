@@ -6,15 +6,7 @@ import { Zoomable } from "@/components/common/zoomimage";
 import MenuItemSize from "./menuitem-size.component";
 import { Size } from "@/types/menuitem-types/menuitem.type";
 
-const MenuItemInfo = ({
-  name,
-  img,
-  desc,
-  shareUrl,
-  isFavourite,
-  selectedSizeClick,
-  selectedFavoriteClick,
-}: {
+const MenuItemInfo: React.FC<{
   name: string;
   img: string;
   desc: string;
@@ -22,6 +14,14 @@ const MenuItemInfo = ({
   isFavourite: boolean;
   selectedSizeClick: (item: Size) => void;
   selectedFavoriteClick: (item: boolean) => void;
+}> = ({
+  name,
+  img,
+  desc,
+  shareUrl,
+  isFavourite,
+  selectedSizeClick,
+  selectedFavoriteClick,
 }) => {
   const { restaurantinfo } = useReduxData();
   const defaultLocation = restaurantinfo?.defaultLocation;

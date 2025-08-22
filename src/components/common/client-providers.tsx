@@ -31,7 +31,7 @@ export default function ClientProviders({
   children,
   restaurantData,
 }: ClientProvidersProps) {
-  const [hasMounted, setHasMounted] = useState(false);
+  const [hasMounted, setHasMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setHasMounted(true);

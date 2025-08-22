@@ -20,7 +20,7 @@ export const useSearchData = (searchtext: string) => {
   const router = useRouter();
   const params = useParams();
   const { dynamic, location } = params;
-  const [errorMessage, seterrorMessage] = useState(
+  const [errorMessage, seterrorMessage] = useState<string>(
     searchtext !== "" && Object.keys(searchdata ?? {}).length === 0
       ? "Opps! No Items Found"
       : ""

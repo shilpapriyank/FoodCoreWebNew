@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-scroll";
 
-// var Scroll = require('react-scroll');
 var ScrollLink = Link;
 
 const ScrollToTop = ({ toClass = "container-fluid" }) => {

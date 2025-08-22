@@ -2,15 +2,11 @@ import React from "react";
 import useUtility from "../../../../customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 
-const MenuItemAddCartBtn = ({
-  memorisedNetTotal,
-  currencySymbol,
-  addToCart,
-}: {
+const MenuItemAddCartBtn: React.FC<{
   memorisedNetTotal: number;
   currencySymbol: string;
   addToCart: () => void;
-}) => {
+}> = ({ memorisedNetTotal, currencySymbol, addToCart }) => {
   const { menuitem } = useReduxData();
   let selectedmenuitemdetail = menuitem?.selectedmenuitemdetail;
   const { isDisplayPrice, isRewardTip } = useUtility();

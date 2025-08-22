@@ -10,7 +10,6 @@ import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { useAppDispatch } from "../../../redux/hooks";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
-import { ThemeType } from "@/types/common-types/common.types";
 
 const useLoadCatData = (customerId: number) => {
   const dispatch = useAppDispatch();
@@ -18,11 +17,11 @@ const useLoadCatData = (customerId: number) => {
   const params = useParams();
   const { category } = params;
 
-  const loadCatData = async ({
-    newselectedRestaurant,
-    isTableOrder,
-    categoryitemlist,
-  }: any) => {
+  const loadCatData: React.FC<{
+    newselectedRestaurant: GetAllRestaurantInfo;
+    isTableOrder: boolean;
+    categoryitemlist: GetAllMenuCategoryItems[];
+  }> = async ({ newselectedRestaurant, isTableOrder, categoryitemlist }) => {
     let categoryresponse = [];
 
     if (!isTableOrder) {
@@ -49,10 +48,6 @@ const useLoadCatData = (customerId: number) => {
         );
         if (catresponse && catresponse.length > 0) {
           categoryresponse = catresponse;
-          // dispatch({
-          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
-          //   payload: categoryresponse,
-          // });
           if (catresponse) {
             dispatch(
               setMainCategoryList(categoryresponse as MainCategoryList[])
@@ -61,7 +56,6 @@ const useLoadCatData = (customerId: number) => {
             dispatch(setMainCategoryList([]));
           }
 
-          //const firstCategory = catresponse[0];
           const firstCategory = { ...catresponse[0], catSelected: true };
           if (categoryitemlist.length === 0) {
             dispatch(setSelectedCategory(firstCategory));
@@ -79,20 +73,12 @@ const useLoadCatData = (customerId: number) => {
               newselectedRestaurant.defaultlocationId
             ).then((promocatresponse) => {
               if (promocatresponse && promocatresponse != null) {
-                // dispatch({
-                //   type: MainTypes.GET_PROMOTION_CATEGORY_DATA,
-                //   payload: promocatresponse,
-                // });
                 dispatch(
                   mainSlice.actions.setPromotionCategoryList(promocatresponse)
                 );
               }
             });
           } else {
-            // dispatch({
-            //   type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
-            //   payload: null,
-            // });
             dispatch(mainSlice.actions.updatePromotionCategoryData([]));
           }
         } else {
@@ -116,20 +102,11 @@ const useLoadCatData = (customerId: number) => {
         catresponse = catresponsedata;
         if (catresponse && catresponse !== null && catresponse !== undefined) {
           let categoryresponse = catresponse;
-          // dispatch({
-          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
-          //   payload: categoryresponse,
-          // });
           dispatch(setMainCategoryList(categoryresponse as MainCategoryList[]));
 
           const firstCategory = { ...catresponse[0], catSelected: true };
           firstCategory.catSelected = true;
           dispatch(setSelectedCategory(firstCategory));
-          // const firstCategory = catresponse[0];
-          // firstCategory.catSelected = true;
-          // if (categoryitemlist.length === 0) {
-          //     dispatch(selectedCategory(firstCategory));
-          // }
 
           let promotioncategories = catresponse.find(
             (x) => x.catName === "PROMOTION"
@@ -143,13 +120,8 @@ const useLoadCatData = (customerId: number) => {
               customerId,
               newselectedRestaurant.defaultlocationId
             );
-            // MainServices.getPromotionCategoryList(newselectedRestaurant.restaurantId, promotionCatId, customerId, newselectedRestaurant.defaultlocationId)
 
             if (promocatresponse && promocatresponse != null) {
-              // dispatch({
-              //   type: MainTypes.GET_PROMOTION_CATEGORY_DATA,
-              //   payload: promocatresponse,
-              // });
               dispatch(
                 mainSlice.actions.getPromotionCategoryData(
                   promocatresponse as any
@@ -157,17 +129,9 @@ const useLoadCatData = (customerId: number) => {
               );
             }
           } else {
-            // dispatch({
-            //   type: MainTypes.UPDATE_PROMOTION_CATEGORY_DATA,
-            //   payload: null,
-            // });
             dispatch(mainSlice.actions.updatePromotionCategoryData([]));
           }
         } else {
-          // dispatch({
-          //   type: MainTypes.GET_MENU_CATEGORY_DATA,
-          //   payload: catresponse,
-          // });
           if (catresponse && catresponse !== null) {
             dispatch(setMainCategoryList(catresponse as MainCategoryList[]));
           } else {

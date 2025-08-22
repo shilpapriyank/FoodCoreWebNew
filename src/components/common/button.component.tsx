@@ -1,9 +1,11 @@
 import React, { ReactNode } from "react";
+import { BUTTON_TYPE_ENUM } from "./enums";
 
 interface ButtonComponentProps {
   textName?: string;
   classname?: string;
-  btnType?: "button" | "submit" | "reset";
+  // btnType?: "button" | "submit" | "reset";
+  btnType?: BUTTON_TYPE_ENUM;
   isDisable?: boolean;
   handleClick?: () => void;
   children?: ReactNode;
@@ -12,7 +14,8 @@ interface ButtonComponentProps {
 const ButtonComponent: React.FC<ButtonComponentProps> = ({
   textName,
   classname = "",
-  btnType = "button",
+  // btnType = "button",
+  btnType = BUTTON_TYPE_ENUM.BUTTON,
   isDisable = false,
   handleClick,
   children,

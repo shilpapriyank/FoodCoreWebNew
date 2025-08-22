@@ -9,7 +9,7 @@ const RestaurantNotExist = () => {
   const dynamic = params.dynamic;
   const { restaurantinfo } = useReduxData();
   const location = restaurantinfo?.defaultLocation;
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
 
   return (
     <>

@@ -1,5 +1,3 @@
-//src/app/nt/[dynamic]/page.tsx
-
 "use client";
 
 import React, { useEffect } from "react";
@@ -31,7 +29,6 @@ const Page: React.FC = () => {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
     }
     router.push(routepath);
-    //dispatch(ChangeUrl(true))
     return;
   }, []);
 
