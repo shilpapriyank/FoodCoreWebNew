@@ -1,6 +1,7 @@
 import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
+import { ACTION_TYPE_ENUM } from "./enums";
 
 interface CheckBoxProps {
   type: Type;
@@ -11,7 +12,8 @@ interface CheckBoxProps {
   handleOnChangeSubOption: (
     type: Type,
     optionId: number,
-    action: "select" | "deselect",
+    //action: "select" | "deselect",
+    action: ACTION_TYPE_ENUM,
     isRadioButton: boolean,
     event: InputOrClickEvent
   ) => void;
@@ -37,7 +39,9 @@ const CheckBox = ({
           handleOnChangeSubOption(
             type,
             item.optionId,
-            type.subOptionselected ? "deselect" : "select",
+            type.subOptionselected
+              ? ACTION_TYPE_ENUM.DESELECT
+              : ACTION_TYPE_ENUM.SELECT,
             isRadioButton,
             e
           )

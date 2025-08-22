@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import "../../styles/globals.css";
-//import '../styles/globals.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import type { ReactNode } from "react";
 import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
 import { ThemeStyles } from "@/components/common/theme-styles";
-// import { ClientProviders } from "@/components/common/client-providers"
 import { ThemeScripts } from "@/components/common/theme-scripts";
 import { GetThemeDetails } from "@/components/common/utility";
 import ClientWrapper from "@/components/common/client-wrapper";

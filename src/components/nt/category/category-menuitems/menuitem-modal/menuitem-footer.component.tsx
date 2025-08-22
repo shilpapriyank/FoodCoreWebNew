@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-const MenuItemFooter = ({ children }: { children: ReactNode }) => {
+const MenuItemFooter: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="modal-footer">
       <div className="row m-auto">

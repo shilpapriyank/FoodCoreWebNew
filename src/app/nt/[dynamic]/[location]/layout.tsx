@@ -1,13 +1,13 @@
-// 'use client'
 import RestaurantComponent from "@/components/commonRestaurant/restaurant.component";
 import { Metadata } from "next";
 import React, { ReactNode } from "react";
+
 interface LayoutProps {
   children: ReactNode;
   handleChangeAddress?: () => void;
   page?: string;
 }
-// app/layout.tsx
+
 export const metadata: Metadata = {
   title: "My Food App | Home",
   description: "Order your favorite food online from My Food App.",
@@ -45,10 +45,7 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   return (
     <>
-      <RestaurantComponent>
-        {/* <CategoryMenuItems /> */}
-        {children}
-      </RestaurantComponent>
+      <RestaurantComponent>{children}</RestaurantComponent>
     </>
   );
 };

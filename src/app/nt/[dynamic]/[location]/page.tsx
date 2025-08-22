@@ -26,15 +26,12 @@ export default function LocationPage() {
     userinfo,
     order,
   } = useReduxData();
-
   const [isloadAdress, setisloadAdress] = useState<boolean>(true);
   const { location } = useParams() ?? {};
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
-
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
-
   const {
     searchItem,
     handleChangeSearch,
@@ -42,15 +39,8 @@ export default function LocationPage() {
     handleClickCancel,
     handleSubmitSearch,
   } = useSearchData(searchtext);
-
   const { filterCategory } = useUtility();
-
   const pickupordelivery = selecteddelivery.pickupordelivery;
-  // const menuItemsWithCat = filterCategory(
-  //   searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
-  //   pickupordelivery
-  // );
-
   const menuItemsWithCat = filterCategory(
     searchtext !== "" && searchdata ? searchdata?.menuItems : categoryItemsList,
     pickupordelivery

@@ -1,122 +1,117 @@
-//src/components/customhooks/useredux-data-hook.ts
-
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual } from "react-redux";
 import { ORDER_TIME_TYPE, getCheckTimeArr } from "../common/utility";
 import { RootState } from "../../../redux/store";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { useAppSelector } from "../../../redux/hooks";
 
 export const useReduxData = () => {
-  const userinfo = useSelector(
+  const userinfo = useAppSelector(
     (state: RootState) => state.userdetail?.loggedinuser,
     shallowEqual
   );
 
-  const restaurant = useSelector(
+  const restaurant = useAppSelector(
     (state: RootState) => state.restaurant,
     shallowEqual
   );
 
-  const restaurantinfo = useSelector(
+  const restaurantinfo = useAppSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
   );
 
-  const restaurantinfodetail = useSelector(
+  const restaurantinfodetail = useAppSelector(
     (state: RootState) => state.restaurant?.restaurantdetail,
     shallowEqual
   );
 
-  const menuitem = useSelector(
+  const menuitem = useAppSelector(
     (state: RootState) => state.menuitem,
     shallowEqual
   );
 
-  const menuitemdetaillist = useSelector(
-    (state: RootState) => menuitem.menuitemdetaillist,
+  const menuitemdetaillist = useAppSelector(
+    (state: RootState) => menuitem?.menuitemdetaillist,
     shallowEqual
   );
 
-  const selecteddelivery = useSelector(
+  const selecteddelivery = useAppSelector(
     (state: RootState) => state.selecteddelivery,
     shallowEqual
   );
 
-  const cart = useSelector((state: RootState) => state.cart, shallowEqual);
-  const category = useSelector(
+  const cart = useAppSelector((state: RootState) => state.cart, shallowEqual);
+  const category = useAppSelector(
     (state: RootState) => state.category,
     shallowEqual
   );
-  const deliveryaddress = useSelector(
+  const deliveryaddress = useAppSelector(
     (state: RootState) => state.deliveryaddress,
     shallowEqual
   );
-  const main = useSelector((state: RootState) => state.main, shallowEqual);
-  const metadata = useSelector(
+  const main = useAppSelector((state: RootState) => state.main, shallowEqual);
+  const metadata = useAppSelector(
     (state: RootState) => state.metadata,
     shallowEqual
   );
-  const order = useSelector((state: RootState) => state.order, shallowEqual);
+  const order = useAppSelector((state: RootState) => state.order, shallowEqual);
 
-  const rewardpoints = useSelector(
+  const rewardpoints = useAppSelector(
     (state: RootState) => state.rewardpoints,
     shallowEqual
   );
-  const session = useSelector(
+  const session = useAppSelector(
     (state: RootState) => state.session,
     shallowEqual
   );
-  // const studentdata = useSelector((state: RootState) => state.studentname, shallowEqual);
-  const restaurantWindowTime = useSelector(
+  // const studentdata = useAppSelector((state: RootState) => state.studentname, shallowEqual);
+  const restaurantWindowTime = useAppSelector(
     (state: RootState) => state.main.restaurantWindowTime
   );
-  const restauranttiming = useSelector(
-    (state: RootState) => state.restaurant.restaurantstiminglist
+  const restauranttiming = useAppSelector(
+    (state: RootState) => state.restaurant?.restaurantstiminglist
   );
-  const sessionid = useSelector((state: RootState) => state.session?.sessionid);
-  const addressList = useSelector(
+  const sessionid = useAppSelector(
+    (state: RootState) => state.session?.sessionid
+  );
+  const addressList = useAppSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist?.addressList
   );
   const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
-    order.checktime,
+    order?.checktime,
     restaurantinfo as GetAllRestaurantInfo,
     order?.futureOrderDay?.futureDate || "",
     order?.isasap ?? false
   );
   const orderTimeValid =
-    typeof order?.checktime === "string" && order.checktime.trim() !== "";
+    typeof order?.checktime === "string" && order?.checktime.trim() !== "";
 
-  const restaurantlocation = useSelector(
+  const restaurantlocation = useAppSelector(
     (state: RootState) => state.restaurant?.restaurantslocationlist
   );
-  const defaultLocation = useSelector(
-    (state: RootState) => state.restaurant.restaurantdetail?.defaultLocation
+  const defaultLocation = useAppSelector(
+    (state: RootState) => state.restaurant?.restaurantdetail?.defaultLocation
   );
-  const tableorder = useSelector(
+  const tableorder = useAppSelector(
     (state: RootState) => state.tableorder,
     shallowEqual
   );
-  const categoryItemsList = useSelector(
+  const categoryItemsList = useAppSelector(
     (state: RootState) => state.category?.categoryitemlist,
     shallowEqual
   );
-  const selectedcategorydetail = useSelector(
+  const selectedcategorydetail = useAppSelector(
     (state: RootState) => state.category?.selectedcategorydetail,
     shallowEqual
   );
-  const maincategoryList = useSelector(
+  const maincategoryList = useAppSelector(
     (state: RootState) => state.main?.maincategoryList,
     shallowEqual
   );
-  const selectedcategory = useSelector(
+  const selectedcategory = useAppSelector(
     (state: RootState) => state.category?.selectedcategorydetail,
     shallowEqual
   );
-
-  // const [recievingTime, meredian, recievingDate] = getCheckTimeArr(
-  //   order?.checktime,
-  //   restaurantinfo,
-  //   order?.futureOrderDay?.futureDate, order.isasap
-  // )
 
   const orderTimeType =
     order?.isasap === true

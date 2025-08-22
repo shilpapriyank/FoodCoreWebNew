@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  ASAP_LATER_BTN_ENUM,
-  ORDER_TYPE,
-  getAsapLaterOnState,
-} from "../../common/utility";
+import { ORDER_TYPE, getAsapLaterOnState } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DELIVERYPAGEMESSAGE } from "../helpers/static-message/delivery-message";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
@@ -13,6 +9,7 @@ import {
   PickupTime,
 } from "@/types/location-types/location.type";
 import { DefaultLocation } from "@/types/restaurant-types/restaurant.type";
+import { ASAP_LATER_BTN_ENUM } from "@/components/common/enums";
 
 interface AsapLateronButtonProps {
   handleAsapClick: () => void;

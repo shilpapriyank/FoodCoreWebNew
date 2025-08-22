@@ -8,6 +8,7 @@ import useUtility from "@/components/customhooks/utility-hook";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { setSelectedCategory } from "../../../../../redux/category/category.slice";
+import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
 const CategoryHeader = () => {
   const {
@@ -30,7 +31,10 @@ const CategoryHeader = () => {
     searchtext !== "" ? searchdata?.categories : maincategoryList;
   let pickupordelivery = selecteddelivery.pickupordelivery;
   const { filterCategory } = useUtility();
-  const catWithSearch = filterCategory(categoryListItems as any, pickupordelivery);
+  const catWithSearch = filterCategory(
+    categoryListItems as GetAllMenuCategoryItems[],
+    pickupordelivery
+  );
   const activeItemRef = useRef<HTMLLIElement | null>(null);
   const [activeSection, setActiveSection] = useState<string>("");
 

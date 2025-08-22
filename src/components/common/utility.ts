@@ -44,23 +44,6 @@ export const restaurantURLList = {
   domenicsslp: "domenicsslp",
 };
 
-export enum ASAP_LATER_BTN_ENUM {
-  ASAP = "asap",
-  LATER_ON = "lateron",
-  NONE = "",
-}
-
-export enum MERIDIEM_TIME_ENUM {
-  AM = "AM",
-  PM = "PM",
-}
-
-export enum BUTTON_TYPE_ENUM {
-  BUTTON = "button",
-  SUBMIT= "submit",
-  RESET= "reset",
-}
-
 export const ThemeObj = {
   default: "default",
   dominos: "dominos",

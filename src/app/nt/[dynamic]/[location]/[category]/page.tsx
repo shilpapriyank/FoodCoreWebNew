@@ -15,7 +15,6 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import Layout from "@/components/nt/layout/layout.component";
 import { addmetaData } from "../../../../../../redux/metadata/metadata.slice";
 import { RestaurantsServices } from "../../../../../../redux/restaurants/restaurants.services";
-//import { validateQueryString } from "@/components/default/common/dominos/helpers/utility";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 import { useAppDispatch } from "../../../../../../redux/hooks";
@@ -44,11 +43,7 @@ export default function CategoryPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  // let menuItemsWithCat = filterCategory(
-  //   searchtext !== "" ? searchdata?.menuItems : categoryItemsList,
-  //   pickupordelivery
-  // );
-
+  debugger;
   const menuItemsWithCat = filterCategory(
     (searchtext !== "" ? searchdata?.menuItems : categoryItemsList) ?? [],
     pickupordelivery

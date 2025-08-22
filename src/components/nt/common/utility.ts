@@ -1,10 +1,3 @@
-import { List, Topping } from "@/types/menuitem-types/menuitem.type";
-
-export enum ViewTypeEnum {
-  GRID = "grid",
-  LIST = "list",
-}
-
 export const ORDER_TYPE = {
   PICKUP: {
     text: "Pickup",

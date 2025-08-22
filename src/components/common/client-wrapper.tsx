@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import React, { FC, ReactNode, useEffect, useState } from "react";
+
 const ClientProviders = dynamic(
   () => import("@/components/common/client-providers"),
   {
@@ -9,7 +10,7 @@ const ClientProviders = dynamic(
   }
 );
 const ClientWrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  const [hasMounted, setHasMounted] = useState(false);
+  const [hasMounted, setHasMounted] = useState<boolean>(false);
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -18,7 +19,6 @@ const ClientWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   if (!hasMounted) return null;
   return (
     <>
-      {/* <h1>test</h1> */}
       <ClientProviders>{children}</ClientProviders>
     </>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ViewTypeEnum } from "../nt/common/utility";
+import { ViewTypeEnum } from "./enums";
 
 interface GridListButtonProps {
   viewType: ViewTypeEnum;

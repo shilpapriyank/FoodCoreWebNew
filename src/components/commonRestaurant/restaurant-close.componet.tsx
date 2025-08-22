@@ -12,16 +12,16 @@ const RestaurantCloseComponent = () => {
   const params = useParams();
   const locationUrl = params.location;
   const location = restaurantinfo?.defaultLocation;
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   let locationFullLink =
     "/" +
-    selectedTheme.url +
+    selectedTheme?.url +
     "/" +
     restaurantinfo?.restaurantURL +
     "/" +
     locationUrl +
     "/";
-  let locationHrefLink = `/${selectedTheme.url}/[dynamic]/[location]/`;
+  let locationHrefLink = `/${selectedTheme?.url}/[dynamic]/[location]/`;
   return (
     <>
       <section id="pickup" className="cre-password">
@@ -80,10 +80,10 @@ const RestaurantCloseComponent = () => {
                                     legacyBehavior
                                     href={
                                       "/" +
-                                      selectedTheme.url +
+                                      selectedTheme?.url +
                                       "/[dynamic]/pickup"
                                     }
-                                    as={`/${selectedTheme.url}/${restaurantinfo?.restaurantURL}/pickup`}
+                                    as={`/${selectedTheme?.url}/${restaurantinfo?.restaurantURL}/pickup`}
                                   >
                                     <button
                                       className="blue_btn font_18px blue_btn_porder  btn-primary"

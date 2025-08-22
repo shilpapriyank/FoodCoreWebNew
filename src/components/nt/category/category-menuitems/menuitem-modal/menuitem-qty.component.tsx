@@ -1,16 +1,10 @@
 import React from "react";
 
-interface MenuItemQtyProps {
+const MenuItemQty: React.FC<{
   increment: () => void;
   decrement: () => void;
   currentQty: number;
-}
-
-const MenuItemQty = ({
-  increment,
-  decrement,
-  currentQty,
-}: MenuItemQtyProps) => {
+}> = ({ increment, decrement, currentQty }) => {
   return (
     <div className="col-lg-4 p-0 col-md-5 col-6 pb-1 pb-md-0 label-bg mb-1 mb-md-0">
       <div className="quantity qty-container side-qty-btn ">
@@ -31,7 +25,7 @@ const MenuItemQty = ({
         <button
           className="qty-btn-plus btn-light quantity__plus"
           type="button"
-          onClick={increment} 
+          onClick={increment}
         >
           <i className="fa fa-plus"></i>
         </button>

@@ -4,13 +4,10 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import ShareitemComponent from "@/components/nt/common/shareitem.component";
 import { Size } from "@/types/menuitem-types/menuitem.type";
 
-const MenuItemSize = ({
-  selectedSizeClick,
-  shareUrl,
-}: {
+const MenuItemSize: React.FC<{
   selectedSizeClick: (item: Size) => void;
   shareUrl: string;
-}) => {
+}> = ({ selectedSizeClick, shareUrl }) => {
   const { menuitem, restaurantinfo, menuitemdetaillist } = useReduxData();
   // let studentname = studentdata
   const { isDisplayPrice } = useUtility();

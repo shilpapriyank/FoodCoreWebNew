@@ -15,10 +15,8 @@ import { Menuitems } from "@/types/menuitem-types/menuitem.type";
 
 const FavouritePage = () => {
   const { restaurantinfo, userinfo } = useReduxData();
-  const [isProductItemPopup, setisProductItemPopup] = useState(false);
-
+  const [isProductItemPopup, setisProductItemPopup] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-
   const { isError, isLoading, data, isSuccess, refetch } = useQuery({
     queryKey: [
       "getFavourites",
