@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-export interface CommonModalProps {
+const CommonModal: React.FC<{
   title: string;
   text?: string;
   keyName?: string;
@@ -15,9 +15,7 @@ export interface CommonModalProps {
   handleToggle?: (value: boolean, keyName?: string) => void;
   handleClickBtn1?: () => void;
   handleClickBtn2?: () => void;
-}
-
-const CommonModal: React.FC<CommonModalProps> = ({
+}> = ({
   title,
   isbtn2,
   text,

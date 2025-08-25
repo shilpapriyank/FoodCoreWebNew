@@ -9,9 +9,6 @@ import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { getDate, ORDER_TIME_TYPE } from "@/components/common/utility";
 import { ParseArgsConfig } from "util";
 import {
-  CartDetails,
-  CartItemDetails,
-  CartOptionParams,
   CartTotal,
   GetCartItems,
   GetCartItemsCount,

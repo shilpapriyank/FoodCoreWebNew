@@ -8,16 +8,7 @@ import RadioButton from "@/components/common/radiobutton.component";
 import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
 
-const SubTopping = ({
-  type,
-  index,
-  item,
-  handleOnChangeRemoveSubOption,
-  handleOnChangeSubOption,
-  isDisplayPrice,
-  increment,
-  decrement,
-}: {
+const SubTopping: React.FC<{
   type: Type;
   index: number;
   item: List;
@@ -38,6 +29,15 @@ const SubTopping = ({
   isDisplayPrice: boolean;
   increment: (optionId: number, data: Type) => void;
   decrement: (optionId: number, data: Type, isRadioButton: boolean) => void;
+}> = ({
+  type,
+  index,
+  item,
+  handleOnChangeRemoveSubOption,
+  handleOnChangeSubOption,
+  isDisplayPrice,
+  increment,
+  decrement,
 }) => {
   const { restaurantinfo } = useReduxData();
   const redioClass = restaurantinfo?.isSchoolProgramEnabled

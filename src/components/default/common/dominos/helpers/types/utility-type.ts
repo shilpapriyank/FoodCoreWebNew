@@ -1,5 +1,7 @@
 // types.ts
 
+import { PIZZA_SIDE_ENUM } from "@/components/common/enums";
+
 export interface AddressItem {
   locationName: string;
   zipcode: string;
@@ -52,7 +54,8 @@ export interface DeliveryAddressInfo {
 export interface SubOption {
   subOptionselected: boolean;
   toppingValue: string;
-  pizzaside?: "L" | "R";
+  //pizzaside?: "L" | "R";
+  pizzaside?: PIZZA_SIDE_ENUM;
   halfPizzaPriceToppingPercentage: string;
   subOptionToppingQuantity: number;
   isHalfPizza?: boolean;

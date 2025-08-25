@@ -1,5 +1,6 @@
 // -------old types before above it defined ---------------
 
+import { PIZZA_SIDE_ENUM } from "@/components/common/enums";
 import { Topping } from "../menuitem-types/menuitem.type";
 
 export interface CartItem {

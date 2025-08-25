@@ -1,3 +1,4 @@
+import { PIZZA_SIDE_ENUM } from "@/components/common/enums";
 import {
   CartItem,
   CartOptionParams,
@@ -62,7 +63,7 @@ export const FormatOrderObject = ({
     selectedtopping?.list?.forEach((lsttop) => {
       lsttop.type?.forEach((type) => {
         if (type.subOptionselected === true) {
-          const isHalfPrice = type.pizzaside === "L" || type.pizzaside === "R";
+          const isHalfPrice = type.pizzaside === PIZZA_SIDE_ENUM.LEFT || type.pizzaside === PIZZA_SIDE_ENUM.RIGHT;
           const price =
             lsttop?.freeToppingsCount > 0 && lsttop?.multipleSelectStatus
               ? type.paidQty > 0

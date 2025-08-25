@@ -39,6 +39,7 @@ import { GetCategoriesRelativeItems } from "@/types/category-types/category.serv
 import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/utility-type";
 import { CartState } from "../../../redux/cart/cart.slice";
 import { RestaurantState } from "../../../redux/restaurants/restaurants.slice";
+import { PIZZA_SIDE_ENUM } from "./enums";
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -1139,7 +1140,8 @@ export const calculateFinalCount = (
     // Apply half pizza percentage if applicable
     if (
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === PIZZA_SIDE_ENUM.LEFT ||
+        tc.pizzaside === PIZZA_SIDE_ENUM.RIGHT)
     ) {
       const percentage =
         tc.halfPizzaPriceToppingPercentage === 0 ||
@@ -1175,7 +1177,8 @@ export const calculateFinalCountWithPaid = (
 
     const calculatedtopvalue =
       selectedOption.isHalfPizza === true &&
-      (tc.pizzaside === "L" || tc.pizzaside === "R")
+      (tc.pizzaside === PIZZA_SIDE_ENUM.LEFT ||
+        tc.pizzaside === PIZZA_SIDE_ENUM.RIGHT)
         ? topvalue *
           (tc.halfPizzaPriceToppingPercentage === 0 ||
           tc.halfPizzaPriceToppingPercentage === undefined ||
@@ -1338,7 +1341,8 @@ export const calculateNettotal = (
       const paidQty = data.paidQty || 0; // Only this many need to be paid
       if (paidQty > 0) {
         const unitPrice =
-          data.pizzaside === "L" || data.pizzaside === "R"
+          data.pizzaside === PIZZA_SIDE_ENUM.LEFT ||
+          data.pizzaside === PIZZA_SIDE_ENUM.RIGHT
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price;
 
@@ -1351,7 +1355,8 @@ export const calculateNettotal = (
       ) {
         fsum =
           fsum +
-          (data.pizzaside === "L" || data.pizzaside === "R"
+          (data.pizzaside === PIZZA_SIDE_ENUM.LEFT ||
+          data.pizzaside === PIZZA_SIDE_ENUM.RIGHT
             ? parseFloat((data.price * 0.5).toFixed(2))
             : data.price) *
             data.subOptionToppingQuantity;

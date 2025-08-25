@@ -5,8 +5,15 @@ import { getImagePath } from "../common/utility";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { GetMenuItemFavorite } from "@/types/menuitem-types/menuitem.type";
 
-const FavouriteItem = ({ item, orderNowClick, selectedFavoriteClick }: any) => {
+const FavouriteItem: React.FC<{
+  index: any;
+  page: string;
+  item: any;
+  orderNowClick: (item: any) => void;
+  selectedFavoriteClick: (item: any) => void;
+}> = ({ index, page, item, orderNowClick, selectedFavoriteClick }) => {
   const { restaurantinfo } = useReduxData();
   const { isDisplayPrice } = useUtility();
   const currency = GetCurrency();

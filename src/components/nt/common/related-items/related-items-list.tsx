@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import useFutureOrder from "../../../customhooks/usefuture-order-hook";
 import useUtility from "../../../customhooks/utility-hook";
 import { useParams, usePathname, useRouter } from "next/navigation";
-// import MenuItemDetail from "../../menuitem/menuitem.component";
 import MenuItemModal from "../../category/category-menuitems/menuitem-modal/menuitem-modal.component";
 import { RelatedItem } from "./related-item";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
@@ -19,7 +18,6 @@ import {
   GetThemeDetails,
 } from "@/components/common/utility";
 import { ORDER_TYPE } from "../utility";
-import { GetCategoriesRelativeItems } from "@/types/category-types/category.services.type";
 
 export const RelatedItemsList = () => {
   const {
@@ -133,7 +131,8 @@ export const RelatedItemsList = () => {
                       isDisplayPrice={isDisplayPrice}
                       handleRelativeItemClick={handleRelativeItemClick}
                       defaultmenuitemimage={
-                        restaurantinfo?.defaultLocation?.defaultmenuitemimage
+                        restaurantinfo?.defaultLocation
+                          ?.defaultmenuitemimage as string
                       }
                     />
                   </div>
@@ -169,7 +168,8 @@ export const RelatedItemsList = () => {
                     index={index}
                     handleRelativeItemClick={handleRelativeItemClick}
                     defaultmenuitemimage={
-                      restaurantinfo?.defaultLocation?.defaultmenuitemimage
+                      restaurantinfo?.defaultLocation
+                        ?.defaultmenuitemimage as string
                     }
                   />
                   {/* </div> */}

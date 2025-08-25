@@ -3,14 +3,21 @@ import { getImagePath } from "../utility";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { GetCurrency } from "@/components/common/utility";
+import { Item } from "@/types/category-types/category.services.type";
 
-export const RelatedItem = ({
+export const RelatedItem: React.FC<{
+  relativeItem: Item;
+  index: any;
+  handleRelativeItemClick: (relativeItem: Item) => void;
+  defaultmenuitemimage: string;
+  isDisplayPrice?: boolean;
+}> = ({
   relativeItem,
   index,
   handleRelativeItemClick,
   defaultmenuitemimage,
   isDisplayPrice,
-}: any) => {
+}) => {
   let itemImage = getImagePath(
     relativeItem?.menuItemImage,
     defaultmenuitemimage

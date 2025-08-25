@@ -59,17 +59,12 @@ import MenuItemModal from "./menuitem-modal/menuitem-modal.component";
 import Login from "../../login-register/login.component";
 import { ViewTypeEnum } from "@/components/common/enums";
 
-const CategoryMenuItems = ({
-  categoryslug,
-  menuItemsWithCat,
-  children,
-  errorMessage,
-}: {
+const CategoryMenuItems: React.FC<{
   categoryslug?: string;
   menuItemsWithCat: GetAllMenuCategoryItems[];
   children: ReactNode;
   errorMessage: string;
-}) => {
+}> = ({ categoryslug, menuItemsWithCat, children, errorMessage }) => {
   const {
     categoryItemsList,
     restaurantinfo,

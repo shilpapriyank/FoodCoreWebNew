@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import MenuItemQuickOrder from "../../menuitem/menuitem-quick-order.component";
 import { getImagePath } from "../../../common/utility";
 
+//this component is not use in any other component
 const MenuCarouselDemo = ({ menuItems, defaultmenuitemimage }: any) => {
   return (
     <div className="carousel-container">

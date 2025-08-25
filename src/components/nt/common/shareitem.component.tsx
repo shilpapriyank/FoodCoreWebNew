@@ -4,21 +4,14 @@ import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types
 import React from "react";
 import { FacebookShareButton, FacebookIcon, WhatsappIcon } from "react-share";
 
-const ShareItemComponent = ({
-  url,
-  title,
-  description,
-  size,
-  linkClass,
-  isHrLine,
-}: {
+const ShareItemComponent: React.FC<{
   url: string;
   title?: string;
   description?: string;
   size?: number;
   linkClass: string;
   isHrLine: boolean;
-}) => {
+}> = ({ url, title, description, size, linkClass, isHrLine }) => {
   const handleClickCopyLink = (url: string) => {
     navigator?.clipboard?.writeText(url);
     handleNotify(
