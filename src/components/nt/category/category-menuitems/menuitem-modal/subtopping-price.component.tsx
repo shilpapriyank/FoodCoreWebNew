@@ -1,17 +1,11 @@
-import { Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
+import { Type } from "@/types/menuitem-types/menuitem.type";
 
-interface SubToppingPriceProps {
+const SubToppingPrice: React.FC<{
   type: Type;
   isDisplayPrice: boolean;
   isExtraPaidTopping: boolean;
-}
-
-const SubToppingPrice = ({
-  type,
-  isDisplayPrice,
-  isExtraPaidTopping,
-}: SubToppingPriceProps) => {
+}> = ({ type, isDisplayPrice, isExtraPaidTopping }) => {
   return (
     <>
       {type?.price !== undefined &&
@@ -28,19 +22,3 @@ const SubToppingPrice = ({
 };
 
 export default SubToppingPrice;
-
-// import React from 'react'
-
-// const SubToppingPrice = ({ type, isDisplayPrice, isExtraPaidTopping } :any) => {
-//     return (
-//         <>
-//             {(type?.price !== undefined && type?.price > 0 && isDisplayPrice && isExtraPaidTopping) &&
-//                 <span className="color-green ml-2">
-//                     {type.currency}{type.price.toFixed(2)}
-//                 </span>
-//             }
-//         </>
-//     )
-// }
-
-// export default SubToppingPrice

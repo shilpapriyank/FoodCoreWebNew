@@ -3,15 +3,11 @@ import useUtility from "../../../customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DependantMenuList } from "@/types/menuitem-types/menuitem.type";
 
-const DependentItemListComponent = ({
-  dependantMenuList,
-  handleOnCheck,
-  selectedDependentItems,
-}: {
+const DependentItemListComponent: React.FC<{
   dependantMenuList: DependantMenuList[];
   handleOnCheck: (item: DependantMenuList) => void;
   selectedDependentItems: DependantMenuList[];
-}) => {
+}> = ({ dependantMenuList, handleOnCheck, selectedDependentItems }) => {
   const { isDisplayPrice } = useUtility();
   const { restaurantinfo } = useReduxData();
   const currencysymbol = restaurantinfo?.defaultLocation?.currencysymbol;

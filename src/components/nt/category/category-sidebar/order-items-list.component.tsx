@@ -49,11 +49,9 @@ export const OrderItemsList = () => {
     cart,
   } = useReduxData();
   const { recievingDate, enabletimeslot } = useFutureOrder();
-
   const { isDisplayPrice } = useUtility();
   const deliveryaddressinfo = selecteddelivery.selecteddeliveryaddress;
   const pickupordelivery = selecteddelivery.pickupordelivery;
-
   const cartdata = cart?.cartitemdetail && cart?.cartitemdetail;
   const customerId = userinfo ? userinfo.customerId : 0;
   let sessionId = sessionid;
@@ -162,10 +160,6 @@ export const OrderItemsList = () => {
             redeemamount: "0",
             tipPercentage: String(carttotal?.tipPercentage),
             tipAmount: carttotal?.tipAmount,
-            // deliveryaddressId:
-            //   pickupordelivery === ORDERTYPE.Delivery &&
-            //   deliveryaddressinfo?.deliveryaddressId &&
-            //   Number(deliveryaddressinfo.deliveryaddressId),
             deliveryaddressId:
               pickupordelivery === ORDERTYPE.Delivery
                 ? deliveryaddressinfo?.deliveryaddressId
@@ -200,9 +194,6 @@ export const OrderItemsList = () => {
         restaurantinfo?.defaultlocationId as number
       ).then((response) => {
         if (response) {
-          // dispatch({ type: CartTypes.DELETE_CART_ITEM, payload: response });
-          //dispatch(deleteCartItem(response));
-
           let cartItem = cartdata?.cartDetails?.cartItemDetails?.filter(
             (item) => item.dependentmenuitemid === 0
           );
@@ -250,17 +241,12 @@ export const OrderItemsList = () => {
           }).then((response) => {
             if (response) {
               if (response?.cartDetails && response?.cartDetails?.cartTotal) {
-                // dispatch({
-                //   type: CartTypes.CART_DATA,
-                //   payload: response,
-                // });
                 dispatch(setCartItem(response));
               }
             }
           });
         }
       });
-      // setcartdeleteconfirm(false);
       setIsOpenModal(false);
     }
   };
@@ -332,7 +318,6 @@ export const OrderItemsList = () => {
       restaurantinfo?.restaurantId as number
     ).then((response) => {
       if (response) {
-        // dispatch(updatequantity(response));
         setTimeout(() => {
           setupdateQty(!updateQty);
         }, 100);
@@ -389,7 +374,6 @@ export const OrderItemsList = () => {
       restaurantinfo?.restaurantId as number
     ).then((response) => {
       if (response) {
-        //dispatch(updatequantity(response));
         setTimeout(() => {
           setupdateQty(!updateQty);
         }, 100);
@@ -424,9 +408,6 @@ export const OrderItemsList = () => {
             (x) => x.cartid === data.cartid
           );
           let subOptionDisplayCmp = (
-            // <CartSuboptionDisplay
-            //   subOption={Array.isArray(subOption) ? subOption : []}
-            // />
             <CartSuboptionDisplay subOption={subOption as CartOptionParams[]} />
           );
           let itemImage = getImagePath(
@@ -477,7 +458,6 @@ export const OrderItemsList = () => {
                     {" "}
                     <i className="fa fa-minus" />{" "}
                   </button>
-                  {/* <input type="text" name="qty" defaultValue={0} className="input-qty quantity__input" /> */}
                   <input
                     type="text"
                     name="qty"

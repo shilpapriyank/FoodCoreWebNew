@@ -2,21 +2,28 @@ import React from "react";
 import { convertOptionToStrList } from "../../common/utility";
 import { CARTPAGEMESSAGE } from "../helpers/static-message/cart-message";
 import { CartOptionParams } from "@/types/cart-types/cartservice.type";
+import { PIZZA_SIDE_ENUM } from "@/components/common/enums";
 
-const CartSuboptionDisplay = ({
+const CartSuboptionDisplay: React.FC<{ subOption: CartOptionParams[] }> = ({
   subOption,
-}: {
-  subOption: CartOptionParams[];
 }) => {
-  const leftPizzaSuboption = subOption.filter((sub) => sub.pizzaside === "L");
-  const rightPizzaSuboption = subOption.filter((sub) => sub.pizzaside === "R");
+  const leftPizzaSuboption = subOption.filter(
+    (sub) => sub.pizzaside === PIZZA_SIDE_ENUM.LEFT
+  );
+  const rightPizzaSuboption = subOption.filter(
+    (sub) => sub.pizzaside === PIZZA_SIDE_ENUM.RIGHT
+  );
   function CheckRegular(sub: CartOptionParams) {
     return (
-      sub?.pizzaside !== "L" && sub?.pizzaside !== "R" && sub?.pizzaside !== "F"
+      sub?.pizzaside !== PIZZA_SIDE_ENUM.LEFT &&
+      sub?.pizzaside !== PIZZA_SIDE_ENUM.RIGHT &&
+      sub?.pizzaside !== PIZZA_SIDE_ENUM.FULL
     );
   }
 
-  const fullSuboption = subOption.filter((sub) => sub?.pizzaside === "F");
+  const fullSuboption = subOption.filter(
+    (sub) => sub?.pizzaside === PIZZA_SIDE_ENUM.FULL
+  );
   const regularSuboption = subOption.filter(CheckRegular);
   const [leftString, rightString, fullString, regularStr] =
     convertOptionToStrList(

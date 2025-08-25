@@ -24,6 +24,7 @@ import {
   updateitemoption,
 } from "../../../../../../redux/menu-item/menu-item.slice";
 import { InputOrClickEvent } from "@/types/event-types/inputclickevent-type";
+import { PIZZA_SIDE_ENUM } from "@/components/common/enums";
 
 const MenuItemOptions: React.FC<{
   isExpand: boolean;
@@ -314,7 +315,7 @@ const MenuItemOptions: React.FC<{
         let selectionTypeTopizzaSide =
           selection === "select"
             ? selectedoption?.[0]?.isHalfPizza
-              ? "F"
+              ? PIZZA_SIDE_ENUM.FULL
               : ""
             : selection === "deselect"
             ? ""
@@ -393,8 +394,8 @@ const MenuItemOptions: React.FC<{
     var calculatedtopvalue = topvalue;
     if (
       (updatedSelectedOption.isHalfPizza === true &&
-        selectedSubOption?.pizzaside === "L") ||
-      selectedSubOption?.pizzaside === "R"
+        selectedSubOption?.pizzaside === PIZZA_SIDE_ENUM.LEFT) ||
+      selectedSubOption?.pizzaside === PIZZA_SIDE_ENUM.RIGHT
     ) {
       const percentage =
         selectedSubOption.halfPizzaPriceToppingPercentage === 0 ||
@@ -827,7 +828,7 @@ const MenuItemOptions: React.FC<{
           : Number(data.toppingValue);
       var calculatedtopvalue =
         selectedoption?.[0].isHalfPizza === true &&
-        (data.pizzaside === "L" || data.pizzaside === "R")
+        (data.pizzaside === PIZZA_SIDE_ENUM.LEFT || data.pizzaside === PIZZA_SIDE_ENUM.RIGHT)
           ? topvalue *
             (data.halfPizzaPriceToppingPercentage === 0
               ? 1
@@ -849,7 +850,7 @@ const MenuItemOptions: React.FC<{
           : Number(data.toppingValue);
       var calculatedtopvalue =
         selectedoption?.[0].isHalfPizza === true &&
-        (data.pizzaside === "L" || data.pizzaside === "R")
+        (data.pizzaside === PIZZA_SIDE_ENUM.LEFT || data.pizzaside === PIZZA_SIDE_ENUM.RIGHT)
           ? topvalue *
             (data.halfPizzaPriceToppingPercentage === 0
               ? 1

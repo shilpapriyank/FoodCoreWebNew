@@ -1,7 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ReactNode } from "react";
 
-const Popover = ({ children, content, position = "bottom" }: any) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Popover: React.FC<{
+  children: ReactNode;
+  content: any;
+  position: string;
+}> = ({ children, content, position = "bottom" }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const popoverRef = useRef<any>(null);
   const triggerRef = useRef<any>(null);
 

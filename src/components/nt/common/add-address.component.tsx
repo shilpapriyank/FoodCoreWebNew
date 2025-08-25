@@ -63,7 +63,7 @@ const AddAddress: React.FC<AddAddressProps> = ({
   const locationId = restaurantinfo?.defaultLocation?.locationId;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
 
-  const sendToParent = (index :any) => {
+  const sendToParent = (index: any) => {
     setAddressField((prev) => ({
       ...prev,
       address1: index.address1,
@@ -109,37 +109,57 @@ const AddAddress: React.FC<AddAddressProps> = ({
     } = addressField;
 
     if (address1 && city && state && postalcode) {
-      const obj = {
+      // const obj = {
+      //   customerId,
+      //   othercustomerId: 0,
+      //   deliveryaddressId: 0,
+      //   address1,
+      //   address2,
+      //   landmark: apartment,
+      //   city,
+      //   zipcode: postalcode,
+      //   contactno: "",
+      //   contactname: "",
+      //   latitude,
+      //   longitude,
+      //   state,
+      //   country,
+      //   addresstype: 0,
+      //   businessname: businessname || "",
+      // };
+
+      const obj: any = {
         customerId,
         othercustomerId: 0,
         deliveryaddressId: 0,
-        address1,
-        address2,
-        landmark: apartment,
-        city,
-        zipcode: postalcode,
+        address1: address1 !== undefined ? address1 : "",
+        address2: address2 !== undefined ? address2 : "",
+        landmark: apartment !== undefined ? apartment : "",
+        city: city !== undefined ? city : "",
+        zipcode: postalcode !== undefined ? postalcode : "",
         contactno: "",
         contactname: "",
         latitude,
         longitude,
-        state,
-        country,
+        state: state !== undefined ? state : "",
+        country: country !== undefined ? country : "",
         addresstype: 0,
-        businessname: businessname || "",
+        businessname:
+          businessname !== undefined && businessname ? businessname : "",
       };
 
       DeliveryAddressServices.verifyDeliveryAddresss(
         obj,
         restaurantId as number,
         locationId as number
-      ).then((result: any) => {
+      ).then((result) => {
         if (result) {
           if (userinfo) {
             DeliveryAddressServices.addDeliveryAddress(
               obj,
               restaurantId as number,
               locationId as number
-            ).then((response: any) => {
+            ).then((response) => {
               if (response) {
                 dispatch({
                   type: DeliveryAddressTypes.ADD_ADDRESS,
@@ -199,8 +219,9 @@ const AddAddress: React.FC<AddAddressProps> = ({
   return (
     <>
       <div
-        className={`modal fade modal-your-order address-modal ${isOpenModal ? "show d-block" : ""
-          }`}
+        className={`modal fade modal-your-order address-modal ${
+          isOpenModal ? "show d-block" : ""
+        }`}
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">

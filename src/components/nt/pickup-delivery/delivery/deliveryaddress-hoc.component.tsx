@@ -3,12 +3,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { DeliveryAddressServices } from "../../../../../redux/delivery-address/delivery-address.services";
 import { DeliveryAddressTypes } from "../../../../../redux/delivery-address/delivery-address.type";
-import { useDispatch } from "react-redux";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CommonModal from "../../common/common-model.component";
-import { AppDispatch } from "../../../../../redux/store";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { SelectedDeliveryTypes } from "../../../../../redux/selected-delivery-data/selecteddelivery.types";
+import { useAppDispatch } from "../../../../../redux/hooks";
 
 // Address item interface
 interface DeliveryAddressItem {
@@ -43,7 +42,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
       undefined
     );
     const [openDelete, setopenDelete] = useState<boolean>(false);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
       getDeliveryAddress();

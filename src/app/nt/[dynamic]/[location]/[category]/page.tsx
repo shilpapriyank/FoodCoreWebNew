@@ -43,7 +43,6 @@ export default function CategoryPage() {
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
-  debugger;
   const menuItemsWithCat = filterCategory(
     (searchtext !== "" ? searchdata?.menuItems : categoryItemsList) ?? [],
     pickupordelivery

@@ -266,3 +266,23 @@ export interface MenuItemsCommon {
   originalPrice: number;
   isMenuCategoryDiscountApplied: boolean;
 }
+
+export interface GetMenuItemFavorite {
+  menuitemid: number;
+  customerid: number;
+  sortorder: number;
+  creationdate: string;
+  menuItemName: string;
+  description: string;
+  price: number;
+  categoryName: string;
+  categoryId: number;
+  isdefaultprice: number;
+  typeid: number;
+  imgurl: any;
+  thumbimgurl: any;
+  mediumimgurl?: string;
+  fullimgurl: any;
+  menuitemslug: string;
+  categoryslug: string;
+}

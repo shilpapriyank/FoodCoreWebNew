@@ -1,26 +1,14 @@
 import { List, Type } from "@/types/menuitem-types/menuitem.type";
 import React from "react";
 
-interface SubToppingRequiredWarningProps {
+const SubToppingRequiredWarning: React.FC<{
   item: List;
   handleOnChangeRemoveSubOption: (
     item: Type,
     optionId: number,
     selection: string
   ) => void;
-}
-
-const SubToppingRequiredWarning = ({
-  item,
-  handleOnChangeRemoveSubOption,
-}: {
-  item: List;
-  handleOnChangeRemoveSubOption: (
-    item: Type,
-    optionId: number,
-    selection: string
-  ) => void;
-}) => {
+}> = ({ item, handleOnChangeRemoveSubOption }) => {
   return (
     <div className="d-flex justify-content-between">
       <div>

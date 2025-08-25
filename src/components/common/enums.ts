@@ -32,6 +32,8 @@ export enum BUTTON_TYPE_ENUM {
 export enum ACTION_TYPE_ENUM {
   SELECT = "select",
   DESELECT = "deselect",
+  DESELECTALL = "deselectall",
+  NONE = "",
 }
 
 export enum PIZZA_SIDE_ENUM {

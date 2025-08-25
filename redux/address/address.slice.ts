@@ -15,7 +15,7 @@ export interface Address {
 // Define the slice state
 export interface AddressState {
   address: Address;
-  getaddress?: Address; 
+  getaddress?: Address;
 }
 
 // Initial state

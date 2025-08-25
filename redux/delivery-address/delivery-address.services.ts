@@ -88,7 +88,7 @@ export class DeliveryAddressServices {
     obj: DeliveryAddressInput,
     restaurantId: number,
     locationId: number
-  ): Promise<DeliveryAddressInput  | null> {
+  ): Promise<DeliveryAddressInput | null> {
     responseclass = new ResponseModel();
     const methodName = "addDeliveryAddress";
     const location = ENDPOINTS.ADD_DELIVERY_ADDRESS;
