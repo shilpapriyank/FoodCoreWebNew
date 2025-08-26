@@ -33,7 +33,11 @@ import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import {
+  DeliveryAddressInput,
+  DeliveryAddressListNewType,
+  GetDeliveryAddressType,
+} from "../../../../redux/delivery-address/delivery-address.types";
 import { LocationServices } from "../../../../redux/location/location.services";
 
 const OrderTypeSelect = ({
@@ -87,106 +91,109 @@ const OrderTypeSelect = ({
   const handleChangeLocation = (id: number) => {
     setSelectedLocationId(id);
   };
+
   const handleClickConfirmChangeLocation = async (
-    lid: number
-  ): Promise<void> => {
+    lid: number,
+    locationUrl: string
+  ) => {
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
-    try {
-      const res = await LocationServices.changeRestaurantLocation(
-        restaurantinfo?.restaurantId as number,
-        lid
-      );
-      if (!restaurantinfo || !res) return;
-      const updatedRestaurantInfo: GetAllRestaurantInfo = {
-        ...restaurantinfo,
-        defaultLocation: {
-          ...restaurantinfo.defaultLocation,
-          ...res,
-        },
-        defaultlocationId: res.locationId,
-      };
-      dispatch(restaurantsdetail(null));
-      router.push(
-        `${locationFullLink}/${updatedRestaurantInfo.defaultLocation?.locationURL}`
-      );
-      dispatch(restaurantsdetail(updatedRestaurantInfo));
-      const oldLocationId = getLocationIdFromStorage();
-      if (oldLocationId !== updatedRestaurantInfo.defaultLocation.locationId) {
-        dispatch(clearRedux());
-        dispatch(createSessionId(uuidv4()));
-      }
-      if (userinfo?.customerId) {
-        const rewardRes =
-          await CustomerServices.checkCustomerRewardPointsLocationBase(
-            updatedRestaurantInfo.restaurantId,
+    LocationServices.changeRestaurantLocation(
+      restaurantinfo?.restaurantId as number,
+      lid
+    ).then((res) => {
+      if (res && restaurantinfo) {
+        Object.keys(restaurantinfo).map((session) => {
+          if (session === "defaultLocation") {
+            Object.assign(restaurantinfo.defaultLocation, res);
+          }
+          if (session === "defaultlocationId") {
+            restaurantinfo.defaultlocationId = res.locationId;
+          }
+        });
+        dispatch(restaurantsdetail(null));
+        router.push(
+          `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
+        );
+        dispatch(restaurantsdetail(restaurantinfo));
+        //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
+        let oldLocationId = getLocationIdFromStorage();
+        if (oldLocationId !== restaurantinfo.defaultlocationId) {
+          dispatch(clearRedux(true as any));
+          let id = uuidv4();
+          dispatch(createSessionId(id));
+        }
+        if (userinfo && userinfo?.customerId) {
+          CustomerServices.checkCustomerRewardPointsLocationBase(
+            restaurantinfo.restaurantId,
             userinfo.customerId,
             0,
             "0",
-            updatedRestaurantInfo.defaultLocation.locationId
-          );
-
-        if (rewardRes?.status === 1) {
-          const rewardPoints = rewardRes.result.totalrewardpoints;
-          dispatch(
-            setrewardpoint({
-              rewardvalue,
-              rewardamount: parseFloat((rewardPoints / rewardvalue).toFixed(2)),
-              rewardPoint: rewardPoints,
-              totalRewardPoints: rewardPoints,
-              redeemPoint: 0,
-            })
-          );
+            restaurantinfo?.defaultLocation.locationId
+          ).then((res) => {
+            if (res?.status == 1) {
+              let rewards = {
+                rewardvalue: rewardvalue,
+                rewardamount: parseFloat(
+                  (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
+                ),
+                rewardPoint: res?.result?.totalrewardpoints,
+                totalRewardPoints: res?.result?.totalrewardpoints,
+                redeemPoint: 0,
+              };
+              dispatch(setrewardpoint(rewards));
+            }
+          });
         }
+        setLocationIdInStorage(restaurantinfo.defaultlocationId);
+        // setdefaultLoactionId(lid)
+        dispatch(
+          refreshCategoryList({
+            newselectedRestaurant: restaurantinfo,
+            customerId: customerId,
+          })
+        );
+        dispatch(
+          getSelectedRestaurantTime({
+            restaurantId: restaurantinfo?.restaurantId,
+            locationId: lid,
+          })
+        );
+        // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
+        if (userinfo && userinfo?.customerId) {
+          deleteCartItemFromSessionId({
+            cartsessionId: sessionid as string,
+            restaurantId: restaurantinfo?.restaurantId as number,
+            locationId: defaultLocation?.locationId as number,
+          });
+
+          dispatch(emptycart());
+          // dispatch(setintialrewardpoints(userinfo));
+        }
+        handleToggleOrderTypeModal(false);
+        dispatch(
+          setpickupordelivery(
+            restaurantinfo?.defaultLocation?.defaultordertype
+              ? ORDER_TYPE.DELIVERY.text
+              : ORDER_TYPE.PICKUP.text
+          )
+        );
+        handleToggleOrderTypeModal(false);
+        handleToggleTimingModal?.(true);
+
+        dispatch(clearDeliveryRequestId());
       }
-      setLocationIdInStorage(updatedRestaurantInfo.defaultlocationId);
-      //setLocationIdInStorage(updatedRestaurantInfo.defaultLocation.locationId); //
-      dispatch(
-        refreshCategoryList({
-          newselectedRestaurant: updatedRestaurantInfo,
-          customerId,
-        })
-      );
-
-      dispatch(
-        getSelectedRestaurantTime({
-          restaurantId: updatedRestaurantInfo.restaurantId,
-          locationId: lid,
-        })
-      );
-
-      if (userinfo?.customerId) {
-        deleteCartItemFromSessionId({
-          cartsessionId: sessionid as string,
-          restaurantId: updatedRestaurantInfo?.restaurantId,
-          locationId: updatedRestaurantInfo.defaultLocation.locationId,
-        });
-        dispatch(emptycart());
-      }
-      handleToggleOrderTypeModal(false);
-      dispatch(
-        setpickupordelivery(
-          updatedRestaurantInfo.defaultLocation?.defaultordertype
-            ? ORDER_TYPE.DELIVERY.text
-            : ORDER_TYPE.PICKUP.text
-        )
-      );
-
-      handleToggleOrderTypeModal(false);
-      handleToggleTimingModal?.(true);
-      dispatch(clearDeliveryRequestId());
-    } catch (error) {
-      console.error("Error in changing restaurant location:", error);
-    }
+    });
   };
 
   const handleClickConfirm = () => {
+    //order type pickup then chnage location if location is not default location
     if (
       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
       selectedLocationId > 0 &&
       selectedLocationId !== restaurantinfo?.defaultlocationId
     ) {
-      handleClickConfirmChangeLocation(selectedLocationId);
+      handleClickConfirmChangeLocation(selectedLocationId, "");
     } else {
       handleToggleOrderTypeModal(false);
     }
@@ -341,11 +348,17 @@ const OrderTypeSelect = ({
                       <h2 className="fs-16">Enter your address</h2>
                     </div>
                     <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
-                      {myDeliveryAddress && (
+                      {/* {myDeliveryAddress && (
                         <AddressPill
                           isChecked={true}
                           id={String(myDeliveryAddress.id)}
-                          address={myDeliveryAddress as DeliveryAddressInput} // id add this interface
+                          address={myDeliveryAddress as GetDeliveryAddressType} // id add this interface
+                        />
+                      )} */}
+                      {myDeliveryAddress && (
+                        <AddressPill
+                          isChecked={true}
+                          address={myDeliveryAddress as any}
                         />
                       )}
                       {userinfo && <DeliveryaddresspillComponent />}

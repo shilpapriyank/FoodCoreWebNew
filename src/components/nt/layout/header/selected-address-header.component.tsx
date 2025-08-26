@@ -29,16 +29,20 @@ const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
           <>
             {" "}
             {myDeliveryAddress &&
-              `${myDeliveryAddress?.address1 && myDeliveryAddress?.address1
-              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
+              `${
+                myDeliveryAddress?.address1 && myDeliveryAddress?.address1
+              },  ${myDeliveryAddress?.city && myDeliveryAddress?.city}, ${
+                myDeliveryAddress?.zipcode && myDeliveryAddress?.zipcode
               }`}
           </>
         ) : (
           <>
             {" "}
-            {`${restaurantinfo && restaurantinfo?.defaultLocation?.address1
-              },  ${restaurantinfo && restaurantinfo?.defaultLocation?.cityname
-              }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
+            {`${
+              restaurantinfo && restaurantinfo?.defaultLocation?.address1
+            },  ${
+              restaurantinfo && restaurantinfo?.defaultLocation?.cityname
+            }, ${restaurantinfo && restaurantinfo?.defaultLocation?.zipcode}`}
           </>
         )}
       </>

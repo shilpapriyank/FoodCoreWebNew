@@ -252,6 +252,12 @@ const Login: React.FC<LoginProps> = ({
     handleOpenLoginModal(false);
     handleToggle?.(true, "openForgotPassModal");
   };
+
+  const handleOnChange = (value: string, data: { dialCode: string }) => {
+    setDialCode("+" + data.dialCode);
+    // your error reset logic here...
+  };
+
   return (
     <>
       <div
@@ -323,7 +329,7 @@ const Login: React.FC<LoginProps> = ({
                           }}
                           containerClass="intl-tel-input"
                           inputClass="codeinput form-control"
-                          buttonClass=""
+                          buttonClass="dialCode"
                           dropdownClass="country-list"
                           enableSearch
                           disableSearchIcon

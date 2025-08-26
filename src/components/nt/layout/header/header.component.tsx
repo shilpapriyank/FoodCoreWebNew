@@ -327,6 +327,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           </div>
         </div>
       </section>
+
       {isOpenOrderTypeModal && (
         <OrderTypeSelect
           handleChangeAddress={handleChangeAddress}
@@ -362,7 +363,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         <h6>You can use these points at checkout to save</h6>
       </CommonModal>
 
-      {isOpenOrderTypeModal && (
+      {/* {isOpenOrderTypeModal && (
         <OrderTypeSelect
           handleChangeAddress={handleChangeAddress}
           handleToggleAddAddressModal={handleToggleAddAddressModal}
@@ -370,7 +371,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           isOpenModal={isOpenOrderTypeModal}
           handleToggleTimingModal={handleToggleTimingModal}
         />
-      )}
+      )} */}
       {openAdressModal && (
         <AddAddress
           isRegister={modalState.openRegisterModal}
