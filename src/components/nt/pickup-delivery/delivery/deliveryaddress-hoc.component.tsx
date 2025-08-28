@@ -6,24 +6,38 @@ import { DeliveryAddressTypes } from "../../../../../redux/delivery-address/deli
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CommonModal from "../../common/common-model.component";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
-import { SelectedDeliveryTypes } from "../../../../../redux/selected-delivery-data/selecteddelivery.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
+import {
+  deleteAddress,
+  insertAddressId,
+  setDeliveryAddressData,
+  updateAddressCheck,
+  updateAddressId,
+} from "../../../../../redux/delivery-address/delivery-address.slice";
+import {
+  selecteddeliveryaddress,
+  setpickupordelivery,
+} from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
+import {
+  DeliveryAddressInput,
+  VerifyAddressInput,
+} from "../../../../../redux/delivery-address/delivery-address.types";
 
 // Address item interface
-interface DeliveryAddressItem {
-  deliveryaddressId: number;
-  address1: string;
-  cityName?: string;
-  city?: string;
-  zipcode: string;
-}
+// interface DeliveryAddressItem {
+//   deliveryaddressId: number;
+//   address1: string;
+//   cityName?: string;
+//   city?: string;
+//   zipcode: string;
+// }
 
 interface DeliveryAddressHocProps {
-  handleChangeAddress: (address: DeliveryAddressItem) => void;
+  handleChangeAddress: (address: DeliveryAddressInput) => void;
   handleDeleteAddress?: (e: React.MouseEvent, id: number) => void;
   id: number;
   isChecked: boolean;
-  address: DeliveryAddressItem;
+  address: DeliveryAddressInput;
 }
 
 function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
@@ -34,7 +48,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
   ) => {
     const { userinfo, restaurantinfo, selecteddelivery, deliveryaddress } =
       useReduxData();
-    const [addresslist, setaddressList] = useState<DeliveryAddressItem[]>([]);
+    const [addresslist, setaddressList] = useState<DeliveryAddressInput[]>([]);
     const customerId: number = userinfo?.customerId ?? 0;
     const selecteddeliveryaddres = selecteddelivery.selecteddeliveryaddress;
     const [loadComplete, setloadComplete] = useState<boolean>(false);
@@ -64,29 +78,18 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
         ).then((response: any) => {
           if (response) {
             if (response.AddressLists) {
-              dispatch({
-                type: DeliveryAddressTypes.GET_ADDRESS,
-                payload: response.AddressLists,
-              });
+              dispatch(setDeliveryAddressData(response.AddressLists));
               if (
                 selecteddeliveryaddres === null ||
                 id === selecteddeliveryaddres?.deliveryaddressId ||
                 id === 0
               ) {
-                // dispatch(selecteddeliveryaddress(response.AddressLists[0]));
-                dispatch({
-                  type: SelectedDeliveryTypes.SET_PICKUP_OR_DELIVERY,
-                  payload: response.AddressLists[0],
-                });
+                dispatch(selecteddeliveryaddress(response.AddressLists[0]));
               }
-
               setaddressList(response.AddressLists);
             }
             if (response.AddressLists === null) {
-              dispatch({
-                type: DeliveryAddressTypes.GET_ADDRESS,
-                payload: response.AddressLists,
-              });
+              dispatch(setDeliveryAddressData(response.AddressLists));
               setaddressList([]);
             }
           }
@@ -115,44 +118,39 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
           restaurantinfo?.restaurantId
         ).then((response) => {
           if (response) {
-            dispatch({
-              type: DeliveryAddressTypes.DELETE_ADDRESS,
-              payload: response,
-            });
-            // closeModal('btn-close')
+            dispatch(deleteAddress(response as any));
             getDeliveryAddress(deleteAddressId);
-            if (selecteddeliveryaddres?.deliveryaddressId === deleteAddressId) {
-              // dispatch(setSelectedDeliveryAddress(null));
+            if (
+              selecteddelivery?.selecteddeliveryaddress?.deliveryaddressId ===
+              deleteAddressId
+            ) {
+              dispatch(selecteddeliveryaddress(null));
             }
             handleToggleDelete(false);
           }
         });
       }
     }, [deleteAddressId]);
+
     //SELECT THE DELIVERY ADDRESS
     const handleClickSelectDeliveryAddress = useCallback(
-      (address: DeliveryAddressItem) => {
-        // if (
-        //   address.deliveryaddressId !==
-        //   deliveryaddress?.addressId?.customerAddressId
-        // ) {
-        //   DeliveryAddressServices.verifyDeliveryAddresss({
-        //     obj: userinfo?.address,
-        //     restaurantinfo?.restaurantId,
-        //     restaurantinfo?.defaultlocationId
-        //   }).then((result) => {
-        //     if (result === null || result === undefined) {
-        //       return;
-        //     } else {
-        //       let addressId = { customerAddressId: address?.deliveryaddressId };
-        //       dispatch({
-        //         type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
-        //         payload: addressId,
-        //       });
-        //       //  dispatch(selecteddeliveryaddress(address))
-        //     }
-        //   });
-        // }
+      (address: any) => {
+        if (address?.deliveryaddressId !== deliveryaddress?.addressId) {
+          DeliveryAddressServices.verifyDeliveryAddresss(
+            address,
+            restaurantinfo?.restaurantId as number,
+            restaurantinfo?.defaultlocationId as number
+          ).then((result) => {
+            if (result === null || result === undefined) {
+              return;
+            } else {
+              let addressId = { customerAddressId: address?.deliveryaddressId };
+              dispatch(updateAddressId(addressId));
+              dispatch(updateAddressCheck(true));
+              dispatch(selecteddeliveryaddress(address));
+            }
+          });
+        }
       },
       [(deliveryaddress?.addressId as any)?.customerAddressId]
     );

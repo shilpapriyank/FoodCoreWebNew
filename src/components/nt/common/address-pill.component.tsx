@@ -1,28 +1,19 @@
 import React from "react";
-interface AddressItems {
-  city?: string;
-  address1?: string;
-  cityName?: string;
-  zipcode?: string;
-  [key: string]: string | number | boolean | undefined | null;
-  id: string | number;
-}
+import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 
-interface AddressPillProps {
+const AddressPill: React.FC<{
   isChecked: boolean;
   id: string | number;
-  address: AddressItems;
-  handleChangeAddress?: (address: AddressItems) => void;
+  address: DeliveryAddressInput;
+  handleChangeAddress?: (address: DeliveryAddressInput) => void;
   handleChangeLocation?: () => void;
-}
-
-const AddressPill = ({
+}> = ({
   isChecked,
   handleChangeLocation,
   handleChangeAddress,
   address,
   id,
-}: AddressPillProps) => {
+}) => {
   return (
     <label
       className="radio-box pointer-cursor"

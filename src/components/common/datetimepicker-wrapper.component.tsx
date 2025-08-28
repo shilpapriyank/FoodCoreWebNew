@@ -3,10 +3,10 @@
 import { useEffect } from "react";
 import $ from "jquery";
 import "moment";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css"; // required for datetimepicker styling
 import "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
-import "bootstrap";
-import "eonasdan-bootstrap-datetimepicker";
+import "bootstrap"; // required before datetimepicker
+import "eonasdan-bootstrap-datetimepicker"; // now resolved
 import { MERIDIEM_TIME_ENUM } from "./enums";
 
 interface Props {

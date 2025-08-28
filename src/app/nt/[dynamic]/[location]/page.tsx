@@ -65,7 +65,6 @@ export default function LocationPage() {
   useEffect(() => {
     if (b2b || isSchoolProgramEnabled) {
       dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
-
       if (order?.checktime === "") {
         OrderServices.getOrderTime({
           restaurantId: restaurantinfo?.restaurantId,

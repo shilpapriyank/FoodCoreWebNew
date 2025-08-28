@@ -3,7 +3,7 @@ import { SelectedDeliveryAddressType } from "@/types/selectdelivery-types/select
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SelectedDeliveryState {
-  choosetime:ChooseTime ;
+  choosetime: ChooseTime;
   pickupordelivery: string;
   selecteddeliveryaddress: SelectedDeliveryAddressType | null;
 }
@@ -33,7 +33,7 @@ const selecteddeliverySlice = createSlice({
     },
     selecteddeliveryaddress(
       state,
-      action: PayloadAction<SelectedDeliveryAddressType>
+      action: PayloadAction<SelectedDeliveryAddressType | null>
     ) {
       state.selecteddeliveryaddress = action.payload;
     },

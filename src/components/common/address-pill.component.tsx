@@ -1,22 +1,14 @@
 "use client";
 
 import React from "react";
-
-interface AddressItem {
-  city?: string;
-  address1?: string;
-  cityName?: string;
-  zipcode?: string;
-  [key: string]: string | number | boolean | undefined | null;
-  id: string | number;
-}
+import { DeliveryAddressInput } from "../../../redux/delivery-address/delivery-address.types";
 
 interface AddressPillProps {
   isChecked: boolean;
   handleChangeLocation?: (id: number) => void;
-  handleChangeAddress?: (address: AddressItem) => void;
-  address: AddressItem;
-  id: string;
+  handleChangeAddress?: (address: DeliveryAddressInput) => void;
+  address: DeliveryAddressInput;
+  id?: string;
 }
 
 const AddressPill: React.FC<AddressPillProps> = ({
