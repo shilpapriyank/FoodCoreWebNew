@@ -464,6 +464,9 @@ const cartSlice = createSlice({
     emptyOrderInfo: (state) => {
       state.orderinfo = null;
     },
+    setCartTotal: (state, action: PayloadAction<any>) => {
+      state.carttotal = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -525,6 +528,7 @@ export const {
   resetCart,
   setOrderInfo,
   emptyOrderInfo,
+  setCartTotal,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

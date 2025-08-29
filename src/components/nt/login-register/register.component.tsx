@@ -28,8 +28,9 @@ import { OTPVerificationSettingParams } from "@/types/register-types/register.ty
 import { setUserDetail } from "../../../../redux/login/login.slice";
 import { useAppDispatch } from "../../../../redux/hooks";
 
-interface RegisterProps {
-    isOpenModal: boolean;
+
+const Register: React.FC<{
+     isOpenModal: boolean;
     handleToggle: (open: boolean, keyName?: string) => void;
     handleOpenLoginModal: (open: boolean) => void;
     handleToggleAccountConfirm: (open: boolean) => void;
@@ -37,9 +38,7 @@ interface RegisterProps {
     handleToggleAddAddressModal: (open: boolean) => void;
     isNotValidateOtp: boolean
     isRegiStaration: any
-}
-
-const Register: React.FC<RegisterProps> = ({
+}> = ({
     isOpenModal,
     handleToggleAccountConfirm,
     handleOpenLoginModal,

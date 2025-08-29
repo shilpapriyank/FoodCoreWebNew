@@ -12,7 +12,7 @@ export interface DeliveryAddressState {
   updatedAddress: boolean;
   choosetime: ChooseTime;
   registeraddress: any;
-  addressId: number;
+  addressId: any | null;
   tempDeliveryAddress: DeliveryAddressInput | null;
 }
 const initialState: DeliveryAddressState = {
@@ -20,7 +20,7 @@ const initialState: DeliveryAddressState = {
   updatedAddress: false,
   choosetime: {},
   registeraddress: {},
-  addressId: 0,
+  addressId: null,
   tempDeliveryAddress: null,
 };
 //Async thunks

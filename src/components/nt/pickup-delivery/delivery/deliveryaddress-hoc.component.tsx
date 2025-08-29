@@ -62,7 +62,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
       getDeliveryAddress();
     }, [
       userinfo?.customerId,
-      (deliveryaddress as any)?.addressId?.customerAddressId,
+      deliveryaddress?.addressId?.customerAddressId,
       selecteddeliveryaddres?.deliveryaddressId,
     ]);
 
@@ -135,12 +135,17 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
     //SELECT THE DELIVERY ADDRESS
     const handleClickSelectDeliveryAddress = useCallback(
       (address: any) => {
-        if (address?.deliveryaddressId !== deliveryaddress?.addressId) {
+        //debugger;
+        if (
+          address?.deliveryaddressId !==
+          deliveryaddress?.addressId?.customerAddressId
+        ) {
           DeliveryAddressServices.verifyDeliveryAddresss(
             address,
             restaurantinfo?.restaurantId as number,
             restaurantinfo?.defaultlocationId as number
           ).then((result) => {
+            //debugger;
             if (result === null || result === undefined) {
               return;
             } else {
@@ -152,7 +157,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
           });
         }
       },
-      [(deliveryaddress?.addressId as any)?.customerAddressId]
+      [deliveryaddress?.addressId?.customerAddressId]
     );
 
     const deleteAddressString = useMemo(() => {

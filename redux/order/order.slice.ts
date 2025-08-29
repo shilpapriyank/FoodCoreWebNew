@@ -3,8 +3,19 @@ import { OrderServices } from "./order.services";
 import {
   CheckOrderTimeArgsTypes,
   GetOrderTimeArgsTypes,
-  OrderState,
+  OrderAddress,
 } from "../../src/types/order-types/order.type";
+
+export interface OrderState {
+  checktime: any;
+  isasap: boolean;
+  orderId: number;
+  isRedirectToCheckout: boolean;
+  calculatedTotal: number;
+  cardShowMessage: string;
+  deliveryRequestId: string;
+  futureOrderDay: any;
+}
 
 const INITIAL_STATE: OrderState = {
   checktime: "",
@@ -19,8 +30,32 @@ const INITIAL_STATE: OrderState = {
 
 export const checkOrderTime = createAsyncThunk(
   "order/checkOrderTime",
-  async (args: CheckOrderTimeArgsTypes) => {
-    return await OrderServices.checkOrderTime(args);
+  async ({
+    restaurantId,
+    locationId,
+    recievingTime,
+    recieving,
+    flg,
+    obj,
+    requestId,
+  }: {
+    restaurantId: number;
+    locationId: number;
+    recievingTime: string;
+    recieving: string;
+    flg: number;
+    obj: OrderAddress;
+    requestId: string;
+  }) => {
+    return await OrderServices.checkOrderTime({
+      restaurantId,
+      locationId,
+      recievingTime,
+      recieving,
+      flg,
+      obj,
+      requestId,
+    });
   }
 );
 

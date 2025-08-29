@@ -800,7 +800,7 @@ export const bindPlaceOrderObject = (
   rewardpoints: any,
   cart: any,
   ordertype: number,
-  sessionid: number,
+  sessionid: string,
   userinfo: any,
   deliveryaddressId: number,
   order: any,
@@ -808,12 +808,12 @@ export const bindPlaceOrderObject = (
   paymentType: string,
   restaurantinfo: GetAllRestaurantInfo,
   promotionData: PromotionData,
-  studentname: string,
   distance: any,
   pickupordelivery: string,
   isFutureOrder: boolean,
   timeSlot: string,
-  futureDate: string
+  futureDate: string,
+  studentname?: string
 ) => {
   let placeOrder = {
     // redeemPoints: cart.rewardpoints?.redeemPoint > 0 ? cart.rewardpoints?.redeemPoint : 0,

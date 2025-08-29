@@ -96,6 +96,7 @@ const OrderTypeSelect = ({
     lid: number,
     locationUrl: string
   ) => {
+    //debugger;
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
     LocationServices.changeRestaurantLocation(
