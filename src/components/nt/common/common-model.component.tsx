@@ -40,7 +40,7 @@ const CommonModal: React.FC<{
         data-bs-keyboard="false"
         tabIndex={-1}
         aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
+        aria-hidden="false"
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">

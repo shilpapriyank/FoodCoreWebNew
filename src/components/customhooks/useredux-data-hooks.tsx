@@ -118,17 +118,17 @@ export const useReduxData = () => {
       ? ORDER_TIME_TYPE.ASAP.value
       : ORDER_TIME_TYPE.LATERON.value;
 
-  // const cartItemsAmountTotal =
-  //   cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-  //     (sum, item) => sum + (item?.totalprice || 0),
-  //     0
-  //   ) ?? 0;
+  const cartItemsAmountTotal =
+    cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
+      (sum, item) => sum + (item?.totalprice || 0),
+      0
+    ) ?? 0;
 
-  // const cartItemsQuantity =
-  //   cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-  //     (sum, item) => sum + (item?.qty || 0),
-  //     0
-  //   ) ?? 0;
+  const cartItemsQuantity =
+    cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
+      (sum, item) => sum + (item?.qty || 0),
+      0
+    ) ?? 0;
 
   return {
     restaurantinfo,
@@ -162,7 +162,7 @@ export const useReduxData = () => {
     selectedcategorydetail,
     restaurantinfodetail,
     // studentdata,
-    // cartItemsAmountTotal,
-    // cartItemsQuantity,
+    cartItemsAmountTotal,
+    cartItemsQuantity,
   };
 };
