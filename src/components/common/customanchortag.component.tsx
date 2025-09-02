@@ -3,10 +3,10 @@ import React from "react";
 interface CustomAnchorTagProps {
   buttonText: string;
   buttonclass?: string;
-  isDisable: boolean;
-  buttonMethod: (param: any, e: React.MouseEvent<HTMLAnchorElement>) => void;
+  isDisable?: boolean;
   buttonParam?: any;
   children?: React.ReactNode;
+  buttonMethod?: (param: any, e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 const CustomAnchorTag: React.FC<CustomAnchorTagProps> = ({
@@ -26,7 +26,7 @@ const CustomAnchorTag: React.FC<CustomAnchorTagProps> = ({
         </a>
       ) : (
         <a
-          onClick={(e) => buttonMethod(buttonParam, e)}
+          onClick={(e) => buttonMethod?.(buttonParam, e)}
           className={buttonclass}
         >
           {buttonText} {children && children}

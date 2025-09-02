@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import {
   GetCurrency,
   GetThemeDetails,
@@ -8,6 +7,7 @@ import {
 } from "../../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { CARTPAGEMESSAGE } from "../../helpers/static-message/cart-message";
+import { useParams, useRouter } from "next/navigation";
 
 const OrderTotalDetails = () => {
   const { restaurantinfo, cart, userinfo, selecteddelivery, deliveryaddress } =
@@ -30,7 +30,7 @@ const OrderTotalDetails = () => {
     pickupordelivery === ORDERTYPE.Delivery &&
     cart.carttotal != undefined &&
     cart.carttotal?.deliveryCharges &&
-    JSON.parse(cart.carttotal?.deliveryCharges);
+    cart.carttotal?.deliveryCharges;
   var dtotal =
     dcharges != undefined &&
     pickupordelivery === ORDERTYPE.Delivery &&
@@ -45,9 +45,8 @@ const OrderTotalDetails = () => {
       : 0;
 
   const router = useRouter();
-  const {
-    query: { dynamic, location },
-  } = router;
+  const params = useParams();
+  const { dynamic, location } = params;
 
   return (
     <>

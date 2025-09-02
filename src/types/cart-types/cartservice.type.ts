@@ -161,7 +161,7 @@ export interface CartTotal {
 export interface CartDetails {
   cartItemDetails?: CartItemDetails[];
   cartOptionParams?: CartOptionParams[];
-  cartTotal?: CartTotal[];
+  cartTotal?: CartTotal;
 }
 
 ///// getCartItemsCount service response after menuitem added to cart

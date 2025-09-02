@@ -28,17 +28,6 @@ export type CardPayment = {
   cartsessionid: string;
 };
 
-export interface OrderState {
-  checktime: any;
-  isasap: boolean;
-  orderId: number;
-  isRedirectToCheckout: boolean;
-  calculatedTotal: number;
-  cardShowMessage: string;
-  deliveryRequestId: string;
-  futureOrderDay: any;
-}
-
 export type CheckOrderTimeArgsTypes = {
   restaurantId: number;
   locationId: number;
