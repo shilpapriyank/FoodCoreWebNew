@@ -32,12 +32,6 @@ import DeliveryaddresspillComponent from "../pickup-delivery/deliveryaddresspill
 import { clearDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-import {
-  DeliveryAddressInput,
-  DeliveryAddressListNewType,
-  GetDeliveryAddressType,
-} from "../../../../redux/delivery-address/delivery-address.types";
 import { LocationServices } from "../../../../redux/location/location.services";
 
 const OrderTypeSelect = ({
@@ -96,7 +90,6 @@ const OrderTypeSelect = ({
     lid: number,
     locationUrl: string
   ) => {
-    //debugger;
     handleChangeAddress?.();
     dispatch(ChangeUrl(true));
     LocationServices.changeRestaurantLocation(
@@ -368,7 +361,7 @@ const OrderTypeSelect = ({
                           className="address-nfound"
                           onClick={handleClickAddNewAddress}
                         >
-                          Add New Address
+                          Add New Address hello
                         </a>
                       </div>
                     </div>

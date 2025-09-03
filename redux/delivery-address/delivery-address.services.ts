@@ -9,7 +9,6 @@ import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import {
   DeliveryAddressInput,
   DeliveryAddressListNewType,
-  GetDeliveryAddressType,
   VerifyAddressInput,
 } from "./delivery-address.types";
 
@@ -36,7 +35,6 @@ export class DeliveryAddressServices {
       true,
       restaurantId
     );
-    console.log("getDeliveryAddress", responseclass);
     if (
       responseclass.result != null &&
       responseclass.status === API_RESPONSE_STATUS.SUCCESS
@@ -149,7 +147,6 @@ export class DeliveryAddressServices {
     restaurantId: number,
     locationId: number
   ): Promise<ResponseModel | null> {
-    //debugger
     responseclass = new ResponseModel();
     const methodName = "validateDeliveryAddress";
     const location = ENDPOINTS.VERIFY_DELIVERY_ADDRESS_MAX_LIMIT;
@@ -227,7 +224,6 @@ export class DeliveryAddressServices {
 //       true,
 //       restaurantId
 //     );
-//     console.log("getDeliveryAddress", responseclass);
 //     if (
 //       responseclass.result != null &&
 //       responseclass.status === API_RESPONSE_STATUS.SUCCESS

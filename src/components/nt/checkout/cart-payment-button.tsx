@@ -446,11 +446,6 @@ const CartPaymentButton: React.FC<{
     order.checktime === ""
   ) {
     isButtonDisabled2 = true;
-    // console.log(isButtonDisabled2)
-    // console.log(deliveryErrorMessage)
-    // console.log(timeErrorMessage)
-    // console.log(orderDisableData?.errormessage)
-    // console.log(errormessage)
   }
 
   const ErrorMessage = ({ message }: { message: any }) =>

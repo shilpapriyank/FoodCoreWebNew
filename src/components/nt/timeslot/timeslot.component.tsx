@@ -99,10 +99,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   const restaurantslocationlistwithtime =
     restaurant.restaurantslocationlistwithtime;
   const addressList = restaurantslocationlistwithtime?.addressList ?? [];
-  // console.log(
-  //     "address list from pickup and delivery time select popup component.tsx",
-  //     addressList
-  //   );
   const selectedAddress =
     userinfo === null
       ? deliveryaddress?.tempDeliveryAddress

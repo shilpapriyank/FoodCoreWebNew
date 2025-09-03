@@ -1,36 +1,25 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { DeliveryAddressServices } from "../../../../../redux/delivery-address/delivery-address.services";
-import { DeliveryAddressTypes } from "../../../../../redux/delivery-address/delivery-address.type";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import CommonModal from "../../common/common-model.component";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import {
   deleteAddress,
-  insertAddressId,
   setDeliveryAddressData,
   updateAddressCheck,
   updateAddressId,
 } from "../../../../../redux/delivery-address/delivery-address.slice";
-import {
-  selecteddeliveryaddress,
-  setpickupordelivery,
-} from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
-import {
-  DeliveryAddressInput,
-  VerifyAddressInput,
-} from "../../../../../redux/delivery-address/delivery-address.types";
-
-// Address item interface
-// interface DeliveryAddressItem {
-//   deliveryaddressId: number;
-//   address1: string;
-//   cityName?: string;
-//   city?: string;
-//   zipcode: string;
-// }
+import { selecteddeliveryaddress } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
+import { DeliveryAddressInput } from "../../../../../redux/delivery-address/delivery-address.types";
 
 interface DeliveryAddressHocProps {
   handleChangeAddress: (address: DeliveryAddressInput) => void;
@@ -57,6 +46,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
     );
     const [openDelete, setopenDelete] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+    const skipSelectUpdateRef = useRef(false);
 
     useEffect(() => {
       getDeliveryAddress();
@@ -66,26 +56,29 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
       selecteddeliveryaddres?.deliveryaddressId,
     ]);
 
-    // if (!userinfo) {
-    //     throw new Error("User is not logged in");
-    // }
-    const getDeliveryAddress = (id: number = 0) => {
-      if (restaurantinfo && customerId > 0) {
+    if (!userinfo) {
+      throw new Error("User is not logged in");
+    }
+    const getDeliveryAddress = (id?: number) => {
+      if (customerId > 0) {
         DeliveryAddressServices.getDeliveryAddress(
           (userinfo as LoggedInUser).customerId,
-          restaurantinfo?.restaurantId,
-          restaurantinfo?.defaultLocation.locationId
+          restaurantinfo?.restaurantId as number,
+          restaurantinfo?.defaultLocation.locationId as number
         ).then((response: any) => {
           if (response) {
-            if (response.AddressLists) {
-              dispatch(setDeliveryAddressData(response.AddressLists));
-              if (
-                selecteddeliveryaddres === null ||
-                id === selecteddeliveryaddres?.deliveryaddressId ||
-                id === 0
-              ) {
-                dispatch(selecteddeliveryaddress(response.AddressLists[0]));
+            if (response?.AddressLists) {
+              dispatch(setDeliveryAddressData(response?.AddressLists));
+              if (!skipSelectUpdateRef.current) {
+                if (
+                  selecteddeliveryaddres === null ||
+                  id === selecteddeliveryaddres?.deliveryaddressId ||
+                  id === 0
+                ) {
+                  dispatch(selecteddeliveryaddress(response.AddressLists[0]));
+                }
               }
+              skipSelectUpdateRef.current = false;
               setaddressList(response.AddressLists);
             }
             if (response.AddressLists === null) {
@@ -135,7 +128,6 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
     //SELECT THE DELIVERY ADDRESS
     const handleClickSelectDeliveryAddress = useCallback(
       (address: any) => {
-        //debugger;
         if (
           address?.deliveryaddressId !==
           deliveryaddress?.addressId?.customerAddressId
@@ -145,14 +137,14 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
             restaurantinfo?.restaurantId as number,
             restaurantinfo?.defaultlocationId as number
           ).then((result) => {
-            //debugger;
             if (result === null || result === undefined) {
               return;
             } else {
               let addressId = { customerAddressId: address?.deliveryaddressId };
               dispatch(updateAddressId(addressId));
-              dispatch(updateAddressCheck(true));
+              //dispatch(updateAddressCheck(true));
               dispatch(selecteddeliveryaddress(address));
+              skipSelectUpdateRef.current = true;
             }
           });
         }

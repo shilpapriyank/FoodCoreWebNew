@@ -287,6 +287,7 @@ export const carttotaldata = createAsyncThunk(
     },
     { dispatch }
   ) => {
+    debugger
     await CartServices.carttotal(
       cartsessionId,
       locationId,

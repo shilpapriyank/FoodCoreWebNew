@@ -127,7 +127,6 @@ const Login: React.FC<LoginProps> = ({
         ) {
           const customer = responsedata?.customerDetails;
           if (responsedata && customer) {
-            console.log("Login Customer from logincomponent:", customer);
             dispatch(setUserDetail(customer));
             setUserExpiryTime();
 

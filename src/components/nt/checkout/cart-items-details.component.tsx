@@ -174,6 +174,7 @@ const CartItemsDetailComponent = () => {
       "0",
       restaurantinfo?.defaultlocationId as number
     ).then((response) => {
+      //debugger
       if (response?.status == 1 && userinfo) {
         let rewards = {
           rewardvalue: rewardvalue,
