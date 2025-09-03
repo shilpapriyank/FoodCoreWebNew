@@ -900,9 +900,10 @@ export const ORDERSTATUS = {
   PENDING: "Pending",
   FAILED: "Failed",
 };
-export const calulateTotal = (cartdata: CartDetails) => {
+export const calulateTotal = (cartdata: any) => {
+//  debugger;
   let total: number = 0;
-  cartdata?.cartItemDetails?.map((data) => {
+  cartdata?.cartDetails?.cartItemDetails.map((data:CartItemDetails) => {
     total += data?.totalprice;
   });
   //return parseFloat(total)?.toFixed(2);

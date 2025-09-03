@@ -129,7 +129,8 @@ export const OrderItemsList = () => {
       "0",
       restaurantinfo?.defaultlocationId as number
     ).then((response) => {
-      if (response && response.status == 1) { 
+      //debugger
+      if (response && response.status == 1) {
         let rewards = {
           rewardvalue: rewardvalue,
           rewardamount: (

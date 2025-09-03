@@ -373,10 +373,6 @@ const CategoryMenuItems: React.FC<{
             selectedTime: selecetdtime,
             requestId: deliveryRequestId,
           }).then((response) => {
-            console.log(
-              "response of getCartItemList from quickOrderClick",
-              response
-            );
             if (response) {
               if (response?.cartDetails && response?.cartDetails?.cartTotal) {
                 dispatch(setCartItem(response));

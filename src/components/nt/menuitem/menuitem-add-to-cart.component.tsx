@@ -210,7 +210,6 @@ const MenuItemAddToCart = ({
                     handleToggleDependnt?.(true);
                   }, 500);
                 } else {
-                  // console.log("add item to cart response from else", response);
                   if (
                     (menuItemDetail?.dependantMenuList?.length > 0 &&
                       menuItemDetail?.dependantMenuList !== null) ||

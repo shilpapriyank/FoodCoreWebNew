@@ -7,8 +7,10 @@ import { selecteddeliveryaddress } from "../../../../redux/selected-delivery-dat
 import { setDeliveryRequestId } from "../../../../redux/order/order.slice";
 import { DeliveryAddressTypes } from "../../../../redux/delivery-address/delivery-address.type";
 import {
+  addAddress,
   AddTempDeliveryAddress,
   registerAddress,
+  updateAddressId,
 } from "../../../../redux/delivery-address/delivery-address.slice";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
@@ -161,14 +163,11 @@ const AddAddress: React.FC<AddAddressProps> = ({
               locationId as number
             ).then((response) => {
               if (response) {
-                dispatch({
-                  type: DeliveryAddressTypes.ADD_ADDRESS,
-                  payload: response,
-                });
-                dispatch({
-                  type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
-                  payload: { customerAddressId: response?.deliveryaddressId },
-                });
+
+                let addressId = {
+                  customerAddressId: response?.deliveryaddressId,
+                };
+                dispatch(updateAddressId(addressId));
                 obj.deliveryaddressId = response?.customerAddressId;
                 dispatch(selecteddeliveryaddress({ ...response, ...obj }));
                 handleToggleTimingModal?.(true);

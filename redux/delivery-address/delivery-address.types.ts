@@ -19,6 +19,7 @@ export interface DeliveryAddressInput {
   addresstype: number;
   businessname: string;
   cityName: string;
+  customerAddressId: number;
 }
 
 export interface VerifyAddressInput {
@@ -50,16 +51,17 @@ export interface DeliveryAddressState {
 }
 
 // -----new defined types------
-export interface GetDeliveryAddressType {
-  AddressLists: DeliveryAddressListNewType[];
-  ukdatetime: string;
-}
+// export interface GetDeliveryAddressType {
+//   AddressLists: DeliveryAddressListNewType[];
+//   ukdatetime: string;
+// }
 
 export interface DeliveryAddressListNewType {
   id: number;
   address1: string;
   address2: string;
   cityName: string;
+  city: string;
   deliveryaddressId: number;
   landmark: string;
   zipcode: string;

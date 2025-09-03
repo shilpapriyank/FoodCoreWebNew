@@ -359,7 +359,6 @@ export class OrderServices {
     obj,
     requestId = "",
   }: GetOrderTimingArgsTypes) {
-    console.log("loactionId from order services:", locationId);
     responseclass = new ResponseModel();
     const methodName = "getOrderTiming";
     const checktimeurl = ENDPOINTS.GET_TIMING;
