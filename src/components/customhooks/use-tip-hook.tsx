@@ -116,7 +116,6 @@ const useTipValue = (
   }, [carttotal?.subTotal, carttotal?.tipAmount, location?.minTipPercentage]);
 
   function tipOnBlur(isOnChange: any, tipValue: any) {
-    //debugger
     //CHECK FOR THE TIPWARNING ON FOCUS VALUE IN TEXTBOX
     let tipTextBoxValue = isOnChange ? tipValue : tipvalue;
     // const minTipValue=calculateTip(location?.minTipPercentage, carttotal?.subTotal)
@@ -165,7 +164,6 @@ const useTipValue = (
   }
 
   const updatecart = (caltippercent: any, caltipamount: any) => {
-    //debugger
     settipPercent(caltippercent);
     dispatch(
       carttotaldata({

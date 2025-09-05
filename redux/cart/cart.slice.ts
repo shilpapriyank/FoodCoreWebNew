@@ -287,7 +287,6 @@ export const carttotaldata = createAsyncThunk(
     },
     { dispatch }
   ) => {
-    debugger
     await CartServices.carttotal(
       cartsessionId,
       locationId,
@@ -327,6 +326,7 @@ export const carttotaldata = createAsyncThunk(
             dispatch(setDeliveryRequestId(responseRequestId));
           }
         }
+        dispatch(setCartTotal(response));
       }
       return response;
     });
@@ -408,6 +408,7 @@ export const getCartTotalData = createAsyncThunk(
             dispatch(setDeliveryRequestId(responseRequestId));
           }
         }
+        dispatch(setCartTotal(response));
       }
       return response;
     });

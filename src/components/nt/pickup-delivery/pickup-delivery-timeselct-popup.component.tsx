@@ -322,7 +322,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         if (gettimeresponse?.result) {
           if (gettimeresponse.result?.time) {
             let time = gettimeresponse.result.time.split(" ");
-            let requestID;
+            let requestID: string = "";
             OrderServices.checkOrderTime({
               restaurantId: Number(restaurantinfo?.restaurantId),
               locationId: Number(defaultLocation?.locationId),
@@ -330,7 +330,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
               recieving: time[1],
               flg: Number(ordertype),
               obj: selectedAddress,
-              requestId: requestID || "",
+              requestId: requestID,
             }).then((response) => {
               if (
                 response.result.message &&

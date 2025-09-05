@@ -70,6 +70,7 @@ const CheckoutPage = () => {
       ? tempDeliveryAddress
       : selecteddelivery?.selecteddeliveryaddress;
   const { deliveryRequestId } = order;
+  console.log('delivery request id from checkout page', deliveryRequestId)
   const { futureDate, isFutureOrder, timeSlot, recievingDate, enabletimeslot } =
     useFutureOrder();
   const { isDisplayPrice, isRewardTip } = useUtility();

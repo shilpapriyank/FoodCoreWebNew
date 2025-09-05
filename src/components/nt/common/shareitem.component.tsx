@@ -5,12 +5,12 @@ import React from "react";
 import { FacebookShareButton, FacebookIcon, WhatsappIcon } from "react-share";
 
 const ShareItemComponent: React.FC<{
-  url: string;
+  url?: string;
   title?: string;
   description?: string;
   size?: number;
-  linkClass: string;
-  isHrLine: boolean;
+  linkClass?: string;
+  isHrLine?: boolean;
 }> = ({ url, title, description, size, linkClass, isHrLine }) => {
   const handleClickCopyLink = (url: string) => {
     navigator?.clipboard?.writeText(url);
@@ -51,7 +51,7 @@ const ShareItemComponent: React.FC<{
           </a>
           <span
             className="text-dark cursor "
-            onClick={() => handleClickCopyLink(url)}
+            onClick={() => handleClickCopyLink(url as string)}
             data-toggle="tooltip"
             data-placement="top"
             title="copy item link"

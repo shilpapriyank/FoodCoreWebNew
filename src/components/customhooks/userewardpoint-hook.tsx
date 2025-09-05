@@ -224,7 +224,6 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
         "0",
         restaurantinfo?.defaultlocationId as number
       ).then((response) => {
-        //debugger
         if (response?.status == 1 && userinfo) {
           let rewards = {
             rewardvalue: rewardvalue,
@@ -314,7 +313,6 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
           redeemamount,
           restaurantinfo?.defaultlocationId as number
         ).then((response) => {
-          //debugger
           if (response?.status == 1 && userinfo) {
             let rewards = {
               rewardvalue: rewardvalue,

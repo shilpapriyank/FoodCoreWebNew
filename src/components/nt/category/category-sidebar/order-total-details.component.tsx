@@ -21,7 +21,6 @@ const OrderTotalDetails = () => {
   const enableRewardPoint = restaurantinfo?.defaultLocation?.enableRewardPoint;
   const tipvalue = charges?.totalTip && charges?.totalTip.toFixed(2);
   let cartTaxList = charges?.cartTaxList && charges.cartTaxList;
-
   const deliveryaddressinfo = selecteddelivery?.selecteddeliveryaddress;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
 
