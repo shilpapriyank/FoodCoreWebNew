@@ -33,7 +33,15 @@ export class OrderServices {
     flg,
     obj,
     requestId = "",
-  }: CheckOrderTimeArgsTypes) {
+  }: {
+    restaurantId: number;
+    locationId: number;
+    recievingTime: string;
+    recieving: string;
+    flg?: number;
+    obj: OrderAddress;
+    requestId?: string;
+  }) {
     responseclass = new ResponseModel();
     const selectedAddress = {
       deliveryAddressId: obj?.deliveryaddressId ?? 0,

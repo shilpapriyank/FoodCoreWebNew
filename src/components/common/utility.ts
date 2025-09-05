@@ -901,9 +901,8 @@ export const ORDERSTATUS = {
   FAILED: "Failed",
 };
 export const calulateTotal = (cartdata: any) => {
-//  debugger;
   let total: number = 0;
-  cartdata?.cartDetails?.cartItemDetails.map((data:CartItemDetails) => {
+  cartdata?.cartDetails?.cartItemDetails.map((data: CartItemDetails) => {
     total += data?.totalprice;
   });
   //return parseFloat(total)?.toFixed(2);
@@ -990,18 +989,28 @@ export const getCountryList = () => {
   return regionList;
 };
 
+// export const sortArrayOnSelectedLocation = (
+//   addressList: AddressList[],
+//   defaultLocationId: number
+// ) => {
+//   return addressList?.slice()?.sort((item) => {
+//     if (item?.locationId === defaultLocationId) {
+//       return -1;
+//     } else {
+//       return 1;
+//     }
+//   });
+// };
+
 export const sortArrayOnSelectedLocation = (
   addressList: AddressList[],
   defaultLocationId: number
 ) => {
-  return addressList?.sort((item) => {
-    if (item?.locationId === defaultLocationId) {
-      return -1;
-    } else {
-      return 1;
-    }
+  return addressList?.slice().sort((a, b) => {
+    return (a.locationId === defaultLocationId ? -1 : 1);
   });
 };
+
 
 export const getTimeInMiliSecond = (hour: number) => {
   return hour * 36_00_000;

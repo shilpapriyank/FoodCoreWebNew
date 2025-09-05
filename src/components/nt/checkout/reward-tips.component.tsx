@@ -2,12 +2,7 @@ import React, { useEffect, useRef } from "react";
 import DriverTip from "./tips/driver-tip.component";
 import useTipValue from "../../customhooks/use-tip-hook";
 import useRewardPoint from "../../customhooks/userewardpoint-hook";
-import {
-  calulateTotal,
-  GetCurrency,
-  ORDER_TYPE,
-  ORDERTYPE,
-} from "../../common/utility";
+import { calulateTotal, GetCurrency, ORDER_TYPE } from "../../common/utility";
 import useUtility from "../../customhooks/utility-hook";
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { shallowEqual } from "react-redux";
@@ -16,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { CartTotal } from "@/types/cart-types/cartservice.type";
 import { clearredeempoint } from "../../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../../redux/cart/cart.slice";
-import RewardPoint from "./reward-point.component";
+import RewardPoint from "./rewardpoint/reward-point.component";
 
 const RewardPointAndTips = () => {
   const {
@@ -117,13 +112,11 @@ const RewardPointAndTips = () => {
   }, [customerId]);
 
   useEffect(() => {
-    //debugger;
     if (carttotal != undefined && carttotal != null) {
       if (
         carttotal?.tipPercentage !== undefined &&
         carttotal?.tipPercentage > 0
       ) {
-        //debugger
         let data = [];
         tipdata?.forEach((element) => {
           if (parseFloat(element.text) == carttotal.tipPercentage) {
@@ -146,7 +139,6 @@ const RewardPointAndTips = () => {
           }
         });
       } else {
-        //debugger
         let data = [];
         tipdata?.forEach((element) => {
           if (parseFloat(element.text) === 15 && isDefaulttip === true) {
@@ -182,7 +174,6 @@ const RewardPointAndTips = () => {
     ) {
       (document.querySelector(".reward-clear") as HTMLElement)?.click();
     } else {
-      //debugger;
       dispatch(
         carttotaldata({
           cartsessionId: sessionId as string,
