@@ -1,12 +1,12 @@
 import { SearchBarPropsTypes } from "@/types/searchbar-types/searchbar.type";
 import React from "react";
 
-const SearchBarComponent = ({
+const SearchBarComponent: React.FC<SearchBarPropsTypes> = ({
   searchItem,
   handleChangeSearch,
   handleSubmitSearch,
   handleClickCancel,
-}: SearchBarPropsTypes) => {
+}) => {
   return (
     <div className="d-none d-md-block">
       <div className="d-flex justify-content-between mb-2 flex-column flex-md-row ">
@@ -19,13 +19,13 @@ const SearchBarComponent = ({
         />
         <div className="d-flex flex-md-row ">
           <button
-            className=" btn-default ms-2 mt-2 mt-md-0 w-50"
+            className="btn-default ms-2 mt-2 mt-md-0 w-50"
             onClick={handleSubmitSearch}
           >
             Search
           </button>
           <button
-            className=" btn-default black ms-2  mt-2 mt-md-0 w-50"
+            className="btn-default black ms-2  mt-2 mt-md-0 w-50"
             onClick={handleClickCancel}
           >
             Clear
@@ -35,5 +35,4 @@ const SearchBarComponent = ({
     </div>
   );
 };
-
 export default SearchBarComponent;

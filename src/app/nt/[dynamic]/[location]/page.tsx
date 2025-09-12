@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../../../../../redux/hooks";
 import { useReduxData } from "../../../../components/customhooks/useredux-data-hooks";
 import { ORDER_TYPE } from "../../../../components/common/utility";
 import LoadLocationDirectComponent from "../../../../components/nt/common/loadlocation-direct.component";
@@ -9,14 +10,14 @@ import CategoryHeader from "../../../../components/nt/category/category-header/c
 import { useSearchData } from "../../../../components/customhooks/usesearchdata-hook";
 import SearchBarComponent from "../../../../components/nt/category/category-menuitems/search-bar.component";
 import useUtility from "../../../../components/customhooks/utility-hook";
-import { useParams } from "next/navigation";
-import { useAppDispatch } from "../../../../../redux/hooks";
 import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { OrderServices } from "../../../../../redux/order/order.services";
 import { isasap, setordertime } from "../../../../../redux/order/order.slice";
 import Layout from "@/components/nt/layout/layout.component";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export default function LocationPage() {
+const LocationPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
     selecteddelivery,
@@ -24,10 +25,10 @@ export default function LocationPage() {
     menuitem,
     categoryItemsList,
     userinfo,
-    order,
-  } = useReduxData();
-  const [isloadAdress, setisloadAdress] = useState<boolean>(true);
-  const { location } = useParams() ?? {};
+    order
+  } =
+    useReduxData();
+  const [isloadAddress, setIsLoadAddress] = useState<boolean>(true);
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
   const searchdata = menuitem?.searchdata;
@@ -35,21 +36,23 @@ export default function LocationPage() {
   const {
     searchItem,
     handleChangeSearch,
-    errorMessage,
-    handleClickCancel,
     handleSubmitSearch,
+    handleClickCancel,
+    errorMessage,
+    loading,
   } = useSearchData(searchtext);
+
+  // filterCategory serach data....
   const { filterCategory } = useUtility();
   const pickupordelivery = selecteddelivery.pickupordelivery;
   const menuItemsWithCat = filterCategory(
-    searchtext !== "" && searchdata ? searchdata?.menuItems : categoryItemsList,
+    searchtext !== "" && searchdata ? searchdata.menuItems : categoryItemsList,
     pickupordelivery
   );
 
   useEffect(() => {
     if (
-      selecteddelivery?.pickupordelivery === null ||
-      selecteddelivery?.pickupordelivery === "" ||
+      !selecteddelivery?.pickupordelivery ||
       Object.keys(selecteddelivery?.pickupordelivery || {}).length === 0
     ) {
       dispatch(
@@ -91,28 +94,37 @@ export default function LocationPage() {
   }, [userinfo]);
 
   const handleChangeAddress = () => {
-    setisloadAdress(false);
+    setIsLoadAddress(false);
   };
 
   return (
-    <Layout handleChangeAddress={handleChangeAddress} page={"location"}>
-      <LoadLocationDirectComponent isLoadAddressChangeUrl={isloadAdress}>
+    <Layout handleChangeAddress={handleChangeAddress} page="location">
+      <LoadLocationDirectComponent isLoadAddressChangeUrl={isloadAddress}>
         {!errorMessage && <CategoryHeader />}
       </LoadLocationDirectComponent>
 
-      <CategoryMenuItems
-        menuItemsWithCat={menuItemsWithCat}
-        errorMessage={errorMessage}
-        categoryslug=""
-      >
-        <SearchBarComponent
-          searchItem={searchItem}
-          handleChangeSearch={handleChangeSearch}
-          errorMessage={errorMessage}
-          handleSubmitSearch={handleSubmitSearch}
-          handleClickCancel={handleClickCancel}
-        />
-      </CategoryMenuItems>
+      {loading ? (
+        <div className="my-3">
+          <Skeleton height={40} count={5} style={{ marginBottom: "10px" }} />
+          <Skeleton height={200} count={1} style={{ marginTop: "10px" }} />
+        </div>
+      ) : (
+        <CategoryMenuItems
+          menuItemsWithCat={menuItemsWithCat}
+          errorMessage={!loading ? errorMessage : ""}
+          categoryslug=""
+        >
+          <SearchBarComponent
+            searchItem={searchItem}
+            handleChangeSearch={handleChangeSearch}
+            handleSubmitSearch={handleSubmitSearch}
+            handleClickCancel={handleClickCancel}
+            errorMessage={!loading ? errorMessage : ""}
+          />
+        </CategoryMenuItems>
+      )}
     </Layout>
   );
-}
+};
+export default LocationPage;
+

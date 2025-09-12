@@ -102,19 +102,19 @@ const MenuItemModal: React.FC<{
   const deliveryaddressinfo = selecteddelivery;
   let selectedsize =
     menuItemDetail?.size &&
-    menuItemDetail.size.filter((x) => x.sizeselected === true);
+    menuItemDetail.size.filter((x:Size) => x.sizeselected === true);
   let selectedtopping =
     menuItemDetail != undefined &&
     menuItemDetail.topping != undefined &&
     menuItemDetail.topping.filter(
-      (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
+      (x:Size) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let updateitemoptionincart = menuitem.updateitemoptionincart;
   let selectedtoppings =
     menuItemDetail?.topping &&
     menuItemDetail.topping.length > 0 &&
     menuItemDetail?.topping.find(
-      (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
+      (x:Size) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let maincategoryList = main?.maincategoryList;
   var ordertype =
@@ -194,16 +194,16 @@ const MenuItemModal: React.FC<{
   useEffect(() => {
     let selectedToppingLength =
       selectedtoppings &&
-      selectedtoppings?.list?.filter((item) => item.optionselected === true)
+      selectedtoppings?.list?.filter((item:any) => item.optionselected === true)
         .length;
     let lstcarttoppingNew = [];
     if (selectedtoppings && selectedtoppings?.list) {
       selectedtoppings?.list != undefined &&
         selectedtoppings?.list.length > 0 &&
-        selectedtoppings?.list.map((lsttop) => {
+        selectedtoppings?.list.map((lsttop:any) => {
           lsttop.type != undefined &&
             lsttop.type.length > 0 &&
-            lsttop.type.map((type) => {
+            lsttop.type.map((type:any) => {
               if (type.subOptionselected === true) {
                 lstcarttoppingNew.push(type);
                 setlstcarttopping(lstcarttoppingNew);
@@ -218,10 +218,10 @@ const MenuItemModal: React.FC<{
       selectedToppingLength > 0
     ) {
       let selectedtop = selectedtoppings?.list.find(
-        (item) => item.optionselected === true
+        (item:any) => item.optionselected === true
       );
       let selectedToppintypeLength = selectedtop?.type.filter(
-        (item) => item.subOptionselected === true
+        (item:any) => item.subOptionselected === true
       ).length;
 
       if (selectedToppintypeLength === 0 && lstcarttoppingNew.length === 0) {
@@ -245,7 +245,7 @@ const MenuItemModal: React.FC<{
       const newMenuItemDetail = { ...menuItemDetail };
       let lstsizedata: Size[] = [];
 
-      lstsizedata = menuItemDetail?.size?.map((data) => ({
+      lstsizedata = menuItemDetail?.size?.map((data:any) => ({
         ...data,
         sizeselected: data.type === item.type,
       }));
@@ -310,7 +310,7 @@ const MenuItemModal: React.FC<{
     let selectedoption =
       selectedtopping &&
       selectedtopping?.length > 0 &&
-      selectedtopping?.[0].list.filter((x) => x.isCompulsory == true);
+      selectedtopping?.[0].list.filter((x:any) => x.isCompulsory == true);
     if (
       updatedSelectedMenuitemDetail &&
       updatedSelectedMenuitemDetail?.cartid > 0
@@ -329,7 +329,7 @@ const MenuItemModal: React.FC<{
           if (
             selectedoption[i].type != undefined &&
             selectedoption[i].type.length > 0 &&
-            selectedoption[i].type.filter((x) => x.subOptionselected === true)
+            selectedoption[i].type.filter((x:any) => x.subOptionselected === true)
               .length === 0
           ) {
             handleNotify(
@@ -468,7 +468,7 @@ const MenuItemModal: React.FC<{
         if (
           selectedoption[i].type != undefined &&
           selectedoption[i].type.length > 0 &&
-          selectedoption[i].type.filter((x) => x.subOptionselected === true)
+          selectedoption[i].type.filter((x:any) => x.subOptionselected === true)
             .length === 0
         ) {
           handleNotify(

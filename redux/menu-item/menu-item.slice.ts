@@ -20,8 +20,8 @@ import { OrderObjType } from "@/types/cart-types/cartservice.type";
 
 // Types
 export interface MenuItemState {
-  selectedmenuitemdetail: Menuitems | null;
-  menuitemdetaillist: GetMenuItemDetail | null;
+  selectedmenuitemdetail: Menuitems | any;
+  menuitemdetaillist: GetMenuItemDetail | any;
   selecteditemquantity: number;
   updateitemoptionincart: number;
   searchtext: string;
@@ -29,15 +29,15 @@ export interface MenuItemState {
   //   menuItems: MenuItem[];
   //   categories: Category[];
   // };
-  searchdata: GetSerachResult | null;
+  searchdata: GetSerachResult | any;
   dependentid: number;
   dependentitemids: DependantMenuList[];
   dependentqty: number;
 }
 
 const initialState: MenuItemState = {
-  selectedmenuitemdetail: null,
-  menuitemdetaillist: null,
+  selectedmenuitemdetail: {},
+  menuitemdetaillist: {},
   selecteditemquantity: 0,
   updateitemoptionincart: 0,
   searchtext: "",
@@ -45,7 +45,7 @@ const initialState: MenuItemState = {
   //   menuItems: [],
   //   categories: [],
   // },
-  searchdata: null,
+  searchdata: {},
   dependentid: 0,
   dependentitemids: [],
   dependentqty: 0,

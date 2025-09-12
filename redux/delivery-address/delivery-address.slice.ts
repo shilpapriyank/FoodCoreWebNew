@@ -11,8 +11,8 @@ export interface DeliveryAddressState {
   deliveryaddressdata: DeliveryAddressInput | null;
   updatedAddress: boolean;
   choosetime: ChooseTime;
-  registeraddress: any;
-  addressId: any | null;
+  registeraddress: Record<string, any>;
+  addressId: number | null;
   tempDeliveryAddress: DeliveryAddressInput | null;
 }
 const initialState: DeliveryAddressState = {
@@ -116,7 +116,7 @@ const deliveryAddressSlice = createSlice({
     updateAddressCheck(state, action: PayloadAction<boolean>) {
       state.updatedAddress = action.payload;
     },
-    updateAddressId(state, action: PayloadAction<any>){
+    updateAddressId(state, action: PayloadAction<any>) {
       state.addressId = action.payload
     },
     registerAddress(

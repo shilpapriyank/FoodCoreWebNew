@@ -10,7 +10,7 @@ import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { setSelectedCategory } from "../../../../../redux/category/category.slice";
 import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
 
-const CategoryHeader = () => {
+const CategoryHeader: React.FC = () => {
   const {
     restaurantinfo,
     maincategoryList,
@@ -21,31 +21,44 @@ const CategoryHeader = () => {
   } = useReduxData();
   const router = useRouter();
   const params = useParams();
-  const { dynamic, location, id, category, index } = params;
+  const { dynamic, location, id, category, index } = params as {
+    dynamic?: string;
+    location?: string;
+    id?: string;
+    category?: string;
+    index?: string;
+  };
+
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const dispatch = useAppDispatch();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(
+    selectedcategory?.catId ?? 0
+  );
   const searchdata = menuitem?.searchdata;
   const searchtext = menuitem?.searchtext;
   const categoryListItems =
     searchtext !== "" ? searchdata?.categories : maincategoryList;
-  let pickupordelivery = selecteddelivery.pickupordelivery;
+
+  let pickupordelivery = selecteddelivery?.pickupordelivery;
   const { filterCategory } = useUtility();
   const catWithSearch = filterCategory(
     categoryListItems as GetAllMenuCategoryItems[],
     pickupordelivery
   );
+
   const activeItemRef = useRef<HTMLLIElement | null>(null);
   const [activeSection, setActiveSection] = useState<string>("");
 
   const handleClick = (slug: string, catId: number) => {
-    const selected = catWithSearch.find((x) => x.catId === catId);
+    const selected = catWithSearch.filter((x) => x.catId === catId);
     setSelectedCategoryId(catId);
-    if (selected) {
-      dispatch(setSelectedCategory(selected));
+    if (selected.length > 0) {
+      dispatch(setSelectedCategory(selected[0]));
     }
     router.push(`/${selctedTheme?.url}/${dynamic}/${location}/${slug}`);
   };
+
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
 
@@ -58,7 +71,8 @@ const CategoryHeader = () => {
         inline: "center", // Align horizontally
       });
     }
-  }, []);
+  }, [selectedCategoryId, selectedcategory, category]);
+
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
 
   const handleScrollItem = (id: string) => {
@@ -67,11 +81,10 @@ const CategoryHeader = () => {
       const parent = item.parentNode as HTMLElement | null;
       if (parent) {
         parent.scrollTo({
-          left: item.offsetLeft - parent.offsetLeft, // Adjust horizontal position
-          behavior: "smooth", // Smooth scrolling
+          left: item.offsetLeft - parent.offsetLeft,
+          behavior: "smooth",
         });
       }
-      // }
     }
   };
 
@@ -86,7 +99,6 @@ const CategoryHeader = () => {
       const el = section as HTMLElement;
       const rect = el.getBoundingClientRect();
 
-      // Check if the section is fully visible after the sticky header
       if (rect.top >= headerHeight && rect.top <= headerHeight + 50) {
         if (el.dataset.section) {
           currentSection = el.dataset.section;
@@ -101,6 +113,7 @@ const CategoryHeader = () => {
       }
     }
   };
+
   useEffect(() => {
     if (isMobile) {
       window.addEventListener("scroll", handleScroll);
@@ -116,53 +129,49 @@ const CategoryHeader = () => {
             <div className="row">
               <div className="col-12">
                 <ul className="categories-scroll">
-                  {catWithSearch &&
-                    catWithSearch?.map((c: MainCategoryList) => {
-                      const isActive =
-                        selectedCategoryId === c.catId ||
-                        selectedcategory?.catId === c.catId ||
-                        category === c.categoryslug;
-                      let menuImage = getImagePath(
-                        c.imgurl,
-                        restaurantinfo?.defaultLocation
-                          ?.defaultmenucategoryimage
-                      );
-                      return (
-                        <li
-                          key={c.catId}
-                          id={`scroll-${c.categoryslug}`}
-                          ref={isActive ? activeItemRef : null}
-                          className={` ${
-                            isActive || c.categoryslug === activeSection
-                              ? "active"
-                              : ""
+                  {catWithSearch?.map((c: MainCategoryList) => {
+                    const isActive =
+                      selectedCategoryId === c.catId ||
+                      selectedcategory?.catId === c.catId ||
+                      category === c.categoryslug;
+
+                    const menuImage = getImagePath(
+                      c.imgurl,
+                      restaurantinfo?.defaultLocation?.defaultmenucategoryimage
+                    );
+
+                    return (
+                      <li
+                        key={c.catId}
+                        id={`scroll-${c.categoryslug}`}
+                        ref={isActive ? activeItemRef : null}
+                        className={` ${isActive || c.categoryslug === activeSection
+                            ? "active"
+                            : ""
                           } cat-li`}
-                          onClick={() => handleClick(c.categoryslug, c.catId)}
-                          data-to-scrollspy-id={c.categoryslug}
-                        >
-                          <p className="text-center mb-1 d-block d-md-none">
-                            <span className="cat-img rounded-circle">
-                              {" "}
-                              <img
-                                src={menuImage || "/nt/img/item-1.jpeg"}
-                                alt={c.catName}
-                                className="rounded-circle object-fit-cover"
-                              ></img>
-                            </span>
-                          </p>
-                          <a className="d-none d-md-block">
-                            <span>{c.catName}</span>
-                            {/* <span dangerouslySetInnerHTML={{__html:text}}></span> */}
-                          </a>
-                          <a className="cat-name d-block d-md-none text-center">
-                            <span className="text-center">
-                              {fixedLengthString(c.catName, 24)}
-                            </span>
-                            {/* <span dangerouslySetInnerHTML={{__html:text}}></span> */}
-                          </a>
-                        </li>
-                      );
-                    })}
+                        onClick={() => handleClick(c.categoryslug, c.catId)}
+                        data-to-scrollspy-id={c.categoryslug}
+                      >
+                        <p className="text-center mb-1 d-block d-md-none">
+                          <span className="cat-img rounded-circle">
+                            <img
+                              src={menuImage || "/nt/img/item-1.jpeg"}
+                              alt={c.catName}
+                              className="rounded-circle object-fit-cover"
+                            />
+                          </span>
+                        </p>
+                        <a className="d-none d-md-block">
+                          <span>{c.catName}</span>
+                        </a>
+                        <a className="cat-name d-block d-md-none text-center">
+                          <span className="text-center">
+                            {fixedLengthString(c.catName, 24)}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>

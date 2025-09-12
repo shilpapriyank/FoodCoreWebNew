@@ -33,7 +33,7 @@ interface MainState {
 const initialState: MainState = {
   maincategoryList: [],
   promotioncategoryList: [],
-  deliverypickuppopup: true,
+  deliverypickuppopup: true,      
   ischangelocation: false,
   restaurantWindowTime: null,
 

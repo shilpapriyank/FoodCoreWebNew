@@ -16,12 +16,12 @@ import { GetMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 
 // Define the cart item shape
 export interface CartState {
-  cartitemdetail: GetCartItems | null;
+  cartitemdetail: GetCartItems | any;
   cartitemcount: GetCartItemsCount | number;
   carttotal: CartTotal | null;
   deliverycharges: any;
-  rewardpoints: number;
-  transactionid: string;
+  rewardpoints: any;
+  transactionid: null;
   grandtotal: number;
   paymentintentid: string;
   orderinfo: any;
@@ -30,12 +30,12 @@ export interface CartState {
 }
 
 const initialState: CartState = {
-  cartitemdetail: null,
+  cartitemdetail: {},
   cartitemcount: 0,
   carttotal: null,
   deliverycharges: {},
-  rewardpoints: 0,
-  transactionid: "",
+  rewardpoints: {},
+  transactionid: null,
   grandtotal: 0,
   paymentintentid: "",
   orderinfo: {},
@@ -439,7 +439,7 @@ const cartSlice = createSlice({
     updateCartItem: (state) => {
       state.cartitemdetail = null;
     },
-    setTransactionId: (state, action: PayloadAction<string>) => {
+    setTransactionId: (state, action: PayloadAction<any>) => {
       state.transactionid = action.payload;
     },
     setGrandTotal: (state, action: PayloadAction<number>) => {

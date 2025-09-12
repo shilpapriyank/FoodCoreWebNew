@@ -18,6 +18,8 @@ import { RestaurantsServices } from "../../../../../../redux/restaurants/restaur
 import { useParams, usePathname, useRouter } from "next/navigation";
 import SearchBarComponent from "@/components/nt/category/category-menuitems/search-bar.component";
 import { useAppDispatch } from "../../../../../../redux/hooks";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type ParamType = {
   restaurant: string;
@@ -37,9 +39,10 @@ export default function CategoryPage() {
   const {
     searchItem,
     handleChangeSearch,
-    errorMessage,
-    handleClickCancel,
     handleSubmitSearch,
+    handleClickCancel,
+    errorMessage,
+    loading,
   } = useSearchData(searchtext);
   const { filterCategory } = useUtility();
   let pickupordelivery = selecteddelivery.pickupordelivery;
@@ -86,9 +89,8 @@ export default function CategoryPage() {
 
       if (itemDetail) {
         const metaData = {
-          title: `${itemDetail?.title ? `${itemDetail?.title} || ` : ""}${
-            itemDetail?.restaurantname
-          } : Online Ordering`,
+          title: `${itemDetail?.title ? `${itemDetail?.title} || ` : ""}${itemDetail?.restaurantname
+            } : Online Ordering`,
           description: itemDetail?.description ?? "",
           image: itemDetail?.imageurl ?? "",
           url: `${getorigin()}${pathname}`,
@@ -106,21 +108,29 @@ export default function CategoryPage() {
       </Head>
       <LoadLocationDirectComponent>
         <Layout>
-          {!errorMessage && <CategoryHeader />}
-          {/* <CategoryHeader /> */}
-          <CategoryMenuItems
-            menuItemsWithCat={menuItemsWithCat}
-            categoryslug={params?.category as string}
-            errorMessage={errorMessage}
-          >
-            <SearchBarComponent
-              searchItem={searchItem}
-              handleChangeSearch={handleChangeSearch}
-              handleSubmitSearch={handleSubmitSearch}
-              handleClickCancel={handleClickCancel}
-              errorMessage={errorMessage}
-            />
-          </CategoryMenuItems>
+          {loading ? (
+            <div className="my-3">
+              <Skeleton height={40} count={5} style={{ marginBottom: "10px" }} />
+              <Skeleton height={200} count={1} style={{ marginTop: "10px" }} />
+            </div>
+          ) : (
+            <>
+              {!errorMessage && <CategoryHeader />}
+              <CategoryMenuItems
+                menuItemsWithCat={menuItemsWithCat}
+                categoryslug={params?.category as string}
+                errorMessage={!loading ? errorMessage : ""}
+              >
+                <SearchBarComponent
+                  searchItem={searchItem}
+                  handleChangeSearch={handleChangeSearch}
+                  handleSubmitSearch={handleSubmitSearch}
+                  handleClickCancel={handleClickCancel}
+                  errorMessage={!loading ? errorMessage : ""}
+                />
+              </CategoryMenuItems>
+            </>
+          )}
         </Layout>
       </LoadLocationDirectComponent>
     </>

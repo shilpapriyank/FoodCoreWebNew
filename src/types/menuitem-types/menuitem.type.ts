@@ -56,6 +56,7 @@ export interface Size {
   isMenuCategoryDiscountApplied: boolean;
 }
 
+
 export interface Topping {
   subparameterId: number;
   list: List[];

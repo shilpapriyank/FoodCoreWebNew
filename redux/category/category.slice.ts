@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryServices } from "./category.services";
-import { CategoryTypes } from "./category.types";
 import { setMainCategoryList } from "../main/main.slice";
 import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 import { GetAllMenuCategoryItems } from "@/types/menuitem-types/menuitem.type";
@@ -12,13 +11,13 @@ type ThunkConfig = {
 };
 
 export interface CategoryState {
-  selectedcategorydetail: MainCategoryList | null;
-  categoryitemlist: GetAllMenuCategoryItems[]; // ✅ should be an array
-  categorylist: MainCategoryList[]; // optional, assuming it's an array
+  selectedcategorydetail: MainCategoryList | any;
+  categoryitemlist: GetAllMenuCategoryItems[];
+  categorylist: MainCategoryList[];
 }
 
 const initialState: CategoryState = {
-  selectedcategorydetail: null,
+  selectedcategorydetail: {},
   categoryitemlist: [],
   categorylist: [],
 };
@@ -41,39 +40,8 @@ const initialState: CategoryState = {
 //   );
 //   return response ?? [];
 // });
-
-export const getCategoryItemList = createAsyncThunk(
-  CategoryTypes.CATEGORY_ITEM_LIST,
-  async (
-    {
-      restaurantId,
-      categories,
-      customerId,
-      locationId,
-    }: {
-      restaurantId: number;
-      categories: string;
-      customerId: number;
-      locationId: number;
-    },
-    { dispatch }
-  ) => {
-    const response = await CategoryServices.getCategoryItemList(
-      restaurantId,
-      categories,
-      customerId,
-      locationId
-    );
-    if (response) {
-      //return response;
-      dispatch(setCategoryList(response as GetAllMenuCategoryItems[]));
-    }
-    return [];
-  }
-);
-
-export const getCategoryItemListPOS = createAsyncThunk<
-  GetAllMenuCategoryItems[], // ✅ consistent with thunk return
+export const getCategoryItemList = createAsyncThunk<
+  GetAllMenuCategoryItems[],
   {
     restaurantId: number;
     categories: string;
@@ -81,7 +49,26 @@ export const getCategoryItemListPOS = createAsyncThunk<
     locationId: number;
   },
   ThunkConfig
->("category/categoryitemlist", async (params) => {
+>("category/getCategoryItemList", async (params) => {
+  const response = await CategoryServices.getCategoryItemList(
+    params.restaurantId,
+    params.categories,
+    params.customerId,
+    params.locationId
+  );
+  return (response as GetAllMenuCategoryItems[]) ?? [];
+});
+
+export const getCategoryItemListPOS = createAsyncThunk<
+  GetAllMenuCategoryItems[],
+  {
+    restaurantId: number;
+    categories: string;
+    customerId: number;
+    locationId: number;
+  },
+  ThunkConfig
+>("category/getCategoryItemListPOS", async (params) => {
   const response = await CategoryServices.getCategoryItemListPOS(
     params.restaurantId,
     true,
@@ -89,7 +76,7 @@ export const getCategoryItemListPOS = createAsyncThunk<
     params.customerId,
     params.locationId
   );
-  return response ?? [];
+  return (response as GetAllMenuCategoryItems[]) ?? [];
 });
 
 export const getAllCategoryMenuItems = createAsyncThunk<
@@ -102,7 +89,7 @@ export const getAllCategoryMenuItems = createAsyncThunk<
     selectedCategoryUrl?: string;
   },
   ThunkConfig
->(CategoryTypes.ALL_CATEGORY_ITEM_LIST, async (params, { dispatch }) => {
+>("category/getAllCategoryMenuItems", async (params, { dispatch }) => {
   const response = await CategoryServices.getAllCategoryMenuItems(
     params.restaurantId,
     params.locationId,
@@ -110,8 +97,8 @@ export const getAllCategoryMenuItems = createAsyncThunk<
     params.categories
   );
 
-  const categoryList =
-    response?.map(
+  if (response) {
+    const categoryList: MainCategoryList[] = response.map(
       ({
         catId,
         catName,
@@ -129,21 +116,29 @@ export const getAllCategoryMenuItems = createAsyncThunk<
         istakeoutavailable,
         imgurl: imgurl || "",
       })
-    ) ?? [];
+    );
 
-  dispatch(setMainCategoryList(categoryList));
+    // update main slice category list
+    dispatch(setMainCategoryList(categoryList));
+    // also keep our own categorylist like old reducer
+    dispatch(setAllCategoryList(categoryList));
 
-  if (
-    categoryList.length > 0 &&
-    (!params.selectedCategoryUrl ||
-      !categoryList.some(
-        (cat) => cat.categoryslug === params.selectedCategoryUrl
-      ))
-  ) {
-    dispatch(setSelectedCategory(categoryList[0]));
+    if (
+      categoryList.length > 0 &&
+      (!params.selectedCategoryUrl ||
+        !categoryList.some(
+          (cat) => cat.categoryslug === params.selectedCategoryUrl
+        ))
+    ) {
+      dispatch(setSelectedCategory(categoryList[0]));
+    }
+
+    return response as GetAllMenuCategoryItems[];
+  } else {
+    dispatch(setMainCategoryList([]));
+    dispatch(setAllCategoryList([]));
+    return [];
   }
-
-  return response ?? [];
 });
 
 const categorySlice = createSlice({
@@ -165,6 +160,9 @@ const categorySlice = createSlice({
     resetCategory: (state) => {
       state.selectedcategorydetail = null;
       state.categoryitemlist = [];
+    },
+    setAllCategoryList: (state, action: PayloadAction<MainCategoryList[]>) => {
+      state.categorylist = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -194,6 +192,7 @@ export const {
   removeCategoryList,
   setCategoryList,
   resetCategory,
+  setAllCategoryList,
 } = categorySlice.actions;
 
 export default categorySlice.reducer;

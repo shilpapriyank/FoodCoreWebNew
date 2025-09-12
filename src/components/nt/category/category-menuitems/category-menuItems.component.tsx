@@ -745,11 +745,11 @@ const CategoryMenuItems: React.FC<{
                 {errorMessage && (
                   <h4 className="red-text text-center mt-5">{errorMessage}</h4>
                 )}
-                {menuItemsWithCat?.length === 0 && loadError && (
+                {/* {menuItemsWithCat?.length === 0 && loadError && (
                   <h4 className="red-text text-center mt-5">
                     Opps! No Items Found
                   </h4>
-                )}
+                )} */}
               </div>
               <CategorySidebar />
             </div>
