@@ -1,0 +1,42 @@
+"use client";
+
+import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
+import React from "react";
+import { RestaurantsServices } from "../../../../../../redux/restaurants/restaurants.services";
+import { MYORDERPAGE_MESSAGE } from "@/components/nt/helpers/static-message/myorder-message";
+import Layout from "@/components/nt/layout/layout.component";
+import SiteContentComponent from "@/components/nt/common/site-content.component";
+
+const PrivacyPage = () => {
+  const { restaurantinfo } = useReduxData();
+  const { isError, isLoading, data, isSuccess, refetch, isFetching } = useQuery(
+    {
+      queryKey: ["getPageContent", "Privacy", restaurantinfo?.restaurantId],
+      queryFn: () =>
+        RestaurantsServices.getPageContentRestaurant(
+          "Privacy",
+          restaurantinfo?.restaurantId as number
+        ),
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+    }
+  );
+  return (
+    <>
+      <Head>
+        <title>
+          {restaurantinfo?.restaurantname}:{" "}
+          {MYORDERPAGE_MESSAGE.ORDERING_ONLINE}
+        </title>
+        <meta name="description" content="Online description" />
+      </Head>
+      <Layout>
+        {data && isSuccess && <SiteContentComponent data={data} />}
+      </Layout>
+    </>
+  );
+};
+
+export default PrivacyPage;

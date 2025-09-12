@@ -51,6 +51,10 @@ import {
   GetAllRestaurantInfo,
   Seodetails,
 } from "@/types/restaurant-types/restaurant.type";
+import {
+  emptyordertime,
+  setFutureOrderDay,
+} from "../../../redux/order/order.slice";
 
 const RestaurantComponent: React.FC<{
   children: ReactNode;
@@ -303,6 +307,23 @@ const RestaurantComponent: React.FC<{
         restaurantslocationlist?.addressList !== null
       ) {
         //fetchData();
+      }
+
+      if (
+        futureDays?.length > 0 &&
+        isFutureOrder &&
+        order?.futureOrderDay !== "" &&
+        order?.futureOrderDay
+      ) {
+        if (Object.keys(order?.futureOrderDay).length > 0) {
+          const isInFuterDay = futureDays?.some(
+            (day) => day.fullDay === order?.futureOrderDay?.fullDay
+          );
+          if (!isInFuterDay) {
+            dispatch(setFutureOrderDay(""));
+            dispatch(emptyordertime());
+          }
+        }
       }
 
       let userLoginExpire = getUserLoginExpiryTime();

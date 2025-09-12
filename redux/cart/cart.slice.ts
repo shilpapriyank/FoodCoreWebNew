@@ -306,11 +306,13 @@ export const carttotaldata = createAsyncThunk(
       recievingDate,
       enableTimeSlot
     ).then((response) => {
+      debugger
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&
           response?.deliveryCharges
         ) {
+          debugger
           let dcharges = JSON.parse(response?.deliveryCharges);
           let dropofTime =
             dcharges != undefined &&

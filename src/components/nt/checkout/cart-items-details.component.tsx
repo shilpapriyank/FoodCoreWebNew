@@ -82,7 +82,7 @@ const CartItemsDetailComponent = () => {
   const { isDisplayPrice } = useUtility();
   let rewardvalue = rewardpoints?.rewardvalue;
 
-  var carttotal = cart?.carttotal && cart.carttotal;
+  var carttotal = cart?.carttotal && cart.carttotal as CartTotal;
   let cartitemcount = cart.cartitemcount;
   const deliveryaddressinfo = selecteddelivery.selecteddeliveryaddress;
   const ordertype =
@@ -117,6 +117,7 @@ const CartItemsDetailComponent = () => {
   let selectedtime = order?.checktime ?? "";
 
   useEffect(() => {
+    debugger
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -174,6 +175,7 @@ const CartItemsDetailComponent = () => {
       "0",
       restaurantinfo?.defaultlocationId as number
     ).then((response) => {
+      debugger
       if (response?.status == 1 && userinfo) {
         let rewards = {
           rewardvalue: rewardvalue,

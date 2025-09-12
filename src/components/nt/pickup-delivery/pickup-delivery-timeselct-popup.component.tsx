@@ -636,7 +636,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                                   {orderTime === "" ? selecetdtime : orderTime}
                                   ,&nbsp; Today,&nbsp; {currentDate?.getDate()}
                                   &nbsp;
-                                  {MonthList(currentDate?.getMonth() ?? 0)}
+                                  {MonthList(currentDate?.getMonth() as number)}
                                 </h4>
                               )}
                               {isConfirmDisable ||
