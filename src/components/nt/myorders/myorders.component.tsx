@@ -8,7 +8,7 @@ export const MyOrdersComponent = ({
   selectedItemClick,
 }: any) => {
   const { restaurantinfo } = useReduxData();
-  let selectedthemeURL = GetThemeDetails(restaurantinfo?.themetype as number);
+  let selectedthemeURL = GetThemeDetails(restaurantinfo?.themetype as number)?.url;
   return (
     <div className="row pt-1 pb-4 row-cols-lg-2 row-cols-md-1 row-cols-1">
       {orderHistoryFull.map((item: any, index: any) => {

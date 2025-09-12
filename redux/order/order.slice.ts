@@ -25,7 +25,7 @@ const INITIAL_STATE: OrderState = {
   calculatedTotal: 0,
   cardShowMessage: "",
   deliveryRequestId: "",
-  futureOrderDay: "",
+  futureOrderDay: {},
 };
 
 export const checkOrderTime = createAsyncThunk(
@@ -118,7 +118,7 @@ const orderSlice = createSlice({
     clearDeliveryRequestId: (state) => {
       state.deliveryRequestId = "";
     },
-    setFutureOrderDay: (state, action: PayloadAction<string>) => {
+    setFutureOrderDay: (state, action: PayloadAction<any>) => {
       state.futureOrderDay = action.payload;
     },
   },

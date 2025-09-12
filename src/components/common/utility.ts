@@ -901,6 +901,7 @@ export const ORDERSTATUS = {
   FAILED: "Failed",
 };
 export const calulateTotal = (cartdata: any) => {
+  debugger;
   let total: number = 0;
   cartdata?.cartDetails?.cartItemDetails.map((data: CartItemDetails) => {
     total += data?.totalprice;
@@ -1007,10 +1008,9 @@ export const sortArrayOnSelectedLocation = (
   defaultLocationId: number
 ) => {
   return addressList?.slice().sort((a, b) => {
-    return (a.locationId === defaultLocationId ? -1 : 1);
+    return a.locationId === defaultLocationId ? -1 : 1;
   });
 };
-
 
 export const getTimeInMiliSecond = (hour: number) => {
   return hour * 36_00_000;

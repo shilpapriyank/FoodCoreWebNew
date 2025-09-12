@@ -272,6 +272,7 @@ export class CartServices {
     recievingDate: string = "",
     enableTimeSlot: boolean = false
   ): Promise<CartTotal | null> {
+    debugger
     responseclass = new ResponseModel();
     const methodName = "carttotal";
     const location = ENDPOINTS.GET_CART_TOTAL;
