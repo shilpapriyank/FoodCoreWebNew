@@ -112,11 +112,13 @@ const RewardPointAndTips = () => {
   }, [customerId]);
 
   useEffect(() => {
+    debugger
     if (carttotal != undefined && carttotal != null) {
       if (
         carttotal?.tipPercentage !== undefined &&
         carttotal?.tipPercentage > 0
       ) {
+        debugger
         let data = [];
         tipdata?.forEach((element) => {
           if (parseFloat(element.text) == carttotal.tipPercentage) {
@@ -174,6 +176,7 @@ const RewardPointAndTips = () => {
     ) {
       (document.querySelector(".reward-clear") as HTMLElement)?.click();
     } else {
+      debugger
       dispatch(
         carttotaldata({
           cartsessionId: sessionId as string,

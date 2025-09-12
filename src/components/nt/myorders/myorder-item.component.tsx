@@ -84,18 +84,15 @@ export const MyOrderItemComponent = ({
               <b>Order No. {item.orderno}</b>
             </p>
             <Link
-              legacyBehavior
+              //legacyBehavior
               href={`${locationHrefLink}${PAGES.ORDER_DETAIL}/[orderid]`}
               as={`${locationFullLink}${PAGES.ORDER_DETAIL}/${item.orderId}`}
+              className="btn-default small"
+              onClick={() => {
+                selectedItemClick(item);
+              }}
             >
-              <a
-                className="btn-default small"
-                onClick={() => {
-                  selectedItemClick(item);
-                }}
-              >
-                {"Order detail"}
-              </a>
+              {"Order detail"}
             </Link>
           </div>
         </div>

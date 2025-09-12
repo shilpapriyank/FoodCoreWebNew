@@ -16,6 +16,7 @@ import {
   getOrderTypeFromText,
 } from "../../common/utility";
 import {
+  checkOrderTime,
   emptyordertime,
   isasap,
   setFutureOrderDay,
@@ -73,6 +74,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   locationUrl,
   clearMeaage,
 }) => {
+  debugger;
   const [loadSwipe, setloadSwipe] = useState<boolean>(false);
   const {
     restaurantinfo,
@@ -240,6 +242,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     },
     isClose?: boolean
   ): void => {
+    debugger;
     const isClosed =
       ordertype === ORDER_TYPE.DELIVERY.value
         ? day?.deliveryStatus === "Closed"
@@ -248,12 +251,12 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       setDayCloseError(
         `${selecteddelivery.pickupordelivery} closed on ${day?.futureDate}`
       );
-      dispatch(setFutureOrderDay(day as any));
-      setselectedDate(day?.futureDay ?? "");
+      dispatch(setFutureOrderDay(day));
+      setselectedDate(day?.futureDay as any);
     } else {
       setDayCloseError("");
       setLoadTimeslot(true);
-      setselectedDate(day?.futureDay ?? "");
+      setselectedDate(day?.futureDay as any);
       dispatch(setFutureOrderDay(day as any));
       settimeSlots([]);
       setselectedTime("");
@@ -269,7 +272,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         restaurantId,
         locationId,
         ordertype: Number(ordertype),
-        scheduleDateTime: day?.futureDate ?? "",
+        scheduleDateTime: day?.futureDate as string,
       }).then((res: TimeSlot[]) => {
         dispatch(isasap(false));
         settimeSlots(res);
@@ -342,10 +345,11 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
 
   const handleClickSchedule = (): void => {
     if (!order.isasap) {
-      dispatch({
-        type: OrderTypes.CHECK_ORDER_TIME,
-        payload: selectedTime,
-      });
+      // dispatch({
+      //   type: OrderTypes.CHECK_ORDER_TIME,
+      //   payload: selectedTime,
+      // });
+      dispatch(setordertime(selectedTime));
     }
     redirectOnTimeSelected(locationUrl);
     handleToggleTimingModal(false);

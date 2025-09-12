@@ -10,6 +10,7 @@ import { CARTPAGEMESSAGE } from "../../helpers/static-message/cart-message";
 import { useParams, useRouter } from "next/navigation";
 
 const OrderTotalDetails = () => {
+  debugger
   const { restaurantinfo, cart, userinfo, selecteddelivery, deliveryaddress } =
     useReduxData();
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);

@@ -12,7 +12,7 @@ import { CustomerServices } from "../../../redux/customer/customer.services";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../redux/cart/cart.slice";
 
-const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
+const useRewardPoint = (carttotal?: CartTotal, inputRP?: any) => {
   const {
     rewardpoints,
     userinfo,
@@ -40,9 +40,12 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
       ? ORDER_TYPE.DELIVERY.value
       : ORDER_TYPE.PICKUP.value;
   const deliveryaddressinfo = selecteddelivery?.selecteddeliveryaddress;
-  let cartsubtotal = carttotal?.subTotal > 0 ? carttotal.subTotal : 0;
+  let cartsubtotal =
+    carttotal && carttotal?.subTotal > 0 ? carttotal?.subTotal : 0;
   let subTotalWithDiscount =
-    carttotal?.subTotalWithDiscount > 0 ? carttotal.subTotalWithDiscount : 0;
+    carttotal && carttotal?.subTotalWithDiscount > 0
+      ? carttotal.subTotalWithDiscount
+      : 0;
   let customerId = userinfo ? userinfo.customerId : 0;
   let dcharges =
     cart &&
@@ -67,12 +70,14 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
   ).toFixed(2);
   const promotionValue = carttotal?.PromotionData?.promotionpercentagecal ?? 0;
   const maxRedeemAmount = useMemo(() => {
-    let minAmount = (
-      carttotal?.subTotal -
-      (carttotal?.discountAmount + promotionValue) +
-      dCharge -
-      1
-    ).toFixed(2);
+    let minAmount =
+      carttotal &&
+      (
+        carttotal?.subTotal -
+        (carttotal?.discountAmount + promotionValue) +
+        dCharge -
+        1
+      ).toFixed(2);
     return minAmount;
   }, [dCharge, carttotal?.subTotal, carttotal?.discountAmount, promotionValue]);
   const { recievingDate, enabletimeslot } = useFutureOrder();
@@ -135,7 +140,7 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
     }
     //check entered amount is less than cart sub total
     // if (parseFloat(objamount) > subTotalWithDiscount.toFixed(1) - 1) {
-    if (objamount > maxRedeemAmount) {
+    if (maxRedeemAmount && objamount > maxRedeemAmount) {
       return;
     }
 
@@ -224,6 +229,7 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
         "0",
         restaurantinfo?.defaultlocationId as number
       ).then((response) => {
+        debugger
         if (response?.status == 1 && userinfo) {
           let rewards = {
             rewardvalue: rewardvalue,
@@ -257,7 +263,7 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
               rewardpoints: "0",
               redeemamount: "0",
               tipPercentage: String(carttotal?.tipPercentage),
-              tipAmount: carttotal.tipAmount,
+              tipAmount: carttotal?.tipAmount,
               deliveryaddressId:
                 deliveryaddressinfo?.deliveryaddressId as number,
               ordertype: ordertype,
@@ -313,6 +319,7 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
           redeemamount,
           restaurantinfo?.defaultlocationId as number
         ).then((response) => {
+          debugger
           if (response?.status == 1 && userinfo) {
             let rewards = {
               rewardvalue: rewardvalue,
@@ -381,7 +388,7 @@ const useRewardPoint = (carttotal: CartTotal, inputRP: any) => {
     if (
       customerOrderCount == 0 &&
       minOrderAmount !== "" &&
-      cartsubtotal < parseFloat(minOrderAmount)
+      cartsubtotal < Number(minOrderAmount)
     ) {
       handleNotify(
         `Minimum order for food items is ${carttotal?.currencySymbol}${minOrderAmount}. Please add more items.`,
