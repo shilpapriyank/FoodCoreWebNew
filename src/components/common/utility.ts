@@ -901,7 +901,6 @@ export const ORDERSTATUS = {
   FAILED: "Failed",
 };
 export const calulateTotal = (cartdata: any) => {
-  debugger;
   let total: number = 0;
   cartdata?.cartDetails?.cartItemDetails.map((data: CartItemDetails) => {
     total += data?.totalprice;

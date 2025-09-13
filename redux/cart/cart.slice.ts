@@ -16,12 +16,12 @@ import { GetMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 
 // Define the cart item shape
 export interface CartState {
-  cartitemdetail: GetCartItems | any;
+  cartitemdetail: GetCartItems | null;
   cartitemcount: GetCartItemsCount | number;
   carttotal: CartTotal | null;
   deliverycharges: any;
-  rewardpoints: any;
-  transactionid: null;
+  rewardpoints: number;
+  transactionid: string;
   grandtotal: number;
   paymentintentid: string;
   orderinfo: any;
@@ -30,12 +30,12 @@ export interface CartState {
 }
 
 const initialState: CartState = {
-  cartitemdetail: {},
+  cartitemdetail: null,
   cartitemcount: 0,
   carttotal: null,
   deliverycharges: {},
-  rewardpoints: {},
-  transactionid: null,
+  rewardpoints: 0,
+  transactionid: "",
   grandtotal: 0,
   paymentintentid: "",
   orderinfo: {},
@@ -306,13 +306,11 @@ export const carttotaldata = createAsyncThunk(
       recievingDate,
       enableTimeSlot
     ).then((response) => {
-      debugger
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&
           response?.deliveryCharges
         ) {
-          debugger
           let dcharges = JSON.parse(response?.deliveryCharges);
           let dropofTime =
             dcharges != undefined &&

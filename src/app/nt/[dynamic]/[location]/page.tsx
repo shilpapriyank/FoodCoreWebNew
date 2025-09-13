@@ -16,6 +16,8 @@ import { isasap, setordertime } from "../../../../../redux/order/order.slice";
 import Layout from "@/components/nt/layout/layout.component";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import FavouriteSkeleton from "@/components/nt/skeleton/favourite-skeleton";
+// import { MenuItemSkeletonComponent } from "@/components/nt/skeleton/menuitem-skeleton.component";
 
 const LocationPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -104,10 +106,7 @@ const LocationPage: React.FC = () => {
       </LoadLocationDirectComponent>
 
       {loading ? (
-        <div className="my-3">
-          <Skeleton height={40} count={5} style={{ marginBottom: "10px" }} />
-          <Skeleton height={200} count={1} style={{ marginTop: "10px" }} />
-        </div>
+        <FavouriteSkeleton/>
       ) : (
         <CategoryMenuItems
           menuItemsWithCat={menuItemsWithCat}
@@ -122,7 +121,7 @@ const LocationPage: React.FC = () => {
             errorMessage={!loading ? errorMessage : ""}
           />
         </CategoryMenuItems>
-      )}
+     )}
     </Layout>
   );
 };
