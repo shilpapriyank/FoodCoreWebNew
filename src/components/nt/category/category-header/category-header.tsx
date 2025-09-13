@@ -129,7 +129,7 @@ const CategoryHeader: React.FC = () => {
             <div className="row">
               <div className="col-12">
                 <ul className="categories-scroll">
-                  {catWithSearch?.map((c: MainCategoryList) => {
+                  {catWithSearch?.map((c: MainCategoryList, index: number) => {
                     const isActive =
                       selectedCategoryId === c.catId ||
                       selectedcategory?.catId === c.catId ||
@@ -139,15 +139,14 @@ const CategoryHeader: React.FC = () => {
                       c.imgurl,
                       restaurantinfo?.defaultLocation?.defaultmenucategoryimage
                     );
-
                     return (
                       <li
-                        key={c.catId}
+                        key={`${c.catId}-${index}`}
                         id={`scroll-${c.categoryslug}`}
                         ref={isActive ? activeItemRef : null}
                         className={` ${isActive || c.categoryslug === activeSection
-                            ? "active"
-                            : ""
+                          ? "active"
+                          : ""
                           } cat-li`}
                         onClick={() => handleClick(c.categoryslug, c.catId)}
                         data-to-scrollspy-id={c.categoryslug}

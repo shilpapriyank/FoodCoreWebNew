@@ -11,19 +11,19 @@ type ThunkConfig = {
 };
 
 export interface CategoryState {
-  selectedcategorydetail: MainCategoryList | any;
+  selectedcategorydetail: MainCategoryList | null;
   categoryitemlist: GetAllMenuCategoryItems[];
   categorylist: MainCategoryList[];
 }
 
 const initialState: CategoryState = {
-  selectedcategorydetail: {},
+  selectedcategorydetail: null,
   categoryitemlist: [],
   categorylist: [],
 };
 
 // export const getCategoryItemList = createAsyncThunk<
-//   GetAllMenuCategoryItems[], // ✅ correct return type
+//   GetAllMenuCategoryItems[], //  correct return type
 //   {
 //     restaurantId: number;
 //     categories: string;

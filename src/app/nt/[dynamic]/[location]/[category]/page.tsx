@@ -20,6 +20,8 @@ import SearchBarComponent from "@/components/nt/category/category-menuitems/sear
 import { useAppDispatch } from "../../../../../../redux/hooks";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import FavouriteSkeleton from "@/components/nt/skeleton/favourite-skeleton";
+// import { MenuItemSkeletonComponent } from "@/components/nt/skeleton/menuitem-skeleton.component";
 
 type ParamType = {
   restaurant: string;
@@ -109,10 +111,11 @@ export default function CategoryPage() {
       <LoadLocationDirectComponent>
         <Layout>
           {loading ? (
-            <div className="my-3">
-              <Skeleton height={40} count={5} style={{ marginBottom: "10px" }} />
-              <Skeleton height={200} count={1} style={{ marginTop: "10px" }} />
-            </div>
+            // <div className="my-3">
+            //   <Skeleton height={40} count={5} style={{ marginBottom: "10px" }} />
+            //   <Skeleton height={200} count={1} style={{ marginTop: "10px" }} />
+            // </div>
+            <FavouriteSkeleton />
           ) : (
             <>
               {!errorMessage && <CategoryHeader />}
