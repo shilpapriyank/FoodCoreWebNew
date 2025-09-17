@@ -11,6 +11,7 @@ import useUtility from "@/components/customhooks/utility-hook";
 import { OrderServices } from "../../../../../../redux/order/order.services";
 import { DeliveryAddressInfo } from "@/components/default/Common/dominos/helpers/types/utility-type";
 import {
+  checkOrderTime,
   emptyordertime,
   isasap,
   setordertime,
@@ -70,12 +71,13 @@ const CheckoutPage = () => {
       ? tempDeliveryAddress
       : selecteddelivery?.selecteddeliveryaddress;
   const { deliveryRequestId } = order;
-  console.log('delivery request id from checkout page', deliveryRequestId)
+  console.log("delivery request id from checkout page", deliveryRequestId);
   const { futureDate, isFutureOrder, timeSlot, recievingDate, enabletimeslot } =
     useFutureOrder();
   const { isDisplayPrice, isRewardTip } = useUtility();
   const [errormessage, seterrormessage] = useState("");
   const orderTime = useMemo(() => order?.checktime, [order?.checktime]);
+
   useEffect(() => {
     if (order?.checktime === "") {
       settimeErrorMessage("Please select order timming");
@@ -171,7 +173,7 @@ const CheckoutPage = () => {
             OrderServices.checkOrderTime({
               restaurantId: restaurantinfo?.restaurantId as number,
               locationId: defaultLocation.locationId,
-              recievingTime: parseInt(newtime[0]) + ":" + parseInt(newtime[1]),
+              recievingTime: newtime[0] + ":" + newtime[1],
               recieving: time[1],
               flg: ordertype,
               obj: selectedAddress as any,
@@ -191,13 +193,14 @@ const CheckoutPage = () => {
       }
     }
   }, [order.isasap, orderTime]);
+
   useEffect(() => {
     //if b2b restaurant
     if (isSchoolProgramEnabled && order?.checktime === "") {
       // dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text));
       OrderServices.getOrderTime({
         restaurantId: restaurantinfo?.restaurantId as number,
-        locationId: defaultLocation?.locationId as number,
+        locationId: restaurantinfo.defaultlocationId as number,
         ordertype: 1,
       }).then((response) => {
         dispatch(isasap(true));
@@ -206,6 +209,7 @@ const CheckoutPage = () => {
           //     type: OrderTypes.CHECK_ORDER_TIME,
           //     payload: response?.ordertime,
           //   });
+          dispatch(checkOrderTime(response.ordertime));
           dispatch(setordertime(response?.ordertime));
           return;
         }

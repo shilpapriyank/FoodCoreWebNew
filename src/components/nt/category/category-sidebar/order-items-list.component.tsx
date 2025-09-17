@@ -129,7 +129,6 @@ export const OrderItemsList = () => {
       "0",
       restaurantinfo?.defaultlocationId as number
     ).then((response) => {
-      debugger
       if (response && response.status == 1) {
         let rewards = {
           rewardvalue: rewardvalue,
@@ -196,7 +195,7 @@ export const OrderItemsList = () => {
       ).then((response) => {
         if (response) {
           let cartItem = cartdata?.cartDetails?.cartItemDetails?.filter(
-            (item) => item.dependentmenuitemid === 0
+            (item: any) => item.dependentmenuitemid === 0
           );
           if (rewardpoints?.redeemPoint > 0 && cartItem?.length === 1) {
             clearRedeempoint();
@@ -403,10 +402,10 @@ export const OrderItemsList = () => {
   return (
     <>
       {cartdata &&
-        cartdata?.cartDetails?.cartItemDetails?.map((data, index) => {
+        cartdata?.cartDetails?.cartItemDetails?.map((data: any, index:any) => {
           let counter = index;
           let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
-            (x) => x.cartid === data.cartid
+            (x: any) => x.cartid === data.cartid
           );
           let subOptionDisplayCmp = (
             <CartSuboptionDisplay subOption={subOption as CartOptionParams[]} />

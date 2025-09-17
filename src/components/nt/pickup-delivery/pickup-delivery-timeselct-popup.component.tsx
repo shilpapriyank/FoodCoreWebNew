@@ -310,6 +310,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     setisLaterOn(false);
     handleTimeClick();
   };
+
   const handleTimeClick = () => {
     OrderServices.getOrderTiming({
       restaurantId: Number(restaurantinfo?.restaurantId),
@@ -360,6 +361,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       }, 500);
     });
   };
+
   const handleLaterOnClick = () => {
     if (
       ordertype === ORDER_TYPE.DELIVERY.value &&
@@ -733,7 +735,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
           )}
         </div>
       </div>
-      {isOpenModal && <div className="modal-backdrop fade show"></div>}
+      <div className="modal-backdrop fade show"></div>
     </>
   );
 };

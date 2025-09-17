@@ -120,13 +120,13 @@ export const useReduxData = () => {
 
   const cartItemsAmountTotal =
     cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-      (sum, item) => sum + (item?.totalprice || 0),
+      (sum: any, item: any) => sum + (item?.totalprice || 0),
       0
     ) ?? 0;
 
   const cartItemsQuantity =
     cart?.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-      (sum, item) => sum + (item?.qty || 0),
+      (sum: any, item: any) => sum + (item?.qty || 0),
       0
     ) ?? 0;
 

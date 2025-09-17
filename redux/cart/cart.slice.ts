@@ -18,7 +18,7 @@ import { GetMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 export interface CartState {
   cartitemdetail: GetCartItems | any;
   cartitemcount: GetCartItemsCount | number;
-  carttotal: CartTotal | null;
+  carttotal: any | null;
   deliverycharges: any;
   rewardpoints: any;
   transactionid: null;
@@ -306,13 +306,11 @@ export const carttotaldata = createAsyncThunk(
       recievingDate,
       enableTimeSlot
     ).then((response) => {
-      debugger
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&
           response?.deliveryCharges
         ) {
-          debugger
           let dcharges = JSON.parse(response?.deliveryCharges);
           let dropofTime =
             dcharges != undefined &&
@@ -328,7 +326,7 @@ export const carttotaldata = createAsyncThunk(
             dispatch(setDeliveryRequestId(responseRequestId));
           }
         }
-        dispatch(setCartTotal(response));
+        dispatch(setCartTotal(response?.cartDetails));
       }
       return response;
     });
@@ -410,7 +408,7 @@ export const getCartTotalData = createAsyncThunk(
             dispatch(setDeliveryRequestId(responseRequestId));
           }
         }
-        dispatch(setCartTotal(response));
+        dispatch(setCartTotal(response?.cartDetails));
       }
       return response;
     });

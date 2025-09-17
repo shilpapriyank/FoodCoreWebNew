@@ -21,7 +21,7 @@ const CategorySidebar: React.FC = () => {
   const { location, dynamic } = params;
   const [isOpenChangeLocation, setIsOpenChangeLocation] =
     useState<boolean>(false);
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
+  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
 
@@ -34,12 +34,12 @@ const CategorySidebar: React.FC = () => {
       setIsOpenChangeLocation(true);
       return;
     }
-    router.push(`/${selectedTheme?.url}/${dynamic}/${location}/checkout`);
+    router.push(`/${selctedTheme?.url}/${dynamic}/${location}/checkout`);
   };
 
   const handleClickOk = () => {
     setIsOpenChangeLocation(false);
-    router.push(`/${selectedTheme?.url}/${dynamic}/${location}/checkout`);
+    router.push(`/${selctedTheme?.url}/${dynamic}/${location}/checkout`);
   };
 
   const handleToggle = (value: boolean) => {

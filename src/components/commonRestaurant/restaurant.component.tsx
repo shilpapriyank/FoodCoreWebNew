@@ -27,7 +27,10 @@ import { RestaurantsServices } from "../../../redux/restaurants/restaurants.serv
 // import { v4 as uuidv4 } from "uuid";
 import { useReduxData } from "../customhooks/useredux-data-hooks";
 import {
+  restaurantAllLocation,
+  restaurantsAllLocation,
   restaurantsdetail,
+  restaurantsLocation,
   restaurantstiming,
   setAppVersion,
 } from "../../../redux/restaurants/restaurants.slice";
@@ -263,40 +266,26 @@ const RestaurantComponent: React.FC<{
     }
   }, [dynamic, pathname]);
 
-  // const fetchData = async () => {
-  //   try {
-  //     setLoadrestaurant(false);
-  //     let getResponse;
-  //     if (selectedTheme.name === ThemeObj.default) {
-  //       getResponse = await restaurantsLocation(
-  //         restaurantinfo && restaurantinfo.restaurantId
-  //       );
-  //       dispatch({
-  //         type: RestaurantsTypes.RESTAURANT_LOCATION_LIST,
-  //         payload: getResponse,
-  //       });
-  //     } else {
-  //       getResponse = await restaurantsAllLocation(
-  //         restaurantinfo && restaurantinfo.restaurantId
-  //       );
-  //       dispatch({
-  //         type: RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME,
-  //         payload: getResponse,
-  //       });
+  //  const fetchData = async () => {
+  //         try {
+  //             let getResponse;
+  //             if (selectedTheme?.name === ThemeObj.default) {
+  //                 getResponse = await restaurantsAllLocation(restaurantinfo?.restaurantId as number);
+  //                 //dispatch({ type: RestaurantsTypes.RESTAURANT_LOCATION_LIST, payload: getResponse })
+  //                 dispatch(restaurantsAllLocation(getResponse))
+  //             } else {
+  //                 getResponse = await restaurantsAllLocation(restaurantinfo?.restaurantId as number);
+  //                // dispatch({ type: RestaurantsTypes.RESTAURANT_LOCATION_LIST_WITH_TIME, payload: getResponse })
+  //                // dispatch({ type: RestaurantsTypes.RESTAURANT_LOCATION_LIST, payload: getResponse })
+  //                dispatch(restaurantsAllLocation(getResponse))
+  //                dispatch(restaurantAllLocation(getResponse))
+  //             }
+  //             dispatch(restaurantstiming(restaurantinfo && restaurantinfo.defaultlocationId, restaurantinfo && restaurantinfo.restaurantId));
+  //             setadresslist(true)
+  //         } catch (error) {
+  //             console.error("Error fetching restaurant data:", error);
+  //         }
   //     }
-  //     dispatch(
-  //       restaurantstiming(
-  //         restaurantinfo && restaurantinfo.defaultlocationId,
-  //         restaurantinfo && restaurantinfo.restaurantId
-  //       )
-  //     );
-  //     setadresslist(true);
-  //   } catch (error) {
-  //     console.error("Error fetching restaurant data:", error);
-  //   }
-  // };
-
-  // IF ADDRESSLIST IS IS EMPTY AND USER DIRECT PUT THE WRONG LOCATION IN THE URL THEN CHECK THE LOCATION IS EXIST IN THE RESTAURANT
 
   useEffect(() => {
     if (!pathname.includes(ThemeObj.FD123456)) {
@@ -306,7 +295,7 @@ const RestaurantComponent: React.FC<{
         restaurantinfo?.defaultLocation !== null &&
         restaurantslocationlist?.addressList !== null
       ) {
-        //fetchData();
+        // fetchData();
       }
 
       if (

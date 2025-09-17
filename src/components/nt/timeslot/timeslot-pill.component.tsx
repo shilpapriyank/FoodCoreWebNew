@@ -16,7 +16,7 @@ export const TimeSlotPillComponent = ({
   selectedTime: string;
   handleClickTimePill: (time: TimeSlot) => void;
   label: string;
-  name: string;
+  name?: string;
   isDisable?: boolean;
 }) => {
   return (

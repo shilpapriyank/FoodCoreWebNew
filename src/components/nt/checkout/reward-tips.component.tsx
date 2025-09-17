@@ -70,7 +70,7 @@ const RewardPointAndTips = () => {
     addtipclick,
     tipWarningMessage,
     isTipWarning,
-  } = useTipValue(true, carttotal as CartTotal, false, true);
+  } = useTipValue(true, carttotal, false, true);
   const { recievingDate, enabletimeslot } = useFutureOrder();
 
   const {
@@ -92,7 +92,7 @@ const RewardPointAndTips = () => {
   const totalprice = useAppSelector(
     ({ cart }) =>
       cart.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-        (sum, item) => sum + (item?.totalprice || 0),
+        (sum: any, item: any) => sum + (item?.totalprice || 0),
         0
       ),
     shallowEqual
@@ -101,7 +101,7 @@ const RewardPointAndTips = () => {
   const totalQty = useAppSelector(
     ({ cart }) =>
       cart.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-        (sum, item) => sum + (item?.qty || 0),
+        (sum: any, item: any) => sum + (item?.qty || 0),
         0
       ),
     shallowEqual
@@ -112,13 +112,11 @@ const RewardPointAndTips = () => {
   }, [customerId]);
 
   useEffect(() => {
-    debugger
     if (carttotal != undefined && carttotal != null) {
       if (
         carttotal?.tipPercentage !== undefined &&
         carttotal?.tipPercentage > 0
       ) {
-        debugger
         let data = [];
         tipdata?.forEach((element) => {
           if (parseFloat(element.text) == carttotal.tipPercentage) {
@@ -148,7 +146,7 @@ const RewardPointAndTips = () => {
             data.push(element);
             settipdatanew(data as any);
             tipText = Number(element.text);
-            let subTotal = calulateTotal(cartdata as any);
+            let subTotal = calulateTotal(cartdata);
             tipamountcal = calculateTip(element.text, subTotal) as number;
             settipamount(tipamountcal);
             settipvalue(tipamountcal);
@@ -167,16 +165,16 @@ const RewardPointAndTips = () => {
         dispatch(clearredeempoint());
       }
     }
-    const subTotal = calulateTotal(cartdata as any);
+    const subTotal = calulateTotal(cartdata);
     if (
+      carttotal &&
       customerOrderCount == 0 &&
       minOrderAmount !== "" &&
-      subTotal < Number(minOrderAmount) &&
-      (carttotal?.reedemAmount as number) > 0
+      parseFloat(subTotal) < parseFloat(minOrderAmount as string) &&
+      carttotal.reedemAmount > 0
     ) {
       (document.querySelector(".reward-clear") as HTMLElement)?.click();
     } else {
-      debugger
       dispatch(
         carttotaldata({
           cartsessionId: sessionId as string,
@@ -184,8 +182,8 @@ const RewardPointAndTips = () => {
           restaurantId: restaurantinfo?.restaurantId as number,
           customerId: customerId,
           cartId: 0,
-          rewardpoints: String(carttotal?.reedemPoints),
-          redeemamount: String(carttotal?.reedemAmount),
+          rewardpoints: carttotal?.reedemPoints as any,
+          redeemamount: carttotal?.reedemAmount as any,
           tipPercentage: enableTip && isRewardTip ? String(tipText) : "0",
           tipAmount: tipText === 0 ? (tipamount as number) : tipamountcal,
           deliveryaddressId: deliveryaddressinfo?.deliveryaddressId,

@@ -30,7 +30,7 @@ export const RelatedItemsList = () => {
   } = useReduxData();
   let cartitemcount = cart?.cartitemcount;
   const pickupordelivery = selecteddelivery.pickupordelivery;
-  let sessionId = sessionid;
+  let sessionId = sessionid as string;
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [openMenuItemModal, setopenMenuItemModal] = useState<boolean>(false);
@@ -54,12 +54,13 @@ export const RelatedItemsList = () => {
       restaurantinfo?.defaultLocation.locationId,
       sessionid,
     ],
-    queryFn: () =>
-      CategoryServices.getCategoryRelativesItems(
+    queryFn: async () => {
+      return await CategoryServices.getCategoryRelativesItems(
         sessionid as string,
         restaurantinfo?.defaultLocation.locationId as number,
         restaurantinfo?.restaurantId as number
-      ),
+      );
+    },
     staleTime: 0,
     refetchOnWindowFocus: false,
     enabled: (cart?.cartitemcount as number) > 0,
@@ -89,9 +90,9 @@ export const RelatedItemsList = () => {
   const { isDisplayPrice } = useUtility();
   const pathname = usePathname();
 
-  useEffect(() => {
-    refetch();
-  }, [cartitemcount]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [cartitemcount]);
 
   const handleToggleMenuItem = (value: boolean) => {
     setopenMenuItemModal(value);

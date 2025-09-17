@@ -222,7 +222,7 @@ export class MenuItemServices {
   }: {
     orderobj: OrderObjType;
     restaurantId: number;
-  }): Promise<UpdateItemToCart[] | null> {
+  }): Promise<UpdateItemToCart | {}> {
     responseclass = new ResponseModel();
     const methodName = "updateCartOrdersItem";
     const location = ENDPOINTS.UPDATE_CART_ORDER_ITEMS;
@@ -242,7 +242,7 @@ export class MenuItemServices {
     ) {
       return responseclass.result;
     } else {
-      return null;
+      return {};
     }
   }
 
