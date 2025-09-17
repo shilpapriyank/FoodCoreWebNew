@@ -82,7 +82,7 @@ const CartItemsDetailComponent = () => {
   const { isDisplayPrice } = useUtility();
   let rewardvalue = rewardpoints?.rewardvalue;
 
-  var carttotal = cart?.carttotal && cart.carttotal as CartTotal;
+  var carttotal = cart?.carttotal && (cart.carttotal as CartTotal);
   let cartitemcount = cart.cartitemcount;
   const deliveryaddressinfo = selecteddelivery.selecteddeliveryaddress;
   const ordertype =
@@ -117,7 +117,6 @@ const CartItemsDetailComponent = () => {
   let selectedtime = order?.checktime ?? "";
 
   useEffect(() => {
-    debugger
     let rpoint = 0,
       ramount = 0;
     if (rewardpoint?.redeemPoint) {
@@ -175,24 +174,23 @@ const CartItemsDetailComponent = () => {
       "0",
       restaurantinfo?.defaultlocationId as number
     ).then((response) => {
-      debugger
       if (response?.status == 1 && userinfo) {
         let rewards = {
           rewardvalue: rewardvalue,
           rewardamount: (
-            (Number(rewardpoints?.totalRewardPoints)
-              ? Number(rewardpoints?.totalRewardPoints)
-              : Number(userinfo?.totalRewardPoints)) /
+            (rewardpoints.totalRewardPoints
+              ? rewardpoints.totalRewardPoints
+              : userinfo.totalRewardPoints) /
               rewardvalue -
             0
           ).toFixed(2),
           rewardPoint:
-            (Number(rewardpoints?.totalRewardPoints)
-              ? Number(rewardpoints?.totalRewardPoints)
-              : Number(userinfo?.totalRewardPoints)) - 0,
+            (rewardpoints.totalRewardPoints
+              ? rewardpoints.totalRewardPoints
+              : userinfo.totalRewardPoints) - 0,
           totalRewardPoints: rewardpoints.totalRewardPoints
             ? rewardpoints.totalRewardPoints
-            : userinfo?.totalRewardPoints,
+            : userinfo.totalRewardPoints,
           redeemPoint: 0,
         };
         dispatch(setrewardpoint(rewards as any));
@@ -203,8 +201,8 @@ const CartItemsDetailComponent = () => {
             restaurantId: restaurantinfo?.restaurantId as number,
             customerId,
             cartId: 0,
-            rewardpoints: String(carttotal?.reedemPoints),
-            redeemamount: String(carttotal?.reedemAmount),
+            rewardpoints: "0",
+            redeemamount: "0",
             tipPercentage: String(carttotal?.tipPercentage),
             tipAmount: carttotal?.tipAmount,
             deliveryaddressId: deliveryaddressinfo?.deliveryaddressId as number,
@@ -242,7 +240,7 @@ const CartItemsDetailComponent = () => {
           //dispatch(deleteCartItem(response))
 
           let cartItem = cartdata?.cartDetails?.cartItemDetails?.filter(
-            (item) => item.dependentmenuitemid === 0
+            (item: any) => item.dependentmenuitemid === 0
           );
           if (rewardpoints?.redeemPoint > 0 && cartItem?.length === 1) {
             clearRedeempoint();
@@ -273,7 +271,6 @@ const CartItemsDetailComponent = () => {
           );
         }
       });
-      // setcartdeleteconfirm(false);
       setIsOpenModal(false);
     }
   };
@@ -547,154 +544,162 @@ const CartItemsDetailComponent = () => {
       <div className="infobox mb-2">
         {cartdata &&
           cartdata?.cartDetails?.cartItemDetails &&
-          cartdata?.cartDetails?.cartItemDetails?.map((data: any, index) => {
-            let counter = index;
-            let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
-              (x) => x.cartid === data.cartid
-            );
-            let subOptionDisplayCmp = (
-              <CartSuboptionDisplay
-                subOption={subOption as CartOptionParams[]}
-              />
-            );
-            let itemImage = getImagePath(
-              data?.imgUrl,
-              restaurantinfo?.defaultLocation?.defaultmenuitemimage
-            );
-            let isBorderBottom =
-              !cartdata?.cartDetails?.cartItemDetails?.[index + 1]
-                ?.dependentmenuitemid;
-            let dependentParentQty = getDependentParentQty(
-              cartdata?.cartDetails?.cartItemDetails as CartItemDetails[],
-              data,
-              index
-            );
+          cartdata?.cartDetails?.cartItemDetails?.map(
+            (data: any, index: any) => {
+              let counter = index;
+              let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
+                (x: any) => x.cartid === data.cartid
+              );
+              let subOptionDisplayCmp = (
+                <CartSuboptionDisplay
+                  subOption={subOption as CartOptionParams[]}
+                />
+              );
+              let itemImage = getImagePath(
+                data?.imgUrl,
+                restaurantinfo?.defaultLocation?.defaultmenuitemimage
+              );
+              let isBorderBottom =
+                !cartdata?.cartDetails?.cartItemDetails?.[index + 1]
+                  ?.dependentmenuitemid;
+              let dependentParentQty = getDependentParentQty(
+                cartdata?.cartDetails?.cartItemDetails as CartItemDetails[],
+                data,
+                index
+              );
 
-            return (
-              <div key={index}>
-                <h3 className="heading d-flex align-items-center">
-                  {data.itemname + " - " + data.subparametername} &nbsp;
-                  {isDisplayPrice && (
-                    <>
-                      ({data.currencysymbol} {data?.unitprice?.toFixed(2)})
-                    </>
-                  )}
-                  <a
-                    className="btn-default small ms-2 edit-checkout"
-                    onClick={() => editItemClick(data, dependentParentQty)}
-                  >
-                    {" "}
-                    <i className="fa ms-0 me-1 fa-pencil" />
-                    <span className="d-md-inline-block d-none">Edit</span>{" "}
-                  </a>
-                  <a
-                    className="deletebtn medium"
-                    onClick={() => {
-                      handlesetDeleteData(data);
-                    }}
-                  >
-                    {" "}
-                    <i className="fa fa-trash red-color-dark" />{" "}
-                  </a>
-                </h3>
+              return (
+                <div key={index}>
+                  <h3 className="heading d-flex align-items-center">
+                    {data.itemname + " - " + data.subparametername} &nbsp;
+                    {isDisplayPrice && (
+                      <>
+                        ({data.currencysymbol} {data?.unitprice?.toFixed(2)})
+                      </>
+                    )}
+                    <a
+                      className="btn-default small ms-2 edit-checkout"
+                      onClick={() => editItemClick(data, dependentParentQty)}
+                    >
+                      {" "}
+                      <i className="fa ms-0 me-1 fa-pencil" />
+                      <span className="d-md-inline-block d-none">
+                        Edit
+                      </span>{" "}
+                    </a>
+                    <a
+                      className="deletebtn medium"
+                      onClick={() => {
+                        handlesetDeleteData(data);
+                      }}
+                    >
+                      {" "}
+                      <i className="fa fa-trash red-color-dark" />{" "}
+                    </a>
+                  </h3>
 
-                <div className="small d-flex textsmall">
-                  {subOptionDisplayCmp}
+                  <div className="small d-flex textsmall">
+                    {subOptionDisplayCmp}
 
-                  {data?.description}
+                    {data?.description}
 
-                  <div className="text-lg-end text-md-end pt-3 pt-lg-0 pt-md-0 ms-auto ps-lg-3 ps-md-3">
-                    <div className="d-flex ms-auto pt-0 align-items-center justify-content-between">
-                      <div className="quantity normal qty-container me-5">
-                        <button
-                          onClick={() =>
-                            decrement(
-                              data.qty,
-                              data.cartid,
-                              dependentParentQty,
-                              data
-                            )
-                          }
-                          className={
-                            data.qty > 1
-                              ? "qty-btn-minus btn-light quantity__minus "
-                              : "qty-btn-minus btn-light quantity__minus disabled"
-                          }
-                          type="button"
-                        >
-                          {" "}
-                          <i className="fa fa-minus" />{" "}
-                        </button>
-                        <input
-                          type="text"
-                          name="qty"
-                          value={data.qty}
-                          disabled
-                          className="input-qty quantity__input"
-                        />
-                        <button
-                          onClick={() =>
-                            increment(data.qty, data.cartid, dependentParentQty)
-                          }
-                          className={
-                            !(
-                              dependentParentQty !== 0 &&
-                              dependentParentQty === data.qty
-                            )
-                              ? "qty-btn-plus btn-light quantity__plus"
-                              : "qty-btn-plus btn-light quantity__plus disabled pe-none"
-                          }
-                          type="button"
-                        >
-                          {" "}
-                          <i className="fa fa-plus" />{" "}
-                        </button>
+                    <div className="text-lg-end text-md-end pt-3 pt-lg-0 pt-md-0 ms-auto ps-lg-3 ps-md-3">
+                      <div className="d-flex ms-auto pt-0 align-items-center justify-content-between">
+                        <div className="quantity normal qty-container me-5">
+                          <button
+                            onClick={() =>
+                              decrement(
+                                data.qty,
+                                data.cartid,
+                                dependentParentQty,
+                                data
+                              )
+                            }
+                            className={
+                              data.qty > 1
+                                ? "qty-btn-minus btn-light quantity__minus "
+                                : "qty-btn-minus btn-light quantity__minus disabled"
+                            }
+                            type="button"
+                          >
+                            {" "}
+                            <i className="fa fa-minus" />{" "}
+                          </button>
+                          <input
+                            type="text"
+                            name="qty"
+                            value={data.qty}
+                            disabled
+                            className="input-qty quantity__input"
+                          />
+                          <button
+                            onClick={() =>
+                              increment(
+                                data.qty,
+                                data.cartid,
+                                dependentParentQty
+                              )
+                            }
+                            className={
+                              !(
+                                dependentParentQty !== 0 &&
+                                dependentParentQty === data.qty
+                              )
+                                ? "qty-btn-plus btn-light quantity__plus"
+                                : "qty-btn-plus btn-light quantity__plus disabled pe-none"
+                            }
+                            type="button"
+                          >
+                            {" "}
+                            <i className="fa fa-plus" />{" "}
+                          </button>
+                        </div>
+
+                        <span className=" fs-18 color-green fw-semibold">
+                          {isDisplayPrice && (
+                            <>
+                              {data.currencysymbol}
+                              {data?.totalprice?.toFixed(2)}
+                            </>
+                          )}
+                        </span>
                       </div>
-
-                      <span className=" fs-18 color-green fw-semibold">
-                        {isDisplayPrice && (
-                          <>
-                            {data.currencysymbol}
-                            {data?.totalprice?.toFixed(2)}
-                          </>
-                        )}
-                      </span>
                     </div>
                   </div>
-                </div>
-                {data?.studentname && (
-                  <div className="col-lg-12 col-sm-12 mt-0 col-xs-12 xs-px-0">
-                    <p className="color_black mt-0">
-                      Name:{" "}
-                      <span className="color-red"> {data?.studentname} </span>
-                    </p>
-                  </div>
-                )}
-                {((pickupordelivery === ORDERTYPE.Pickup &&
-                  !data.categorytakeoutavailable) ||
-                  (pickupordelivery === ORDERTYPE.Delivery &&
-                    !data.categorydeliveryavailable) ||
-                  !data?.availability) && (
-                  <div className="col-12 col-sm-12 col-md-12">
-                    <h6 className="text-danger">
-                      {" "}
-                      <img
-                        src="/nt/img/alert-circle.svg"
-                        alt=""
-                        className="me-1"
-                      />
-                      {`${CartMessage.ITEM_NOT_AVILABLE} ${pickupordelivery}.`}
-                    </h6>
-                  </div>
-                )}
+                  {data?.studentname && (
+                    <div className="col-lg-12 col-sm-12 mt-0 col-xs-12 xs-px-0">
+                      <p className="color_black mt-0">
+                        Name:{" "}
+                        <span className="color-red"> {data?.studentname} </span>
+                      </p>
+                    </div>
+                  )}
+                  {((pickupordelivery === ORDERTYPE.Pickup &&
+                    !data.categorytakeoutavailable) ||
+                    (pickupordelivery === ORDERTYPE.Delivery &&
+                      !data.categorydeliveryavailable) ||
+                    !data?.availability) && (
+                    <div className="col-12 col-sm-12 col-md-12">
+                      <h6 className="text-danger">
+                        {" "}
+                        <img
+                          src="/nt/img/alert-circle.svg"
+                          alt=""
+                          className="me-1"
+                        />
+                        {`${CartMessage.ITEM_NOT_AVILABLE} ${pickupordelivery}.`}
+                      </h6>
+                    </div>
+                  )}
 
-                {cartdata?.cartDetails?.cartItemDetails &&
-                  counter <
-                    cartdata?.cartDetails?.cartItemDetails?.length - 1 &&
-                  isBorderBottom && <hr />}
-              </div>
-            );
-          })}
+                  {cartdata?.cartDetails?.cartItemDetails &&
+                    counter <
+                      cartdata?.cartDetails?.cartItemDetails?.length - 1 &&
+                    isBorderBottom && <hr />}
+                </div>
+              );
+            }
+          )}
         {/* <Modal
         isShowing={isShowing}
         hide={toggle}

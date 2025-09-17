@@ -18,7 +18,7 @@ import { GetMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 export interface CartState {
   cartitemdetail: GetCartItems | null;
   cartitemcount: GetCartItemsCount | number;
-  carttotal: CartTotal | null;
+  carttotal: any | null;
   deliverycharges: any;
   rewardpoints: number;
   transactionid: string;
@@ -326,7 +326,7 @@ export const carttotaldata = createAsyncThunk(
             dispatch(setDeliveryRequestId(responseRequestId));
           }
         }
-        dispatch(setCartTotal(response));
+        dispatch(setCartTotal(response?.cartDetails));
       }
       return response;
     });
@@ -408,7 +408,7 @@ export const getCartTotalData = createAsyncThunk(
             dispatch(setDeliveryRequestId(responseRequestId));
           }
         }
-        dispatch(setCartTotal(response));
+        dispatch(setCartTotal(response?.cartDetails));
       }
       return response;
     });

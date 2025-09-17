@@ -279,7 +279,6 @@ const CartPaymentButton: React.FC<{
       recievingDate,
       enabletimeslot
     ).then((response) => {
-      debugger
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&

@@ -10,12 +10,10 @@ import { CARTPAGEMESSAGE } from "../../helpers/static-message/cart-message";
 import { useParams, useRouter } from "next/navigation";
 
 const OrderTotalDetails = () => {
-  debugger
   const { restaurantinfo, cart, userinfo, selecteddelivery, deliveryaddress } =
     useReduxData();
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const currency = GetCurrency();
-
   const charges = cart?.carttotal && cart.carttotal;
   const pickupordelivery = selecteddelivery.pickupordelivery;
   const enableTip = restaurantinfo?.defaultLocation?.enableTip;
@@ -24,12 +22,10 @@ const OrderTotalDetails = () => {
   let cartTaxList = charges?.cartTaxList && charges.cartTaxList;
   const deliveryaddressinfo = selecteddelivery?.selecteddeliveryaddress;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
-
   var dcharges =
     cart &&
     pickupordelivery === ORDERTYPE.Delivery &&
     cart.carttotal != undefined &&
-    cart.carttotal?.deliveryCharges &&
     cart.carttotal?.deliveryCharges;
   var dtotal =
     dcharges != undefined &&
@@ -47,7 +43,6 @@ const OrderTotalDetails = () => {
   const router = useRouter();
   const params = useParams();
   const { dynamic, location } = params;
-
   return (
     <>
       {charges &&
@@ -142,7 +137,8 @@ const OrderTotalDetails = () => {
               <span className="float-end">
                 {charges != undefined &&
                   charges.subTotalWithDiscount != undefined &&
-                  currency + charges.subTotalWithDiscount.toFixed(2)}
+                  currency +
+                    parseFloat(charges.subTotalWithDiscount).toFixed(2)}
               </span>
             </h3>
 
@@ -193,11 +189,11 @@ const OrderTotalDetails = () => {
                 </h3>
               )}
 
-            {enableTip && tipvalue && tipvalue != undefined && (
+            {enableTip && tipvalue != undefined && tipvalue > 0 && (
               <h3 className="heading">
                 Tip
                 <span className="float-end">
-                  {tipvalue != undefined
+                  {tipvalue != undefined && tipvalue > 0
                     ? currency + tipvalue
                     : currency + "0.00"}
                 </span>

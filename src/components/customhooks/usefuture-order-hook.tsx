@@ -1,11 +1,10 @@
-import React from "react";
 import { useReduxData } from "./useredux-data-hooks";
 
 const useFutureOrder = () => {
   const { restaurantinfo, order } = useReduxData();
   const locationinfo = restaurantinfo?.defaultLocation;
   const futureDate = locationinfo?.enablefutureordering
-    ? (order?.futureOrderDay as any)?.fullDay
+    ? order?.futureOrderDay?.fullDay
     : "";
   const isFutureOrder = locationinfo?.enablefutureordering;
   const enabletimeslot = locationinfo?.enabletimeslot;

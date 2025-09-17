@@ -271,8 +271,7 @@ export class CartServices {
     ordertimetype: number = ORDER_TIME_TYPE.ASAP.value,
     recievingDate: string = "",
     enableTimeSlot: boolean = false
-  ): Promise<CartTotal | null> {
-    debugger
+  ): Promise<any | null> {
     responseclass = new ResponseModel();
     const methodName = "carttotal";
     const location = ENDPOINTS.GET_CART_TOTAL;
