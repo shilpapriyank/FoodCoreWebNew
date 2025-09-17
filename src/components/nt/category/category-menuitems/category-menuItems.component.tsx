@@ -78,6 +78,7 @@ const CategoryMenuItems: React.FC<{
     menuitem,
     cart,
     sessionid,
+
   } = useReduxData();
   const [loadedCategories, setLoadedCategories] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -85,7 +86,7 @@ const CategoryMenuItems: React.FC<{
   const categoryItemList = category.categoryitemlist;
   const selectedCategory = category?.selectedcategorydetail;
   const [openMenuItemModal, setopenMenuItemModal] = useState<boolean>(false);
-  const itemsPerPage = 500; // Number of categories to load per page.
+  const itemsPerPage = 500;
   const dispatch = useAppDispatch();
   const [openLoginModal, setopenLoginModal] = useState<boolean>(false);
   const [updateView, setUpdateView] = useState<boolean>(true);
@@ -167,8 +168,9 @@ const CategoryMenuItems: React.FC<{
     //check category slug and selected category url not same then select  categoryslug category
     if (selectedCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
-        (cat) => cat?.categoryslug === categoryUrl
+        (cat: any) => cat?.categoryslug === categoryUrl
       );
+      // dispatch(setSelectedCategory(findedCat));
     }
   }, [
     categoryslug,
@@ -335,7 +337,7 @@ const CategoryMenuItems: React.FC<{
     let checkItemExistInCart =
       cartItem !== undefined &&
       cartItem.length > 0 &&
-      cartItem?.some((cartitem) => cartitem.menuitemid === item?.menuitemId);
+      cartItem?.some((cartitem: any) => cartitem.menuitemid === item?.menuitemId);
     if (!checkItemExistInCart) {
       MenuItemServices.quickOrderaddToCart({
         menuItemId: item.menuitemId,
@@ -474,7 +476,7 @@ const CategoryMenuItems: React.FC<{
                 {menuItemsWithCat?.length > 0 &&
                   menuItemsWithCat?.map((category, index) => {
                     return (
-                      <div key={`${category.catId}`}>
+                      <div key={`${category.catId}-${index}`}>
                         <div
                           className="row"
                           id={category.categoryslug}
@@ -513,8 +515,8 @@ const CategoryMenuItems: React.FC<{
                                     <div className="card itembox" id="itembox">
                                       <div className="text">
                                         {menu &&
-                                        (menu?.isregular === true ||
-                                          isRegular) ? (
+                                          (menu?.isregular === true ||
+                                            isRegular) ? (
                                           <>
                                             <div className="d-flex flex-row">
                                               <div className="menu-info w-80">
@@ -530,7 +532,7 @@ const CategoryMenuItems: React.FC<{
                                                   </h3>
                                                 </a>
                                                 {menu.description.length <
-                                                100 ? (
+                                                  100 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -583,7 +585,7 @@ const CategoryMenuItems: React.FC<{
                                                   </h3>{" "}
                                                 </a>
                                                 {menu.description.length <
-                                                180 ? (
+                                                  180 ? (
                                                   <p>
                                                     {fixedLengthString(
                                                       menu.description
@@ -653,11 +655,10 @@ const CategoryMenuItems: React.FC<{
                                               !menu.isFavoriteMenu
                                             );
                                           }}
-                                          className={`fa wishlist fa-heart-o ${
-                                            menu?.isFavoriteMenu == true
+                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
                                               ? "active"
                                               : ""
-                                          }`}
+                                            }`}
                                         />
                                       </div>
                                     </div>
@@ -738,10 +739,15 @@ const CategoryMenuItems: React.FC<{
                     );
                   })}
                 {/* {((isShowSkeleton&&menuItemsWithCat?.length===0)|| (Object.keys(searchdata).length === 0 && errorMessage == "" && searchtext !== "")) && <FavouriteSkeleton />} */}
+
                 {searchdata &&
                   Object.keys(searchdata).length === 0 &&
                   errorMessage == "" &&
-                  searchtext !== "" && <FavouriteSkeleton />}
+                  searchtext !== "" && 
+                  // loading && <FavouriteSkeleton />
+                  <FavouriteSkeleton />
+                }
+
                 {errorMessage && (
                   <h4 className="red-text text-center mt-5">{errorMessage}</h4>
                 )}

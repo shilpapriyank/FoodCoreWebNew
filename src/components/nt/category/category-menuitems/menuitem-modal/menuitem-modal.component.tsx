@@ -43,7 +43,6 @@ import {
 import MenuItemOptions from "./menuitem-options.component";
 import MenuItemAddCartBtn from "./menuitem-addtocart.component";
 import MenuItemQty from "./menuitem-qty.component";
-import MenuItemSkeletonComponent from "@/components/nt/skeleton/menuitem-skeleton.component";
 import { useAppDispatch } from "../../../../../../redux/hooks";
 import {
   DependantMenuList,
@@ -52,6 +51,7 @@ import {
   Type,
 } from "@/types/menuitem-types/menuitem.type";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import MenuItemSkeletonComponent from "@/components/nt/skeleton/menuitem-skeleton.component";
 
 const MenuItemModal: React.FC<{
   isOpenModal?: boolean;
@@ -108,14 +108,14 @@ const MenuItemModal: React.FC<{
     menuItemDetail != undefined &&
     menuItemDetail.topping != undefined &&
     menuItemDetail.topping.filter(
-      (x: Size) => x.subparameterId == selectedsize?.[0]?.subparameterId
+      (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let updateitemoptionincart = menuitem.updateitemoptionincart;
   let selectedtoppings =
     menuItemDetail?.topping &&
     menuItemDetail.topping.length > 0 &&
     menuItemDetail?.topping.find(
-      (x: Size) => x.subparameterId == selectedsize?.[0]?.subparameterId
+      (x) => x.subparameterId == selectedsize?.[0]?.subparameterId
     );
   let maincategoryList = main?.maincategoryList;
   var ordertype =
@@ -195,17 +195,16 @@ const MenuItemModal: React.FC<{
   useEffect(() => {
     let selectedToppingLength =
       selectedtoppings &&
-      selectedtoppings?.list?.filter(
-        (item: any) => item.optionselected === true
-      ).length;
+      selectedtoppings?.list?.filter((item) => item.optionselected === true)
+        .length;
     let lstcarttoppingNew = [];
     if (selectedtoppings && selectedtoppings?.list) {
       selectedtoppings?.list != undefined &&
         selectedtoppings?.list.length > 0 &&
-        selectedtoppings?.list.map((lsttop: any) => {
+        selectedtoppings?.list.map((lsttop) => {
           lsttop.type != undefined &&
             lsttop.type.length > 0 &&
-            lsttop.type.map((type: any) => {
+            lsttop.type.map((type) => {
               if (type.subOptionselected === true) {
                 lstcarttoppingNew.push(type);
                 setlstcarttopping(lstcarttoppingNew);
@@ -316,7 +315,7 @@ const MenuItemModal: React.FC<{
     if (
       updatedSelectedMenuitemDetail &&
       updatedSelectedMenuitemDetail?.cartid > 0 &&
-      selectedmenuitemdetail?.cartid > 0
+      selectedmenuitemdetail?.cartid as any > 0
     ) {
       console.log(
         "selectedmenuitemdetail before update",
