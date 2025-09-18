@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import useRewardPoint from "../../customhooks/userewardpoint-hook";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import CustomanchortagComponent from "../../common/customanchortag.component";
 import {
   bindPlaceOrderObject,
   checkCheckoutDisable,
@@ -17,20 +19,17 @@ import { API_RESPONSE_STATUS } from "../../common/enums";
 import handleNotify from "../../default/helpers/toaster/toaster-notify";
 import useUtility from "../../customhooks/utility-hook";
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
-import { useDispatch } from "react-redux";
 import { ToasterTypes } from "../../default/helpers/toaster/toaster-types";
 import { ToasterPositions } from "../../default/helpers/toaster/toaster-positions";
 import VerifyPhoneComponent from "../login-register/verifyphone.component";
 import Login from "../login-register/login.component";
+import Register from "../login-register/register.component";
 import AddAddress from "../common/add-address.component";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import {
-  CartDetails,
-  CartTotal,
-  PromotionData,
-} from "@/types/cart-types/cartservice.type";
+import useRewardPoint from "@/components/customhooks/userewardpoint-hook";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
+import { CartDetails, GetCartItems } from "@/types/cart-types/cartservice.type";
 import { CartServices } from "../../../../redux/cart/cart.services";
 import {
   addCalculatedTotal,
@@ -48,14 +47,11 @@ import {
 } from "../../../../redux/cart/cart.slice";
 import { OrderServices } from "../../../../redux/order/order.services";
 import { PAGES } from "../common/pages";
-import CustomanchortagComponent from "@/components/common/customanchortag.component";
 import CommonModal from "../common/common-model.component";
+import { useAppDispatch } from "../../../../redux/hooks";
 import { useParams, useRouter } from "next/navigation";
 
-const CartPaymentButton: React.FC<{
-  errormessage: any;
-  timeErrorMessage: any;
-}> = ({ errormessage, timeErrorMessage }) => {
+const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
   const {
     userinfo,
     cart,
@@ -66,16 +62,13 @@ const CartPaymentButton: React.FC<{
     selecteddelivery,
     deliveryaddress,
     main,
-    //studentdata,
+    // studentdata,
     recievingTime,
     meredian,
     orderTimeType,
   } = useReduxData();
-  const { validateNewuserRewardPoint } = useRewardPoint(
-    cart?.carttotal as CartTotal,
-    ""
-  );
-  const dispatch = useDispatch();
+  const { validateNewuserRewardPoint } = useRewardPoint(cart?.carttotal);
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
   const { dynamic } = params;
@@ -94,23 +87,24 @@ const CartPaymentButton: React.FC<{
       ? ORDER_TYPE.PICKUP.value
       : ORDER_TYPE.DELIVERY.value;
   let tipPercentage =
-    (carttotal?.tipPercentage as number) > 0 ? carttotal?.tipPercentage : "";
+    carttotal?.tipPercentage > 0 ? parseFloat(carttotal.tipPercentage) : "";
   let customerId = userinfo ? userinfo.customerId : 0;
-  const [isPaymentButtonDisable, setisPaymentButtonDisable] = useState(false);
-  const [deliveryaddressId, setDeliveryaddressId] = useState(0);
-  const [isDisableCheckout, setisDisableCheckout] = useState(false);
-  const [deliveryErrorMessage, setdeliveryErrorMessage] = useState("");
+  const [isPaymentButtonDisable, setisPaymentButtonDisable] =
+    useState<boolean>(false);
+  const [deliveryaddressId, setDeliveryaddressId] = useState<number>(0);
+  const [isDisableCheckout, setisDisableCheckout] = useState<boolean>(false);
+  const [deliveryErrorMessage, setdeliveryErrorMessage] = useState<string>("");
   const [dropOfTime, setdropOfTime] = useState("");
   // const [timeErrorMessage, settimeErrorMessage] = useState("");
-  const [displayUberTime, setdisplayUberTime] = useState(true);
-  const { deliveryService } = restaurantinfo?.defaultLocation as any;
+  const [displayUberTime, setdisplayUberTime] = useState<boolean>(true);
+  const { deliveryService }: any = restaurantinfo?.defaultLocation;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
-  const [paymentType, setpaymentType] = useState(1);
+  const [paymentType, setpaymentType] = useState<number>(1);
   let selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   let routepath = `/${selectedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation.locationURL}`;
+  const [opentimingModal, setopentimingModal] = useState<boolean>(false);
   const deliveryAddressInfo = selecteddelivery;
   const restaurantWindowTime = main.restaurantWindowTime;
-  const [opentimingModal, setopentimingModal] = useState<boolean>(false);
   const { isDisplayPrice } = useUtility();
   const orderDisableData = orderDisable(
     restaurantinfo as GetAllRestaurantInfo,
@@ -145,13 +139,15 @@ const CartPaymentButton: React.FC<{
 
   let rewardpoint = rewardpoints;
 
-  const [openVErifyPopup, setopenVErifyPopup] = useState(true);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [openVErifyPopup, setopenVErifyPopup] = useState<boolean>(true);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-  const [isOpenDeliveryModal, setIsOpenDeliveryModal] = useState(false);
-  const [openLoginModal, setOpenLoginModal] = useState(false);
-  const [openAccountConfirmModal, setopenAccountConfirmModal] = useState(false);
-  const [openAdressModal, setopenAdressModal] = useState(false);
+  const [isOpenDeliveryModal, setIsOpenDeliveryModal] =
+    useState<boolean>(false);
+  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+  const [openAccountConfirmModal, setopenAccountConfirmModal] =
+    useState<boolean>(false);
+  const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
 
   const [modalState, setModalState] = useState({
     openRegisterModal: false,
@@ -160,12 +156,6 @@ const CartPaymentButton: React.FC<{
     openUserExistModal: false,
     openVerifyPhone: false,
   });
-  const isDisabled =
-    deliveryService === DELIVERYSERVICES.UBEREATS &&
-    displayUberTime &&
-    pickupordelivery === ORDER_TYPE.DELIVERY.text &&
-    !enabletimeslot &&
-    isDisplayPrice;
 
   const handleToggleAll = (value: any, key: any) => {
     setModalState((pre) => ({
@@ -174,13 +164,20 @@ const CartPaymentButton: React.FC<{
     }));
   };
 
+  //   useEffect(() => {
+  //     //CHECK IF CART ITEMS IS EMPTY REDIRECT
+  //         if (deliveryaddressinfo && ordertype === ORDER_TYPE.DELIVERY.value) {
+  //             setDeliveryaddressId(deliveryaddressinfo.deliveryaddressId)
+  //         }
+  // }, []);
+
   useEffect(() => {
     // handleToggleAll(true,'openVerifyPhone')
     let address = userinfo !== null ? deliveryaddressinfo : tempDeliveryAddress;
     const deliveryError = handleSetDeliveryTypeError(
       pickupordelivery,
       address as any,
-      carttotal as any,
+      carttotal,
       dcharges,
       cart,
       cartdata as any,
@@ -266,10 +263,10 @@ const CartPaymentButton: React.FC<{
       restaurantinfo?.restaurantId as number,
       customerId,
       0,
-      String(carttotal?.reedemPoints),
-      String(carttotal?.reedemAmount),
-      String(carttotal?.tipPercentage),
-      checkIntegerValue(carttotal?.tipAmount as number),
+      carttotal.reedemPoints,
+      carttotal.reedemAmount,
+      carttotal?.tipPercentage,
+      checkIntegerValue(carttotal?.tipAmount),
       deliveryaddressinfo?.deliveryaddressId,
       ordertype,
       order?.deliveryRequestId,
@@ -282,9 +279,9 @@ const CartPaymentButton: React.FC<{
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&
-          response?.deliveryCharges
+          response?.cartDetails?.deliveryCharges
         ) {
-          let dcharges = JSON.parse(response?.deliveryCharges);
+          let dcharges = JSON.parse(response?.cartDetails?.deliveryCharges);
           let dropofTime =
             dcharges != undefined &&
             dcharges?.dropofTime &&
@@ -315,11 +312,7 @@ const CartPaymentButton: React.FC<{
           }
         }
 
-        // dispatch({
-        //   type: CartTypes.CART_TOTAL,
-        //   payload: response.cartDetails,
-        // });
-        dispatch(setCartTotal(response));
+        dispatch(setCartTotal(response.cartDetails));
       }
     });
   };
@@ -334,23 +327,32 @@ const CartPaymentButton: React.FC<{
     }, 500);
   };
 
-  const handleOpenLoginModal = (value: boolean) => {
+  const handleOpenLoginModal = (value: any) => {
     console.log("value", value);
     setOpenLoginModal(value);
   };
-
-  const handleToggle = (value: boolean, key: any) => {
+  const handleToggle = (value: any, key?: any) => {
     setModalState((pre) => ({
       ...pre,
       [key]: value,
     }));
   };
 
-  const handleToggleAddAddressModal = (value: boolean) => {
+  const handleToggleAddAddressModal = (value: any) => {
     setopenAdressModal(value);
   };
 
-  function refreshCart(orderId: number) {
+  // const handleClickPlaceOrderForNotLoggedinUser = () => {
+  //     setOpenLoginModal(true)
+  //     setTimeout(() => {
+  //         setdisplayUberTime(false)
+  //     }, 200)
+  //     setTimeout(() => {
+  //         handleClickPlaceOrder(paymentType);
+  //     }, 500)
+  // }
+
+  function refreshCart(orderId: any) {
     OrderServices.getOrderInfo({
       restaurantId: restaurantinfo?.restaurantId as number,
       locationId: restaurantinfo?.defaultlocationId as number,
@@ -368,7 +370,7 @@ const CartPaymentButton: React.FC<{
     return;
   }
 
-  const addorders = (isAsap: boolean, paymentType: any) => {
+  const addorders = (isAsap: any, paymentType: any) => {
     let placeOrder = bindPlaceOrderObject(
       rewardpoints,
       cart,
@@ -380,8 +382,8 @@ const CartPaymentButton: React.FC<{
       isAsap,
       paymentType,
       restaurantinfo as GetAllRestaurantInfo,
-      promotionData as PromotionData,
-      //studentname as any,
+      promotionData,
+      //studentname,
       distance,
       pickupordelivery,
       isFutureOrder as boolean,
@@ -393,16 +395,18 @@ const CartPaymentButton: React.FC<{
       placeOrder: placeOrder,
       restaurantId: restaurantinfo?.restaurantId as number,
     }).then((response) => {
+      debugger;
       if (response?.status === API_RESPONSE_STATUS.SUCCESS) {
         if (response.result.orderId && response.result.orderId > 0) {
           dispatch(setorderId(response.result.orderId));
           //handleNotify('Order complete successfully! with OrderId: ' + response.result.orderId, ToasterPositions.TopRight, ToasterTypes.Success);
 
           if (paymentType === PAYMENT_TYPE.CASH.value) {
+            debugger;
             dispatch(emptycart());
-            dispatch(emptyorder());
             //router.push(routepath + "/menu");
             // closeModal('btn-close')
+            //dispatch(emptyorder());
             setIsOpenModal(false);
             router.push(routepath + "/" + PAGES.THANK_YOU);
           }
@@ -433,6 +437,7 @@ const CartPaymentButton: React.FC<{
       }, 300);
       setisPaymentButtonDisable(false);
     });
+    dispatch(emptyorder());
   };
 
   let isButtonDisabled2 = false;
@@ -446,9 +451,14 @@ const CartPaymentButton: React.FC<{
     order.checktime === ""
   ) {
     isButtonDisabled2 = true;
+    // console.log(isButtonDisabled2)
+    // console.log(deliveryErrorMessage)
+    // console.log(timeErrorMessage)
+    // console.log(orderDisableData?.errormessage)
+    // console.log(errormessage)
   }
 
-  const ErrorMessage = ({ message }: { message: any }) =>
+  const ErrorMessage = ({ message }: any) =>
     message ? (
       <div className="card mb-3">
         <div className="card-body">
@@ -459,11 +469,11 @@ const CartPaymentButton: React.FC<{
       </div>
     ) : null;
 
-  const handleToggleTimingModal = (value: boolean) => {
+  const handleToggleTimingModal = (value: any) => {
     setopentimingModal(value);
   };
 
-  const handleToggleAccountConfirm = (value: boolean) => {
+  const handleToggleAccountConfirm = (value: any) => {
     setopenAccountConfirmModal(value);
   };
 
@@ -495,16 +505,7 @@ const CartPaymentButton: React.FC<{
               // isDisable={false}
               onClick={() => handleClickUberPopup(1)}
             >
-              {/* <a
-              className={`btn-default w-100 ${isDisabled ? "disabled" : ""}`}
-              onClick={(e) => {
-                if (isDisabled) {
-                  e.preventDefault();
-                  return;
-                }
-                handleClickUberPopup(1);
-              }}
-            > */}{" "}
+              {" "}
               Place Order <i className="fa fa-angle-right" />
             </a>
           ) : (
@@ -546,8 +547,7 @@ const CartPaymentButton: React.FC<{
         // HANDLE TIP WARNING ON CLICK PAY BY CARD
         deliveryService === DELIVERYSERVICES.UBEREATS &&
           displayUberTime &&
-          pickupordelivery.toLowerCase() ===
-            ORDER_TYPE.DELIVERY.text.toLowerCase() &&
+          pickupordelivery === ORDER_TYPE.DELIVERY.text.toLowerCase() &&
           !enabletimeslot ? (
           <a
             className={"btn-default w-100"}
@@ -643,7 +643,7 @@ const CartPaymentButton: React.FC<{
                   btn2Name=""
                   isbtn2={false}
                   handleClickBtn1={handleClickOk}
-                  handleClickBtn2={() => handleToggle(false, 0)}
+                  handleClickBtn2={() => handleToggle(false)}
                   isOpenModal={isOpenModal}
                 />
               )
@@ -655,7 +655,7 @@ const CartPaymentButton: React.FC<{
                   btn2Name=""
                   isbtn2={false}
                   handleClickBtn1={handleClickOk}
-                  handleClickBtn2={() => handleToggle(false, 0)}
+                  handleClickBtn2={() => handleToggle(false)}
                   handleToggle={handleToggle}
                   isOpenModal={isOpenModal}
                 />

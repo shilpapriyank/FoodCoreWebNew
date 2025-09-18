@@ -22,10 +22,10 @@ const MyOrdersPage = () => {
   const dispatch = useAppDispatch();
   const { userinfo, restaurantinfo } = useReduxData();
   let customerId = userinfo ? userinfo.customerId : 0;
-  const [showAll, setshowAll] = useState(false);
-  let [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalCount, setTotalCount] = useState(0);
+  const [showAll, setshowAll] = useState<boolean>(false);
+  let [pageIndex, setPageIndex] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [orderHistoryRecord, setOrderHistoryRecord] = useState([]);
 
   const { isError, isLoading, data, isSuccess, refetch, isFetching } = useQuery(

@@ -63,7 +63,9 @@ export const FormatOrderObject = ({
     selectedtopping?.list?.forEach((lsttop) => {
       lsttop.type?.forEach((type) => {
         if (type.subOptionselected === true) {
-          const isHalfPrice = type.pizzaside === PIZZA_SIDE_ENUM.LEFT || type.pizzaside === PIZZA_SIDE_ENUM.RIGHT;
+          const isHalfPrice =
+            type.pizzaside === PIZZA_SIDE_ENUM.LEFT ||
+            type.pizzaside === PIZZA_SIDE_ENUM.RIGHT;
           const price =
             lsttop?.freeToppingsCount > 0 && lsttop?.multipleSelectStatus
               ? type.paidQty > 0
@@ -94,7 +96,7 @@ export const FormatOrderObject = ({
   }
 
   let cartItem: CartItem = {
-    menuid: objselectedItem.menuitemId,
+    menuid: objselectedItem.menuitemId ?? 0,
     restaurantId: objrestaurant.restaurantId,
     locationId: objrestaurant.defaultlocationId,
     cartId: objselectedItem.cartid ?? 0,
@@ -102,7 +104,7 @@ export const FormatOrderObject = ({
     orderitemId: 0,
     qty: quantity,
     price: selectedsize?.price ?? 0,
-    itemname: objselectedItem.menuItemName ?? "Unknown Item",
+    itemname: objselectedItem.menuItemName ?? "Unnamed Item",
     netprice: total ?? 0,
     subparameterid: selectedsize?.subparameterId ?? 0,
     subparametername: selectedsize?.type ?? "",
