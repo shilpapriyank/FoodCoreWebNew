@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-//import MobileLeftmenuComponent from '../LeftMenu/mobile-leftmenu.component';
+// import MobileLeftmenuComponent from '../LeftMenu/mobile-leftmenu.component';
 import { useRouter } from "next/navigation";
 //import { MemoizedCartCounterComponent } from './cart-counter.component';
 //import DeliveryDropdownMobileComponent from './delivery-dropdown-mobile.component';

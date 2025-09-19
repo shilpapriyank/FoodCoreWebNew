@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import "../../styles/globals.css";
+import type { Metadata } from "next";
 import "bootstrap/dist/css/bootstrap.min.css";
 import type { ReactNode } from "react";
 import { RestaurantsServices } from "../../redux/restaurants/restaurants.services";
@@ -9,26 +9,23 @@ import { GetThemeDetails } from "@/components/common/utility";
 import ClientWrapper from "@/components/common/client-wrapper";
 import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
-import moment from "moment";
-// const ClientProviders = dynamic(() => import('@/components/common/client-providers'), {
-//   ssr: false,
-// });
 export const metadata: Metadata = {
   title: "Restaurant App",
   description: "Restaurant ordering application",
 };
 
-// Helper function to serialize data for client components
+// Helper function to serialize data
 function serializeRestaurantData(data: any) {
   if (!data) return null;
 
   // Only pass plain object properties that can be serialized
   return {
-    themeType: data.themeType || "default",
-    restaurantName: data.restaurantName || "",
-    id: data.id || "",
-    // Add other serializable properties you need
-    // Avoid passing class instances, functions, or complex objects
+    themeType: data.themetype || "default",
+    restaurantName: data?.seodetails?.restaurantname || "",
+    // id: data.id || "",
+    imageUrl: data?.seodetails?.imageurl || "",
+    metaTitle: data?.seodetails?.metatitle || "",
+    metaDescription: data?.seodetails?.metadescription || "",
   };
 }
 

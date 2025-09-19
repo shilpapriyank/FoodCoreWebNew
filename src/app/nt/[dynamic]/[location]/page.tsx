@@ -14,10 +14,6 @@ import { setpickupordelivery } from "../../../../../redux/selected-delivery-data
 import { OrderServices } from "../../../../../redux/order/order.services";
 import { isasap, setordertime } from "../../../../../redux/order/order.slice";
 import Layout from "@/components/nt/layout/layout.component";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import FavouriteSkeleton from "@/components/nt/skeleton/favourite-skeleton";
-// import { MenuItemSkeletonComponent } from "@/components/nt/skeleton/menuitem-skeleton.component";
 
 const LocationPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -52,18 +48,23 @@ const LocationPage: React.FC = () => {
     pickupordelivery
   );
 
+  // useEffect(() => {
+  //   if (
+  //     !selecteddelivery?.pickupordelivery ||
+  //     Object.keys(selecteddelivery?.pickupordelivery || {}).length === 0
+  //   ) {
+  //     dispatch(
+  //       setpickupordelivery(
+  //         restaurantinfo?.defaultLocation?.defaultordertype
+  //           ? ORDER_TYPE.DELIVERY.text
+  //           : ORDER_TYPE.PICKUP.text
+  //       )
+  //     );
+  //   }
+  // }, []);
   useEffect(() => {
-    if (
-      !selecteddelivery?.pickupordelivery ||
-      Object.keys(selecteddelivery?.pickupordelivery || {}).length === 0
-    ) {
-      dispatch(
-        setpickupordelivery(
-          restaurantinfo?.defaultLocation?.defaultordertype
-            ? ORDER_TYPE.DELIVERY.text
-            : ORDER_TYPE.PICKUP.text
-        )
-      );
+    if (selecteddelivery?.pickupordelivery === null || Object.keys(selecteddelivery?.pickupordelivery).length === 0 || selecteddelivery?.pickupordelivery === '') {
+      dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
     }
   }, []);
 
@@ -83,17 +84,27 @@ const LocationPage: React.FC = () => {
           }
         });
       }
+      // if (order?.checktime === "") {
+      //   OrderServices.getOrderTime(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId, 1).then(response => {
+      //     dispatch(isasap(true));
+      //     const time = response?.ordertime?.split(":")
+      //     const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`
+      //     if (response) {
+      //       dispatch(setordertime(timeWithMeridian));
+      //       return;
+      //     }
+
+      //   })
+      // }
     }
   }, [userinfo]);
 
+  const loginButton = document.querySelector(".login-btn") as HTMLButtonElement;
   useEffect(() => {
-    const loginButton = document.querySelector(
-      ".login-btn"
-    ) as HTMLButtonElement;
     if (b2b && userinfo === null) {
       loginButton?.click();
     }
-  }, [userinfo]);
+  }, [userinfo, loginButton]);
 
   const handleChangeAddress = () => {
     setIsLoadAddress(false);
@@ -105,23 +116,19 @@ const LocationPage: React.FC = () => {
         {!errorMessage && <CategoryHeader />}
       </LoadLocationDirectComponent>
 
-      {loading ? (
-        <FavouriteSkeleton/>
-      ) : (
-        <CategoryMenuItems
-          menuItemsWithCat={menuItemsWithCat}
+      <CategoryMenuItems
+        menuItemsWithCat={menuItemsWithCat}
+        errorMessage={!loading ? errorMessage : ""}
+        // categoryslug=""
+      >
+        <SearchBarComponent
+          searchItem={searchItem}
+          handleChangeSearch={handleChangeSearch}
+          handleSubmitSearch={handleSubmitSearch}
+          handleClickCancel={handleClickCancel}
           errorMessage={!loading ? errorMessage : ""}
-          categoryslug=""
-        >
-          <SearchBarComponent
-            searchItem={searchItem}
-            handleChangeSearch={handleChangeSearch}
-            handleSubmitSearch={handleSubmitSearch}
-            handleClickCancel={handleClickCancel}
-            errorMessage={!loading ? errorMessage : ""}
-          />
-        </CategoryMenuItems>
-     )}
+        />
+      </CategoryMenuItems>
     </Layout>
   );
 };

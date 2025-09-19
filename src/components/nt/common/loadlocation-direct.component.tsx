@@ -139,6 +139,38 @@ const LoadLocationDirectComponent = ({
     isLoadAddress,
   ]);
 
+  
+  //   useEffect(() => {
+  //   if (
+  //     location !== restaurantinfo?.defaultLocation?.locationURL &&
+  //     (!ischangeurl || isLoadAddressChangeUrl) &&
+  //     isLoadAddress
+  //   ) {
+  //     const isLocationExist =
+  //       addressList?.filter((item) => item.locationURL === location).length !== 0;
+
+  //     if (isLocationExist) {
+  //       const urlLocation = addressList?.find(
+  //         (item) => item.locationURL === location
+  //       );
+  //       handleClickChangeLocation(urlLocation?.locationId as number);
+  //     } else {
+  //       router.push(`/${selctedTheme?.url}/${dynamic}/error`);
+  //     }
+  //   }
+  // }, [
+  //   restaurantinfo?.defaultLocation?.locationURL,
+  //   addressList,
+  //   isLoadAddress,
+  //   ischangeurl,
+  //   isLoadAddressChangeUrl,
+  //   location,
+  //   router,
+  //   selctedTheme?.url,
+  //   dynamic,
+  // ]);
+
+
   const handleClickChangeLocation = (lid: number) => {
     setisLoad(false);
     LocationServices.changeRestaurantLocation(
