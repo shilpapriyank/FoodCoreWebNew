@@ -181,7 +181,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
             <div className="col-lg-2 text-center col-md-3 col-10">
               {isHomePage ? (
                 <>
-                  <a
+                  <div
                     className={`logo  d-md-block ${
                       userinfo === null ? "d-none" : ""
                     }`}
@@ -192,7 +192,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
                     <Link href={locationFullLink}>
                       <img src={logoUrl} />
                     </Link>
-                  </a>
+                  </div>
 
                   {userinfo === null && (
                     <a

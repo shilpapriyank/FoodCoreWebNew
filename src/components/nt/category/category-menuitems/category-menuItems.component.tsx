@@ -474,7 +474,7 @@ const CategoryMenuItems: React.FC<{
 
               <div className="col-lg-9 col-md-8 col-12 order-2 order-lg-1 order-md-1">
                 {menuItemsWithCat?.length > 0 &&
-                  menuItemsWithCat?.map((category, index) => {
+                  menuItemsWithCat.map((category, index) => {
                     return (
                       <div key={`${category.catId}-${index}`}>
                         <div
@@ -497,181 +497,142 @@ const CategoryMenuItems: React.FC<{
                         </div>
                         {viewType === ViewTypeEnum.LIST && (
                           <div className="row row-cols-lg-2 row-cols-md-1 row-cols-1 main-scroll">
-                            {category?.menuitems?.map(
-                              (menu: any, index: any) => {
-                                let shareUrl = `${window.location.origin}/${selectedTheme?.url}/${dynamic}/${location}/${category?.categoryslug}?menuitemId=${menu?.menuitemId}`;
-                                const isRegular =
-                                  menu?.typeid === 0 &&
-                                  menu?.isdefaultprice === 1;
-                                const imgSrc = getImagePath(
-                                  menu.imgurl,
-                                  defaultLocation?.defaultmenuitemimage
-                                );
-                                return (
-                                  <div
-                                    className="cols menu-item"
-                                    key={`${category.catId}-${menu.menuitemId}-${index}`}
-                                  >
-                                    <div className="card itembox" id="itembox">
-                                      <div className="text">
-                                        {menu &&
-                                          (menu?.isregular === true ||
-                                            isRegular) ? (
-                                          <>
-                                            <div className="d-flex flex-row">
-                                              <div className="menu-info w-80">
-                                                <a
-                                                  className=""
-                                                  data-menuitemid={
-                                                    menu.menuitemId
+                            {category.menuitems.map((menu: any, index: any) => {
+                              let shareUrl = `${window.location.origin}/${selectedTheme?.url}/${dynamic}/${location}/${category.categoryslug}?menuitemId=${menu.menuitemId}`;
+                              const isRegular =
+                                menu.typeid === 0 && menu.isdefaultprice === 1;
+                              const imgSrc = getImagePath(
+                                menu.imgurl,
+                                defaultLocation?.defaultmenuitemimage
+                              );
+                              return (
+                                <div
+                                  className="cols menu-item"
+                                  key={`${category.catId}-${menu.menuitemId}-${index}`}
+                                >
+                                  <div className="card itembox" id="itembox">
+                                    <div className="text">
+                                      {menu.isregular === true || isRegular ? (
+                                        <>
+                                          <div className="d-flex flex-row">
+                                            <div className="menu-info w-80">
+                                              <a
+                                                data-menuitemid={menu.menuitemId}>
+                                                <h3 className="menuitem-name">
+                                                  {menu.menuItemName}
+                                                </h3>
+                                              </a>
+                                              {menu.description.length <
+                                                100 ? (
+                                                <p>
+                                                  {fixedLengthString(
+                                                    menu.description
+                                                  )}
+                                                </p>
+                                              ) : (
+                                                <PopOver
+                                                  description={
+                                                    menu.description
                                                   }
-                                                >
-                                                  <h3 className="menuitem-name">
-                                                    {" "}
-                                                    {menu.menuItemName}{" "}
-                                                  </h3>
-                                                </a>
-                                                {menu.description.length <
-                                                  100 ? (
-                                                  <p>
-                                                    {fixedLengthString(
-                                                      menu.description
-                                                    )}
-                                                  </p>
-                                                ) : (
-                                                  <PopOver
-                                                    description={
-                                                      menu.description
-                                                    }
-                                                  ></PopOver>
-                                                )}
-                                              </div>
-                                              <div className="plus-icon w-20 text-end">
-                                                {isDisplayPrice && (
-                                                  <span className="mt-10 d-inline-block fw-bold color-green">
-                                                    {menu.currency}
-                                                    {menu?.price}
-                                                  </span>
-                                                )}
-                                              </div>
-                                            </div>
-                                            <div>
-                                              <MenuItemAddToCart
-                                                shareUrl={shareUrl}
-                                                item={menu}
-                                                handleToggleDependnt={
-                                                  handleToggleDependnt
-                                                }
-                                              />
-                                            </div>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <div className="d-flex flex-row">
-                                              <div className="menu-info w-80">
-                                                <a
-                                                  className=""
-                                                  data-menuitemid={
-                                                    menu.menuitemId
-                                                  }
-                                                  onClick={(e) =>
-                                                    handleClickItem(e, menu)
-                                                  }
-                                                >
-                                                  {" "}
-                                                  <h3>
-                                                    {" "}
-                                                    {menu.menuItemName}{" "}
-                                                  </h3>{" "}
-                                                </a>
-                                                {menu.description.length <
-                                                  180 ? (
-                                                  <p>
-                                                    {fixedLengthString(
-                                                      menu.description
-                                                    )}
-                                                  </p>
-                                                ) : (
-                                                  <PopOver
-                                                    description={
-                                                      menu.description
-                                                    }
-                                                  ></PopOver>
-                                                )}
-                                              </div>
-                                              <div className="plus-icon w-20 text-end">
-                                                {isDisplayPrice && (
-                                                  <span className="mt-10 d-inline-block fw-bold color-green">
-                                                    {menu.currency}
-                                                    {menu?.price}
-                                                  </span>
-                                                )}
-                                                <br />
-                                                {/* ////pluse icon addto cart click */}
-                                                <a
-                                                  className="fa plusbutton fa-plus icon-plus-list-view mt-1"
-                                                  data-toggle="tooltip"
-                                                  data-placement="left"
-                                                  title="Open item"
-                                                  onClick={(e) =>
-                                                    handleClickItem(e, menu)
-                                                  }
-                                                ></a>
-                                              </div>
-                                            </div>
-                                            <div>
-                                              {menu?.quickorderallow && (
-                                                <MenuItemQuickOrder
-                                                  quickOrderClick={
-                                                    quickOrderClick
-                                                  }
-                                                  item={menu}
-                                                />
+                                                ></PopOver>
                                               )}
                                             </div>
-                                          </>
-                                        )}
-                                      </div>
-                                      <div className="img">
-                                        {imgSrc ? (
-                                          <LazyLoadImage
-                                            src={imgSrc ?? ""}
-                                            style={{ maxHeight: "136px" }}
-                                            effect="blur"
-                                            wrapperProps={{
-                                              style: { transitionDelay: "1s" },
-                                            }}
-                                            alt={menu.menuItemName}
+                                            <div className="plus-icon w-20 text-end">
+                                              {isDisplayPrice && (
+                                                <span className="mt-10 d-inline-block fw-bold color-green">
+                                                  {menu.currency}
+                                                  {menu.price}
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <MenuItemAddToCart
+                                            shareUrl={shareUrl}
+                                            item={menu}
+                                            handleToggleDependnt={handleToggleDependnt}
                                           />
-                                        ) : null}
-
-                                        <a
-                                          data-toggle="tooltip"
-                                          data-placement="left"
-                                          title={TOOLTIP_MSG.ADD_TO_FAV}
-                                          onClick={() => {
-                                            selectedFavoriteClick(
-                                              menu,
-                                              !menu.isFavoriteMenu
-                                            );
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div className="d-flex flex-row">
+                                            <div className="menu-info w-80">
+                                              <a
+                                                data-menuitemid={menu.menuitemId}
+                                                onClick={(e) => handleClickItem(e, menu)}
+                                              >
+                                                <h3>{menu.menuItemName}</h3>
+                                              </a>
+                                              {menu.description.length < 180 ? (
+                                                <p>
+                                                  {fixedLengthString(menu.description)}
+                                                </p>
+                                              ) : (
+                                                <PopOver description={menu.description} />
+                                              )}
+                                            </div>
+                                            <div className="plus-icon w-20 text-end">
+                                              {isDisplayPrice && (
+                                                <span className="mt-10 d-inline-block fw-bold color-green">
+                                                  {menu.currency}
+                                                  {menu.price}
+                                                </span>
+                                              )}
+                                              <br />
+                                              <a
+                                                className="fa plusbutton fa-plus icon-plus-list-view mt-1"
+                                                data-toggle="tooltip"
+                                                data-placement="left"
+                                                title="Open item"
+                                                onClick={(e) => handleClickItem(e, menu)}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                          {menu.quickorderallow && (
+                                            <MenuItemQuickOrder
+                                              quickOrderClick={quickOrderClick}
+                                              item={menu}
+                                            />
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+                                    <div className="img">
+                                      {imgSrc ? (
+                                        <LazyLoadImage
+                                          src={imgSrc ?? ""}
+                                          style={{ maxHeight: "136px" }}
+                                          effect="blur"
+                                          wrapperProps={{
+                                            style: { transitionDelay: "1s" },
                                           }}
-                                          className={`fa wishlist fa-heart-o ${menu?.isFavoriteMenu == true
-                                              ? "active"
-                                              : ""
-                                            }`}
+                                          alt={menu.menuItemName}
                                         />
-                                      </div>
+                                      ) : null}
+                                      <a
+                                        data-toggle="tooltip"
+                                        data-placement="left"
+                                        title={TOOLTIP_MSG.ADD_TO_FAV}
+                                        onClick={() =>
+                                          selectedFavoriteClick(
+                                            menu,
+                                            !menu.isFavoriteMenu
+                                          )
+                                        }
+                                        className={`fa wishlist fa-heart-o ${menu.isFavoriteMenu ? "active" : ""
+                                          }`}
+                                      />
                                     </div>
                                   </div>
-                                );
-                              }
-                            )}
+                                </div>
+                              );
+                            })}
                           </div>
                         )}
 
+                        {/* GRID VIEW */}
                         {viewType === ViewTypeEnum.GRID && (
                           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 main-scroll">
-                            {category?.menuitems?.map((menu: any) => {
+                            {category.menuitems.map((menu: any, index: any) => {
                               const imgSrc = getImagePath(
                                 menu.imgurl,
                                 defaultLocation?.defaultmenuitemimage
@@ -683,31 +644,24 @@ const CategoryMenuItems: React.FC<{
                                 >
                                   <div className="card features itembox">
                                     <div className="img position-relative">
+
                                       {imgSrc ? (
                                         <LazyLoadImage
-                                          // src={getImagePath(
-                                          //   menu.imgurl,
-                                          //   defaultLocation?.defaultmenuitemimage
-                                          // )}
                                           src={imgSrc ?? ""}
                                           style={{ maxHeight: "136px" }}
                                           effect="blur"
                                           wrapperProps={{
-                                            // If you need to, you can tweak the effect transition using the wrapper style.
                                             style: { transitionDelay: "1s" },
                                           }}
                                           alt={menu.menuItemName}
                                         />
                                       ) : null}
-                                      {/* <img src={getImagePath(menu.imgurl, defaultLocation?.defaultmenuitemimage)} alt={menu.menuItemName} className="img-fluid" /> */}
                                       <a
                                         className="fa plusbutton fa-plus"
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="Open item"
-                                        onClick={(e) =>
-                                          handleClickItem(e, menu)
-                                        }
+                                        onClick={(e) => handleClickItem(e, menu)}
                                       ></a>
                                     </div>
                                     <div className="text">
@@ -716,11 +670,11 @@ const CategoryMenuItems: React.FC<{
                                         {isDisplayPrice && (
                                           <span className="color-green fs-16 price">
                                             {menu.currency}
-                                            {menu?.price}
+                                            {menu.price}
                                           </span>
                                         )}
                                       </h3>
-                                      {menu?.quickorderallow && (
+                                      {menu.quickorderallow && (
                                         <div className="d-flex justify-content-center mt-2">
                                           <MenuItemQuickOrder
                                             quickOrderClick={quickOrderClick}
@@ -738,20 +692,20 @@ const CategoryMenuItems: React.FC<{
                       </div>
                     );
                   })}
-                {/* {((isShowSkeleton&&menuItemsWithCat?.length===0)|| (Object.keys(searchdata).length === 0 && errorMessage == "" && searchtext !== "")) && <FavouriteSkeleton />} */}
 
-                {searchdata &&
-                  Object.keys(searchdata).length === 0 &&
-                  errorMessage == "" &&
-                  searchtext !== "" && 
-                  // loading && <FavouriteSkeleton />
-                  <FavouriteSkeleton />
-                }
+                {/* Skeleton */}
+                {searchtext &&
+                  errorMessage === "" &&
+                  searchdata &&
+                  searchdata.menuItems?.length === 0 &&
+                  searchdata.categories?.length === 0 && (
+                    <FavouriteSkeleton />
+                  )}
 
                 {errorMessage && (
                   <h4 className="red-text text-center mt-5">{errorMessage}</h4>
                 )}
-                {/* {menuItemsWithCat?.length === 0 && loadError && (
+                {/* {menuItemsWithCat.length === 0 && loadError && (
                   <h4 className="red-text text-center mt-5">
                     Opps! No Items Found
                   </h4>
@@ -788,7 +742,7 @@ const CategoryMenuItems: React.FC<{
       )}
       {openDependentList && (
         <CommonModal
-          title={"Would you like to add additional items? "}
+          title="Would you like to add additional items? "
           btn1Name="No Thanks"
           btn2Name="Next"
           isOpenModal={openDependentList}
@@ -809,7 +763,7 @@ const CategoryMenuItems: React.FC<{
           handleToggleMenuItem={handleToggleMenuItem}
           isStudentPopUp={isStudentPopUp}
           handleToggleStudentModal={handleToggleStudentModal}
-          handleClickOk={() => {}}
+          handleClickOk={() => { }}
         />
       )} */}
     </>

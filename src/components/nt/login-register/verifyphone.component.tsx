@@ -173,7 +173,7 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({
             ToasterTypes.Success
           );
         })
-        .catch((err: any) => {});
+        .catch((err: any) => { });
     }
     if (
       restaurantinfo?.smsapigateway === 2 &&
@@ -267,7 +267,7 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({
                     className="form-control"
                     value={values.phone}
                     onChange={(e) => handleChangePhone(e)}
-                    // noValidate autoComplete="off"
+                  // noValidate autoComplete="off"
                   />
                 </div>
                 <div className="col-12 col-md-12 col-lg-12 d-flex justify-content-center mt-3">

@@ -1,4 +1,3 @@
-"use client";
 import RestaurantComponent from "@/components/commonRestaurant/restaurant.component";
 import React, { ReactNode } from "react";
 
