@@ -286,7 +286,28 @@ const MenuItemModal: React.FC<{
   }, [lstcarttopping, quantity, selectedsize]);
 
   const addToCart = () => {
-    let updatedSelectedMenuitemDetail = selectedmenuitemdetail;
+    //let updatedSelectedMenuitemDetail = structuredClone(selectedmenuitemdetail);
+    // let updatedSelectedMenuitemDetail = selectedmenuitemdetail;
+    // let updatedSelectedMenuitemDetail = JSON.parse(
+    //   JSON.stringify(selectedmenuitemdetail)
+    // );
+
+    let updatedSelectedMenuitemDetail = structuredClone(selectedmenuitemdetail);
+
+    if (updatedSelectedMenuitemDetail) {
+      updatedSelectedMenuitemDetail = {
+        ...updatedSelectedMenuitemDetail,
+        menuItemName:
+          menuItemDetail?.itemName ||
+          updatedSelectedMenuitemDetail.menuItemName ||
+          "",
+        menuitemId:
+          menuItemDetail?.menuItemId ||
+          updatedSelectedMenuitemDetail.menuitemId ||
+          0,
+      };
+    }
+
     if (dependentId > 0 && selectedmenuitemdetail) {
       updatedSelectedMenuitemDetail = {
         ...selectedmenuitemdetail,
@@ -314,17 +335,9 @@ const MenuItemModal: React.FC<{
       selectedtopping?.[0].list.filter((x: any) => x.isCompulsory == true);
     if (
       updatedSelectedMenuitemDetail &&
-      updatedSelectedMenuitemDetail?.cartid > 0 &&
-      selectedmenuitemdetail?.cartid as any > 0
+      updatedSelectedMenuitemDetail?.cartid &&
+      updatedSelectedMenuitemDetail?.cartid > 0
     ) {
-      console.log(
-        "selectedmenuitemdetail before update",
-        selectedmenuitemdetail
-      );
-      console.log(
-        "updatedSelectedMenuitemDetail before update",
-        updatedSelectedMenuitemDetail
-      );
       //CHECK ITEM TOPPINGS REQUIRED IS SELECTED OR NOT
       var isValidateItem = true;
       if (
@@ -370,40 +383,41 @@ const MenuItemModal: React.FC<{
           studentname: "",
         });
 
-        console.log("item obj before pass in updatecartordersitem", itemobj);
         if (itemobj != undefined) {
           MenuItemServices.updateCartOrdersItem({
             orderobj: itemobj,
             restaurantId: restaurantId,
           }).then((response) => {
             if (response) {
-              dispatch(
-                getCartItem({
-                  cartsessionId: sessionid as string,
-                  locationId: restaurantinfo?.defaultlocationId as number,
-                  restaurantId: restaurantinfo?.restaurantId as number,
-                  cartId: updatedSelectedMenuitemDetail.cartid,
-                  customerId: userinfo ? userinfo?.customerId : 0,
-                  rewardpoints: rpoint,
-                  redeemamount: ramount,
-                  deliveryaddressId: 0,
-                  tipPercentage: 0,
-                  tipAmount: 0,
-                  ordertype: Number(ordertype),
-                  selectedTime: order?.checktime,
-                  requestId: order?.deliveryRequestId,
-                })
-              );
-              dispatch(
-                getCartItemCount({
-                  cartsessionId: String(sessionid),
-                  locationId: restaurantinfo?.defaultlocationId as number,
-                  restaurantId: restaurantinfo?.restaurantId as number,
-                  customerId: userinfo ? userinfo?.customerId : 0,
-                })
-              );
-
-              handleToggleMenuItem(false);
+              Promise.all([
+                dispatch(
+                  getCartItemCount({
+                    cartsessionId: String(sessionid),
+                    locationId: restaurantinfo?.defaultlocationId as number,
+                    restaurantId: restaurantinfo?.restaurantId as number,
+                    customerId: userinfo ? userinfo?.customerId : 0,
+                  })
+                ),
+                dispatch(
+                  getCartItem({
+                    cartsessionId: sessionid as string,
+                    locationId: restaurantinfo?.defaultlocationId as number,
+                    restaurantId: restaurantinfo?.restaurantId as number,
+                    cartId: updatedSelectedMenuitemDetail.cartid,
+                    customerId: userinfo ? userinfo?.customerId : 0,
+                    rewardpoints: rpoint,
+                    redeemamount: ramount,
+                    deliveryaddressId: 0,
+                    tipPercentage: 0,
+                    tipAmount: 0,
+                    ordertype: Number(ordertype),
+                    selectedTime: order?.checktime,
+                    requestId: order?.deliveryRequestId,
+                  })
+                ),
+              ]).then(() => {
+                handleToggleMenuItem(false);
+              });
             }
           });
         }

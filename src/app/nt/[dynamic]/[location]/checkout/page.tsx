@@ -57,7 +57,7 @@ const CheckoutPage = () => {
   const defaultLocation = restaurantinfo
     ? restaurantinfo.defaultLocation
     : null;
-  const [timeErrorMessage, settimeErrorMessage] = useState("");
+  const [timeErrorMessage, settimeErrorMessage] = useState<string>("");
   const pickupordelivery = selecteddelivery.pickupordelivery;
   const deliveryaddressinfo = selecteddelivery?.selecteddeliveryaddress;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
@@ -71,11 +71,10 @@ const CheckoutPage = () => {
       ? tempDeliveryAddress
       : selecteddelivery?.selecteddeliveryaddress;
   const { deliveryRequestId } = order;
-  console.log("delivery request id from checkout page", deliveryRequestId);
   const { futureDate, isFutureOrder, timeSlot, recievingDate, enabletimeslot } =
     useFutureOrder();
   const { isDisplayPrice, isRewardTip } = useUtility();
-  const [errormessage, seterrormessage] = useState("");
+  const [errormessage, seterrormessage] = useState<string>("");
   const orderTime = useMemo(() => order?.checktime, [order?.checktime]);
 
   useEffect(() => {

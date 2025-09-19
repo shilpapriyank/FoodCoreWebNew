@@ -25,8 +25,6 @@ import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../redux/store";
 import Register from "../../login-register/register.component";
 import UserExist from "../../login-register/user-exist.component";
 import VerifyPhoneComponent from "../../login-register/verifyphone.component";
@@ -75,13 +73,14 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
   const isSchoolProgramEnabled =
     (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
   const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
-  const openTimeModelDefault =
+  const openTimeModelDefault: boolean =
     pathname.includes(PAGES.CHECKOUT) &&
     order?.checktime === "" &&
     !b2b &&
     !isSchoolProgramEnabled;
+  const [opentimingModal, setopentimingModal] =
+    useState<boolean>(openTimeModelDefault);
   const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
-  const [opentimingModal, setopentimingModal] = useState(openTimeModelDefault);
   const isHomePage = page === "location";
   const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
   const [openAccountConfirmModal, setopenAccountConfirmModal] =
@@ -108,6 +107,18 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
     openSendEmailConfirm: false,
     isAddressModalOnBcChemical: false,
   });
+
+  useEffect(() => {
+    if (
+      enabletimeslot &&
+      pathname.includes(PAGES.CHECKOUT) &&
+      order?.checktime === "" &&
+      !b2b &&
+      !isSchoolProgramEnabled
+    ) {
+      setopentimingModal(true);
+    }
+  }, [enabletimeslot, pathname, order?.checktime, b2b, isSchoolProgramEnabled]);
 
   const handleToggleOrderTypeModal = (value: boolean) => {
     setisOpenOrderTypeModal(value);
@@ -382,12 +393,15 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
       )}
       {!enabletimeslot && opentimingModal && !isSchoolProgramEnabled && (
         <PickupDeliveryTimeSelectPopup
+          // handleToggleTimingModal={handleToggleTimingModal}
+          // isOpenModal={opentimingModal}
+          // locationId={restaurantinfo?.defaultlocationId as number}
+          // isload={false}
+          // locationUrl={restaurantinfo?.restaurantURL ?? ""}
+          // clearMeaage={() => {}}
           handleToggleTimingModal={handleToggleTimingModal}
           isOpenModal={opentimingModal}
           locationId={restaurantinfo?.defaultlocationId as number}
-          isload={false}
-          locationUrl={restaurantinfo?.restaurantURL ?? ""}
-          clearMeaage={() => {}}
         />
       )}
       {enabletimeslot && opentimingModal && (
@@ -406,6 +420,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           locationUrl={restaurantinfo?.defaultLocation?.locationURL as string} //Add this
         />
       )}
+
       {openLoginModal && (
         <Login
           handleToggle={handleToggle}

@@ -233,13 +233,12 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   }, []);
 
   const handleClickDate = (
-    // day: {
-    //   deliveryStatus?: string;
-    //   takeoutStatus?: string;
-    //   futureDate?: string;
-    //   futureDay?: string;
-    // },
-    day: any,
+    day: {
+      deliveryStatus?: string;
+      takeoutStatus?: string;
+      futureDate?: string;
+      futureDay?: string;
+    },
     isClose?: boolean
   ) => {
     const isClosed =
@@ -345,7 +344,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       // });
       dispatch(setordertime(selectedTime));
     }
-    redirectOnTimeSelected(locationUrl);
+    redirectOnTimeSelected(locationUrl as string);
     handleToggleTimingModal(false);
   };
 
@@ -355,180 +354,6 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   };
 
   return (
-    // <>
-    //   <div
-    //     className={`modal fade modal-your-order address-modal ${
-    //       isOpenModal ? "show d-block" : ""
-    //     }`}
-    //     style={{ display: "block" }}
-    //     id="order-time-modal"
-    //     aria-labelledby="order-time-modal-Label"
-    //     aria-hidden="true"
-    //   >
-    //     <div
-    //       className={`modal-dialog modal-dialog-centered ${
-    //         true ? "modal-dialog-scrollable" : ""
-    //       }`}
-    //     >
-    //       <div className="modal-content pb-0">
-    //         <h5 className="modal-title" id="login-modal-Label">{`Schedule ${
-    //           ordertype === ORDER_TYPE.DELIVERY.value
-    //             ? ORDER_TYPE.DELIVERY.text
-    //             : ORDER_TYPE.PICKUP.text
-    //         }`}</h5>
-    //         <a
-    //           className="btn-close close-time "
-    //           id="close-modal "
-    //           onClick={() => handleToggleTimingModal(false)}
-    //         ></a>
-    //         {/* </div> */}
-    //         {enablefutureordering && (
-    //           <div className="row">
-    //             <div className="col-12 pe-0 mt-2">
-    //               <div className="swiper-container">
-    //                 {loadSwipe && (
-    //                   <>
-    //                     <FutureDayComponent
-    //                       ordertype={ordertype}
-    //                       order={order}
-    //                       selectedDate={selectedDate}
-    //                       enablefutureordering={enablefutureordering}
-    //                       futureDateList={futureDateList}
-    //                       handleClickDate={handleClickDate}
-    //                     />
-    //                   </>
-    //                 )}
-    //               </div>
-    //             </div>
-    //           </div>
-    //         )}
-    //         <div
-    //           className={`modal-body ts-body ${
-    //             dayCloseError !== "" ? "p-0 pb-2" : ""
-    //           }`}
-    //         >
-    //           <div className="time-slot">
-    //             <div className="row">
-    //               <div className="col-12 mb-2"></div>
-    //             </div>
-
-    //             <div className="row">
-    //               {dayCloseError === "" ? (
-    //                 <>
-    //                   {asapLaterOnState.isAsap && selectedDate === "Today" && (
-    //                     <>
-    //                       {/* {console.log("Showing ASAP TimeSlotPillComponent")} */}
-    //                       <TimeSlotPillComponent
-    //                         time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
-    //                         id={"C"}
-    //                         name="ASAP - ASAP"
-    //                         label="As Soon As Possible"
-    //                         handleClickTimePill={handleClickAsap}
-    //                         isDisable={asapLaterOnState.isDisableAsapLateron}
-    //                         selectedTime={isAsap ? "ASAP - ASAP" : selectedTime}
-    //                       />
-    //                     </>
-    //                   )}
-
-    //                   {!loadTimeslot && loadSwipe ? (
-    //                     <>
-    //                       {Array.isArray(timeSlots) &&
-    //                         timeSlots?.map((time, index) => {
-    //                           return (
-    //                             time.StartSlotNew !== null && (
-    //                               <TimeSlotPillComponent
-    //                                 key={`A${time.StartSlotNew}-${time.EndSlotNew}`}
-    //                                 time={time}
-    //                                 selectedTime={
-    //                                   selectedTime || order.checktime
-    //                                 }
-    //                                 name={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-    //                                 id={`slot-${index}`}
-    //                                 handleClickTimePill={handleClickTimePill}
-    //                                 label={`${time.StartSlotNew} - ${time.EndSlotNew}`}
-    //                               />
-    //                             )
-    //                           );
-    //                         })}
-    //                     </>
-    //                   ) : (
-    //                     <TimeSlotSkeletonComponent />
-    //                   )}
-    //                 </>
-    //               ) : (
-    //                 <>
-    //                   <p className="red-text text-center p-0">
-    //                     {dayCloseError}
-    //                   </p>
-    //                 </>
-    //               )}
-    //             </div>
-    //           </div>
-    //         </div>
-    //         <div className="row modal-footer position-sticky sticky-bottom border-top-0 footer-top-shadow">
-    //           {order.isasap && asapTime !== "" && dayCloseError === "" && (
-    //             <h6 className="text-center fs-5">
-    //               {}
-    //               {selectedDay},&nbsp;
-    //               {(order?.futureOrderDay as any)?.futureDate}, {asapTime}
-    //             </h6>
-    //           )}
-    //           {!order.isasap &&
-    //             (selectedTime !== "" || order?.checktime !== "") &&
-    //             timeOrErrorMessage === "" &&
-    //             dayCloseError === "" && (
-    //               <h6 className="text-center fs-5">
-    //                 {}
-    //                 {selectedDay},&nbsp;
-    //                 {(order?.futureOrderDay as any)?.futureDate},{" "}
-    //                 {selectedTime || order?.checktime}
-    //               </h6>
-    //             )}
-    //           {timeOrErrorMessage !== "" && (
-    //             <h6 className="text-center red-text fs-6">
-    //               {timeOrErrorMessage}
-    //             </h6>
-    //           )}
-    //           {orderDisableData.isorderdisable &&
-    //             (selectedDay === "Today" || selectedDay === "") && (
-    //               <h6 className="text-center red-text fs-6">
-    //                 {orderDisableData.errormessage}
-    //               </h6>
-    //             )}
-    //           <div className="d-grid gap-2 col-md-6 col-12 mx-auto mt-2">
-    //             {(selectedTime === "" && order?.checktime === "") ||
-    //             dayCloseError !== "" ? (
-    //               <ButtonComponent
-    //                 classname=" btn-default btn-orange opacity-50 no-drop"
-    //                 textName="Schedule"
-    //                 isDisable={selectedTime === ""}
-    //               /> //Component
-    //             ) : (
-    //               <ButtonComponent
-    //                 classname="btn-default btn-orange"
-    //                 textName="Schedule"
-    //                 handleClick={handleClickSchedule}
-    //                 isDisable={false}
-    //               />
-    //             )}
-    //           </div>
-    //           <div className="d-grid gap-2 col-md-6 col-12 mx-auto mt-2">
-    //             <button
-    //               className=" btn-default btn-orange"
-    //               data-bs-dismiss="modal"
-    //               type="button"
-    //               onClick={handleClose}
-    //             >
-    //               Cancel
-    //             </button>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="modal-backdrop fade show"></div>
-    // </>
-
     <>
       <div
         className={`modal fade modal-your-order address-modal ${
@@ -569,7 +394,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                         selectedDate={selectedDate}
                         enablefutureordering={enablefutureordering}
                         futureDateList={futureDateList}
-                        handleClickDate={handleClickDate}
+                        handleClickDate={() => handleClickDate}
                       />
                     )}
                   </div>
@@ -596,7 +421,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                         <TimeSlotPillComponent
                           time={{ StartSlotNew: "ASAP", EndSlotNew: "ASAP" }}
                           id={"C"}
-                          //name="ASAP - ASAP"
+                          name="ASAP - ASAP"
                           label="As Soon As Possible"
                           // handleChange={handleChangeAsap}
                           handleClickTimePill={handleClickAsap}
