@@ -59,9 +59,9 @@ interface PickupDeliveryTimeSelectPopupProps {
   handleToggleTimingModal: (value: boolean) => void;
   isRedirectMenu?: boolean;
   locationId: number;
-  isload: boolean;
-  locationUrl: string;
-  clearMeaage: () => void;
+  isload?: boolean;
+  locationUrl?: string;
+  clearMeaage?: () => void;
   clearData?: boolean;
 }
 

@@ -286,10 +286,11 @@ export const themeDefaultStyleArray: ThemeDefautStyle[] = [
 
 //CHECK THE CARTITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
 export const checkCheckoutDisable = (
-  cartdata: CartDetails[],
+  cartdata: any,
   pickupordelivery: string,
   dtotal: boolean
 ) => {
+  debugger;
   if (
     pickupordelivery === ORDER_TYPE.PICKUP.text ||
     pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -297,13 +298,13 @@ export const checkCheckoutDisable = (
     //let cartItems = cartdata?.cartDetails?.cartItemDetails;
     // if (!cartdata || cartdata.length === 0) {
     //   return true; // nothing in cart → disable checkout
-    // }
-    let cartItems = cartdata[0]?.cartItemDetails;
+    // }s
+    let cartItems = cartdata?.cartDetails?.cartItemDetails;
     let isAnyPickupItemNotAvailable = cartItems?.some(
-      (item) => item?.categorytakeoutavailable === false
+      (item: any) => item?.categorytakeoutavailable === false
     );
     let isAnydeliveryItemNotAvailable = cartItems?.some(
-      (item) => item?.categorydeliveryavailable === false
+      (item: any) => item?.categorydeliveryavailable === false
     );
 
     if (
@@ -311,7 +312,7 @@ export const checkCheckoutDisable = (
         isAnyPickupItemNotAvailable) ||
       (pickupordelivery === ORDER_TYPE.DELIVERY.text &&
         isAnydeliveryItemNotAvailable) ||
-      checkMenuItemTimeAvailability(cartItems as CartItemDetails[])
+      checkMenuItemTimeAvailability(cartItems)
     ) {
       return true;
     } else if (
