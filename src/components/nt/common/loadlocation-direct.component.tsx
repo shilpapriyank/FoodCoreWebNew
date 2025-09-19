@@ -138,6 +138,8 @@ const LoadLocationDirectComponent = ({
     addressList !== undefined,
     isLoadAddress,
   ]);
+
+  
   //   useEffect(() => {
   //   if (
   //     location !== restaurantinfo?.defaultLocation?.locationURL &&
