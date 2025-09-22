@@ -4,7 +4,6 @@ import {
   checkCheckoutDisable,
   getDependentParentQty,
   GetThemeDetails,
-  handleSetDeliveryTypeError,
   ORDER_TYPE,
   ORDERTYPE,
 } from "../../common/utility";
@@ -193,7 +192,7 @@ const CartItemsDetailComponent = () => {
             : userinfo.totalRewardPoints,
           redeemPoint: 0,
         };
-        dispatch(setrewardpoint(rewards as any));
+        dispatch(setrewardpoint(rewardpoints));
         dispatch(
           carttotaldata({
             cartsessionId: sessionid as string,
@@ -240,7 +239,7 @@ const CartItemsDetailComponent = () => {
           //dispatch(deleteCartItem(response))
 
           let cartItem = cartdata?.cartDetails?.cartItemDetails?.filter(
-            (item: any) => item.dependentmenuitemid === 0
+            (item) => item.dependentmenuitemid === 0
           );
           if (rewardpoints?.redeemPoint > 0 && cartItem?.length === 1) {
             clearRedeempoint();
@@ -300,87 +299,6 @@ const CartItemsDetailComponent = () => {
       });
     }
   };
-
-  // const increment = async (
-  //   currentQty: number,
-  //   cartid: number,
-  //   dependentParentQty: number
-  // ) => {
-  //   const plusState = currentQty + 1;
-  //   if (dependentParentQty > 0 && dependentParentQty < plusState) {
-  //     return;
-  //   }
-  //   let dcart: any = [];
-  //   let cdetail = cartdata;
-  //   cartdata?.cartDetails?.cartItemDetails?.map((data) => {
-  //     if (data.cartid === cartid) {
-  //       data.qty = plusState;
-  //       data.totalprice = data.unitprice * data.qty;
-  //     }
-  //     dcart.push(data);
-  //   });
-
-  //   // dispatch(setCartItem(cdetail));
-  //   let responsResult = await dispatch(
-  //     updatequantity({
-  //       cartsessionId: sessionId as string,
-  //       cartId: cartid,
-  //       qty: plusState,
-  //       price: "0",
-  //       locationId: restaurantinfo?.defaultlocationId as number,
-  //       restaurantId: restaurantinfo?.restaurantId as number,
-  //     })
-  //   );
-  //   if (responsResult && cdetail) {
-  //     cdetail.cartDetails.cartItemDetails = dcart;
-  //     dispatch(setCartItem(cdetail));
-  //   }
-  // };
-
-  // const decrement = async (
-  //   currentQty: any,
-  //   cartid: any,
-  //   dependentParentQty: any,
-  //   item: any
-  // ) => {
-  //   if (minQty === currentQty) {
-  //     return;
-  //   }
-  //   const minusState = currentQty - 1;
-  //   let dcart: any = [];
-  //   let cdetail = cartdata;
-  //   cartdata?.cartDetails?.cartItemDetails?.map((data) => {
-  //     if (data.cartid === cartid) {
-  //       data.qty = minusState;
-  //       data.totalprice = data.unitprice * data.qty;
-  //     } else if (data?.dependentmenuitemid > 0) {
-  //       //TODO: CHECK THE IS PARENT QTY IS LESS THEN DEPENDENT THEN NEED TO ALSO UPDATE THE DEPENDENT QTY
-  //       if (
-  //         item?.menuitemid === data?.dependentmenuitemid &&
-  //         minusState < data?.qty
-  //       ) {
-  //         data.qty = minusState;
-  //       }
-  //     } else {
-  //     }
-  //     dcart.push(data);
-  //   });
-
-  //   let responsResult = await dispatch(
-  //     updatequantity({
-  //       cartsessionId: sessionId as string,
-  //       cartId: cartid,
-  //       qty: minusState,
-  //       price: "0",
-  //       locationId: restaurantinfo?.defaultlocationId as number,
-  //       restaurantId: restaurantinfo?.restaurantId as number,
-  //     })
-  //   );
-  //   if (responsResult && cdetail) {
-  //     cdetail.cartDetails.cartItemDetails = dcart;
-  //     dispatch(setCartItem(cdetail));
-  //   }
-  // };
 
   const increment = (
     currentQty: number,
@@ -545,10 +463,10 @@ const CartItemsDetailComponent = () => {
         {cartdata &&
           cartdata?.cartDetails?.cartItemDetails &&
           cartdata?.cartDetails?.cartItemDetails?.map(
-            (data: any, index: any) => {
+            (data, index) => {
               let counter = index;
               let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
-                (x: any) => x.cartid === data.cartid
+                (x) => x.cartid === data.cartid
               );
               let subOptionDisplayCmp = (
                 <CartSuboptionDisplay

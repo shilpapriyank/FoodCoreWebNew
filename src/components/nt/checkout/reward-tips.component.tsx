@@ -8,7 +8,7 @@ import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { shallowEqual } from "react-redux";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { CartTotal } from "@/types/cart-types/cartservice.type";
+import { CartDetailOfCartTotal, CartTotal } from "@/types/cart-types/cartservice.type";
 import { clearredeempoint } from "../../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../../redux/cart/cart.slice";
 import RewardPoint from "./rewardpoint/reward-point.component";
@@ -70,7 +70,7 @@ const RewardPointAndTips = () => {
     addtipclick,
     tipWarningMessage,
     isTipWarning,
-  } = useTipValue(true, carttotal, false, true);
+  } = useTipValue(true, carttotal as CartDetailOfCartTotal, false, true);
   const { recievingDate, enabletimeslot } = useFutureOrder();
 
   const {
@@ -87,7 +87,7 @@ const RewardPointAndTips = () => {
     onclickrewardsubmit,
     onClickRewardClear,
     totalRewardAmount,
-  } = useRewardPoint(carttotal as CartTotal, inputRP);
+  } = useRewardPoint(carttotal as CartDetailOfCartTotal, inputRP);
 
   const totalprice = useAppSelector(
     ({ cart }) =>

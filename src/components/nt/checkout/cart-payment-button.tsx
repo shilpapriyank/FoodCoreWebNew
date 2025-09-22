@@ -27,9 +27,16 @@ import Register from "../login-register/register.component";
 import AddAddress from "../common/add-address.component";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useRewardPoint from "@/components/customhooks/userewardpoint-hook";
-import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import {
+  DefaultLocation,
+  GetAllRestaurantInfo,
+} from "@/types/restaurant-types/restaurant.type";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
-import { CartDetails, GetCartItems } from "@/types/cart-types/cartservice.type";
+import {
+  CartDetailOfCartTotal,
+  CartDetails,
+  PromotionData,
+} from "@/types/cart-types/cartservice.type";
 import { CartServices } from "../../../../redux/cart/cart.services";
 import {
   addCalculatedTotal,
@@ -50,8 +57,22 @@ import { PAGES } from "../common/pages";
 import CommonModal from "../common/common-model.component";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { useParams, useRouter } from "next/navigation";
+import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { DeliveryAddressInfo } from "@/components/default/Common/dominos/helpers/types/utility-type";
+import { SelectedDeliveryAddressType } from "@/types/selectdelivery-types/selectdelivery.types";
 
-const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
+interface ModalState {
+  openRegisterModal: boolean;
+  openRewardModal: boolean;
+  openOtpModal: boolean;
+  openUserExistModal: boolean;
+  openVerifyPhone: boolean;
+}
+
+const CartPaymentButton: React.FC<{
+  errormessage: string;
+  timeErrorMessage: string;
+}> = ({ errormessage, timeErrorMessage }) => {
   const {
     userinfo,
     cart,
@@ -67,7 +88,9 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     meredian,
     orderTimeType,
   } = useReduxData();
-  const { validateNewuserRewardPoint } = useRewardPoint(cart?.carttotal);
+  const { validateNewuserRewardPoint } = useRewardPoint(
+    cart?.carttotal as CartDetailOfCartTotal
+  );
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
@@ -87,7 +110,9 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
       ? ORDER_TYPE.PICKUP.value
       : ORDER_TYPE.DELIVERY.value;
   let tipPercentage =
-    carttotal?.tipPercentage > 0 ? parseFloat(carttotal.tipPercentage) : "";
+    carttotal && carttotal?.tipPercentage > 0
+      ? carttotal && carttotal?.tipPercentage
+      : "";
   let customerId = userinfo ? userinfo.customerId : 0;
   const [isPaymentButtonDisable, setisPaymentButtonDisable] =
     useState<boolean>(false);
@@ -97,7 +122,8 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
   const [dropOfTime, setdropOfTime] = useState("");
   // const [timeErrorMessage, settimeErrorMessage] = useState("");
   const [displayUberTime, setdisplayUberTime] = useState<boolean>(true);
-  const { deliveryService }: any = restaurantinfo?.defaultLocation;
+  const { deliveryService } =
+    restaurantinfo?.defaultLocation as DefaultLocation;
   const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const [paymentType, setpaymentType] = useState<number>(1);
   let selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
@@ -149,7 +175,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     useState<boolean>(false);
   const [openAdressModal, setopenAdressModal] = useState<boolean>(false);
 
-  const [modalState, setModalState] = useState({
+  const [modalState, setModalState] = useState<ModalState>({
     openRegisterModal: false,
     openRewardModal: false,
     openOtpModal: false,
@@ -157,7 +183,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     openVerifyPhone: false,
   });
 
-  const handleToggleAll = (value: any, key: any) => {
+  const handleToggleAll = (value: boolean, key: any) => {
     setModalState((pre) => ({
       ...pre,
       [key]: value,
@@ -177,10 +203,10 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     const deliveryError = handleSetDeliveryTypeError(
       pickupordelivery,
       address as any,
-      carttotal,
+      carttotal as CartDetailOfCartTotal,
       dcharges,
       cart,
-      cartdata as any,
+      cartdata as CartDetails,
       true
     );
 
@@ -206,7 +232,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     }
     //TO DO:CHECK THE ITEM ADDDED IN THE CART IS AVAILABLE FOR THE DELIVERY AND TAKEOUT OR NOT
     let isCheckoutDisable = checkCheckoutDisable(
-      cartdata as any,
+      cartdata as CartDetails,
       pickupordelivery,
       dtotal
     );
@@ -227,7 +253,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     order?.checktime,
   ]);
 
-  const handleClickPlaceOrder = (paymentType: any) => {
+  const handleClickPlaceOrder = (paymentType: number) => {
     if (userinfo == null) {
       setpaymentType(paymentType);
       setOpenLoginModal(true);
@@ -263,10 +289,10 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
       restaurantinfo?.restaurantId as number,
       customerId,
       0,
-      carttotal.reedemPoints,
-      carttotal.reedemAmount,
-      carttotal?.tipPercentage,
-      checkIntegerValue(carttotal?.tipAmount),
+      String(carttotal?.reedemPoints),
+      String(carttotal?.reedemAmount),
+      String(carttotal?.tipPercentage),
+      checkIntegerValue(carttotal?.tipAmount as number),
       deliveryaddressinfo?.deliveryaddressId,
       ordertype,
       order?.deliveryRequestId,
@@ -327,18 +353,17 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     }, 500);
   };
 
-  const handleOpenLoginModal = (value: any) => {
-    console.log("value", value);
+  const handleOpenLoginModal = (value: boolean) => {
     setOpenLoginModal(value);
   };
-  const handleToggle = (value: any, key?: any) => {
+  const handleToggle = (value: boolean, key?: any) => {
     setModalState((pre) => ({
       ...pre,
       [key]: value,
     }));
   };
 
-  const handleToggleAddAddressModal = (value: any) => {
+  const handleToggleAddAddressModal = (value: boolean) => {
     setopenAdressModal(value);
   };
 
@@ -352,7 +377,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
   //     }, 500)
   // }
 
-  function refreshCart(orderId: any) {
+  function refreshCart(orderId: number) {
     OrderServices.getOrderInfo({
       restaurantId: restaurantinfo?.restaurantId as number,
       locationId: restaurantinfo?.defaultlocationId as number,
@@ -370,7 +395,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     return;
   }
 
-  const addorders = (isAsap: any, paymentType: any) => {
+  const addorders = (isAsap: boolean, paymentType: number) => {
     let placeOrder = bindPlaceOrderObject(
       rewardpoints,
       cart,
@@ -382,7 +407,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
       isAsap,
       paymentType,
       restaurantinfo as GetAllRestaurantInfo,
-      promotionData,
+      promotionData as PromotionData,
       //studentname,
       distance,
       pickupordelivery,
@@ -395,14 +420,12 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
       placeOrder: placeOrder,
       restaurantId: restaurantinfo?.restaurantId as number,
     }).then((response) => {
-      debugger;
       if (response?.status === API_RESPONSE_STATUS.SUCCESS) {
         if (response.result.orderId && response.result.orderId > 0) {
           dispatch(setorderId(response.result.orderId));
           //handleNotify('Order complete successfully! with OrderId: ' + response.result.orderId, ToasterPositions.TopRight, ToasterTypes.Success);
 
           if (paymentType === PAYMENT_TYPE.CASH.value) {
-            debugger;
             dispatch(emptycart());
             //router.push(routepath + "/menu");
             // closeModal('btn-close')
@@ -458,7 +481,7 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     // console.log(errormessage)
   }
 
-  const ErrorMessage = ({ message }: any) =>
+  const ErrorMessage = ({ message }: { message: string }) =>
     message ? (
       <div className="card mb-3">
         <div className="card-body">
@@ -469,11 +492,11 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
       </div>
     ) : null;
 
-  const handleToggleTimingModal = (value: any) => {
+  const handleToggleTimingModal = (value: boolean) => {
     setopentimingModal(value);
   };
 
-  const handleToggleAccountConfirm = (value: any) => {
+  const handleToggleAccountConfirm = (value: boolean) => {
     setopenAccountConfirmModal(value);
   };
 

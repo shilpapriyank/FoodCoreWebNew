@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { ORDER_TYPE, allRegex } from "../common/utility";
-import { CartTotal } from "@/types/cart-types/cartservice.type";
+import { CartDetailOfCartTotal, CartTotal } from "@/types/cart-types/cartservice.type";
 import { useReduxData } from "./useredux-data-hooks";
 import { useAppDispatch } from "../../../redux/hooks";
 import useFutureOrder from "./usefuture-order-hook";
@@ -9,7 +9,7 @@ import { carttotaldata } from "../../../redux/cart/cart.slice";
 
 const useTipValue = (
   isDefaultTip: boolean,
-  carttotal: CartTotal,
+  carttotal: CartDetailOfCartTotal,
   isOnChange: boolean = false,
   isCallTotalOnBlur: boolean = true
 ) => {
@@ -165,6 +165,7 @@ const useTipValue = (
 
   const updatecart = (caltippercent: any, caltipamount: any) => {
     settipPercent(caltippercent);
+    debugger
     dispatch(
       carttotaldata({
         cartsessionId: sessionid as string,

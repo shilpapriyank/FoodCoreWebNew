@@ -1,17 +1,25 @@
+"use client";
+
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import { CartServices } from "../../../../../../redux/cart/cart.services";
 import Layout from "@/components/nt/layout/layout.component";
 import Head from "next/head";
+import { Elements } from "@stripe/react-stripe-js";
+import CardPaymentComponent from "@/components/nt/payment/cardpaymeny.component";
+import {
+  DefaultLocation,
+  GetAllRestaurantInfo,
+} from "@/types/restaurant-types/restaurant.type";
 
 const Payment = () => {
   const { restaurantinfo, userinfo, order } = useReduxData();
   const cardShowMessage = order && order?.cardShowMessage;
   var calculatedTotal = order && order?.calculatedTotal;
-  const { googlePayEnable, applePayEnable, stripePublishKey }: any =
-    restaurantinfo?.defaultLocation;
+  const { googlePayEnable, applePayEnable, stripePublishKey } =
+    restaurantinfo?.defaultLocation as DefaultLocation;
   var stripePromise = loadStripe(stripePublishKey);
 
   const { data, isSuccess } = useQuery({
@@ -35,11 +43,15 @@ const Payment = () => {
     enabled: calculatedTotal > 0 && order?.orderId > 0,
   });
 
-  const appearance = { theme: "stripe" };
-  var options;
+  const appearance: StripeElementsOptions["appearance"] = { theme: "stripe" };
+  var options: StripeElementsOptions | undefined;
 
   if (data !== undefined && isSuccess === true) {
-    options = { secretId: data.secretId, appearance };
+    options = {
+      //secretId: data.secretId,
+      clientSecret: data.secretId,
+      appearance,
+    };
   }
 
   return (
@@ -52,7 +64,7 @@ const Payment = () => {
       </Head>
 
       <main className="mt-5">
-        {/* {data && isSuccess === true && data?.secretId && (
+        {data && isSuccess === true && data?.secretId && (
           <Elements options={options} stripe={stripePromise}>
             <CardPaymentComponent
               clientSecret={data.secretId}
@@ -60,13 +72,13 @@ const Payment = () => {
               orderId={order.orderId}
               calculatedTotal={calculatedTotal.toFixed(2)}
               cardShowMessage={cardShowMessage}
-              restaurantinfo={restaurantinfo}
+              restaurantinfo={restaurantinfo as GetAllRestaurantInfo}
               GooglePayEnable={googlePayEnable}
               ApplePayEnable={applePayEnable}
               stripePublishKey={stripePublishKey}
             />
           </Elements>
-        )} */}
+        )}
       </main>
 
       {/* <Democardpay /> */}
