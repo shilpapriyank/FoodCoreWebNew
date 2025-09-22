@@ -23,6 +23,8 @@ import { AddTempDeliveryAddress } from "../../../../redux/delivery-address/deliv
 import { setUserDetail } from "../../../../redux/login/login.slice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { BUTTON_TYPE_ENUM } from "@/components/common/enums";
+import { ResponseModel } from "@/components/common/commonclass";
+import { LoggedInUser } from "../../../../redux/login/login.types";
 
 interface LoginProps {
   isOpenModal: boolean;
@@ -119,77 +121,70 @@ const Login: React.FC<LoginProps> = ({
         dialCode: dialCode,
         locationid: locationId as number,
       }).then((responsedata) => {
-        if (
-          responsedata &&
-          responsedata !== null &&
-          responsedata?.customerDetails !== null &&
-          responsedata?.customerDetails !== undefined
-        ) {
-          const customer = responsedata?.customerDetails;
-          if (responsedata && customer) {
-            dispatch(setUserDetail(customer));
-            setUserExpiryTime();
+        const responseWithCustomer = responsedata as { customerDetails?: LoggedInUser };
 
-            if (
-              restaurantinformation?.enableotpauthentication &&
-              restaurantinfo?.deliveryServicePartnerEnable &&
-              !customer.isVerifiedPhone
-            ) {
-              setphoneVerify(true);
+        if (responseWithCustomer.customerDetails) {
+          const customer = responseWithCustomer.customerDetails;
+
+          dispatch(setUserDetail(customer));
+          setUserExpiryTime();
+
+          if (
+            restaurantinformation?.enableotpauthentication &&
+            restaurantinfo?.deliveryServicePartnerEnable &&
+            !customer.isVerifiedPhone
+          ) {
+            setphoneVerify(true);
+            handleOpenLoginModal(false);
+            handleToggle?.(true, "openVerifyPhone");
+          } else {
+            if (!customer.isVerified) {
               handleOpenLoginModal(false);
-              handleToggle?.(true, "openVerifyPhone");
+              handleToggleAccountConfirm(true);
             } else {
-              if (!responsedata.customerDetails.isVerified) {
-                handleOpenLoginModal(false);
-                handleToggleAccountConfirm(true);
-              } else {
-                if (
-                  restaurantinformation?.defaultLocation?.enableRewardPoint &&
-                  responsedata?.customerDetails?.customertype !==
-                    CUSTOMER_TYPE.SUBSCRIBE
-                ) {
-                  setLoadRewardPoint(true);
-                  setTimeout(() => {
-                    handleToggle?.(true, "openRewardModal");
-                  }, 500);
-                }
+              if (
+                restaurantinformation?.defaultLocation?.enableRewardPoint &&
+                customer.customertype !== CUSTOMER_TYPE.SUBSCRIBE
+              ) {
+                setLoadRewardPoint(true);
+                setTimeout(() => {
+                  handleToggle?.(true, "openRewardModal");
+                }, 500);
               }
             }
-            dispatch(setintialrewardpoints(customer));
-            dispatch(setintialrewardpoints(responsedata.customerDetails));
+          }
+          dispatch(setintialrewardpoints(customer));
+          // dispatch(setintialrewardpoints(responsedata.customerDetails));
+          if (tempDeliveryAddress !== null && restaurantinformation) {
+            tempDeliveryAddress.customerId = customer.customerId;
 
-            if (tempDeliveryAddress !== null && restaurantinformation) {
-              tempDeliveryAddress.customerId = customer.customerId;
+            DeliveryAddressServices.addDeliveryAddress(
+              tempDeliveryAddress,
+              restaurantinformation.restaurantId,
+              restaurantinformation.defaultlocationId
+            ).then((res) => {
+              if (res) {
+                tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
+                dispatch(selecteddeliveryaddress(tempDeliveryAddress as any));
 
-              DeliveryAddressServices.addDeliveryAddress(
-                tempDeliveryAddress,
-                restaurantinformation.restaurantId,
-                restaurantinformation.defaultlocationId
-              ).then((res) => {
-                if (res) {
-                  tempDeliveryAddress.deliveryaddressId =
-                    res?.customerAddressId;
-                  dispatch(selecteddeliveryaddress(tempDeliveryAddress as any));
+                dispatch({
+                  type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
+                  payload: {
+                    customerAddressId: tempDeliveryAddress.deliveryaddressId,
+                  },
+                });
+              }
 
-                  dispatch({
-                    type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,
-                    payload: {
-                      customerAddressId: tempDeliveryAddress.deliveryaddressId,
-                    },
-                  });
-                }
-
-                dispatch(AddTempDeliveryAddress(null));
-              });
-            }
-            if (responsedata.customerDetails.isVerified) {
-              handleOpenLoginModal(false);
-            }
+              dispatch(AddTempDeliveryAddress(null));
+            });
+          }
+          if (customer.isVerified) {
+            handleOpenLoginModal(false);
           }
         } else {
           setSubmitting(false);
           setisDisable(false);
-          setErrorMessage(responsedata.message);
+          setErrorMessage((responsedata as ResponseModel).message);
         }
       });
     }
@@ -306,17 +301,14 @@ const Login: React.FC<LoginProps> = ({
                         <br></br>
                         <PhoneInput
                           country={"us"}
-                          value={dialCode || "+" + "1"}
-                          onChange={(
-                            value: string,
-                            data: { dialCode: string }
-                          ) => {
+                          value={dialCode === "" ? "+1" : dialCode}
+                          onChange={(value: string, data: { dialCode: string }) => {
                             setDialCode("+" + data.dialCode);
                             setErrorMessage("");
                             setSubmitting(false);
                           }}
                           onlyCountries={getCountryList()}
-                          preferredCountries={[]}
+                          preferredCountries={["ca", "in", "us"]}
                           enableAreaCodes={false}
                           inputProps={{
                             name: "phone",
@@ -330,7 +322,7 @@ const Login: React.FC<LoginProps> = ({
                           inputClass="codeinput form-control"
                           buttonClass="dialCode"
                           dropdownClass="country-list"
-                          enableSearch
+                          enableSearch={false}
                           disableSearchIcon
                         />
                       </div>
@@ -365,9 +357,8 @@ const Login: React.FC<LoginProps> = ({
                             required
                           />
                           <i
-                            className={`fa ${
-                              showPassword ? "fa-eye" : "fa-eye-slash"
-                            } fa-lg eye-icon`}
+                            className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"
+                              } fa-lg eye-icon`}
                             onClick={() => setShowPassword(!showPassword)}
                             style={{ cursor: "pointer" }}
                           />
@@ -410,17 +401,15 @@ const Login: React.FC<LoginProps> = ({
                     </div>
                   )}
                   <div
-                    className={`col-lg-${
-                      !b2b ? "6" : "12"
-                    } text-center col-md-${!b2b ? "6" : "12"} col-12`}
+                    className={`col-lg-${!b2b ? "6" : "12"
+                      } text-center col-md-${!b2b ? "6" : "12"} col-12`}
                   >
                     <ButtonLoader
                       isLoader={isDisable}
-                      classname={`${
-                        isDisable || submitting
-                          ? `btn-default w-100 opacity-50 pe-none`
-                          : `btn-default w-100`
-                      }`}
+                      classname={`${isDisable || submitting
+                        ? `btn-default w-100 opacity-50 pe-none`
+                        : `btn-default w-100`
+                        }`}
                       //btnType="submit"
                       btnType={BUTTON_TYPE_ENUM.SUBMIT}
                       handleClick={handleSubmit}

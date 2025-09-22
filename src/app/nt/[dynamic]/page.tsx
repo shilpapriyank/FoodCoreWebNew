@@ -7,25 +7,26 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 
 const Page: React.FC = () => {
   const router = useRouter();
-  const pathname = usePathname(); // might not be needed here
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // dynamic param comes from segment in folder name
-  const dynamic = pathname?.split("/").pop() || ""; // or get from searchParams if query string
+  const dynamic = pathname?.split("/").pop() || "";
   const { restaurantinfo } = useReduxData();
 
   useEffect(() => {
     let routepath = "";
     if (!dynamic || !restaurantinfo) return;
 
-    const selectedTheme = GetThemeDetails(restaurantinfo?.themetype);
+    const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
 
     if (!selectedTheme) return;
     if (selectedTheme.name === ThemeObj.dominos) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
-    } else if (selectedTheme.name === ThemeObj.default) {
+    }
+    else if (selectedTheme.name === ThemeObj.default) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}/main`;
-    } else if (selectedTheme.name === ThemeObj.newtheme) {
+    }
+    else if (selectedTheme.name === ThemeObj.newtheme) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
     }
     router.push(routepath);
@@ -34,7 +35,8 @@ const Page: React.FC = () => {
 
   return (
     <>
-      <div className="spinner-border text-info" role="status"></div>
+      <div className="spinner-border text-info" role="status">
+      </div>
     </>
   );
 };

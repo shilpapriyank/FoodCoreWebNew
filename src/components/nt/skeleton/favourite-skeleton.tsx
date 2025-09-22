@@ -6,9 +6,9 @@ const FavouriteSkeleton = () => {
   const count = [1, 2, 3, 4, 5, 6, 7, 8];
 
   return (
-    <div className="row w-80">
+    <div className="row w-100">
       {
-        count.map((item: any, index: number) => {
+        count.map((index: number) => {
           return <div className="col-12 col-md-6 col-lg-6 border  rounded py-2 mb-2 w-48 mx-1 ske-100" key={index}>
             <div className=" d-flex flex-row">
               <div className='w-75'><Skeleton className='w-100' height={70}></Skeleton>
