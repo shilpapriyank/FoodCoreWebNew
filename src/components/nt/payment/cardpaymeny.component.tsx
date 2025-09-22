@@ -154,9 +154,7 @@
 // //   };
 // //   useEffect(() => {
 // //     if (is3DComplete) {
-// //       console.log("3d complete card component");
 // //       stripe.retrievePaymentIntent(clientSecret).then((data: any) => {
-// //         console.log(data);
 // //         if (data?.paymentIntent?.status === "succeeded") {
 // //           confirmPayment(
 // //             data?.paymentIntent?.payment_method,
@@ -202,7 +200,6 @@
 // //     paymentmethod: any,
 // //     isThreedPayment?: any
 // //   ) {
-// //     // console.log(payment.url)
 
 // //     if (payment?.issuccess === true && payment?.status === "succeeded") {
 // //       const closeButton = document.querySelector(".btn-close");
@@ -281,7 +278,6 @@
 // //   function confirmPayment(paymentMethodIdTemp?: any, isWallet?:any, paymentmethod?:any) {
 // //     if (paymentMethodIdTemp !== "") {
 // //       setPaymentMethodId(paymentMethodIdTemp);
-// //       console.log(paymentMethodIdTemp);
 // //       let threeDPopupLoadPageURL =
 // //         window.location.origin +
 // //         "/" +

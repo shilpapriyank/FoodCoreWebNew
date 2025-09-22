@@ -16,7 +16,7 @@ import {
   isasap,
   setordertime,
 } from "../../../../../../redux/order/order.slice";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import YourInfo from "@/components/nt/checkout/your-info.component";
 import CartItemsDetailComponent from "@/components/nt/checkout/cart-items-details.component";
 import { RelatedItemsList } from "@/components/nt/common/related-items/related-items-list";

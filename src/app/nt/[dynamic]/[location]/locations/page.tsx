@@ -2,7 +2,7 @@
 
 import { sortArrayOnSelectedLocation } from "@/components/common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import { LocationItem } from "@/components/nt/location/location-item.component";
 import React, { useState } from "react";
 

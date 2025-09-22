@@ -3,7 +3,7 @@ import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import { CartServices } from "../../../../../../redux/cart/cart.services";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import Head from "next/head";
 
 const Payment = () => {

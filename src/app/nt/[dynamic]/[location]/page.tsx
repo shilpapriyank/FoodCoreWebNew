@@ -13,7 +13,7 @@ import useUtility from "../../../../components/customhooks/utility-hook";
 import { setpickupordelivery } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { OrderServices } from "../../../../../redux/order/order.services";
 import { isasap, setordertime } from "../../../../../redux/order/order.slice";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 
 const LocationPage: React.FC = () => {
   const dispatch = useAppDispatch();

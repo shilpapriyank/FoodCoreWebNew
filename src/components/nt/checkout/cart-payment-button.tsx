@@ -328,7 +328,6 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
   };
 
   const handleOpenLoginModal = (value: any) => {
-    console.log("value", value);
     setOpenLoginModal(value);
   };
   const handleToggle = (value: any, key?: any) => {
@@ -451,11 +450,6 @@ const CartPaymentButton = ({ errormessage, timeErrorMessage }: any) => {
     order.checktime === ""
   ) {
     isButtonDisabled2 = true;
-    // console.log(isButtonDisabled2)
-    // console.log(deliveryErrorMessage)
-    // console.log(timeErrorMessage)
-    // console.log(orderDisableData?.errormessage)
-    // console.log(errormessage)
   }
 
   const ErrorMessage = ({ message }: any) =>

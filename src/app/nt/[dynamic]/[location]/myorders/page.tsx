@@ -11,7 +11,7 @@ import {
 } from "../../../../../../redux/menu-item/menu-item.slice";
 import Head from "next/head";
 import { MYORDERPAGE_MESSAGE } from "@/components/nt/helpers/static-message/myorder-message";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import AuthGuardComponent from "@/components/nt/common/authgaurd.component";
 import { MyOrderSkeleton } from "@/components/nt/skeleton/myorder-skeleton";
 import { MyOrdersComponent } from "@/components/nt/myorders/myorders.component";
