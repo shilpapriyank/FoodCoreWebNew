@@ -4,7 +4,10 @@ import handleNotify from "../default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "../default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "../default/helpers/toaster/toaster-types";
 import useFutureOrder from "./usefuture-order-hook";
-import { CartTotal } from "@/types/cart-types/cartservice.type";
+import {
+  CartDetailOfCartTotal,
+  CartTotal,
+} from "@/types/cart-types/cartservice.type";
 import { useReduxData } from "./useredux-data-hooks";
 import { useAppDispatch } from "../../../redux/hooks";
 import { decimalValidate, numberValidate } from "../default/helpers/validate";
@@ -12,7 +15,7 @@ import { CustomerServices } from "../../../redux/customer/customer.services";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../redux/cart/cart.slice";
 
-const useRewardPoint = (carttotal?: CartTotal, inputRP?: any) => {
+const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: any) => {
   const {
     rewardpoints,
     userinfo,

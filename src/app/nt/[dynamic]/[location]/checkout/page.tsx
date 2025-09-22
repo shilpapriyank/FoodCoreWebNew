@@ -25,6 +25,8 @@ import Instructions from "@/components/nt/checkout/instructions.component";
 import OrderTotalDetails from "@/components/nt/category/category-sidebar/order-total-details.component";
 import CartPaymentButton from "@/components/nt/checkout/cart-payment-button";
 import RewardPointAndTips from "@/components/nt/checkout/reward-tips.component";
+import { DeliveryAddressInput } from "../../../../../../redux/delivery-address/delivery-address.types";
+import { SelectedDeliveryAddressType } from "@/types/selectdelivery-types/selectdelivery.types";
 
 const CheckoutPage = () => {
   const dispatch = useAppDispatch();
@@ -101,7 +103,7 @@ const CheckoutPage = () => {
             restaurantId: restaurantinfo?.restaurantId as number,
             locationId: restaurantinfo?.defaultLocation.locationId as number,
             ordertype: ordertype,
-            obj: selectedAddress as any,
+            obj: selectedAddress as DeliveryAddressInput,
             requestId: deliveryRequestId,
           }).then((gettimeresponse) => {
             if (gettimeresponse?.result) {
@@ -114,7 +116,7 @@ const CheckoutPage = () => {
                   recievingTime: time[0],
                   recieving: time[1],
                   flg: ordertype,
-                  obj: selectedAddress as any,
+                  obj: selectedAddress as DeliveryAddressInput,
                   requestId: deliveryRequestId,
                 }).then((response) => {
                   if (
@@ -152,7 +154,7 @@ const CheckoutPage = () => {
               recievingTime: "",
               recieving: "",
               flg: ordertype,
-              obj: selectedAddress as any,
+              obj: selectedAddress as DeliveryAddressInput,
               requestId: deliveryRequestId,
               timeSlot: order?.checktime,
               date: futureDate,
@@ -175,7 +177,7 @@ const CheckoutPage = () => {
               recievingTime: newtime[0] + ":" + newtime[1],
               recieving: time[1],
               flg: ordertype,
-              obj: selectedAddress as any,
+              obj: selectedAddress as DeliveryAddressInput,
               requestId: deliveryRequestId,
             }).then((response) => {
               if (response.result != undefined && response.result !== null) {

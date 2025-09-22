@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CartServices } from "./cart.services";
 import {
-  CartDetails,
-  CartTotal,
+  CartDetailOfCartTotal,
   GetCartItems,
   GetCartItemsCount,
-  GetCartItemsList,
 } from "@/types/cart-types/cartservice.type";
 import { actionAsyncStorage } from "next/dist/server/app-render/action-async-storage.external";
 import { CartTypes } from "./cart.type";
@@ -18,7 +16,7 @@ import { GetMenuItemDetail } from "@/types/menuitem-types/menuitem.type";
 export interface CartState {
   cartitemdetail: GetCartItems | null;
   cartitemcount: GetCartItemsCount | number;
-  carttotal: any | null;
+  carttotal: CartDetailOfCartTotal | null;
   deliverycharges: any;
   rewardpoints: number;
   transactionid: string;
@@ -287,6 +285,7 @@ export const carttotaldata = createAsyncThunk(
     },
     { dispatch }
   ) => {
+    debugger
     await CartServices.carttotal(
       cartsessionId,
       locationId,
@@ -309,9 +308,9 @@ export const carttotaldata = createAsyncThunk(
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&
-          response?.deliveryCharges
+          response?.cartDetails?.deliveryCharges
         ) {
-          let dcharges = JSON.parse(response?.deliveryCharges);
+          let dcharges = JSON.parse(response?.cartDetails?.deliveryCharges);
           let dropofTime =
             dcharges != undefined &&
             dcharges?.dropofTime &&
@@ -391,9 +390,9 @@ export const getCartTotalData = createAsyncThunk(
       if (response) {
         if (
           ordertype === ORDER_TYPE.DELIVERY.value &&
-          response?.deliveryCharges
+          response?.cartDetails?.deliveryCharges
         ) {
-          let dcharges = JSON.parse(response?.deliveryCharges);
+          let dcharges = JSON.parse(response?.cartDetails?.deliveryCharges);
           let dropofTime =
             dcharges != undefined &&
             dcharges?.dropofTime &&

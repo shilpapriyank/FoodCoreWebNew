@@ -40,6 +40,7 @@ import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/uti
 import { CartState } from "../../../redux/cart/cart.slice";
 import { RestaurantState } from "../../../redux/restaurants/restaurants.slice";
 import { PIZZA_SIDE_ENUM } from "./enums";
+import { DeliveryAddressInput } from "../../../redux/delivery-address/delivery-address.types";
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -286,11 +287,11 @@ export const themeDefaultStyleArray: ThemeDefautStyle[] = [
 
 //CHECK THE CARTITEM IS AVAILABLE FOR THE DELIVERY OR TAKEOUT
 export const checkCheckoutDisable = (
-  cartdata: any,
+  cartdata: CartDetails,
   pickupordelivery: string,
   dtotal: boolean
 ) => {
-  debugger;
+  
   if (
     pickupordelivery === ORDER_TYPE.PICKUP.text ||
     pickupordelivery === ORDER_TYPE.DELIVERY.text
@@ -299,7 +300,7 @@ export const checkCheckoutDisable = (
     // if (!cartdata || cartdata.length === 0) {
     //   return true; // nothing in cart → disable checkout
     // }s
-    let cartItems = cartdata?.cartDetails?.cartItemDetails;
+    let cartItems = cartdata?.cartItemDetails;
     let isAnyPickupItemNotAvailable = cartItems?.some(
       (item: any) => item?.categorytakeoutavailable === false
     );
@@ -312,7 +313,7 @@ export const checkCheckoutDisable = (
         isAnyPickupItemNotAvailable) ||
       (pickupordelivery === ORDER_TYPE.DELIVERY.text &&
         isAnydeliveryItemNotAvailable) ||
-      checkMenuItemTimeAvailability(cartItems)
+      checkMenuItemTimeAvailability(cartItems as CartItemDetails[])
     ) {
       return true;
     } else if (
@@ -736,7 +737,7 @@ export const checkIntegerValue = (value: number) => {
 
 export const handleSetDeliveryTypeError = (
   pickupordelivery: string,
-  deliveryaddressinfo: DeliveryAddressInfo[],
+  deliveryaddressinfo: DeliveryAddressInput[],
   carttotal: CartTotal,
   dcharges: DeliveryChargesTypes,
   cart: CartState,
@@ -809,7 +810,7 @@ export const bindPlaceOrderObject = (
   deliveryaddressId: number,
   order: any,
   isAsap: boolean,
-  paymentType: string,
+  paymentType: number,
   restaurantinfo: GetAllRestaurantInfo,
   promotionData: PromotionData,
   distance: any,
