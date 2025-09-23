@@ -1,4 +1,5 @@
-import { FutureDateType } from "@/components/nt/timeslot/future-day.component";
+import { FutureOrderingDayDate } from "../location-types/location.type";
+import { FutureOrderingDayDateTypes } from "../restaurant-types/restaurant.type";
 
 export interface TimeSlot {
   StartSlotNew: string;
@@ -6,15 +7,10 @@ export interface TimeSlot {
   isLastOrder?: boolean;
 }
 
-export interface FutureOrderDay {
-  futureDate: string;
-  futureDay: string;
-}
-
 export interface OrderType {
   checktime: string;
   isasap: boolean;
-  futureOrderDay?: FutureOrderDay;
+  futureOrderDay?: FutureOrderingDayDateTypes;
 }
 
 export interface OrderDisableData {
@@ -32,7 +28,7 @@ export interface AsapLaterOnState {
 export interface TimeSlotPopupComponentProps {
   isOpenModal: boolean;
   handleToggleTimingModal: (open: boolean) => void;
-  futureDateList: FutureDateType[];
+  futureDateList: FutureOrderingDayDateTypes[];
   handleToggleTimeSlotModal?: () => void;
   enablefutureordering: boolean;
   locationId: number;

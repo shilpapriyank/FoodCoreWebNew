@@ -46,7 +46,7 @@ const Payment = () => {
   const appearance: StripeElementsOptions["appearance"] = { theme: "stripe" };
   var options: StripeElementsOptions | undefined;
 
-  if (data !== undefined && isSuccess === true) {
+  if (data && data !== undefined && isSuccess === true) {
     options = {
       //secretId: data.secretId,
       clientSecret: data.secretId,

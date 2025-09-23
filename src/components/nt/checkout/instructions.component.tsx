@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FocusEvent, useState } from "react";
 import { ORDERTYPE } from "../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import useSpecialInstruction from "@/components/customhooks/specialinstruction-hook";
@@ -22,19 +22,24 @@ const Instructions = () => {
     onBlurDeliveryInstruction,
     onChangeDeliveryInstruction,
   } = useSpecialInstruction(instruction, deliveryinstructionmsg);
-  const handleOnBlurDeliveryInstruction = (e: any) => {
-    // onB(e)
+
+  const handleOnBlurDeliveryInstruction = (
+    e: FocusEvent<HTMLTextAreaElement>
+  ) => {
     setisFocus(false);
   };
 
-  const onFocusInput = (e: any) => {
+  const onFocusInput = (e: FocusEvent<HTMLTextAreaElement>) => {
     setisFocus(true);
   };
 
-  const handleOnBlurSpecialInstructions = (e: any) => {
+  const handleOnBlurSpecialInstructions = (
+    e: FocusEvent<HTMLTextAreaElement>
+  ) => {
     onBlurSpecialInstructions();
     setisNoteFocus(false);
   };
+  
   return (
     <>
       {pickupordelivery === ORDERTYPE.Delivery && (

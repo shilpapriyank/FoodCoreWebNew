@@ -8,7 +8,10 @@ import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { shallowEqual } from "react-redux";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { CartDetailOfCartTotal, CartTotal } from "@/types/cart-types/cartservice.type";
+import {
+  CartDetailOfCartTotal,
+  CartTotal,
+} from "@/types/cart-types/cartservice.type";
 import { clearredeempoint } from "../../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../../redux/cart/cart.slice";
 import RewardPoint from "./rewardpoint/reward-point.component";
@@ -130,7 +133,10 @@ const RewardPointAndTips = () => {
             if (isCalTip) {
               tipText = Number(element.text);
               let subTotal = calulateTotal(cartdata as any);
-              tipamountcal = calculateTip(element.text, subTotal) as number;
+              tipamountcal = calculateTip(
+                element.text,
+                Number(subTotal)
+              ) as number;
               settipamount(tipamountcal);
             }
           } else {
@@ -147,7 +153,10 @@ const RewardPointAndTips = () => {
             settipdatanew(data as any);
             tipText = Number(element.text);
             let subTotal = calulateTotal(cartdata);
-            tipamountcal = calculateTip(element.text, subTotal) as number;
+            tipamountcal = calculateTip(
+              element.text,
+              Number(subTotal)
+            ) as number;
             settipamount(tipamountcal);
             settipvalue(tipamountcal);
           } else {

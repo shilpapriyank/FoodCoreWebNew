@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 import { ORDER_TYPE, allRegex } from "../common/utility";
-import { CartDetailOfCartTotal, CartTotal } from "@/types/cart-types/cartservice.type";
+import {
+  CartDetailOfCartTotal,
+  CartTotal,
+} from "@/types/cart-types/cartservice.type";
 import { useReduxData } from "./useredux-data-hooks";
 import { useAppDispatch } from "../../../redux/hooks";
 import useFutureOrder from "./usefuture-order-hook";
@@ -44,7 +47,7 @@ const useTipValue = (
   });
   const [tipdata, settipdata] = useState(tipObj);
   const [tipdatanew, settipdatanew] = useState([]);
-  const [isDefaulttip, setisDefaulttip] = useState(isDefaultTip);
+  const [isDefaulttip, setisDefaulttip] = useState<boolean>(isDefaultTip);
   const [tipvalue, settipvalue] = useState(tipIntialValue);
   const [tipPercent, settipPercent] = useState(
     carttotal?.tipPercentage > 0 ? carttotal.tipPercentage : ""
@@ -54,18 +57,18 @@ const useTipValue = (
     carttotal?.grandTotal != undefined ? carttotal.grandTotal : 0
   );
   const minTipDriver = location?.minTipPercentage;
-  const [tipWarningMessage, settipWarningMessage] = useState("");
+  const [tipWarningMessage, settipWarningMessage] = useState<string>("");
   const minTipValue = calculateTip(
-    location?.minTipPercentage,
+    location?.minTipPercentage as number,
     carttotal?.subTotal
   );
   const { recievingDate, enabletimeslot } = useFutureOrder();
   // FUNCTION FOR THE CALCULATING TIPVALUE
-  function calculateTip(selectedtip: any, subtotal: any) {
+  function calculateTip(selectedtip: any, subtotal: number) {
     let tipamount = 0;
     if (enableTip) {
       if (selectedtip > 0 && subtotal > 0) {
-        tipamount = (parseInt(selectedtip) * parseFloat(subtotal)) / 100;
+        tipamount = (selectedtip * subtotal) / 100;
         return tipamount.toFixed(2);
       } else {
         return tipamount;
@@ -100,7 +103,7 @@ const useTipValue = (
   };
   const isTipWarning = useMemo(() => {
     const mintipvalue = calculateTip(
-      location?.minTipPercentage,
+      location?.minTipPercentage as number,
       carttotal?.subTotal
     );
     let tipWarning = false;
@@ -115,7 +118,7 @@ const useTipValue = (
     return tipWarning;
   }, [carttotal?.subTotal, carttotal?.tipAmount, location?.minTipPercentage]);
 
-  function tipOnBlur(isOnChange: any, tipValue: any) {
+  function tipOnBlur(isOnChange: boolean, tipValue: any) {
     //CHECK FOR THE TIPWARNING ON FOCUS VALUE IN TEXTBOX
     let tipTextBoxValue = isOnChange ? tipValue : tipvalue;
     // const minTipValue=calculateTip(location?.minTipPercentage, carttotal?.subTotal)
@@ -165,7 +168,7 @@ const useTipValue = (
 
   const updatecart = (caltippercent: any, caltipamount: any) => {
     settipPercent(caltippercent);
-    debugger
+    debugger;
     dispatch(
       carttotaldata({
         cartsessionId: sessionid as string,

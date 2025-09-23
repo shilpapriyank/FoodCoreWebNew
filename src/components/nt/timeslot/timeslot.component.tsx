@@ -16,7 +16,6 @@ import {
   getOrderTypeFromText,
 } from "../../common/utility";
 import {
-  checkOrderTime,
   emptyordertime,
   isasap,
   setFutureOrderDay,
@@ -24,7 +23,6 @@ import {
 } from "../../../../redux/order/order.slice";
 import {
   AsapLaterOnState,
-  FutureOrderDay,
   OrderDisableData,
   TimeSlot,
   TimeSlotPopupComponentProps,
@@ -55,6 +53,7 @@ import { PAGES } from "../common/pages";
 import FutureDayComponent from "./future-day.component";
 import {
   DefaultLocation,
+  FutureOrderingDayDateTypes,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
 import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
@@ -142,7 +141,8 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     selecteddelivery,
     restaurantWindowTime as RestaurantWindowTime
   );
-  const selectedDay = (order?.futureOrderDay as FutureOrderDay)?.futureDay;
+  const selectedDay = (order?.futureOrderDay as FutureOrderingDayDateTypes)
+    ?.futureDay;
   const [dayCloseError, setDayCloseError] = useState<string>("");
 
   useEffect(() => {
@@ -250,12 +250,12 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
         `${selecteddelivery.pickupordelivery} closed on ${day?.futureDate}`
       );
       dispatch(setFutureOrderDay(day));
-      setselectedDate(day?.futureDay as any);
+      setselectedDate(day?.futureDay as string);
     } else {
       setDayCloseError("");
       setLoadTimeslot(true);
-      setselectedDate(day?.futureDay as any);
-      dispatch(setFutureOrderDay(day as any));
+      setselectedDate(day?.futureDay as string);
+      dispatch(setFutureOrderDay(day as string));
       settimeSlots([]);
       setselectedTime("");
       if (day?.futureDay !== selectedDay) {
@@ -299,7 +299,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               recieving: time[1],
               flg: ordertype,
               obj: selectedAddress as DeliveryAddressInput,
-              requestId: requestID as any,
+              requestId: requestID,
             }).then((response) => {
               if (
                 response.result.message &&
