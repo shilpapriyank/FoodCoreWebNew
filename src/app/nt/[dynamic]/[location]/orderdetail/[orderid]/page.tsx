@@ -35,7 +35,7 @@ import { ORDERDETAILPAGEMESSAGE } from "@/components/nt/helpers/static-message/o
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { PAGES } from "@/components/nt/common/pages";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import AuthGuardComponent from "@/components/nt/common/authgaurd.component";
 import OrderDetail from "@/components/nt/orderdetail/order-detail.component";
 import OrderCharges from "@/components/nt/orderdetail/order-charges.cmponent";

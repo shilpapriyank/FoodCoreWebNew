@@ -12,7 +12,7 @@ import {
 import Head from "next/head";
 import useUtility from "../../../../../components/customhooks/utility-hook";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import { addmetaData } from "../../../../../../redux/metadata/metadata.slice";
 import { RestaurantsServices } from "../../../../../../redux/restaurants/restaurants.services";
 import { useParams, usePathname, useRouter } from "next/navigation";

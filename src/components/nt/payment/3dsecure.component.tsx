@@ -54,13 +54,10 @@ const ThreeDSecureComponent = ({
       ev.stopPropagation();
 
       if (ev.data !== "3DS-authentication-complete") return;
-
-      console.log(ev.data);
       if (
         ev.data === "3DS-authentication-complete" &&
         isProcessRunning === false
       ) {
-        console.log("open 3d secure");
         handle3dComplete();
       }
     },

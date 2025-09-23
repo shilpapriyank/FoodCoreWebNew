@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import CreatePasswordComponent from "@/components/nt/forgot-password/create-password.component";
+import { useParams } from "next/navigation";
 import React from "react";
-import Layout from "../../../../components/nt/layout/layout.component"
+import Layout from "../../../../../components/nt/layout/layout";
+import CreatePasswordComponent from "@/components/nt/forgot-password/create-password.component";
 
 const Page: React.FC = () => {
+  const params = useParams();
+  console.log("Params:", params);
   return (
     <>
-      {/* <LoadLocationDirectComponent> */}
       <Layout>
         <main>
           <section className="gift-cards mt-4">
@@ -34,9 +36,7 @@ const Page: React.FC = () => {
           </section>
         </main>
       </Layout>
-      {/* </LoadLocationDirectComponent> */}
     </>
   );
 };
-
 export default Page;
