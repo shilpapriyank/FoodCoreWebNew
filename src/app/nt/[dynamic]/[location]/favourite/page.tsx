@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import Head from "next/head";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import FavouriteItem from "@/components/nt/favourite/favourite-item.component";
 import MenuItemModal from "@/components/nt/category/category-menuitems/menuitem-modal/menuitem-modal.component";
 import FavouriteSkeleton from "@/components/nt/skeleton/favourite-skeleton";

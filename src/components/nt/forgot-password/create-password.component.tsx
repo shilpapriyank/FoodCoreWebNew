@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, ChangeEvent, MouseEvent } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState, ChangeEvent, MouseEvent, useEffect } from "react";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { GetThemeDetails } from "../../common/utility";
 import handleNotify from "../../default/helpers/toaster/toaster-notify";
@@ -13,94 +13,89 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 const CreatePasswordComponent: React.FC = () => {
   const { restaurantinfo } = useReduxData();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const dynamic = searchParams.get("dynamic") ?? "";
-  const location = searchParams.get("location") ?? "";
-  const index = searchParams.get("index") ?? "";
+  const params = useParams();
+  const id = params?.index as string;
+
+  const searchParams = useSearchParams();
   const returnURL = searchParams.get("returnURL") ?? "";
 
-  const [EmailAddress, setEmailAddress] = useState<string>("");
-  let validEmailAddress = "";
-  let phoneNumber = "";
-  const requestUrl = `${process.env.NEXT_PUBLIC_WEB_URL}${restaurantinfo?.restaurantURL}`;
-  const [submitting, setSubmitting] = useState(false);
+  const dynamic = params?.dynamic as string;
   const [values, setValues] = useState<{ password: string; confirmpassword: string }>({
     password: "",
     confirmpassword: "",
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
-  const [conirmpasswordErrorMessage, setConirmPasswordErrorMessage] = useState<string>("");
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype ?? "");
+
+  const { isError, isLoading, data, isSuccess, refetch, isFetching } = useQuery({
+    queryKey: ["gettoken", id, restaurantinfo?.restaurantId],
+    queryFn: () =>
+      CustomerServices.userResetPasswordValidToken(id, restaurantinfo!.restaurantId),
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+    enabled: !!id && !!restaurantinfo?.restaurantId,
+  });
+
+  let validEmailAddress = "";
+  let phoneNumber = "";
+
+  if (isSuccess && data?.result?.TokenIsValid) {
+    validEmailAddress = data?.result?.ValidEmailAddress;
+    const phone = data?.result?.Phone ?? "";
+    const phoneLength = phone.length;
+    phoneNumber = `(xxx) xxx-${phone.substring(phoneLength - 4, phoneLength)}`;
+  }
+
+  // Redirect if token invalid
+  useEffect(() => {
+    if (isSuccess && !data?.result?.TokenIsValid) {
+      router.push(`/${selctedTheme?.url}/${dynamic}/reset-failed`);
+    }
+  }, [isSuccess, data, router, selctedTheme, dynamic]);
 
   const passwordOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      password: e.target.value,
-    });
+    setValues({ ...values, password: e.target.value });
     setErrorMessage(null);
     setPasswordErrorMessage("");
   };
-
   const confirmpasswordOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      confirmpassword: e.target.value,
-    });
+    setValues({ ...values, confirmpassword: e.target.value });
     setErrorMessage(null);
-    setConirmPasswordErrorMessage("");
+    setConfirmPasswordErrorMessage("");
   };
-
-  const id = index;
-
-const selctedTheme = GetThemeDetails(restaurantinfo?.themetype ?? "");
-
-  const { isError, isLoading, data, isSuccess, refetch, isFetching } = useQuery({
-    queryKey: ["gettoken", restaurantinfo?.restaurantId],
-    queryFn: () => CustomerServices.userResetPasswordValidToken(id, restaurantinfo!.restaurantId),
-    staleTime: 0,
-    refetchOnWindowFocus: false,
-    enabled: id !== undefined && id !== "",
-  });
-
-  if (isSuccess) {
-    if (data?.result?.TokenIsValid) {
-      validEmailAddress = data?.result?.ValidEmailAddress;
-      let phone = data?.result?.Phone ?? "";
-      let phoneLength = phone?.length;
-      phoneNumber = `(xxx) xxx-${phone.substring(phoneLength - 4, phoneLength)}`;
-    } else {
-      router.push("/" + selctedTheme?.url + "/" + dynamic + "/reset-failed");
-    }
-  }
 
   const handleSubmit = async (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setSubmitting(true);
     setErrorMessage(null);
-    let iserror = false;
 
-    if (values.password.length === 0) {
+    let hasError = false;
+    if (!values.password) {
       setPasswordErrorMessage("Password must be required");
-      iserror = true;
+      hasError = true;
     }
-    if (values.confirmpassword.length === 0) {
-      setConirmPasswordErrorMessage("Confirm password must be required");
-      iserror = true;
+    if (!values.confirmpassword) {
+      setConfirmPasswordErrorMessage("Confirm password must be required");
+      hasError = true;
     }
-    if (
-      values.password !== "" &&
-      values.confirmpassword !== "" &&
-      values.password !== values.confirmpassword
-    ) {
+    if (values.password && values.confirmpassword && values.password !== values.confirmpassword) {
       setErrorMessage("Password and confirm password not matched");
-      iserror = true;
+      hasError = true;
+    }
+    if (hasError) {
+      setSubmitting(false);
+      return;
     }
 
-    if (iserror) return;
     refetch();
 
-    if (data && data?.result?.TokenIsValid && isFetching === false) {
+    if (data && data?.result?.TokenIsValid && !isFetching) {
+      const requestUrl = `${process.env.NEXT_PUBLIC_WEB_URL}${restaurantinfo?.restaurantURL}`;
       const requestBody = {
         emailId: validEmailAddress,
         password: values.password,
@@ -112,122 +107,138 @@ const selctedTheme = GetThemeDetails(restaurantinfo?.themetype ?? "");
       };
 
       CustomerServices.userResetPasswordRequest(requestBody).then((res: any) => {
-        let response = JSON.parse(res.d);
-        if (res && response?.result?.ChangeSuccessfully) {
-          handleNotify(response?.result?.PasswordMessage, ToasterPositions.TopRight, ToasterTypes.Success);
-          let redirectpage =
-            returnURL !== undefined && returnURL !== "" && returnURL !== "/"
-              ? "/" + returnURL
-              : "/password-set";
+        const response = JSON.parse(res.d);
 
-          router.push("/" + selctedTheme?.url + "/" + dynamic + redirectpage);
-        } else if (res && !response?.result?.ChangeSuccessfully) {
+        if (response?.result?.ChangeSuccessfully) {
+          handleNotify(
+            response.result.PasswordMessage,
+            ToasterPositions.TopRight,
+            ToasterTypes.Success
+          );
+
+          const redirectPage =
+            returnURL && returnURL !== "/" ? `/${returnURL}` : "/password-set";
+
+          router.push(`/${selctedTheme?.url}/${dynamic}${redirectPage}`);
+        } else {
           setSubmitting(false);
-          handleNotify(response?.result?.PasswordMessage, ToasterPositions.TopRight, ToasterTypes.Error);
-          return setErrorMessage(response?.result?.PasswordMessage);
+          handleNotify(
+            response?.result?.PasswordMessage,
+            ToasterPositions.TopRight,
+            ToasterTypes.Error
+          );
+          setErrorMessage(response?.result?.PasswordMessage);
         }
       });
     } else {
       setSubmitting(false);
-      handleNotify("Token is not valid , please request again", ToasterPositions.TopRight, ToasterTypes.Error);
-      return setErrorMessage("Token is not valid , please request again");
+      handleNotify(
+        "Token is not valid, please request again",
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+      setErrorMessage("Token is not valid, please request again");
     }
-    setSubmitting(false);
   };
 
   const handleClickHome = () => {
     router.push(
-      "/" + selctedTheme?.url + "/" + dynamic + "/" + restaurantinfo?.defaultLocation?.locationURL
+      `/${selctedTheme?.url}/${dynamic}/${restaurantinfo?.defaultLocation?.locationURL}`
     );
   };
 
+  // Loading / error fallback
+  if (isLoading || isFetching) return <div>Loading...</div>;
+  if (isError) return <div>Error loading token</div>;
+  if (isSuccess && !data?.result?.TokenIsValid) return null;
+
   return (
-    <>
-      {isSuccess && (
-        <div className="delivery-form py-2">
-          <form className="row justify-content-center">
-            <div className="col-lg-12 col-sm-12 col-12">
-              <div className="delivery">
+    <div className="delivery-form py-2">
+      <form className="row justify-content-center">
+        <div className="col-lg-12 col-sm-12 col-12">
+          <div className="delivery">
+            {/* Email */}
+            <div className="row mb-3">
+              <div className="col-lg-4 text-start">
+                <label>Email Address</label>
+              </div>
+              <div className="col-lg-7">
+                <input className="form-control" type="text" disabled value={validEmailAddress} />
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div className="row mb-3">
+              <div className="col-lg-4 text-start">
+                <label>Phone Number</label>
+              </div>
+              <div className="col-lg-7">
+                <input className="form-control" type="text" disabled value={phoneNumber} />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="row mb-3">
+              <div className="col-lg-4 text-start">
+                <label>Choose new Password</label>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Enter password"
+                  value={values.password}
+                  onChange={passwordOnChange}
+                  autoComplete="off"
+                  required
+                />
+                {passwordErrorMessage && <span className="red-text">{passwordErrorMessage}</span>}
+              </div>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="row mb-3">
+              <div className="col-lg-4 text-start">
+                <label>Confirm Password</label>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Re-enter password"
+                  value={values.confirmpassword}
+                  onChange={confirmpasswordOnChange}
+                  autoComplete="off"
+                  required
+                />
+                {confirmPasswordErrorMessage && (
+                  <span className="red-text">{confirmPasswordErrorMessage}</span>
+                )}
+                {errorMessage && <span className="red-text">{errorMessage}</span>}
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="row justify-content-start mt-4">
+              <div className="offset-lg-4 col-lg-6 col-md-12 col-12">
                 <div className="row">
-                  <div className="col-lg-4 text-start col-sm-4 col-12">
-                    <label className="ps-lg-3 ps-md-3">Email Address</label>
+                  <div className="col-lg-6 col-sm-6 col-12 mb-2 mb-lg-0">
+                    <a className="btn-default w-100 cursor" onClick={handleSubmit}>
+                      Continue
+                    </a>
                   </div>
-                  <div className="col-lg-7 col-sm-7 col-12 mb-3 ">
-                    <input
-                      className="form-control"
-                      type="text"
-                      placeholder=""
-                      disabled
-                      value={validEmailAddress}
-                      onChange={() => setEmailAddress("")}
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 text-start col-sm-4 col-12">
-                    <label className="ps-lg-3 ps-md-3">Phone Number</label>
-                  </div>
-                  <div className="col-lg-7 col-sm-7 col-12 mb-3 ">
-                    <input className="form-control" type="text" placeholder="" disabled value={phoneNumber} />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 text-start col-sm-4 col-12">
-                    <label className="ps-lg-3 ps-md-3">Choose new Password</label>
-                  </div>
-                  <div className="col-lg-7 col-sm-7 col-12 mb-3">
-                    <input
-                      type="password"
-                      onChange={passwordOnChange}
-                      value={values.password}
-                      placeholder="Enter password"
-                      autoComplete="off"
-                      className="form-control"
-                      required
-                    />
-                    {passwordErrorMessage && <span className="red-text">{passwordErrorMessage}</span>}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 text-start col-sm-4 col-12">
-                    <label className="ps-lg-3 ps-md-3">Confirm Password</label>
-                  </div>
-                  <div className="col-lg-7 col-sm-7 col-12 ">
-                    <input
-                      className="form-control"
-                      type="password"
-                      placeholder="Re-enter password"
-                      onChange={confirmpasswordOnChange}
-                      value={values.confirmpassword}
-                      autoComplete="off"
-                      required
-                    />
-                    {conirmpasswordErrorMessage && <span className="red-text ">{conirmpasswordErrorMessage}</span>}
-                    {errorMessage && <span className="red-text ">{errorMessage}</span>}
-                  </div>
-                </div>
-                <div className="row justify-content-start mt-4">
-                  <div className="offset-lg-4 col-lg-6 col-md-12 col-12">
-                    <div className="row">
-                      <div className="col-lg-6 col-sm-6 col-12 mb-2 mb-lg-0">
-                        <a className="btn-default w-100 cursor" onClick={handleSubmit}>
-                          Continue
-                        </a>
-                      </div>
-                      <div className="col-lg-6 col-sm-6 col-12 ">
-                        <a className="btn-default w-100 cursor" onClick={handleClickHome}>
-                          Home
-                        </a>
-                      </div>
-                    </div>
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <a className="btn-default w-100 cursor" onClick={handleClickHome}>
+                      Home
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
-      )}
-    </>
+      </form>
+    </div>
   );
 };
 

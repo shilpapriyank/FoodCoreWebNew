@@ -153,7 +153,7 @@ const CardPaymentComponent: React.FC<{
         requestPayerEmail: true,
       });
       // Check the availability of the Payment Request API first.
-      pr.canMakePayment().then((result) => {
+      pr.canMakePayment().then((result:any) => {
         if (result) {
           pr.on("paymentmethod", handlePaymentMethodReceived);
           setPaymentRequest(pr);
@@ -186,7 +186,7 @@ const CardPaymentComponent: React.FC<{
     }
     if (is3DComplete) {
       console.log("3d complete card component");
-      stripe.retrievePaymentIntent(clientSecret).then((data) => {
+      stripe.retrievePaymentIntent(clientSecret).then((data:any) => {
         console.log(data);
         if (data?.paymentIntent?.status === "succeeded") {
           confirmPayment(

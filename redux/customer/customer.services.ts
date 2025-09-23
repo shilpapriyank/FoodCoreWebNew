@@ -28,15 +28,12 @@ export interface UpdateCustomerInfoModel {
 export interface ResetPasswordRequest {
   validtoken: string;
   restaurantId: number;
-}
-
-export interface ResetPasswordModel {
-  restaurantId: number;
-  customerId: number;
-  requesturl: string;
-  returnURL: string;
-  phoneNumber: string;
-  dialCode: string;
+  emailId?: string;
+  password?: string;
+  confirmpassword?: string;
+  requestUrl?: string;
+  returnUrl?: string;
+  [key: string]: any;
 }
 
 export interface UpdatePhoneModel {
@@ -62,9 +59,9 @@ export class CustomerServices {
     const passwordurl = ENDPOINTS.GET_CUSTOMER_PASSWORD;
     const data = {
       passwordDetail: {
-        restaurantId: restaurantId,
-        locationId: locationId,
-        customerId: customerId,
+        restaurantId,
+        locationId,
+        customerId,
       },
     };
     responseclass = await handleAxiosPostAsync(
@@ -116,21 +113,17 @@ export class CustomerServices {
           customerId: userInfo.customerId,
           othercustomerId: 0,
           deliveryaddressId: 0,
-
           address1: "",
           address2: "",
           landmark: "",
           city: "",
-
           zipcode: "",
           contactno: "",
           contactname: "",
-
           latitude: 0,
           longitude: 0,
           state: "",
           country: "",
-
           addressType: "",
         },
       },
@@ -162,16 +155,16 @@ export class CustomerServices {
     }
   }
 
-  static async userExists(data: { phoneNumber: string; restaurantId: number }) {
+  static async userExists(input: { phoneNumber: string; restaurantId: number }) {
     responseclass = new ResponseModel();
     const methodName = "userExists";
     const userInfoUrl = ENDPOINTS.USER_EXIST;
     responseclass = await handleAxiosPostAsync(
-      data,
+      input,
       userInfoUrl,
       methodName,
       true,
-      data?.restaurantId
+      input?.restaurantId
     );
     return responseclass;
   }
@@ -183,18 +176,18 @@ export class CustomerServices {
     requesturl: string,
     returnURL: string,
     dialCode: string
-  ) {
+  ): Promise<boolean> {
     responseclass = new ResponseModel();
     const methodName = "handleForgotPasswordRequest";
     const forgetpasswordUrl = ENDPOINTS.FORGOT_PASSWORD;
     const data = {
       requestModel: {
-        dialCode: dialCode,
-        phoneNumber: phoneNumber,
-        restaurantId: restaurantId,
-        requesturl: requesturl, //window.location.origin +"/defaulttheme"+ "/" + dynamic+"/"+location + "/create-new-password",
-        customerId: customerId,
-        returnURL: returnURL,
+        dialCode,
+        phoneNumber,
+        restaurantId,
+        requesturl,
+        customerId,
+        returnURL,
       },
     };
     responseclass = await handleAxiosPostAsync(
@@ -244,14 +237,12 @@ export class CustomerServices {
     return responseclass;
   }
 
-  static async userResetPasswordRequest(
-    obj: ResetPasswordRequest
-  ): Promise<any> {
+  static async userResetPasswordRequest(obj: ResetPasswordRequest | any): Promise<any> {
     const location = ENDPOINTS.RESET_PASSWORD;
     const data = {
       requestModel: obj,
     };
-    const settings = {
+    const settings: RequestInit = {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -264,7 +255,7 @@ export class CustomerServices {
     try {
       const fetchResponse = await fetch(location, settings);
       if (fetchResponse.status === 200) {
-        let response = await fetchResponse.json();
+        const response = await fetchResponse.json();
         return response;
       } else if (fetchResponse.status === 400) {
         handleNotify(
@@ -310,11 +301,11 @@ export class CustomerServices {
     const location = ENDPOINTS.CHECK_CUSTOMER_REWARD_POINT_LOCATION;
     const data = {
       model: {
-        restaurantId: restaurantId,
-        customerId: customerId,
-        rewardpoints: rewardpoints,
+        restaurantId,
+        customerId,
+        rewardpoints,
         amount: parseFloat(amount),
-        locationId: locationId,
+        locationId,
       },
     };
     responseclass = await handleAxiosPostAsync(

@@ -6,7 +6,7 @@ import Head from "next/head";
 import React from "react";
 import { RestaurantsServices } from "../../../../../../redux/restaurants/restaurants.services";
 import { MYORDERPAGE_MESSAGE } from "@/components/nt/helpers/static-message/myorder-message";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import SiteContentComponent from "@/components/nt/common/site-content.component";
 
 const AboutUs = () => {

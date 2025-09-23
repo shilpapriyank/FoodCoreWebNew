@@ -13,7 +13,7 @@ import { OrderServices } from "../../../../../../redux/order/order.services";
 import { ORDER_TYPE } from "@/components/nt/common/utility";
 import { setpickupordelivery } from "../../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import { ORDERCONFIRMMESSAGE } from "@/components/nt/helpers/static-message/orderconfirm-message";
-import Layout from "@/components/nt/layout/layout.component";
+import Layout from "@/components/nt/layout/layout";
 import { PAGES } from "@/components/nt/common/pages";
 import { emptyorder } from "../../../../../../redux/order/order.slice";
 
@@ -25,7 +25,6 @@ const ThankYou = () => {
   const dispatch = useAppDispatch();
   let orderinfo = order;
   let orderId = orderinfo?.orderId;
-  console.log("orderId:", orderId);
   const themeURL = restaurantinfo?.themetype
     ? GetThemeDetails(restaurantinfo.themetype)?.url
     : "";

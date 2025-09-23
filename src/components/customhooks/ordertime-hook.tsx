@@ -38,7 +38,6 @@ const useOrderTime = (data: any, ordertype: any) => {
         setTimeOrErrorMessage(response.result.message);
         dispatch(emptyordertime());
         // setisConfirmDisable(true)
-        // console.log(response)
         return;
       }
       if (response.result != undefined && response.result !== null) {
