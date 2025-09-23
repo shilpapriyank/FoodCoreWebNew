@@ -42,6 +42,14 @@ export interface GetAllRestaurantInfo {
   IsAddressMandatoryForRegister: boolean;
 }
 
+export interface FutureOrderingDayDateTypes {
+  futureDay: string
+  futureDate: string
+  deliveryStatus: string
+  takeoutStatus: string
+  fullDay: string
+}
+
 export interface DefaultLocation {
   locationId: number;
   restaurantId: number;
@@ -114,7 +122,7 @@ export interface DefaultLocation {
   timeduration: number;
   defaultordertype: boolean;
   b2btype: boolean;
-  futureOrderingDayDates: any[];
+  futureOrderingDayDates: FutureOrderingDayDateTypes[];
 }
 
 export interface FirebaseConfig {
@@ -266,7 +274,7 @@ export interface AddressListItem {
   enablefutureordering: boolean;
   facebookUrl: string;
   fax: string;
-  futureOrderingDayDates: string[]; //any[]; // define structure
+  futureOrderingDayDates: FutureOrderingDayDateTypes[]; //any[]; // define structure
   googlePayEnable: boolean;
   hstgstnumber: string | null;
   instagramUrl: string;

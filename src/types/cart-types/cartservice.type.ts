@@ -118,21 +118,6 @@ export interface CartItemDetails {
   description: string;
 }
 
-export interface DeliveryChargesTypes {
-  returnMessage: string;
-  isdelivery: string;
-  deliveryService: string;
-  dropofTime: string;
-  requestId: string;
-  DeliveryCharges: string;
-  maxkms: string;
-  IsGeoFencing: number;
-  GeoMinOrderAmount: string;
-  distance: number;
-  header: string;
-  minOrderForAddress: number;
-}
-
 export interface CartTotal {
   subTotal: number;
   reedemPoints: number;
@@ -153,7 +138,7 @@ export interface CartTotal {
   discountPercentage: string;
   discountType: string;
   currencySymbol: string;
-  deliveryCharges: any;
+  deliveryCharges: DeliveryChargesTypes;
   cartTaxList: any;
   isDiscountApplied: boolean;
   PromotionData: PromotionData;
@@ -206,14 +191,40 @@ export interface CartDetailOfCartTotal {
   PromotionData: PromotionData;
 }
 
-// export interface DeliveryChargesTypes {
-//   chargetype: string;
-//   deliverycharges: string;
-//   distance: number;
-//   geoMinOrderAmount: string;
-//   isdelivery: string;
-//   isGeoFencing: boolean;
-//   maxkms: string;
-//   returnMessage: string;
-//   minOrderForAddress: number;
-// }
+export interface DeliveryChargesTypes {
+  returnMessage: string;
+  isdelivery: string;
+  deliveryService: string;
+  dropofTime: string;
+  requestId: string;
+  DeliveryCharges: string;
+  maxkms: string;
+  IsGeoFencing: number;
+  GeoMinOrderAmount: string;
+  distance: number;
+  header: string;
+  minOrderForAddress: string;
+}
+
+export interface AfterPaymentSuccessTypes {
+  result: any;
+  message: string;
+  status: number;
+}
+
+export interface UpdateAndConfirmPaymentTypes {
+  payment: Payment;
+}
+
+export interface Payment {
+  status: string;
+  message: string;
+  url: any;
+  issuccess: boolean;
+  paymentId: any;
+}
+
+export interface GetStripePaymentIntentIdTypes {
+  paymentIntentId: string;
+  secretId: string;
+}

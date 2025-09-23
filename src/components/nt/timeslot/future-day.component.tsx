@@ -2,23 +2,18 @@ import React, { Fragment, useRef } from "react";
 import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ORDER_TYPE } from "../../common/utility";
+import { FutureOrderingDayDateTypes } from "@/types/restaurant-types/restaurant.type";
 
-export interface FutureDateType {
-  deliveryStatus?: string;
-  takeoutStatus?: string;
-  futureDate?: string;
-  futureDay?: string;
-}
 
 interface OrderStateType {
-  futureOrderDay?: FutureDateType;
+  futureOrderDay?: FutureOrderingDayDateTypes;
   isasap?: boolean;
 }
 
 interface FutureDayComponentProps {
   enablefutureordering: boolean;
-  futureDateList: FutureDateType[];
-  handleClickDate: (day: FutureDateType, isClose?: boolean) => void;
+  futureDateList: FutureOrderingDayDateTypes[];
+  handleClickDate: (day: FutureOrderingDayDateTypes, isClose?: boolean) => void;
   selectedDate: string;
   order: OrderStateType;
   ordertype:number;

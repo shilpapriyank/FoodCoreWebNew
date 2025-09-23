@@ -755,7 +755,7 @@ export const handleSetDeliveryTypeError = (
   } else if (
     dcharges &&
     parseInt(dcharges?.isdelivery) === 0 &&
-    carttotal.subTotal < dcharges.minOrderForAddress &&
+    carttotal.subTotal < Number(dcharges.minOrderForAddress) &&
     carttotal?.cartCount > 0 &&
     isCartError
   ) {
@@ -784,7 +784,7 @@ export const handleSetDeliveryTypeError = (
   } else if (
     dcharges &&
     cart?.carttotal &&
-    dcharges.minOrderForAddress > cart?.carttotal.subTotal &&
+    Number(dcharges.minOrderForAddress) > cart?.carttotal.subTotal &&
     carttotal?.cartCount > 0 &&
     cartdata?.cartItemDetails != undefined &&
     cartdata?.cartItemDetails?.length > 0 &&

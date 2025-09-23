@@ -10,7 +10,7 @@ import {
 } from "../../common/utility";
 import useFutureOrder from "../../customhooks/usefuture-order-hook";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
-import { FutureOrderDay } from "@/types/timeslot-types/timeslot.types";
+import { FutureOrderingDayDateTypes } from "@/types/restaurant-types/restaurant.type";
 
 const PickupDeliveryButton = ({
   handleChangeOrderType,
@@ -48,12 +48,12 @@ const PickupDeliveryButton = ({
   const isEnableDelivery = checkDisableWindow(
     deliveryWindow as string[],
     isFutureOrder as boolean,
-    (futureDay as FutureOrderDay)?.futureDay
+    (futureDay as FutureOrderingDayDateTypes)?.futureDay
   );
   const isEnablePickup = checkDisableWindow(
     pickupWindow as string[],
     isFutureOrder as boolean,
-    (futureDay as FutureOrderDay)?.futureDay
+    (futureDay as FutureOrderingDayDateTypes)?.futureDay
   );
   // const b2b = defaultLocation?.b2btype;
   const b2b = restaurantinfo?.defaultLocation?.b2btype;

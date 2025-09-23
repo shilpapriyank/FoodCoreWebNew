@@ -26,7 +26,8 @@ const OrderTotalDetails = () => {
     cart &&
     pickupordelivery === ORDERTYPE.Delivery &&
     cart.carttotal != undefined &&
-    cart.carttotal?.deliveryCharges;
+    cart.carttotal?.deliveryCharges &&
+    JSON.parse(cart.carttotal?.deliveryCharges);
   var dtotal =
     dcharges != undefined &&
     pickupordelivery === ORDERTYPE.Delivery &&
@@ -137,8 +138,7 @@ const OrderTotalDetails = () => {
               <span className="float-end">
                 {charges != undefined &&
                   charges.subTotalWithDiscount != undefined &&
-                  currency +
-                    parseFloat(charges.subTotalWithDiscount).toFixed(2)}
+                  currency + charges.subTotalWithDiscount.toFixed(2)}
               </span>
             </h3>
 
@@ -159,7 +159,8 @@ const OrderTotalDetails = () => {
             )}
 
             {cartTaxList &&
-              cartTaxList?.map((taxes: any, index: any) => {
+              cartTaxList?.map((taxes: any) => {
+                debugger;
                 return (
                   <h3 className="heading">
                     {taxes.FeesType === 2 ? (
@@ -189,12 +190,12 @@ const OrderTotalDetails = () => {
                 </h3>
               )}
 
-            {enableTip && tipvalue != undefined && tipvalue > 0 && (
+            {enableTip && tipvalue != undefined && Number(tipvalue) > 0 && (
               <h3 className="heading">
                 Tip
                 <span className="float-end">
-                  {tipvalue != undefined && tipvalue > 0
-                    ? currency + tipvalue
+                  {tipvalue != undefined && Number(tipvalue) > 0
+                    ? (currency as string) + tipvalue
                     : currency + "0.00"}
                 </span>
               </h3>

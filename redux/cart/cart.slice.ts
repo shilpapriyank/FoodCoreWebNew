@@ -2,8 +2,11 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CartServices } from "./cart.services";
 import {
   CartDetailOfCartTotal,
+  DeliveryChargesTypes,
   GetCartItems,
   GetCartItemsCount,
+  GetCartTotalData,
+  OrderObjType,
 } from "@/types/cart-types/cartservice.type";
 import { actionAsyncStorage } from "next/dist/server/app-render/action-async-storage.external";
 import { CartTypes } from "./cart.type";
@@ -17,12 +20,11 @@ export interface CartState {
   cartitemdetail: GetCartItems | null;
   cartitemcount: GetCartItemsCount | number;
   carttotal: CartDetailOfCartTotal | null;
-  deliverycharges: any;
+  deliverycharges: DeliveryChargesTypes | {};
   rewardpoints: number;
   transactionid: string;
   grandtotal: number;
   paymentintentid: string;
-  orderinfo: any;
   orderinstruction: string;
   orderdeliveryinstruction: string;
 }
@@ -36,13 +38,11 @@ const initialState: CartState = {
   transactionid: "",
   grandtotal: 0,
   paymentintentid: "",
-  orderinfo: {},
   orderinstruction: "",
   orderdeliveryinstruction: "",
 };
 
 export const getCartItem = createAsyncThunk(
-  //"cart/getCartItem",
   CartTypes.CART_DATA,
   async (
     {
@@ -87,8 +87,8 @@ export const getCartItem = createAsyncThunk(
       rewardpoints,
       redeemamount,
       deliveryaddressId,
-      tipAmount,
-      tipPercentage,
+      tipAmount: tip,
+      tipPercentage: tippercent,
       ordertype,
       selectedTime,
       requestId,
@@ -211,7 +211,13 @@ export const checkCustomerRewardPoints = createAsyncThunk(
 
 export const cartcheckout = createAsyncThunk(
   "cart/cartcheckout",
-  async ({ obj, restaurantId }: { obj: any; restaurantId: number }) => {
+  async ({
+    obj,
+    restaurantId,
+  }: {
+    obj: OrderObjType;
+    restaurantId: number;
+  }) => {
     const response = await CartServices.cartcheckout(obj, restaurantId);
     return response;
   }
@@ -243,7 +249,118 @@ export const deleteCartItemFromSessionId = createAsyncThunk(
   }
 );
 
-export const carttotaldata = createAsyncThunk(
+// export const carttotaldata = createAsyncThunk(
+//   "cart/cartTotalData",
+//   async (
+//     {
+//       cartsessionId,
+//       locationId,
+//       restaurantId,
+//       customerId,
+//       cartId,
+//       rewardpoints,
+//       redeemamount,
+//       tipPercentage,
+//       tipAmount,
+//       deliveryaddressId,
+//       ordertype,
+//       requestId,
+//       recievingTime,
+//       recievingMeridian,
+//       ordertimetype,
+//       recievingDate,
+//       enableTimeSlot,
+//     }: {
+//       cartsessionId: string;
+//       locationId: number;
+//       restaurantId: number;
+//       customerId: number;
+//       cartId: number;
+//       rewardpoints?: string;
+//       redeemamount?: string;
+//       tipPercentage?: string;
+//       tipAmount?: number;
+//       deliveryaddressId?: number;
+//       ordertype?: number;
+//       requestId?: string;
+//       recievingTime: string;
+//       recievingMeridian: string;
+//       ordertimetype: number;
+//       recievingDate: string;
+//       enableTimeSlot: boolean;
+//     },
+//     { dispatch }
+//   ) => {
+//     debugger;
+//     await CartServices.carttotal(
+//       cartsessionId,
+//       locationId,
+//       restaurantId,
+//       customerId,
+//       cartId,
+//       rewardpoints,
+//       redeemamount,
+//       tipPercentage,
+//       checkIntegerValue(tipAmount as number),
+//       deliveryaddressId,
+//       ordertype,
+//       requestId,
+//       recievingTime,
+//       recievingMeridian,
+//       ordertimetype,
+//       recievingDate,
+//       enableTimeSlot
+//     ).then((response) => {
+//       if (response) {
+//         if (
+//           ordertype === ORDER_TYPE.DELIVERY.value &&
+//           response?.cartDetails?.deliveryCharges
+//         ) {
+//           let dcharges = JSON.parse(response?.cartDetails?.deliveryCharges);
+//           let dropofTime =
+//             dcharges != undefined &&
+//             dcharges?.dropofTime &&
+//             dcharges.dropofTime;
+//           let responseRequestId =
+//             dcharges != undefined && dcharges?.requestId && dcharges?.requestId;
+//           //check requesting id and incoming id and time not same then update
+//           if (dcharges && dropofTime && dcharges?.returnMessage === "") {
+//             if (!enableTimeSlot) {
+//               dispatch(checkOrderTime(dropofTime));
+//             }
+//             dispatch(setDeliveryRequestId(responseRequestId));
+//           }
+//         }
+//         dispatch(setCartTotal(response?.cartDetails));
+//       }
+//       return response as GetCartTotalData;
+//     });
+//   }
+// );
+
+export const carttotaldata = createAsyncThunk<
+  GetCartTotalData,
+  {
+    cartsessionId: string;
+    locationId: number;
+    restaurantId: number;
+    customerId: number;
+    cartId: number;
+    rewardpoints?: string;
+    redeemamount?: string;
+    tipPercentage?: string;
+    tipAmount?: number;
+    deliveryaddressId?: number;
+    ordertype?: number;
+    requestId?: string;
+    recievingTime: string;
+    recievingMeridian: string;
+    ordertimetype: number;
+    recievingDate: string;
+    enableTimeSlot: boolean;
+  },
+  {}
+>(
   "cart/cartTotalData",
   async (
     {
@@ -264,29 +381,11 @@ export const carttotaldata = createAsyncThunk(
       ordertimetype,
       recievingDate,
       enableTimeSlot,
-    }: {
-      cartsessionId: string;
-      locationId: number;
-      restaurantId: number;
-      customerId: number;
-      cartId: number;
-      rewardpoints?: string;
-      redeemamount?: string;
-      tipPercentage?: string;
-      tipAmount?: number;
-      deliveryaddressId?: number;
-      ordertype?: number;
-      requestId?: string;
-      recievingTime: string;
-      recievingMeridian: string;
-      ordertimetype: number;
-      recievingDate: string;
-      enableTimeSlot: boolean;
     },
     { dispatch }
   ) => {
-    debugger
-    await CartServices.carttotal(
+    // …
+    const response = await CartServices.carttotal(
       cartsessionId,
       locationId,
       restaurantId,
@@ -304,31 +403,28 @@ export const carttotaldata = createAsyncThunk(
       ordertimetype,
       recievingDate,
       enableTimeSlot
-    ).then((response) => {
-      if (response) {
-        if (
-          ordertype === ORDER_TYPE.DELIVERY.value &&
-          response?.cartDetails?.deliveryCharges
-        ) {
-          let dcharges = JSON.parse(response?.cartDetails?.deliveryCharges);
-          let dropofTime =
-            dcharges != undefined &&
-            dcharges?.dropofTime &&
-            dcharges.dropofTime;
-          let responseRequestId =
-            dcharges != undefined && dcharges?.requestId && dcharges?.requestId;
-          //check requesting id and incoming id and time not same then update
-          if (dcharges && dropofTime && dcharges?.returnMessage === "") {
-            if (!enableTimeSlot) {
-              dispatch(checkOrderTime(dropofTime));
-            }
-            dispatch(setDeliveryRequestId(responseRequestId));
+    );
+    if (response) {
+      if (
+        ordertype === ORDER_TYPE.DELIVERY.value &&
+        response?.cartDetails?.deliveryCharges
+      ) {
+        let dcharges = JSON.parse(response?.cartDetails?.deliveryCharges);
+        let dropofTime =
+          dcharges != undefined && dcharges?.dropofTime && dcharges.dropofTime;
+        let responseRequestId =
+          dcharges != undefined && dcharges?.requestId && dcharges?.requestId;
+        //check requesting id and incoming id and time not same then update
+        if (dcharges && dropofTime && dcharges?.returnMessage === "") {
+          if (!enableTimeSlot) {
+            dispatch(checkOrderTime(dropofTime));
           }
+          dispatch(setDeliveryRequestId(responseRequestId));
         }
-        dispatch(setCartTotal(response?.cartDetails));
       }
-      return response;
-    });
+      dispatch(setCartTotal(response?.cartDetails));
+    }
+    return response as GetCartTotalData;
   }
 );
 
@@ -417,9 +513,8 @@ export const getCartTotalData = createAsyncThunk(
 export const afterPaymentSuccess = (
   restaurantId: number,
   orderId: number,
-  source: any
+  source: number
 ) => {
-  // return (dispatch) => {
   if (orderId > 0) {
     CartServices.afterPaymentSuccess(restaurantId, orderId, source);
   }
@@ -438,7 +533,7 @@ const cartSlice = createSlice({
     updateCartItem: (state) => {
       state.cartitemdetail = null;
     },
-    setTransactionId: (state, action: PayloadAction<any>) => {
+    setTransactionId: (state, action: PayloadAction<string>) => {
       state.transactionid = action.payload;
     },
     setGrandTotal: (state, action: PayloadAction<number>) => {
@@ -459,13 +554,7 @@ const cartSlice = createSlice({
     resetCart: (state) => {
       Object.assign(state, initialState);
     },
-    setOrderInfo: (state, action: PayloadAction<any>) => {
-      state.orderinfo = action.payload;
-    },
-    emptyOrderInfo: (state) => {
-      state.orderinfo = null;
-    },
-    setCartTotal: (state, action: PayloadAction<any>) => {
+    setCartTotal: (state, action: PayloadAction<CartDetailOfCartTotal>) => {
       state.carttotal = action.payload;
     },
   },
@@ -494,12 +583,12 @@ const cartSlice = createSlice({
 
     builder.addCase(
       carttotaldata.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<GetCartTotalData>) => {
         if (action.payload) {
           state.carttotal = action.payload.cartDetails;
           try {
             state.deliverycharges = JSON.parse(
-              action.payload?.deliveryCharges || "{}"
+              action.payload?.cartDetails?.deliveryCharges || "{}"
             );
           } catch {
             state.deliverycharges = {};
@@ -509,7 +598,6 @@ const cartSlice = createSlice({
     );
 
     builder.addCase(deleteCartItemFromSessionId.fulfilled, (state) => {
-      // Clear cart item detail and count
       state.cartitemdetail = null;
       state.cartitemcount = 0;
     });
@@ -527,8 +615,6 @@ export const {
   setOrderDeliveryInstruction,
   emptycart,
   resetCart,
-  setOrderInfo,
-  emptyOrderInfo,
   setCartTotal,
 } = cartSlice.actions;
 

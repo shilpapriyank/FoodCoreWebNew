@@ -7,15 +7,15 @@ import { API_RESPONSE_STATUS } from "@/components/common/enums";
 import { ResponseModel } from "@/components/common/commonclass";
 import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { getDate, ORDER_TIME_TYPE } from "@/components/common/utility";
-import { ParseArgsConfig } from "util";
 import {
-  CartDetails,
-  CartTotal,
+  AfterPaymentSuccessTypes,
+  DeliveryChargesTypes,
   GetCartItems,
   GetCartItemsCount,
-  GetCartItemsList,
   GetCartTotalData,
+  GetStripePaymentIntentIdTypes,
   OrderObjType,
+  UpdateAndConfirmPaymentTypes,
 } from "@/types/cart-types/cartservice.type";
 
 let responseclass = new ResponseModel();
@@ -326,7 +326,7 @@ export class CartServices {
     restaurantId: number,
     locationId: number,
     isGeoFancing: boolean
-  ): Promise<any | null> {
+  ): Promise<DeliveryChargesTypes | null> {
     responseclass = new ResponseModel();
     const methodName = "deliverycharges";
     const location = ENDPOINTS.GET_DELIVERY_CHARGES;
@@ -368,7 +368,7 @@ export class CartServices {
       obj: itemobj,
     };
 
-    responseclass = await handleAxiosPostAsync(
+    responseclass = await handleAxiosPostAsync( 
       data,
       location,
       methodName,
@@ -392,7 +392,7 @@ export class CartServices {
     orderId: number,
     customerId: number,
     totalAmount: number
-  ): Promise<any | null> {
+  ): Promise<GetStripePaymentIntentIdTypes | null> {
     responseclass = new ResponseModel();
     const methodName = "getstripepaymentintentid";
     const location = ENDPOINTS.GET_PAYMENT_INTENT_ID;
@@ -518,7 +518,7 @@ export class CartServices {
     paymentMethodId: string,
     threeDPopupLoadPageURL: string,
     paymentIdRequire: boolean = false
-  ): Promise<any> {
+  ): Promise<UpdateAndConfirmPaymentTypes> {
     responseclass = new ResponseModel();
     const paymenturl = ENDPOINTS.UPDATE_CONFIRM_PAYMENT;
     const methodName = "updateAndConfirmPayment";
@@ -560,7 +560,7 @@ export class CartServices {
     restaurantId: number,
     orderId: number,
     source: number = 0
-  ): Promise<any> {
+  ): Promise<AfterPaymentSuccessTypes> {
     const paymenturl = ENDPOINTS.AFTER_PAYMENT_SUCCESS;
     const methodName = "afterPaymentSuccess";
 

@@ -38,8 +38,10 @@ import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { ThemeType } from "@/types/common-types/common.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
-import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
-import { FutureDateType } from "../../timeslot/future-day.component";
+import {
+  FutureOrderingDayDateTypes,
+  GetAllRestaurantInfo,
+} from "@/types/restaurant-types/restaurant.type";
 
 interface HeaderProps {
   handleChangeAddress?: () => void;
@@ -410,7 +412,7 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
           futureDateList={
             //restaurantinfo?.defaultLocation?.futureOrderingDayDates as  GetAllRestaurantInfo[]
             restaurantinfo?.defaultLocation
-              ?.futureOrderingDayDates as FutureDateType[]
+              ?.futureOrderingDayDates as FutureOrderingDayDateTypes[]
           }
           enablefutureordering={
             restaurantinfo?.defaultLocation?.enablefutureordering as boolean
