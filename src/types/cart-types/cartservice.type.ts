@@ -115,6 +115,7 @@ export interface CartItemDetails {
   availabilityMessage: string;
   categoryhstapplied: boolean;
   categorytaxes: number;
+  description: string;
 }
 
 export interface DeliveryChargesTypes {
@@ -173,6 +174,36 @@ export interface GetCartItemsCount {
 ///this is have to apply
 export interface GetCartItems {
   cartDetails: CartDetails;
+}
+
+export interface GetCartTotalData {
+  cartDetails: CartDetailOfCartTotal;
+}
+
+export interface CartDetailOfCartTotal {
+  subTotal: number;
+  reedemPoints: number;
+  reedemAmount: number;
+  discountAmount: number;
+  deliveryAmount: number;
+  subTotalWithDiscount: number;
+  taxPercentage: number;
+  totalTip: number;
+  hstTotal: number;
+  grandTotal: number;
+  systemAccessFee: number;
+  tipPercentage: number;
+  tipAmount: number;
+  cartCount: number;
+  customerOrderCount: number;
+  minOrderAmountForRewardPoint: string;
+  discountPercentage: string;
+  discountType: string;
+  currencySymbol: string;
+  deliveryCharges: any;
+  cartTaxList: any;
+  isDiscountApplied: boolean;
+  PromotionData: PromotionData;
 }
 
 // export interface DeliveryChargesTypes {

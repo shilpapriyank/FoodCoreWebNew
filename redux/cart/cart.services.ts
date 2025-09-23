@@ -9,10 +9,12 @@ import { ERRORMESSAGE } from "@/components/common/commonerrormessage";
 import { getDate, ORDER_TIME_TYPE } from "@/components/common/utility";
 import { ParseArgsConfig } from "util";
 import {
+  CartDetails,
   CartTotal,
   GetCartItems,
   GetCartItemsCount,
   GetCartItemsList,
+  GetCartTotalData,
   OrderObjType,
 } from "@/types/cart-types/cartservice.type";
 
@@ -271,7 +273,7 @@ export class CartServices {
     ordertimetype: number = ORDER_TIME_TYPE.ASAP.value,
     recievingDate: string = "",
     enableTimeSlot: boolean = false
-  ): Promise<any | null> {
+  ): Promise<GetCartTotalData | null> {
     responseclass = new ResponseModel();
     const methodName = "carttotal";
     const location = ENDPOINTS.GET_CART_TOTAL;
