@@ -210,7 +210,7 @@ const CartItemsDetailComponent = () => {
             recievingTime: recievingTime as string,
             recievingMeridian: meredian as string,
             ordertimetype: orderTimeType,
-            recievingDate: recievingDate,
+            recievingDate: recievingDate as string,
             enableTimeSlot: enabletimeslot as boolean,
           })
         );

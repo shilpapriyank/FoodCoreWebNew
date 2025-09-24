@@ -155,7 +155,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const [isConfirmDisable, setisConfirmDisable] = useState<boolean>(false);
   const [successMessage, setsuccessMessage] = useState<string>("");
   const [selectedDate, setselectedDate] = useState<string>(
-    order?.futureOrderDay.futureDay ?? ""
+    order?.futureOrderDay?.futureDay as string ?? ""
   );
   const [Hour, setHour] = useState<string>("");
   const [Minute, setMinute] = useState<string>("");
@@ -201,7 +201,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
         let newtime = time[0].split(":");
         setHour(newtime[0]);
         setMinute(newtime[1]);
-        setMeridiem(time[1]);
+        setMeridiem(time[1] as MERIDIEM_TIME_ENUM);
         setisTimeLoad(true);
       } else {
         handleCurrentTime();

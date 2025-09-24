@@ -414,7 +414,7 @@ const CartPaymentButton: React.FC<{
       pickupordelivery,
       isFutureOrder as boolean,
       timeSlot,
-      futureDate
+      futureDate as string
     );
 
     OrderServices.addorders({

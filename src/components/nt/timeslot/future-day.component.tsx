@@ -3,19 +3,20 @@ import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ORDER_TYPE } from "../../common/utility";
 import { FutureOrderingDayDateTypes } from "@/types/restaurant-types/restaurant.type";
+import { OrderState } from "../../../../redux/order/order.slice";
 
 
-interface OrderStateType {
-  futureOrderDay?: FutureOrderingDayDateTypes;
-  isasap?: boolean;
-}
+// interface OrderStateType {
+//   futureOrderDay?: FutureOrderingDayDateTypes;
+//   isasap?: boolean;
+// }
 
 interface FutureDayComponentProps {
   enablefutureordering: boolean;
   futureDateList: FutureOrderingDayDateTypes[];
   handleClickDate: (day: FutureOrderingDayDateTypes, isClose?: boolean) => void;
   selectedDate: string;
-  order: OrderStateType;
+  order: OrderState;
   ordertype:number;
 }
 

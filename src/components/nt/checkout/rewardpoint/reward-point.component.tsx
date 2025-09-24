@@ -1,6 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { RefObject, useEffect, useState } from "react";
 
-const RewardPoint = ({
+const RewardPoint: React.FC<{
+  point: number;
+  disabledText: boolean;
+  currency: string;
+  inputRP: RefObject<HTMLInputElement>;
+  amount: string;
+  maxRedeemAmount: string;
+  redeemamount: string;
+  redeempoint: string;
+  totalRewardAmount: string;
+  subTotalWithDiscount: number;
+  onchangerewardamount: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onchangerewardpoint: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onclickrewardsubmit: () => void;
+  onClickRewardClear: () => void;
+  errorMessage: string;
+}> = ({
   point,
   disabledText,
   currency,
@@ -16,7 +32,7 @@ const RewardPoint = ({
   onclickrewardsubmit,
   onClickRewardClear,
   errorMessage,
-}: any) => {
+}) => {
   return (
     <>
       <h3 className="heading mb-1">Reward Points</h3>
@@ -24,13 +40,13 @@ const RewardPoint = ({
         You have <b className="color-green">{point}</b> reward points, worth{" "}
         <b className="color-green">
           {currency}
-          {amount > 0 ? parseFloat(amount).toFixed(2) : 0}
+          {Number(amount) > 0 ? parseFloat(amount).toFixed(2) : 0}
         </b>
         .
       </p>
 
       {subTotalWithDiscount != undefined &&
-        totalRewardAmount > subTotalWithDiscount && (
+        Number(totalRewardAmount) > subTotalWithDiscount && (
           <p className="mb-1">
             <br />
             You can redeem reward points worth{" "}
@@ -49,7 +65,9 @@ const RewardPoint = ({
             type="text"
             className="form-control"
             placeholder="Enter $"
-            value={redeemamount === 0 ? "" : redeemamount ? redeemamount : ""}
+            value={
+              Number(redeemamount) === 0 ? "" : redeemamount ? redeemamount : ""
+            }
             onChange={(event) => onchangerewardamount(event)}
             disabled={disabledText === true ? true : point <= 0 ? true : false}
           />
@@ -63,7 +81,9 @@ const RewardPoint = ({
             className="form-control"
             placeholder="Enter Points"
             ref={inputRP}
-            value={redeempoint === 0 ? "" : redeempoint ? redeempoint : ""}
+            value={
+              Number(redeempoint) === 0 ? "" : redeempoint ? redeempoint : ""
+            }
             onChange={(event) => onchangerewardpoint(event)}
             disabled={disabledText === true ? true : point <= 0 ? true : false}
           />

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { RefObject, useMemo, useState } from "react";
 import { ORDER_TYPE } from "../common/utility";
 import handleNotify from "../default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "../default/helpers/toaster/toaster-positions";
@@ -15,7 +15,7 @@ import { CustomerServices } from "../../../redux/customer/customer.services";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../redux/cart/cart.slice";
 
-const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: any) => {
+const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: RefObject<HTMLInputElement>) => {
   const {
     rewardpoints,
     userinfo,
@@ -273,7 +273,7 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: any) => {
               recievingTime: recievingTime as string,
               recievingMeridian: meredian as string,
               ordertimetype: orderTimeType,
-              recievingDate: recievingDate,
+              recievingDate: recievingDate as string,
               enableTimeSlot: enabletimeslot as boolean,
             })
           );
@@ -305,7 +305,7 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: any) => {
         return;
       }
       if (redeempoint === 0 && redeemamount === 0) {
-        inputRP.current.focus();
+        inputRP?.current.focus();
         return;
       }
       if (!validateNewuserRewardPoint()) {
@@ -361,7 +361,7 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: any) => {
                 recievingTime: recievingTime as string,
                 recievingMeridian: meredian as string,
                 ordertimetype: orderTimeType,
-                recievingDate: recievingDate,
+                recievingDate: recievingDate as string,
                 enableTimeSlot: enabletimeslot as boolean,
               })
             );
@@ -420,23 +420,3 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: any) => {
 };
 
 export default useRewardPoint;
-
-// "use client";
-
-// import React from "react";
-// import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-
-// const UseRewardPoint: React.FC = () => {
-//   const { userinfo, rewardpoints } = useReduxData();
-
-//   const totalPoints = userinfo?.totalRewardPoints ?? 0;
-//   const rewardAmount = rewardpoints?.rewardamount ?? 0;
-
-//   return (
-//     <h1>
-//       You have {totalPoints} reward points, worth ${rewardAmount.toFixed(2)}.
-//     </h1>
-//   );
-// };
-
-// export default UseRewardPoint;

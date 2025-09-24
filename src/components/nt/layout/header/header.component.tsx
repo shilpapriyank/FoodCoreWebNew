@@ -72,8 +72,9 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
   const pathname: string = usePathname();
   const [isOpenOrderTypeModal, setisOpenOrderTypeModal] =
     useState<boolean>(false);
-  const isSchoolProgramEnabled =
-    (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
+  // const isSchoolProgramEnabled =
+  //   (restaurantinfo?.defaultLocation as any)?.schoolprogramenabled ?? false;
+  const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
   const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
   const openTimeModelDefault: boolean =
     pathname.includes(PAGES.CHECKOUT) &&

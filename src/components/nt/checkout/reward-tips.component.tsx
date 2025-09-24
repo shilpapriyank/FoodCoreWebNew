@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { RefObject, useEffect, useRef } from "react";
 import DriverTip from "./tips/driver-tip.component";
 import useTipValue from "../../customhooks/use-tip-hook";
 import useRewardPoint from "../../customhooks/userewardpoint-hook";
@@ -10,11 +10,13 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
   CartDetailOfCartTotal,
+  CartItemDetails,
   CartTotal,
 } from "@/types/cart-types/cartservice.type";
 import { clearredeempoint } from "../../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../../redux/cart/cart.slice";
 import RewardPoint from "./rewardpoint/reward-point.component";
+import { TipObjectType } from "@/types/usetip-types/usetiphook.type";
 
 const RewardPointAndTips = () => {
   const {
@@ -37,7 +39,7 @@ const RewardPointAndTips = () => {
   let carttotal = cart?.carttotal && cart.carttotal;
   const pickupordelivery = selecteddelivery.pickupordelivery;
   const deliveryaddressinfo = selecteddelivery?.selecteddeliveryaddress;
-  const inputRP = useRef(null);
+  const inputRP = useRef<HTMLInputElement>(null);
   const cartdata = cart?.cartitemdetail && cart?.cartitemdetail;
   let totalItemCount = cartdata?.cartDetails?.cartItemDetails?.length;
 
@@ -90,12 +92,15 @@ const RewardPointAndTips = () => {
     onclickrewardsubmit,
     onClickRewardClear,
     totalRewardAmount,
-  } = useRewardPoint(carttotal as CartDetailOfCartTotal, inputRP);
+  } = useRewardPoint(
+    carttotal as CartDetailOfCartTotal,
+    inputRP as RefObject<HTMLInputElement>
+  );
 
   const totalprice = useAppSelector(
     ({ cart }) =>
       cart.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-        (sum: any, item: any) => sum + (item?.totalprice || 0),
+        (sum: number, item: CartItemDetails) => sum + (item?.totalprice || 0),
         0
       ),
     shallowEqual
@@ -104,7 +109,7 @@ const RewardPointAndTips = () => {
   const totalQty = useAppSelector(
     ({ cart }) =>
       cart.cartitemdetail?.cartDetails?.cartItemDetails?.reduce(
-        (sum: any, item: any) => sum + (item?.qty || 0),
+        (sum: number, item: CartItemDetails) => sum + (item?.qty || 0),
         0
       ),
     shallowEqual
@@ -132,11 +137,8 @@ const RewardPointAndTips = () => {
             let isCalTip = tipdata.some((item) => item.value === true);
             if (isCalTip) {
               tipText = Number(element.text);
-              let subTotal = calulateTotal(cartdata as any);
-              tipamountcal = calculateTip(
-                element.text,
-                Number(subTotal)
-              ) as number;
+              let subTotal = calulateTotal(cartdata);
+              tipamountcal = calculateTip(element.text, subTotal) as number;
               settipamount(tipamountcal);
             }
           } else {
@@ -153,10 +155,7 @@ const RewardPointAndTips = () => {
             settipdatanew(data as any);
             tipText = Number(element.text);
             let subTotal = calulateTotal(cartdata);
-            tipamountcal = calculateTip(
-              element.text,
-              Number(subTotal)
-            ) as number;
+            tipamountcal = calculateTip(element.text, subTotal) as number;
             settipamount(tipamountcal);
             settipvalue(tipamountcal);
           } else {
@@ -201,7 +200,7 @@ const RewardPointAndTips = () => {
           recievingTime: recievingTime as string,
           recievingMeridian: meredian as string,
           ordertimetype: orderTimeType,
-          recievingDate: recievingDate,
+          recievingDate: recievingDate as string,
           enableTimeSlot: enabletimeslot as boolean,
         })
       );
@@ -313,15 +312,15 @@ const RewardPointAndTips = () => {
         isRewardTip && (
           <RewardPoint
             point={point}
-            currency={currency}
+            currency={currency as string}
             disabledText={disabledText}
-            inputRP={inputRP}
+            inputRP={inputRP as RefObject<HTMLInputElement>}
             amount={amount}
-            maxRedeemAmount={maxRedeemAmount}
+            maxRedeemAmount={maxRedeemAmount as string}
             redeemamount={redeemamount}
             redeempoint={redeempoint}
             totalRewardAmount={totalRewardAmount}
-            subTotalWithDiscount={carttotal?.subTotalWithDiscount}
+            subTotalWithDiscount={carttotal?.subTotalWithDiscount as number}
             onchangerewardamount={onchangerewardamount}
             onchangerewardpoint={onchangerewardpoint}
             onclickrewardsubmit={onclickrewardsubmit}

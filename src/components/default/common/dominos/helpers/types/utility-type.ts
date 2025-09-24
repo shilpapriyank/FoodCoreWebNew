@@ -70,7 +70,3 @@ export interface CheckTimeStatusResult {
   message?: string;
 }
 
-// export interface FutureOrderDay {
-//   fullDay: string;
-//   [key: string]: any;
-// }

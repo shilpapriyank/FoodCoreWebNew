@@ -1,3 +1,5 @@
+import { FutureOrderingDayDateTypes } from "../restaurant-types/restaurant.type";
+
 ////getAllLocationInfoNew service types
 export interface GetAllLocationInfoNew {
   parameterByColorList: ParameterByColorList[];
@@ -82,7 +84,8 @@ export interface AddressList {
   enablefutureordering: boolean;
   facebookUrl: string;
   fax: string;
-  futureOrderingDayDates: string[];
+  //futureOrderingDayDates: string[];
+  futureOrderingDayDates: FutureOrderingDayDateTypes;
   googlePayEnable: boolean;
   hstgstnumber: string;
   instagramUrl: string;
@@ -132,13 +135,13 @@ export interface AddressList {
   ordersubmittime: number;
   phone: string;
   pickupDays: number;
-  pickupTime: PickupTime[]; 
-  pickup_hour: string; 
+  pickupTime: PickupTime[];
+  pickup_hour: string;
   rewardpointAllow: number;
   stateName: string;
   stripePublishKey: string;
   takeawayextratime: number;
-  takeoutSpecialHoursList: { date: string; open: string; close: string }[]; 
+  takeoutSpecialHoursList: { date: string; open: string; close: string }[];
   takeoutslots: string[];
   timeSlotDuration: number;
   timeduration: number;
@@ -223,12 +226,4 @@ export interface Time3 {
   time: string;
   isClosed: boolean;
   isLastOrder: boolean;
-}
-
-export interface FutureOrderingDayDate {
-  futureDay: string;
-  futureDate: string;
-  deliveryStatus: string;
-  takeoutStatus: string;
-  fullDay: string;
 }
