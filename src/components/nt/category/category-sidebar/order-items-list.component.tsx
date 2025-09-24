@@ -169,7 +169,7 @@ export const OrderItemsList = () => {
             recievingTime: "",
             recievingMeridian: "",
             ordertimetype: 0,
-            recievingDate: recievingDate,
+            recievingDate: recievingDate as string,
             enableTimeSlot: enabletimeslot as boolean,
           })
         );

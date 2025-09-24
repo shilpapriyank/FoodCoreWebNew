@@ -5,16 +5,17 @@ import {
   GetOrderTimeArgsTypes,
   OrderAddress,
 } from "../../src/types/order-types/order.type";
+import { FutureOrderingDayDateTypes } from "@/types/restaurant-types/restaurant.type";
 
 export interface OrderState {
-  checktime: any;
+  checktime: string;
   isasap: boolean;
   orderId: number;
   isRedirectToCheckout: boolean;
   calculatedTotal: number;
   cardShowMessage: string;
   deliveryRequestId: string;
-  futureOrderDay: any;
+  futureOrderDay: FutureOrderingDayDateTypes | null;
 }
 
 const INITIAL_STATE: OrderState = {
@@ -25,7 +26,7 @@ const INITIAL_STATE: OrderState = {
   calculatedTotal: 0,
   cardShowMessage: "",
   deliveryRequestId: "",
-  futureOrderDay: {},
+  futureOrderDay: null,
 };
 
 export const checkOrderTime = createAsyncThunk(
@@ -105,7 +106,7 @@ const orderSlice = createSlice({
       state.calculatedTotal = 0;
       state.cardShowMessage = "";
       state.deliveryRequestId = "";
-      state.futureOrderDay = "";
+      state.futureOrderDay = null;
     },
     resetOrdersData: (state) => {
       state.isRedirectToCheckout = false;
@@ -118,7 +119,10 @@ const orderSlice = createSlice({
     clearDeliveryRequestId: (state) => {
       state.deliveryRequestId = "";
     },
-    setFutureOrderDay: (state, action: PayloadAction<any>) => {
+    setFutureOrderDay: (
+      state,
+      action: PayloadAction<FutureOrderingDayDateTypes | null>
+    ) => {
       state.futureOrderDay = action.payload;
     },
   },

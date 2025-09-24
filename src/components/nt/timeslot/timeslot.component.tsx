@@ -18,6 +18,7 @@ import {
 import {
   emptyordertime,
   isasap,
+  OrderState,
   setFutureOrderDay,
   setordertime,
 } from "../../../../redux/order/order.slice";
@@ -228,17 +229,18 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
     ) {
       handleClickDate(futureDateList?.[0]);
     } else {
-      handleClickDate(order?.futureOrderDay);
+      handleClickDate(order?.futureOrderDay as FutureOrderingDayDateTypes);
     }
   }, []);
 
   const handleClickDate = (
-    day: {
-      deliveryStatus?: string;
-      takeoutStatus?: string;
-      futureDate?: string;
-      futureDay?: string;
-    },
+    // day: {
+    //   deliveryStatus?: string;
+    //   takeoutStatus?: string;
+    //   futureDate?: string;
+    //   futureDay?: string;
+    // },
+    day: FutureOrderingDayDateTypes,
     isClose?: boolean
   ) => {
     const isClosed =
@@ -255,7 +257,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       setDayCloseError("");
       setLoadTimeslot(true);
       setselectedDate(day?.futureDay as string);
-      dispatch(setFutureOrderDay(day as string));
+      dispatch(setFutureOrderDay(day));
       settimeSlots([]);
       setselectedTime("");
       if (day?.futureDay !== selectedDay) {
@@ -390,7 +392,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                     {loadSwipe && (
                       <FutureDayComponent
                         ordertype={ordertype}
-                        order={order}
+                        order={order as OrderState}
                         selectedDate={selectedDate}
                         enablefutureordering={enablefutureordering}
                         futureDateList={futureDateList}

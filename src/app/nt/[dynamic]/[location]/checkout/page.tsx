@@ -157,7 +157,7 @@ const CheckoutPage = () => {
               obj: selectedAddress as DeliveryAddressInput,
               requestId: deliveryRequestId,
               timeSlot: order?.checktime,
-              date: futureDate,
+              date: futureDate as string,
             }).then((response) => {
               if (response.result != undefined && response.result !== null) {
                 if (response.result.status !== "success") {

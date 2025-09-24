@@ -9,6 +9,8 @@ import { useAppDispatch } from "../../../redux/hooks";
 import useFutureOrder from "./usefuture-order-hook";
 import { AnyIfEmpty } from "react-redux";
 import { carttotaldata } from "../../../redux/cart/cart.slice";
+import { TipObjectType } from "@/types/usetip-types/usetiphook.type";
+import { stringify } from "querystring";
 
 const useTipValue = (
   isDefaultTip: boolean,
@@ -47,6 +49,8 @@ const useTipValue = (
   });
   const [tipdata, settipdata] = useState(tipObj);
   const [tipdatanew, settipdatanew] = useState([]);
+  // const [tipdata, settipdata] = useState<TipObjectType[]>([]);
+  // const [tipdatanew, settipdatanew] = useState<TipObjectType[]>([]);
   const [isDefaulttip, setisDefaulttip] = useState<boolean>(isDefaultTip);
   const [tipvalue, settipvalue] = useState(tipIntialValue);
   const [tipPercent, settipPercent] = useState(
@@ -59,16 +63,16 @@ const useTipValue = (
   const minTipDriver = location?.minTipPercentage;
   const [tipWarningMessage, settipWarningMessage] = useState<string>("");
   const minTipValue = calculateTip(
-    location?.minTipPercentage as number,
-    carttotal?.subTotal
+    String(location?.minTipPercentage),
+    String(carttotal?.subTotal)
   );
   const { recievingDate, enabletimeslot } = useFutureOrder();
   // FUNCTION FOR THE CALCULATING TIPVALUE
-  function calculateTip(selectedtip: any, subtotal: number) {
+  function calculateTip(selectedtip: string, subtotal: string) {
     let tipamount = 0;
     if (enableTip) {
-      if (selectedtip > 0 && subtotal > 0) {
-        tipamount = (selectedtip * subtotal) / 100;
+      if (Number(selectedtip) > 0 && Number(subtotal) > 0) {
+        tipamount = (parseInt(selectedtip) * parseFloat(subtotal)) / 100;
         return tipamount.toFixed(2);
       } else {
         return tipamount;
@@ -101,16 +105,17 @@ const useTipValue = (
       }
     }
   };
+
   const isTipWarning = useMemo(() => {
     const mintipvalue = calculateTip(
-      location?.minTipPercentage as number,
-      carttotal?.subTotal
+      String(location?.minTipPercentage),
+      String(carttotal?.subTotal)
     );
     let tipWarning = false;
     if (
       location?.isUseFudmeDriver &&
       pickupordelivery === ORDER_TYPE.DELIVERY.text &&
-      carttotal?.tipAmount < parseFloat(mintipvalue as string) &&
+      carttotal?.tipAmount < (mintipvalue as number) &&
       location?.minTipPercentage > 0
     ) {
       tipWarning = true;
@@ -158,7 +163,7 @@ const useTipValue = (
           recievingTime: recievingTime as string,
           recievingMeridian: meredian as string,
           ordertimetype: orderTimeType,
-          recievingDate: recievingDate,
+          recievingDate: recievingDate as string,
           enableTimeSlot: enabletimeslot as boolean,
         })
       );
@@ -166,9 +171,8 @@ const useTipValue = (
     setgrandtotal(parseFloat(carttotal.grandTotal?.toFixed(2)));
   }
 
-  const updatecart = (caltippercent: any, caltipamount: any) => {
+  const updatecart = (caltippercent: string, caltipamount: string) => {
     settipPercent(caltippercent);
-    debugger;
     dispatch(
       carttotaldata({
         cartsessionId: sessionid as string,
@@ -178,8 +182,8 @@ const useTipValue = (
         cartId: 0,
         rewardpoints: String(carttotal?.reedemPoints),
         redeemamount: String(carttotal.reedemAmount),
-        tipPercentage: enableTip ? caltippercent : 0,
-        tipAmount: caltipamount,
+        tipPercentage: enableTip ? caltippercent : "0",
+        tipAmount: Number(caltipamount),
         deliveryaddressId:
           deliveryaddressinfo && pickupordelivery === ORDER_TYPE.DELIVERY.text
             ? deliveryaddressinfo.deliveryaddressId
@@ -189,17 +193,20 @@ const useTipValue = (
         recievingTime: recievingTime as string,
         recievingMeridian: meredian as string,
         ordertimetype: orderTimeType,
-        recievingDate: recievingDate,
+        recievingDate: recievingDate as string,
         enableTimeSlot: enabletimeslot as boolean,
       })
     );
   };
 
-  const addtipclick = (item: any, isUpdateCart: boolean = true) => {
+  const addtipclick = (item: TipObjectType, isUpdateCart: boolean = true) => {
     setisDefaulttip(false);
 
     //CHECK SLECTED PERCENTAGE TIPAMOUNT IS LESS THAN  MINTIP AMOUN TNO NEDD TO SLECT ADD MIN TIP
-    let slectedItemTipValue = calculateTip(item.text, carttotal.subTotal);
+    let slectedItemTipValue = calculateTip(
+      item?.text,
+      String(carttotal.subTotal)
+    );
     if (
       location?.isUseFudmeDriver &&
       pickupordelivery === ORDER_TYPE.DELIVERY.text &&
@@ -210,8 +217,8 @@ const useTipValue = (
       settipamount(parseFloat(minTipValue as string).toFixed(2));
       settipvalue(parseFloat(minTipValue as string).toFixed(2));
       settipdatanew([]);
-      settipdata(tipObj);
-      updatecart(0, minTipValue);
+      settipdata(tipObj as TipObjectType[]);
+      updatecart("0", minTipValue as string);
       settipWarningMessage(location?.minTipTextMessage);
       return;
     }
@@ -228,17 +235,20 @@ const useTipValue = (
       settipdata(updatetip);
       let selectedtip = tipdata?.find((x) => x.value === true);
       if (selectedtip != undefined && parseInt(selectedtip.text) > 0) {
-        let tipamount = calculateTip(selectedtip.text, carttotal.subTotal);
+        let tipamount = calculateTip(
+          selectedtip.text,
+          String(carttotal.subTotal)
+        );
         settipamount(tipamount);
         settipvalue(parseFloat(tipamount as string));
         // settipdata(tipObj)
-        updatecart(selectedtip.text, tipamount);
+        updatecart(selectedtip.text, tipamount as string);
       } else {
         settipvalue(0);
         settipamount(0);
         if (isUpdateCart) {
           setgrandtotal(parseFloat(carttotal.grandTotal?.toFixed(2)));
-          updatecart(0, 0);
+          updatecart("0", "0");
         }
       }
     }

@@ -160,7 +160,6 @@ const OrderTotalDetails = () => {
 
             {cartTaxList &&
               cartTaxList?.map((taxes: any) => {
-                debugger;
                 return (
                   <h3 className="heading">
                     {taxes.FeesType === 2 ? (

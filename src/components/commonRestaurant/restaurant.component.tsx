@@ -301,7 +301,7 @@ const RestaurantComponent: React.FC<{
       if (
         futureDays?.length > 0 &&
         isFutureOrder &&
-        order?.futureOrderDay !== "" &&
+        order?.futureOrderDay !== null &&
         order?.futureOrderDay
       ) {
         if (Object.keys(order?.futureOrderDay).length > 0) {
@@ -309,7 +309,7 @@ const RestaurantComponent: React.FC<{
             (day) => day.fullDay === order?.futureOrderDay?.fullDay
           );
           if (!isInFuterDay) {
-            dispatch(setFutureOrderDay(""));
+            dispatch(setFutureOrderDay(null));
             dispatch(emptyordertime());
           }
         }
