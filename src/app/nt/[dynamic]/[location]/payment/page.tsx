@@ -8,7 +8,7 @@ import { CartServices } from "../../../../../../redux/cart/cart.services";
 import Layout from "@/components/nt/layout/layout";
 import Head from "next/head";
 import { Elements } from "@stripe/react-stripe-js";
-import CardPaymentComponent from "@/components/nt/payment/cardpaymeny.component";
+import CardPaymentComponent from "@/components/nt/payment/cardpayment.component";
 import {
   DefaultLocation,
   GetAllRestaurantInfo,

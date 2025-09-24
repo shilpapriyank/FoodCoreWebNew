@@ -27,6 +27,7 @@ import { CartServices } from "../../../../redux/cart/cart.services";
 import Popover from "../common/custompopover";
 import ShareitemComponent from "../common/shareitem.component";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { CartItemDetails } from "@/types/cart-types/cartservice.type";
 
 const MenuItemAddToCart = ({
   item,
@@ -70,7 +71,7 @@ const MenuItemAddToCart = ({
       ? ORDER_TYPE.DELIVERY.value
       : ORDER_TYPE.PICKUP.value;
   var itemRow = cartdata?.cartDetails?.cartItemDetails?.filter(
-    (items: any) => items.menuitemid === item.menuitemId
+    (items: CartItemDetails) => items.menuitemid === item.menuitemId
   );
   var selecetdtime = recievingTime + " " + meredian;
   let rpoint = 0;
@@ -219,8 +220,8 @@ const MenuItemAddToCart = ({
                       dependentIds?.length > 0
                         ? dependentIds
                         : menuItemDetail?.dependantMenuList?.map(
-                          (item) => item?.DependantMenuItemId
-                        );
+                            (item) => item?.DependantMenuItemId
+                          );
                     let removefirst = dependentItemList?.shift();
                     let remainingList = dependentItemList;
                     dispatch(setDipendentId(removefirst as number));

@@ -346,8 +346,8 @@ export const carttotaldata = createAsyncThunk<
     restaurantId: number;
     customerId: number;
     cartId: number;
-    rewardpoints?: string;
-    redeemamount?: string;
+    rewardpoints?: number;
+    redeemamount?: number;
     tipPercentage?: string;
     tipAmount?: number;
     deliveryaddressId?: number;
@@ -453,8 +453,8 @@ export const getCartTotalData = createAsyncThunk(
       restaurantId: number;
       customerId: number;
       cartId: number;
-      rewardpoints: string;
-      redeemamount: string;
+      rewardpoints: number;
+      redeemamount: number;
       tipPercentage: string;
       tipAmount: number;
       deliveryaddressId: number;

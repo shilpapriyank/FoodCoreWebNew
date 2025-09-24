@@ -396,7 +396,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
                         selectedDate={selectedDate}
                         enablefutureordering={enablefutureordering}
                         futureDateList={futureDateList}
-                        handleClickDate={() => handleClickDate}
+                        handleClickDate={handleClickDate}
                       />
                     )}
                   </div>

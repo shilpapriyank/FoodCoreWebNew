@@ -156,8 +156,8 @@ export const OrderItemsList = () => {
             restaurantId: Number(restaurantinfo?.restaurantId),
             customerId: customerId,
             cartId: 0,
-            rewardpoints: "0",
-            redeemamount: "0",
+            rewardpoints: 0,
+            redeemamount: 0,
             tipPercentage: String(carttotal?.tipPercentage),
             tipAmount: carttotal?.tipAmount,
             deliveryaddressId:
@@ -230,7 +230,7 @@ export const OrderItemsList = () => {
             restaurantId: restaurantinfo?.restaurantId as number,
             cartId: 0,
             customerId: customerId,
-            rewardpoints: Number(rpoint),
+            rewardpoints: rpoint,
             redeemamount: ramount,
             deliveryaddressId: 0,
             tipPercentage: 0,
@@ -402,7 +402,7 @@ export const OrderItemsList = () => {
   return (
     <>
       {cartdata &&
-        cartdata?.cartDetails?.cartItemDetails?.map((data: any, index:any) => {
+        cartdata?.cartDetails?.cartItemDetails?.map((data: any, index: any) => {
           let counter = index;
           let subOption = cartdata?.cartDetails?.cartOptionParams?.filter(
             (x: any) => x.cartid === data.cartid

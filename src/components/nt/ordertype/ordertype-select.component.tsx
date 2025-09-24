@@ -113,7 +113,7 @@ const OrderTypeSelect = ({
         //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
         let oldLocationId = getLocationIdFromStorage();
         if (oldLocationId !== restaurantinfo.defaultlocationId) {
-          dispatch(clearRedux(true as any));
+          dispatch(clearRedux());
           let id = uuidv4();
           dispatch(createSessionId(id));
         }
@@ -352,7 +352,7 @@ const OrderTypeSelect = ({
                       {myDeliveryAddress && (
                         <AddressPill
                           isChecked={true}
-                          address={myDeliveryAddress as any}
+                          address={myDeliveryAddress}
                         />
                       )}
                       {userinfo && <DeliveryaddresspillComponent />}

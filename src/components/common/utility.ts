@@ -17,6 +17,7 @@ import {
   RestaurantWindowTime,
 } from "@/types/mainservice-types/mainservice.type";
 import {
+  CartDetailOfCartTotal,
   CartDetails,
   CartItemDetails,
   CartOptionParams,
@@ -738,7 +739,7 @@ export const checkIntegerValue = (value: number) => {
 export const handleSetDeliveryTypeError = (
   pickupordelivery: string,
   deliveryaddressinfo: DeliveryAddressInput[],
-  carttotal: CartTotal,
+  carttotal: CartDetailOfCartTotal,
   dcharges: DeliveryChargesTypes,
   cart: CartState,
   cartdata: CartDetails,

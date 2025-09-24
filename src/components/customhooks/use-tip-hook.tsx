@@ -48,7 +48,7 @@ const useTipValue = (
     return { id: index + 1, value: false, text: item.trim() };
   });
   const [tipdata, settipdata] = useState(tipObj);
-  const [tipdatanew, settipdatanew] = useState([]);
+  const [tipdatanew, settipdatanew] = useState<TipObjectType[]>([]);
   // const [tipdata, settipdata] = useState<TipObjectType[]>([]);
   // const [tipdatanew, settipdatanew] = useState<TipObjectType[]>([]);
   const [isDefaulttip, setisDefaulttip] = useState<boolean>(isDefaultTip);
@@ -81,7 +81,7 @@ const useTipValue = (
     return tipamount;
   }
 
-  const onchangetipamount = (item: any) => {
+  const onchangetipamount = (item?: any) => {
     const pattern = new RegExp(allRegex.validateTipAmount);
     const { value } = item.target;
     if (pattern.test(value) || value === "") {
@@ -123,7 +123,7 @@ const useTipValue = (
     return tipWarning;
   }, [carttotal?.subTotal, carttotal?.tipAmount, location?.minTipPercentage]);
 
-  function tipOnBlur(isOnChange: boolean, tipValue: any) {
+  function tipOnBlur(isOnChange: boolean, tipValue?: any) {
     //CHECK FOR THE TIPWARNING ON FOCUS VALUE IN TEXTBOX
     let tipTextBoxValue = isOnChange ? tipValue : tipvalue;
     // const minTipValue=calculateTip(location?.minTipPercentage, carttotal?.subTotal)
@@ -150,8 +150,8 @@ const useTipValue = (
           restaurantId: restaurantinfo?.restaurantId as number,
           customerId,
           cartId: 0,
-          rewardpoints: String(carttotal?.reedemPoints),
-          redeemamount: String(carttotal.reedemAmount),
+          rewardpoints: Number(carttotal?.reedemPoints),
+          redeemamount: Number(carttotal?.reedemAmount),
           tipPercentage: String(0),
           tipAmount: tipTextBoxValue,
           deliveryaddressId:
@@ -180,8 +180,8 @@ const useTipValue = (
         restaurantId: restaurantinfo?.restaurantId as number,
         customerId,
         cartId: 0,
-        rewardpoints: String(carttotal?.reedemPoints),
-        redeemamount: String(carttotal.reedemAmount),
+        rewardpoints: Number(carttotal?.reedemPoints),
+        redeemamount: Number(carttotal.reedemAmount),
         tipPercentage: enableTip ? caltippercent : "0",
         tipAmount: Number(caltipamount),
         deliveryaddressId:
@@ -203,10 +203,7 @@ const useTipValue = (
     setisDefaulttip(false);
 
     //CHECK SLECTED PERCENTAGE TIPAMOUNT IS LESS THAN  MINTIP AMOUN TNO NEDD TO SLECT ADD MIN TIP
-    let slectedItemTipValue = calculateTip(
-      item?.text,
-      String(carttotal.subTotal)
-    );
+    let slectedItemTipValue = calculateTip(item?.text, String(carttotal.subTotal));
     if (
       location?.isUseFudmeDriver &&
       pickupordelivery === ORDER_TYPE.DELIVERY.text &&

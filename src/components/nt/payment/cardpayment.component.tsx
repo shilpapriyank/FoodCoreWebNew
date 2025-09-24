@@ -33,6 +33,7 @@ import {
   StripeError,
 } from "@stripe/stripe-js";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
+import { PaymentType } from "@/types/cart-types/cartservice.type";
 
 const CardPaymentComponent: React.FC<{
   clientSecret: string;
@@ -153,7 +154,7 @@ const CardPaymentComponent: React.FC<{
         requestPayerEmail: true,
       });
       // Check the availability of the Payment Request API first.
-      pr.canMakePayment().then((result:any) => {
+      pr.canMakePayment().then((result) => {
         if (result) {
           pr.on("paymentmethod", handlePaymentMethodReceived);
           setPaymentRequest(pr);
@@ -186,7 +187,7 @@ const CardPaymentComponent: React.FC<{
     }
     if (is3DComplete) {
       console.log("3d complete card component");
-      stripe.retrievePaymentIntent(clientSecret).then((data:any) => {
+      stripe.retrievePaymentIntent(clientSecret).then((data: any) => {
         console.log(data);
         if (data?.paymentIntent?.status === "succeeded") {
           confirmPayment(
@@ -236,8 +237,8 @@ const CardPaymentComponent: React.FC<{
   };
 
   function handlePaymentResponse(
-    payment: any,
-    isWallet: any,
+    payment: PaymentType,
+    isWallet: boolean,
     paymentmethod: any,
     isThreedPayment?: boolean
   ) {
@@ -344,7 +345,11 @@ const CardPaymentComponent: React.FC<{
         paymentMethodIdTemp,
         threeDPopupLoadPageURL
       ).then((response) => {
-        handlePaymentResponse(response.payment, isWallet, paymentmethod);
+        handlePaymentResponse(
+          response.payment,
+          isWallet as boolean,
+          paymentmethod
+        );
       });
     }
   }

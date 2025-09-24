@@ -213,10 +213,10 @@ export interface AfterPaymentSuccessTypes {
 }
 
 export interface UpdateAndConfirmPaymentTypes {
-  payment: Payment;
+  payment: PaymentType;
 }
 
-export interface Payment {
+export interface PaymentType {
   status: string;
   message: string;
   url: any;
