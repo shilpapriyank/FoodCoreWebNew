@@ -48,7 +48,7 @@ export default async function RootLayout({
     // Fallback to default theme
   }
 
-  return (
+  return (      
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />

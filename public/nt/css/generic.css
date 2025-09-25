@@ -1354,7 +1354,8 @@ hr {
     padding: 16px 0px;
     border-radius: 20px 20px 0px 0px;
     color: var(--white-color);
-    background: var(--lbl_active_bg) !important;
+    /* background: var(--lbl_active_bg) !important; */
+     background: #C62300 !important;
 }
 
 .itembox.features {
