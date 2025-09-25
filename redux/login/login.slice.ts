@@ -4,6 +4,7 @@ import { LoginServices } from './login.services';
 import { RewardPointTypes } from '../rewardpoint/rewardpoint.types';
 import { AppDispatch, RootState } from '../store';
 import { LoggedInUser, LoginState } from './login.types';
+import { setrewardpoint } from '../rewardpoint/rewardpoint.slice';
 
 // ------------------ Initial State ------------------
 const initialState: LoginState = {
@@ -30,10 +31,11 @@ export const getCustomerDetails = createAsyncThunk<
       redeemPoint: 0,
     };
 
-    dispatch({
-      type: RewardPointTypes.SET_REWARD_POINT,
-      payload: rewardpoints,
-    });
+    // dispatch({
+    //   type: RewardPointTypes.SET_REWARD_POINT,
+    //   payload: rewardpoints,
+    // });
+    dispatch(setrewardpoint(rewardpoints))
   }
 });
 

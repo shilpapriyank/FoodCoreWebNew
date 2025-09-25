@@ -15,7 +15,10 @@ import { CustomerServices } from "../../../redux/customer/customer.services";
 import { setrewardpoint } from "../../../redux/rewardpoint/rewardpoint.slice";
 import { carttotaldata } from "../../../redux/cart/cart.slice";
 
-const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: RefObject<HTMLInputElement>) => {
+const useRewardPoint = (
+  carttotal?: CartDetailOfCartTotal,
+  inputRP?: RefObject<HTMLInputElement>
+) => {
   const {
     rewardpoints,
     userinfo,
@@ -32,7 +35,7 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: RefObject<H
   const [amount, setamount] = useState<any>(
     rewardpoints?.rewardamount > 0 ? rewardpoints?.rewardamount : 0
   );
-  const [point, setpoint] = useState(rewardpoints?.rewardPoint);
+  const [point, setpoint] = useState<number>(rewardpoints?.rewardPoint);
   const [redeemamount, setredeemamount] = useState<any>();
   const [redeempoint, setredeempoint] = useState<any>();
   const [errorMessage, seterrorMessage] = useState<string>("");
@@ -99,8 +102,8 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: RefObject<H
         ) {
           setpoint(rewardpoints.rewardPoint);
           setamount(rewardpoints.rewardamount);
-          setredeempoint(rewardpoints.redeemPoint as any);
-          setredeemamount((rewardpoints.redeemPoint / rewardvalue) as any);
+          setredeempoint(rewardpoints.redeemPoint);
+          setredeemamount(rewardpoints.redeemPoint / rewardvalue);
         }
       }
     }
@@ -262,8 +265,8 @@ const useRewardPoint = (carttotal?: CartDetailOfCartTotal, inputRP?: RefObject<H
               restaurantId: restaurantinfo?.restaurantId as number,
               customerId: userinfo.customerId,
               cartId: 0,
-              rewardpoints: "0",
-              redeemamount: "0",
+              rewardpoints: 0,
+              redeemamount: 0,
               tipPercentage: String(carttotal?.tipPercentage),
               tipAmount: carttotal?.tipAmount,
               deliveryaddressId:

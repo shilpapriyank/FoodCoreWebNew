@@ -132,7 +132,7 @@ const RewardPointAndTips = () => {
               element.value = true;
             }
             data.push(element);
-            settipdatanew(data as any);
+            settipdatanew(data);
             // TIP DESELECT NO CLEAR BUG
             let isCalTip = tipdata.some((item) => item.value === true);
             if (isCalTip) {
@@ -152,7 +152,7 @@ const RewardPointAndTips = () => {
           if (parseFloat(element.text) === 15 && isDefaulttip === true) {
             element.value = true;
             data.push(element);
-            settipdatanew(data as any);
+            settipdatanew(data);
             tipText = Number(element.text);
             let subTotal = calulateTotal(cartdata);
             tipamountcal = calculateTip(element.text, subTotal) as number;
@@ -160,7 +160,7 @@ const RewardPointAndTips = () => {
             settipvalue(tipamountcal);
           } else {
             data.push(element);
-            settipdatanew(data as any);
+            settipdatanew(data);
           }
         });
       }
@@ -179,7 +179,7 @@ const RewardPointAndTips = () => {
       customerOrderCount == 0 &&
       minOrderAmount !== "" &&
       parseFloat(subTotal) < parseFloat(minOrderAmount as string) &&
-      carttotal.reedemAmount > 0
+      Number(carttotal.reedemAmount) > 0
     ) {
       (document.querySelector(".reward-clear") as HTMLElement)?.click();
     } else {
@@ -190,8 +190,8 @@ const RewardPointAndTips = () => {
           restaurantId: restaurantinfo?.restaurantId as number,
           customerId: customerId,
           cartId: 0,
-          rewardpoints: carttotal?.reedemPoints as any,
-          redeemamount: carttotal?.reedemAmount as any,
+          rewardpoints: carttotal?.reedemPoints,
+          redeemamount: carttotal?.reedemAmount,
           tipPercentage: enableTip && isRewardTip ? String(tipText) : "0",
           tipAmount: tipText === 0 ? (tipamount as number) : tipamountcal,
           deliveryaddressId: deliveryaddressinfo?.deliveryaddressId,
@@ -215,95 +215,6 @@ const RewardPointAndTips = () => {
     order?.checktime,
     totalprice || totalQty,
   ]);
-
-  // useEffect(() => {
-  //     if (carttotal) {
-  //         let data = tipdata.map((element) => {
-  //             // Check if the current tip matches the cart's tip percentage
-  //             if (carttotal.tipPercentage && parseFloat(element.text) === carttotal.tipPercentage) {
-  //                 if (isDefaulttip) {
-  //                     element.value = true;
-  //                 }
-  //                 // Calculate tip if any tip is selected
-  //                 if (tipdata.some((item) => item.value)) {
-  //                     tipText = element.text;
-  //                     const subTotal = calulateTotal(cartdata);
-  //                     tipamountcal = calculateTip(element.text, subTotal);
-  //                     settipamount(tipamountcal);
-  //                 }
-  //             } else if (parseFloat(element.text) === 15 && isDefaulttip) {
-  //                 // Default tip percentage logic
-  //                 element.value = true;
-  //                 tipText = element.text;
-  //                 const subTotal = calulateTotal(cartdata);
-  //                 tipamountcal = calculateTip(element.text, subTotal);
-  //                 settipamount(tipamountcal);
-  //                 settipvalue(tipamountcal);
-  //             }
-
-  //             return element; // Ensure modified element is returned
-  //         });
-
-  //         settipdatanew(data);
-
-  //         // Redeem value calculation and validation
-  //         let reddemValue = (rewardpoints.redeemPoint / rewardpoints.rewardvalue).toFixed(2);
-  //         if (reddemValue > 0 && parseFloat(reddemValue) > parseFloat(carttotal.subTotal)) {
-  //             dispatch(clearReedemPoint());
-  //         }
-
-  //         // Minimum order amount validation
-  //         const subTotal = calulateTotal(cartdata);
-  //         if ( customerOrderCount === 0 && minOrderAmount && parseFloat(subTotal) < parseFloat(minOrderAmount) && carttotal.reedemAmount > 0 ) {
-  //             document.querySelector(".reward-clear")?.click();
-  //         } else {
-  //             dispatch(carttotaldata(sessionId, restaurantinfo.defaultlocationId, restaurantinfo.restaurantId, customerId, 0, carttotal.reedemPoints, carttotal.reedemAmount, enableTip && isRewardTip ? parseInt(tipText) : 0, tipText === 0 ? tipamount : tipamountcal, pickupordelivery === ORDERTYPE.Delivery ? deliveryaddressinfo?.deliveryaddressId : 0, ordertype, order?.deliveryRequestId, recievingTime, meredian, orderTimeType, recievingDate, enabletimeslot));
-  //         }
-  //     }
-
-  // }, [grandtotal, deliveryaddressinfo?.deliveryaddressId, totalItemCount,  cartdata?.cartDetails?.cartTotal?.subTotal, userinfo?.customerId, userinfo?.phone,order?.checktime, cartItemsAmountTotal,cartItemsQuantity]);
-
-  //   const handleClickTipWarningContinue = () => {
-  //     const selectedTip = tipdatanew.find((tipObj) => tipObj?.value === true);
-  //     if (selectedTip) {
-  //       addtipclick(selectedTip, false);
-  //     }
-
-  //     const minTipValue = calculateTip(
-  //       restaurantinfo?.defaultLocation?.minTipPercentage,
-  //       carttotal?.subTotal
-  //     );
-  //     settipamount(minTipValue);
-  //     let reedemPoints = carttotal?.reedemPoints;
-  //     let reedemAmount = carttotal?.reedemAmount;
-  //     dispatch(
-  //       carttotaldata({
-  //         cartsessionId: sessionId as string,
-  //         locationId: restaurantinfo?.defaultlocationId as number,
-  //         restaurantId: restaurantinfo?.restaurantId as number,
-  //         customerId: customerId,
-  //         cartId: 0,
-  //         rewardpoints: String(reedemPoints),
-  //         redeemamount: String(reedemAmount),
-  //         tipPercentage: "0",
-  //         tipAmount: minTipValue as number,
-  //         deliveryaddressId: deliveryaddressinfo?.deliveryaddressId,
-  //         ordertype: ordertype as any,
-  //         requestId: order?.deliveryRequestId,
-  //         recievingTime: recievingTime as string,
-  //         recievingMeridian: meredian as string,
-  //         ordertimetype: orderTimeType,
-  //         recievingDate: recievingDate,
-  //         enableTimeSlot: enabletimeslot as boolean,
-  //       })
-  //     );
-
-  //     // if (deliveryService === DELIVERYSERVICES.UBEREATS && displayUberTime && pickupordelivery === ORDER_TYPE.DELIVERY.text) {
-  //     //     handleClickUberPopup(paymentType)
-  //     // } else {
-  //     //     handleClickPlaceOrder(paymentType)
-  //     // }
-  //   };
 
   return (
     <>
@@ -332,9 +243,9 @@ const RewardPointAndTips = () => {
         <DriverTip
           pickupordelivery={pickupordelivery}
           tipWarningMessage={tipWarningMessage}
-          tipamount={tipamount}
+          tipamount={tipamount as string}
           tipdatanew={tipdatanew}
-          tipdata={tipdata}
+          tipdata={tipdata as TipObjectType[]}
           onchangetipamount={onchangetipamount}
           tipOnBlur={tipOnBlur}
           addtipclick={addtipclick}

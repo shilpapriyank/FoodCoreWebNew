@@ -1,8 +1,18 @@
 import { ORDERTYPE } from "@/components/common/utility";
 import React from "react";
 import { CARTPAGEMESSAGE } from "../../helpers/static-message/cart-message";
+import { TipObjectType } from "@/types/usetip-types/usetiphook.type";
 
-const DriverTip = ({
+const DriverTip: React.FC<{
+  pickupordelivery: string;
+  tipWarningMessage: string;
+  tipamount: string;
+  tipdatanew: TipObjectType[];
+  tipdata: TipObjectType[];
+  onchangetipamount: () => void;
+  tipOnBlur: (isOnChange: boolean) => void;
+  addtipclick: (data: TipObjectType) => void;
+}> = ({
   pickupordelivery,
   tipWarningMessage,
   tipamount,
@@ -11,7 +21,7 @@ const DriverTip = ({
   onchangetipamount,
   tipOnBlur,
   addtipclick,
-}: any) => {
+}) => {
   return (
     <>
       <h3 className="heading">
@@ -24,7 +34,7 @@ const DriverTip = ({
         {tipdatanew != undefined &&
           tipdata != undefined &&
           tipdatanew.length >= 0 &&
-          tipdata?.map((data: any, index: any) => {
+          tipdata?.map((data, index) => {
             return (
               <div className="col-lg-2 col-md-3 col-4" key={index}>
                 <a

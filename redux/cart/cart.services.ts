@@ -261,8 +261,8 @@ export class CartServices {
     restaurantId: number,
     customerId: number,
     cartId: number,
-    rewardpoints?: string,
-    redeemamount?: string,
+    rewardpoints?: number,
+    redeemamount?: number,
     tipPercentage?: string,
     tipAmount?: number,
     deliveryaddressId?: number,
@@ -285,8 +285,8 @@ export class CartServices {
         restaurantId: restaurantId != undefined ? restaurantId : 0,
         customerId: customerId != undefined ? customerId : 0,
         cartId: cartId != undefined ? cartId : 0,
-        rewardpoints: rewardpoints != undefined ? parseInt(rewardpoints) : 0,
-        redeemamount: redeemamount != undefined ? parseFloat(redeemamount) : 0,
+        rewardpoints: rewardpoints != undefined ? rewardpoints : 0,
+        redeemamount: redeemamount != undefined ? redeemamount : 0,
         tipPercentage:
           tipPercentage != undefined && tipPercentage != ""
             ? parseFloat(tipPercentage)
