@@ -6,6 +6,7 @@ import { GetThemeDetails } from "../../../common/utility";
 import { PAGES } from "../../common/pages";
 import { useRouter, usePathname } from "next/navigation";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
+import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
 const UserDropdown = ({
   handleOpenLoginModal,
@@ -16,7 +17,7 @@ const UserDropdown = ({
   const router = useRouter();
   const pathname = usePathname();
   // const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
-  const selectedTheme = GetThemeDetails(restaurantinfo?.themetype); // Assuming this is intentional and safe
+  const selectedTheme = GetThemeDetails((restaurantinfo as GetAllRestaurantInfo )?.themetype); // Assuming this is intentional and safe
   const [isOpenDropdown, setisOpenDropdown] = useState(false);
 
   // Safely get location and restaurantURL
