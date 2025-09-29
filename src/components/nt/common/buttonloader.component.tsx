@@ -1,23 +1,20 @@
+import { BUTTON_TYPE_ENUM } from "@/components/common/enums";
 import React, { ReactNode } from "react";
-import { BUTTON_TYPE_ENUM } from "./enums";
 
-interface ButtonLoaderProps {
+export const ButtonLoader: React.FC<{
   textName: string;
-  isLoader?: boolean;
-  classname?: string;
-  //btnType?: 'button' | 'submit' | 'reset';
-  btnType?: BUTTON_TYPE_ENUM;
-  isDisable?: boolean;
-  handleClick?: (e: any) => void;
-  children?: ReactNode;
-}
-
-export const ButtonLoader: React.FC<ButtonLoaderProps> = ({
+  isLoader: boolean;
+  classname: string;
+  btnType: BUTTON_TYPE_ENUM;
+  isDisable: boolean;
+  handleClick: () => void;
+  children: ReactNode;
+}> = ({
   textName,
-  isLoader = false,
-  classname = "",
-  btnType = BUTTON_TYPE_ENUM.BUTTON,
-  isDisable = false,
+  isLoader,
+  classname,
+  btnType,
+  isDisable,
   handleClick,
   children,
 }) => {
