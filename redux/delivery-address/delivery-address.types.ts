@@ -1,5 +1,9 @@
 import { ChooseTime } from "@/types/selectdelivery-types/selectdelivery.types";
 
+export interface AddressIdStateType {
+  customerAddressId: number;
+}
+
 export interface DeliveryAddressInput {
   id: number;
   deliveryaddressId: number;
@@ -39,15 +43,6 @@ export interface VerifyAddressInput {
 
 export interface GetAddressResponse {
   AddressLists: DeliveryAddressInput[];
-}
-
-export interface DeliveryAddressState {
-  deliveryaddressdata: DeliveryAddressInput[] | null;
-  updatedAddress: boolean | { isAddressUpdated: boolean };
-  choosetime: Record<string, ChooseTime>;
-  registeraddress: Record<string, any>;
-  addressId: Record<number, any>;
-  tempDeliveryAddress: DeliveryAddressInput | null;
 }
 
 // -----new defined types------

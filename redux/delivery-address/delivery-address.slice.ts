@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { DeliveryAddressServices } from "./delivery-address.services";
 import { DeliveryAddressTypes } from "./delivery-address.type";
 import {
+  AddressIdStateType,
   DeliveryAddressInput,
   DeliveryAddressListNewType,
 } from "./delivery-address.types";
@@ -12,7 +13,7 @@ export interface DeliveryAddressState {
   updatedAddress: boolean;
   choosetime: ChooseTime;
   registeraddress: Record<string, any>;
-  addressId: number | null;
+  addressId: AddressIdStateType | null;
   tempDeliveryAddress: DeliveryAddressInput | null;
 }
 const initialState: DeliveryAddressState = {
@@ -110,14 +111,17 @@ const deliveryAddressSlice = createSlice({
   name: "deliveryAddress",
   initialState,
   reducers: {
-    setDeliveryAddressData(state, action: PayloadAction<DeliveryAddressInput>) {
+    setDeliveryAddressData(
+      state,
+      action: PayloadAction<DeliveryAddressInput | null>
+    ) {
       state.deliveryaddressdata = action.payload;
     },
     updateAddressCheck(state, action: PayloadAction<boolean>) {
       state.updatedAddress = action.payload;
     },
-    updateAddressId(state, action: PayloadAction<any>) {
-      state.addressId = action.payload
+    updateAddressId(state, action: PayloadAction<AddressIdStateType>) {
+      state.addressId = action.payload;
     },
     registerAddress(
       state,
@@ -126,7 +130,7 @@ const deliveryAddressSlice = createSlice({
       state.tempDeliveryAddress = null;
       state.registeraddress = action.payload;
     },
-    insertAddressId(state, action: PayloadAction<number>) {
+    insertAddressId(state, action: PayloadAction<AddressIdStateType>) {
       state.addressId = action.payload;
     },
     AddTempDeliveryAddress(

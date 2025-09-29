@@ -96,34 +96,123 @@ const OrderTypeSelect = ({
       restaurantinfo?.restaurantId as number,
       lid
     ).then((res) => {
+      // if (res && restaurantinfo) {
+      //   Object.keys(restaurantinfo).map((session) => {
+      //     if (session === "defaultLocation") {
+      //       Object.assign(restaurantinfo.defaultLocation, res);
+      //     }
+      //     if (session === "defaultlocationId") {
+      //       restaurantinfo.defaultlocationId = res.locationId;
+      //     }
+      //   });
+      //   dispatch(restaurantsdetail(null));
+      //   router.push(
+      //     `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
+      //   );
+      //   dispatch(restaurantsdetail(restaurantinfo));
+      //   //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
+      //   let oldLocationId = getLocationIdFromStorage();
+      //   if (oldLocationId !== restaurantinfo.defaultlocationId) {
+      //     dispatch(clearRedux());
+      //     let id = uuidv4();
+      //     dispatch(createSessionId(id));
+      //   }
+      //   if (userinfo && userinfo?.customerId) {
+      //     CustomerServices.checkCustomerRewardPointsLocationBase(
+      //       restaurantinfo.restaurantId,
+      //       userinfo.customerId,
+      //       0,
+      //       "0",
+      //       restaurantinfo?.defaultLocation.locationId
+      //     ).then((res) => {
+      //       if (res?.status == 1) {
+      //         let rewards = {
+      //           rewardvalue: rewardvalue,
+      //           rewardamount: parseFloat(
+      //             (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
+      //           ),
+      //           rewardPoint: res?.result?.totalrewardpoints,
+      //           totalRewardPoints: res?.result?.totalrewardpoints,
+      //           redeemPoint: 0,
+      //         };
+      //         dispatch(setrewardpoint(rewards));
+      //       }
+      //     });
+      //   }
+      //   setLocationIdInStorage(restaurantinfo.defaultlocationId);
+      //   // setdefaultLoactionId(lid)
+      //   dispatch(
+      //     refreshCategoryList({
+      //       newselectedRestaurant: restaurantinfo,
+      //       customerId: customerId,
+      //     })
+      //   );
+      //   dispatch(
+      //     getSelectedRestaurantTime({
+      //       restaurantId: restaurantinfo?.restaurantId,
+      //       locationId: lid,
+      //     })
+      //   );
+      //   // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
+      //   if (userinfo && userinfo?.customerId) {
+      //     deleteCartItemFromSessionId({
+      //       cartsessionId: sessionid as string,
+      //       restaurantId: restaurantinfo?.restaurantId as number,
+      //       locationId: defaultLocation?.locationId as number,
+      //     });
+
+      //     dispatch(emptycart());
+      //     // dispatch(setintialrewardpoints(userinfo));
+      //   }
+      //   handleToggleOrderTypeModal(false);
+      //   dispatch(
+      //     setpickupordelivery(
+      //       restaurantinfo?.defaultLocation?.defaultordertype
+      //         ? ORDER_TYPE.DELIVERY.text
+      //         : ORDER_TYPE.PICKUP.text
+      //     )
+      //   );
+      //   handleToggleOrderTypeModal(false);
+      //   handleToggleTimingModal?.(true);
+
+      //   dispatch(clearDeliveryRequestId());
+      // }
       if (res && restaurantinfo) {
+        const updatedRestaurantInfo = {
+          ...restaurantinfo,
+          defaultLocation: { ...restaurantinfo.defaultLocation },
+        };
+
         Object.keys(restaurantinfo).map((session) => {
           if (session === "defaultLocation") {
-            Object.assign(restaurantinfo.defaultLocation, res);
+            Object.assign(updatedRestaurantInfo.defaultLocation, res);
           }
           if (session === "defaultlocationId") {
-            restaurantinfo.defaultlocationId = res.locationId;
+            updatedRestaurantInfo.defaultlocationId = res.locationId;
           }
         });
+
         dispatch(restaurantsdetail(null));
         router.push(
-          `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
+          `${locationFullLink}/${updatedRestaurantInfo?.defaultLocation?.locationURL}`
         );
-        dispatch(restaurantsdetail(restaurantinfo));
+        dispatch(restaurantsdetail(updatedRestaurantInfo));
+
         //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
         let oldLocationId = getLocationIdFromStorage();
-        if (oldLocationId !== restaurantinfo.defaultlocationId) {
+        if (oldLocationId !== updatedRestaurantInfo.defaultlocationId) {
           dispatch(clearRedux());
           let id = uuidv4();
           dispatch(createSessionId(id));
         }
+
         if (userinfo && userinfo?.customerId) {
           CustomerServices.checkCustomerRewardPointsLocationBase(
-            restaurantinfo.restaurantId,
+            updatedRestaurantInfo.restaurantId,
             userinfo.customerId,
             0,
             "0",
-            restaurantinfo?.defaultLocation.locationId
+            updatedRestaurantInfo?.defaultLocation.locationId
           ).then((res) => {
             if (res?.status == 1) {
               let rewards = {
@@ -139,35 +228,36 @@ const OrderTypeSelect = ({
             }
           });
         }
-        setLocationIdInStorage(restaurantinfo.defaultlocationId);
-        // setdefaultLoactionId(lid)
+
+        setLocationIdInStorage(updatedRestaurantInfo.defaultlocationId);
+
         dispatch(
           refreshCategoryList({
-            newselectedRestaurant: restaurantinfo,
+            newselectedRestaurant: updatedRestaurantInfo,
             customerId: customerId,
           })
         );
         dispatch(
           getSelectedRestaurantTime({
-            restaurantId: restaurantinfo?.restaurantId,
+            restaurantId: updatedRestaurantInfo?.restaurantId,
             locationId: lid,
           })
         );
-        // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
+
         if (userinfo && userinfo?.customerId) {
           deleteCartItemFromSessionId({
             cartsessionId: sessionid as string,
-            restaurantId: restaurantinfo?.restaurantId as number,
+            restaurantId: updatedRestaurantInfo?.restaurantId as number,
             locationId: defaultLocation?.locationId as number,
           });
 
           dispatch(emptycart());
-          // dispatch(setintialrewardpoints(userinfo));
         }
+
         handleToggleOrderTypeModal(false);
         dispatch(
           setpickupordelivery(
-            restaurantinfo?.defaultLocation?.defaultordertype
+            updatedRestaurantInfo?.defaultLocation?.defaultordertype
               ? ORDER_TYPE.DELIVERY.text
               : ORDER_TYPE.PICKUP.text
           )
@@ -361,7 +451,7 @@ const OrderTypeSelect = ({
                           className="address-nfound"
                           onClick={handleClickAddNewAddress}
                         >
-                          Add New Address hello
+                          Add New Address
                         </a>
                       </div>
                     </div>
