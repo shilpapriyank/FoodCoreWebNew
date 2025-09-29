@@ -5,7 +5,7 @@ interface ThemeStylesProps {
 export function ThemeStyles({ themeType }: ThemeStylesProps) {
   return (
     <>
-      {themeType === "default" && (
+      {/* {themeType === "default" && (
         <>
           <link rel="stylesheet" href="/defaulttheme/css/bootstrap.min.css"
             crossOrigin="anonymous"></link>
@@ -24,7 +24,7 @@ export function ThemeStyles({ themeType }: ThemeStylesProps) {
           <link href="/defaulttheme/css/responsive.css" rel="stylesheet" />
           <link href="/defaulttheme/css/zoomImage.css" rel="stylesheet" />
         </>
-      )}
+      )} */}
 
       {themeType === "newtheme" && (
         <>
@@ -41,7 +41,7 @@ export function ThemeStyles({ themeType }: ThemeStylesProps) {
         </>
       )}
 
-      {themeType === "dominos" && (
+      {/* {themeType === "dominos" && (
         <>
           <link
             href="/dominos/css/bootstrap.min.css"
@@ -85,9 +85,9 @@ export function ThemeStyles({ themeType }: ThemeStylesProps) {
           />
           <link href="/dominos/css/zoomImage.css" rel="stylesheet" />
         </>
-      )}
+      )} */}
 
-      {themeType === "FD123456" && (
+      {/* {themeType === "FD123456" && (
         <>
           <link
             href="https://foodcoredev.blob.core.windows.net/foodcoredevcontainer/fd123456/css/bootstrap.min.css"
@@ -104,9 +104,9 @@ export function ThemeStyles({ themeType }: ThemeStylesProps) {
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
           />
         </>
-      )}
+      )} */}
 
-      {themeType === "tableorder" && (
+      {/* {themeType === "tableorder" && (
         <>
           <link
             rel="stylesheet"
@@ -128,7 +128,7 @@ export function ThemeStyles({ themeType }: ThemeStylesProps) {
             type="text/css"
           />
         </>
-      )}
+      )} */}
     </>
   );
 }
