@@ -165,7 +165,7 @@ const Login: React.FC<LoginProps> = ({
             ).then((res) => {
               if (res) {
                 tempDeliveryAddress.deliveryaddressId = res?.customerAddressId;
-                dispatch(selecteddeliveryaddress(tempDeliveryAddress as any));
+                dispatch(selecteddeliveryaddress(tempDeliveryAddress));
 
                 dispatch({
                   type: DeliveryAddressTypes.UPDATE_ADDRESS_ID,

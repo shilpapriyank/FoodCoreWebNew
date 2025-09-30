@@ -41,7 +41,7 @@ const MyAccountInfo = () => {
   });
   const [oldpassword, setoldpassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMesssage] = useState(null);
+  const [errorMessage, setErrorMesssage] = useState<string>("");
   const [showchangePassword, setShowchangePassword] = useState(false);
   const [imageFileName, setimageFileName] = useState("");
   const [imageUpload, setimageUpload] = useState(false);

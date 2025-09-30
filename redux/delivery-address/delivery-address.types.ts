@@ -1,29 +1,81 @@
-import { ChooseTime } from "@/types/selectdelivery-types/selectdelivery.types";
+// ------- delivery address types for solve type mismatch  30-09-25 --------------
 
-export interface AddressIdStateType {
+export interface GetDeliveryAddressResponseClassType {
+  result: GetDeliveryAddressServiceResultType;
+  message: string;
+  status: number;
+}
+
+export interface GetDeliveryAddressServiceResultType {
+  AddressLists: AddressListType[];
+  ukdatetime: string;
+}
+
+export interface AddressListType {
+  address1: string;
+  address2: string;
+  city: string;
+  deliveryaddressId: number;
+  landmark: string;
+  zipcode: string;
+  customerId: number;
+  othercustomerId: number;
+  contactno: string;
+  contactname: string;
+  latitude: number;
+  longitude: number;
+  state: any;
+  country: any;
+  addresstype: number;
+  businessname: string;
+}
+
+export interface DeleteDeliveryAddressResponseClassType {
+  result: DeleteDeliveryAddressServiceResultType;
+  message: string;
+  status: number;
+}
+
+export interface DeleteDeliveryAddressServiceResultType {
+  message: string;
+}
+
+export interface AddDeliveryAddressResponseClassType {
+  result: AddDeliveryAddressServiceResultType;
+  message: string;
+  status: number;
+}
+
+export interface AddDeliveryAddressServiceResultType {
   customerAddressId: number;
 }
 
-export interface DeliveryAddressInput {
-  id: number;
-  deliveryaddressId: number;
-  customerId: number;
-  othercustomerId?: number;
+export interface VerifyDeliveryAddresssResponseModalType {
+  result: VerifyDeliveryAddresssResultType;
+  message: string;
+  status: number;
+}
+
+export interface VerifyDeliveryAddresssResultType {}
+
+
+export interface ObjTypeForVerifyDeliveryAddressType {
   address1: string;
-  address2?: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  landmark: string;
-  contactno: string;
-  contactname: string;
-  latitude: string;
-  longitude: string;
-  country: string;
+  address2: string;
   addresstype: number;
   businessname: string;
-  cityName: string;
-  customerAddressId: number;
+  city: string;
+  contactname: string;
+  contactno: string;
+  country: string;
+  customerId: number;
+  deliveryaddressId: number;
+  landmark: string;
+  latitude: number;
+  longitude: number;
+  othercustomerId: number;
+  state: string;
+  zipcode: string;
 }
 
 export interface VerifyAddressInput {
@@ -37,37 +89,6 @@ export interface VerifyAddressInput {
   longitude: number | string;
   state: string;
   country: string;
-  addresstype: number;
-  businessname: string;
-}
-
-export interface GetAddressResponse {
-  AddressLists: DeliveryAddressInput[];
-}
-
-// -----new defined types------
-// export interface GetDeliveryAddressType {
-//   AddressLists: DeliveryAddressListNewType[];
-//   ukdatetime: string;
-// }
-
-export interface DeliveryAddressListNewType {
-  id: number;
-  address1: string;
-  address2: string;
-  cityName: string;
-  city: string;
-  deliveryaddressId: number;
-  landmark: string;
-  zipcode: string;
-  customerId: number;
-  othercustomerId: number;
-  contactno: string;
-  contactname: string;
-  latitude: number;
-  longitude: number;
-  state: any;
-  country: any;
   addresstype: number;
   businessname: string;
 }

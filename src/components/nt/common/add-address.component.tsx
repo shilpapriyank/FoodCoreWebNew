@@ -15,6 +15,7 @@ import {
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { DeliveryAddressServices } from "../../../../redux/delivery-address/delivery-address.services";
 import { GoogleAutoComplete } from "@/components/dominos/Address/autocomplete.component";
+import { ObjTypeForVerifyDeliveryAddressType } from "../../../../redux/delivery-address/delivery-address.types";
 
 interface AddAddressProps {
   isOpenModal: boolean;
@@ -32,8 +33,8 @@ interface AddressField {
   postalcode: string;
   country: string;
   apartment: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
 }
 
 const AddAddress: React.FC<AddAddressProps> = ({
@@ -56,8 +57,8 @@ const AddAddress: React.FC<AddAddressProps> = ({
     postalcode: "",
     country: "",
     apartment: "",
-    latitude: "",
-    longitude: "",
+    latitude: 0,
+    longitude: 0,
   });
 
   const customerId = userinfo?.customerId || 0;
@@ -89,8 +90,8 @@ const AddAddress: React.FC<AddAddressProps> = ({
       postalcode: "",
       country: "",
       apartment: "",
-      latitude: "",
-      longitude: "",
+      latitude: 0,
+      longitude: 0,
     });
   }, []);
 
@@ -130,7 +131,7 @@ const AddAddress: React.FC<AddAddressProps> = ({
       //   businessname: businessname || "",
       // };
 
-      const obj: any = {
+      const obj: ObjTypeForVerifyDeliveryAddressType = {
         customerId,
         othercustomerId: 0,
         deliveryaddressId: 0,
@@ -165,7 +166,7 @@ const AddAddress: React.FC<AddAddressProps> = ({
               if (response) {
 
                 let addressId = {
-                  customerAddressId: response?.deliveryaddressId,
+                  customerAddressId: response?.customerAddressId,
                 };
                 dispatch(updateAddressId(addressId));
                 obj.deliveryaddressId = response?.customerAddressId;
@@ -208,8 +209,8 @@ const AddAddress: React.FC<AddAddressProps> = ({
         postalcode: "",
         country: "",
         apartment: "",
-        latitude: "",
-        longitude: "",
+        latitude: 0,
+        longitude: 0,
       });
     }
     setIsResetQuery(!isResetQuery);

@@ -9,7 +9,6 @@ import { ORDER_TYPE } from "@/components/nt/common/utility";
 import useFutureOrder from "@/components/customhooks/usefuture-order-hook";
 import useUtility from "@/components/customhooks/utility-hook";
 import { OrderServices } from "../../../../../../redux/order/order.services";
-import { DeliveryAddressInfo } from "@/components/default/Common/dominos/helpers/types/utility-type";
 import {
   checkOrderTime,
   emptyordertime,
@@ -25,8 +24,7 @@ import Instructions from "@/components/nt/checkout/instructions.component";
 import OrderTotalDetails from "@/components/nt/category/category-sidebar/order-total-details.component";
 import CartPaymentButton from "@/components/nt/checkout/cart-payment-button";
 import RewardPointAndTips from "@/components/nt/checkout/reward-tips.component";
-import { DeliveryAddressInput } from "../../../../../../redux/delivery-address/delivery-address.types";
-import { SelectedDeliveryAddressType } from "@/types/selectdelivery-types/selectdelivery.types";
+import { AddressListType } from "../../../../../../redux/delivery-address/delivery-address.types";
 
 const CheckoutPage = () => {
   const dispatch = useAppDispatch();
@@ -103,7 +101,7 @@ const CheckoutPage = () => {
             restaurantId: restaurantinfo?.restaurantId as number,
             locationId: restaurantinfo?.defaultLocation.locationId as number,
             ordertype: ordertype,
-            obj: selectedAddress as DeliveryAddressInput,
+            obj: selectedAddress as AddressListType,
             requestId: deliveryRequestId,
           }).then((gettimeresponse) => {
             if (gettimeresponse?.result) {
@@ -116,7 +114,7 @@ const CheckoutPage = () => {
                   recievingTime: time[0],
                   recieving: time[1],
                   flg: ordertype,
-                  obj: selectedAddress as DeliveryAddressInput,
+                  obj: selectedAddress as AddressListType,
                   requestId: deliveryRequestId,
                 }).then((response) => {
                   if (
@@ -154,7 +152,7 @@ const CheckoutPage = () => {
               recievingTime: "",
               recieving: "",
               flg: ordertype,
-              obj: selectedAddress as DeliveryAddressInput,
+              obj: selectedAddress as AddressListType,
               requestId: deliveryRequestId,
               timeSlot: order?.checktime,
               date: futureDate as string,
@@ -177,7 +175,7 @@ const CheckoutPage = () => {
               recievingTime: newtime[0] + ":" + newtime[1],
               recieving: time[1],
               flg: ordertype,
-              obj: selectedAddress as DeliveryAddressInput,
+              obj: selectedAddress as AddressListType,
               requestId: deliveryRequestId,
             }).then((response) => {
               if (response.result != undefined && response.result !== null) {

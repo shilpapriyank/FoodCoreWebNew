@@ -58,7 +58,10 @@ const OrderTypeSelect = ({
     userinfo,
     sessionid,
   } = useReduxData();
-  const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
+  //const [selectedLocationId, setSelectedLocationId] = useState<number>(0);
+  const [selectedLocationId, setSelectedLocationId] = useState<number>(
+    getLocationIdFromStorage() || restaurantinfo?.defaultlocationId || 0
+  );
   const customerId = userinfo ? userinfo.customerId : 0;
   const rewardvalue = rewardpoints?.rewardvalue;
   const dynamic = params.dynamic as string;
@@ -96,87 +99,7 @@ const OrderTypeSelect = ({
       restaurantinfo?.restaurantId as number,
       lid
     ).then((res) => {
-      // if (res && restaurantinfo) {
-      //   Object.keys(restaurantinfo).map((session) => {
-      //     if (session === "defaultLocation") {
-      //       Object.assign(restaurantinfo.defaultLocation, res);
-      //     }
-      //     if (session === "defaultlocationId") {
-      //       restaurantinfo.defaultlocationId = res.locationId;
-      //     }
-      //   });
-      //   dispatch(restaurantsdetail(null));
-      //   router.push(
-      //     `${locationFullLink}/${restaurantinfo?.defaultLocation?.locationURL}`
-      //   );
-      //   dispatch(restaurantsdetail(restaurantinfo));
-      //   //   CLEAR THE REDUX IF PREVIOUS LOCATION AND THE CURRENT SELECTED LOCATION IS NO SAME
-      //   let oldLocationId = getLocationIdFromStorage();
-      //   if (oldLocationId !== restaurantinfo.defaultlocationId) {
-      //     dispatch(clearRedux());
-      //     let id = uuidv4();
-      //     dispatch(createSessionId(id));
-      //   }
-      //   if (userinfo && userinfo?.customerId) {
-      //     CustomerServices.checkCustomerRewardPointsLocationBase(
-      //       restaurantinfo.restaurantId,
-      //       userinfo.customerId,
-      //       0,
-      //       "0",
-      //       restaurantinfo?.defaultLocation.locationId
-      //     ).then((res) => {
-      //       if (res?.status == 1) {
-      //         let rewards = {
-      //           rewardvalue: rewardvalue,
-      //           rewardamount: parseFloat(
-      //             (res?.result?.totalrewardpoints / rewardvalue - 0).toFixed(2)
-      //           ),
-      //           rewardPoint: res?.result?.totalrewardpoints,
-      //           totalRewardPoints: res?.result?.totalrewardpoints,
-      //           redeemPoint: 0,
-      //         };
-      //         dispatch(setrewardpoint(rewards));
-      //       }
-      //     });
-      //   }
-      //   setLocationIdInStorage(restaurantinfo.defaultlocationId);
-      //   // setdefaultLoactionId(lid)
-      //   dispatch(
-      //     refreshCategoryList({
-      //       newselectedRestaurant: restaurantinfo,
-      //       customerId: customerId,
-      //     })
-      //   );
-      //   dispatch(
-      //     getSelectedRestaurantTime({
-      //       restaurantId: restaurantinfo?.restaurantId,
-      //       locationId: lid,
-      //     })
-      //   );
-      //   // dispatch(getAllCategoryMenuItems(restaurantinfo.restaurantId, lid,userinfo?.customerId))
-      //   if (userinfo && userinfo?.customerId) {
-      //     deleteCartItemFromSessionId({
-      //       cartsessionId: sessionid as string,
-      //       restaurantId: restaurantinfo?.restaurantId as number,
-      //       locationId: defaultLocation?.locationId as number,
-      //     });
-
-      //     dispatch(emptycart());
-      //     // dispatch(setintialrewardpoints(userinfo));
-      //   }
-      //   handleToggleOrderTypeModal(false);
-      //   dispatch(
-      //     setpickupordelivery(
-      //       restaurantinfo?.defaultLocation?.defaultordertype
-      //         ? ORDER_TYPE.DELIVERY.text
-      //         : ORDER_TYPE.PICKUP.text
-      //     )
-      //   );
-      //   handleToggleOrderTypeModal(false);
-      //   handleToggleTimingModal?.(true);
-
-      //   dispatch(clearDeliveryRequestId());
-      // }
+      //i changes in this below code that directly not update the state
       if (res && restaurantinfo) {
         const updatedRestaurantInfo = {
           ...restaurantinfo,
@@ -271,11 +194,15 @@ const OrderTypeSelect = ({
   };
 
   const handleClickConfirm = () => {
+    //retrive currentStoredLocationId from this function that not change the default location id
+    //because after selecting any location when i select the default location id is not set
+    const currentStoredLocationId = getLocationIdFromStorage();
     //order type pickup then chnage location if location is not default location
     if (
       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
       selectedLocationId > 0 &&
-      selectedLocationId !== restaurantinfo?.defaultlocationId
+      selectedLocationId !== currentStoredLocationId
+      // selectedLocationId !== restaurantinfo?.defaultlocationId
     ) {
       handleClickConfirmChangeLocation(selectedLocationId, "");
     } else {
@@ -432,13 +359,6 @@ const OrderTypeSelect = ({
                       <h2 className="fs-16">Enter your address</h2>
                     </div>
                     <div className="col-lg-12 mb-4 col-md-12 col-12 mt-4">
-                      {/* {myDeliveryAddress && (
-                        <AddressPill
-                          isChecked={true}
-                          id={String(myDeliveryAddress.id)}
-                          address={myDeliveryAddress as GetDeliveryAddressType} // id add this interface
-                        />
-                      )} */}
                       {myDeliveryAddress && (
                         <AddressPill
                           isChecked={true}

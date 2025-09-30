@@ -87,7 +87,7 @@ const MyAccount = () => {
                       <br />
                       <span className="color-black fs-12">
                         <span className="color-green">
-                          {addresscount as any}
+                          {addresscount}
                         </span>{" "}
                         available address
                       </span>

@@ -3,13 +3,13 @@
 import React from "react";
 import DeliveryAddressHoc from "./delivery/deliveryaddress-hoc.component";
 import AddressPill from "@/components/common/address-pill.component";
-import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { AddressListType } from "../../../../redux/delivery-address/delivery-address.types";
 
 const DeliveryAddressPill: React.FC<{
-  address: any;
+  address: AddressListType;
   isChecked: boolean;
   id: string;
-  handleChangeAddress: (address: DeliveryAddressInput) => void;
+  handleChangeAddress: (address: AddressListType) => void;
   handleDeleteAddress?: (id: number) => void;
 }> = ({ isChecked, address, id, handleChangeAddress }) => {
   return (
@@ -22,4 +22,4 @@ const DeliveryAddressPill: React.FC<{
   );
 };
 
-export default DeliveryAddressHoc(DeliveryAddressPill as any);
+export default DeliveryAddressHoc(DeliveryAddressPill);

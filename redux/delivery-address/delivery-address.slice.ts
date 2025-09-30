@@ -2,19 +2,18 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { DeliveryAddressServices } from "./delivery-address.services";
 import { DeliveryAddressTypes } from "./delivery-address.type";
 import {
-  AddressIdStateType,
-  DeliveryAddressInput,
-  DeliveryAddressListNewType,
+  AddDeliveryAddressServiceResultType,
+  AddressListType,
 } from "./delivery-address.types";
 import { ChooseTime } from "@/types/selectdelivery-types/selectdelivery.types";
 
 export interface DeliveryAddressState {
-  deliveryaddressdata: DeliveryAddressInput | null;
+  deliveryaddressdata: AddressListType[] | null;
   updatedAddress: boolean;
   choosetime: ChooseTime;
   registeraddress: Record<string, any>;
-  addressId: AddressIdStateType | null;
-  tempDeliveryAddress: DeliveryAddressInput | null;
+  addressId: AddDeliveryAddressServiceResultType | null;
+  tempDeliveryAddress: AddressListType | null;
 }
 const initialState: DeliveryAddressState = {
   deliveryaddressdata: null,
@@ -25,28 +24,29 @@ const initialState: DeliveryAddressState = {
   tempDeliveryAddress: null,
 };
 //Async thunks
-export const getAddress = createAsyncThunk(
-  DeliveryAddressTypes.GET_ADDRESS,
-  async ({
-    customerId,
-    restaurantId,
-    locationId,
-  }: {
-    customerId: number;
-    restaurantId: number;
-    locationId: number;
-  }) => {
-    const response = await DeliveryAddressServices.getDeliveryAddress(
-      customerId,
-      restaurantId,
-      locationId
-    );
-    if (response) {
-      return response;
-    }
-    return null;
-  }
-);
+// export const getAddress = createAsyncThunk(
+//   DeliveryAddressTypes.GET_ADDRESS,
+//   async ({
+//     customerId,
+//     restaurantId,
+//     locationId,
+//   }: {
+//     customerId: number;
+//     restaurantId: number;
+//     locationId: number;
+//   }) => {
+//     debugger
+//     const response = await DeliveryAddressServices.getDeliveryAddress(
+//       customerId,
+//       restaurantId,
+//       locationId
+//     );
+//     if (response) {
+//       return response;
+//     }
+//     return null;
+//   }
+// );
 
 // export const getAddress = createAsyncThunk<
 //   DeliveryAddressListNewType | null,
@@ -113,29 +113,26 @@ const deliveryAddressSlice = createSlice({
   reducers: {
     setDeliveryAddressData(
       state,
-      action: PayloadAction<DeliveryAddressInput | null>
+      action: PayloadAction<AddressListType[] | null>
     ) {
       state.deliveryaddressdata = action.payload;
     },
     updateAddressCheck(state, action: PayloadAction<boolean>) {
       state.updatedAddress = action.payload;
     },
-    updateAddressId(state, action: PayloadAction<AddressIdStateType>) {
+    updateAddressId(state, action: PayloadAction<AddDeliveryAddressServiceResultType>) {
       state.addressId = action.payload;
     },
-    registerAddress(
-      state,
-      action: PayloadAction<DeliveryAddressListNewType | {}>
-    ) {
+    registerAddress(state, action: PayloadAction<AddressListType | {}>) {
       state.tempDeliveryAddress = null;
       state.registeraddress = action.payload;
     },
-    insertAddressId(state, action: PayloadAction<AddressIdStateType>) {
+    insertAddressId(state, action: PayloadAction<AddDeliveryAddressServiceResultType>) {
       state.addressId = action.payload;
     },
     AddTempDeliveryAddress(
       state,
-      action: PayloadAction<DeliveryAddressInput | null>
+      action: PayloadAction<AddressListType | null>
     ) {
       state.tempDeliveryAddress = action.payload;
     },
@@ -145,19 +142,6 @@ const deliveryAddressSlice = createSlice({
     resetDeliveryAddress: () => initialState,
   },
   extraReducers: (builder) => {
-    // builder.addCase(
-    //   getAddress.fulfilled,
-    //   (state, action: PayloadAction<DeliveryAddressListNewType>) => {
-    //     state.deliveryaddressdata = action.payload;
-    //   }
-    // );
-    builder.addCase(
-      getAddress.fulfilled,
-      (state, action: PayloadAction<DeliveryAddressInput | null>) => {
-        state.deliveryaddressdata = action.payload;
-      }
-    );
-
     builder.addCase(
       addAddress.fulfilled,
       (state, action: PayloadAction<number | any>) => {

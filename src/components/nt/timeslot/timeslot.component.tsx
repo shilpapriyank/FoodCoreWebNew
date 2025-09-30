@@ -57,9 +57,9 @@ import {
   FutureOrderingDayDateTypes,
   GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
-import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
 import { RestaurantWindowTime } from "@/types/mainservice-types/mainservice.type";
 import { AddressList } from "@/types/location-types/location.type";
+import { AddressListType } from "../../../../redux/delivery-address/delivery-address.types";
 
 const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
   futureDateList,
@@ -286,7 +286,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
       restaurantId: Number(restaurantinfo?.restaurantId),
       locationId: Number(defaultLocation?.locationId),
       ordertype: Number(ordertype),
-      obj: selectedAddress as DeliveryAddressInput,
+      obj: selectedAddress as AddressListType,
       requestId: "",
     }).then((gettimeresponse) => {
       setTimeout(() => {
@@ -300,7 +300,7 @@ const TimeSlotPopupComponent: React.FC<TimeSlotPopupComponentProps> = ({
               recievingTime: time[0],
               recieving: time[1],
               flg: ordertype,
-              obj: selectedAddress as DeliveryAddressInput,
+              obj: selectedAddress as AddressListType,
               requestId: requestID,
             }).then((response) => {
               if (

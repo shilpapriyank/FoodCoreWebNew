@@ -19,6 +19,7 @@ import {
 import {
   CartDetailOfCartTotal,
   CartDetails,
+  CartItem,
   CartItemDetails,
   CartOptionParams,
   CartTotal,
@@ -41,7 +42,7 @@ import { DeliveryAddressInfo } from "../default/Common/dominos/helpers/types/uti
 import { CartState } from "../../../redux/cart/cart.slice";
 import { RestaurantState } from "../../../redux/restaurants/restaurants.slice";
 import { PIZZA_SIDE_ENUM } from "./enums";
-import { DeliveryAddressInput } from "../../../redux/delivery-address/delivery-address.types";
+import { AddressListType } from "../../../redux/delivery-address/delivery-address.types";
 
 export const restaurantURLList = {
   domenicsslp: "domenicsslp",
@@ -303,10 +304,10 @@ export const checkCheckoutDisable = (
     // }s
     let cartItems = cartdata?.cartItemDetails;
     let isAnyPickupItemNotAvailable = cartItems?.some(
-      (item: any) => item?.categorytakeoutavailable === false
+      (item: CartItemDetails) => item?.categorytakeoutavailable === false
     );
     let isAnydeliveryItemNotAvailable = cartItems?.some(
-      (item: any) => item?.categorydeliveryavailable === false
+      (item: CartItemDetails) => item?.categorydeliveryavailable === false
     );
 
     if (
@@ -738,7 +739,7 @@ export const checkIntegerValue = (value: number) => {
 
 export const handleSetDeliveryTypeError = (
   pickupordelivery: string,
-  deliveryaddressinfo: DeliveryAddressInput[],
+  deliveryaddressinfo: AddressListType,
   carttotal: CartDetailOfCartTotal,
   dcharges: DeliveryChargesTypes,
   cart: CartState,
@@ -748,7 +749,7 @@ export const handleSetDeliveryTypeError = (
   let errorMessage = "";
   if (
     pickupordelivery === ORDER_TYPE.DELIVERY.text &&
-    (deliveryaddressinfo?.length === 0 || deliveryaddressinfo === null) &&
+    (deliveryaddressinfo || deliveryaddressinfo === null) &&
     (carttotal?.cartCount > 0 || (cart?.cartitemcount as number) > 0)
   ) {
     errorMessage = "Please select delivery address.";

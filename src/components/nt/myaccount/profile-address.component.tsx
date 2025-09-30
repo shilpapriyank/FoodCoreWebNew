@@ -1,11 +1,11 @@
 import React from "react";
 import DeliveryAddressHoc from "../pickup-delivery/delivery/deliveryaddress-hoc.component";
-import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { AddressListType } from "../../../../redux/delivery-address/delivery-address.types";
 
 const ProfileAddress: React.FC<{
-  address: DeliveryAddressInput;
+  address: AddressListType;
   isChecked: boolean;
-  handleChangeAddress: (address: DeliveryAddressInput) => void;
+  handleChangeAddress: (address: AddressListType) => void;
   id: number;
   handleDeleteAddress: (e: any, id: number) => void;
 }> = ({ address, isChecked, handleChangeAddress, id, handleDeleteAddress }) => {
@@ -22,7 +22,7 @@ const ProfileAddress: React.FC<{
       />
       <p>
         {" "}
-        {address?.address1}, {address?.cityName || address?.city},{" "}
+        {address?.address1}, {address?.city || address?.city},{" "}
         {address?.zipcode}
       </p>
       <a

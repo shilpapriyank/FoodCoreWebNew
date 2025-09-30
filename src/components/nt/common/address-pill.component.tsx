@@ -1,11 +1,11 @@
 import React from "react";
-import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
+import { AddressListType } from "../../../../redux/delivery-address/delivery-address.types";
 
 const AddressPill: React.FC<{
   isChecked: boolean;
   id: string | number;
-  address: DeliveryAddressInput;
-  handleChangeAddress?: (address: DeliveryAddressInput) => void;
+  address: AddressListType;
+  handleChangeAddress?: (address: AddressListType) => void;
   handleChangeLocation?: () => void;
 }> = ({
   isChecked,
@@ -24,7 +24,7 @@ const AddressPill: React.FC<{
       {address?.city}
       <br />
       <span>
-        {address?.address1}, {address?.cityName}, {address?.zipcode}
+        {address?.address1}, {address?.city}, {address?.zipcode}
         {/* 737 Golf Links Road Unit #F2A, Hamilton, Ontario, L9K 1L5 */}
       </span>
     </label>
