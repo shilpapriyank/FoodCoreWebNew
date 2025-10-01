@@ -7,8 +7,9 @@ import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-p
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
 import {
-  DeliveryAddressInput,
-  DeliveryAddressListNewType,
+  AddDeliveryAddressServiceResultType,
+  AddressListType,
+  GetDeliveryAddressServiceResultType,
   VerifyAddressInput,
 } from "./delivery-address.types";
 
@@ -19,7 +20,7 @@ export class DeliveryAddressServices {
     customerId: number,
     restaurantId: number,
     locationId: number
-  ): Promise<DeliveryAddressInput | null> {
+  ): Promise<GetDeliveryAddressServiceResultType | null> {
     responseclass = new ResponseModel();
     const methodName = "getDeliveryAddress";
     const location = ENDPOINTS.GET_DELIVERY_ADDRESS;
@@ -85,10 +86,10 @@ export class DeliveryAddressServices {
   }
 
   static async addDeliveryAddress(
-    obj: DeliveryAddressInput,
+    obj: AddressListType,
     restaurantId: number,
     locationId: number
-  ): Promise<DeliveryAddressInput | null> {
+  ): Promise<AddDeliveryAddressServiceResultType | null> {
     responseclass = new ResponseModel();
     const methodName = "addDeliveryAddress";
     const location = ENDPOINTS.ADD_DELIVERY_ADDRESS;
@@ -104,8 +105,8 @@ export class DeliveryAddressServices {
         zipcode: obj.zipcode,
         contactno: obj.contactno,
         contactname: obj.contactname,
-        latitude: parseFloat(obj.latitude as string),
-        longitude: parseFloat(obj.longitude as string),
+        latitude: obj.latitude,
+        longitude: obj.longitude,
         state: obj.state,
         country: obj.country,
         addresstype: obj.addresstype,

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -8,16 +8,18 @@ import { useRouter, usePathname } from "next/navigation";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { GetAllRestaurantInfo } from "@/types/restaurant-types/restaurant.type";
 
-const UserDropdown = ({
-  handleOpenLoginModal,
-  handleLogOutclick,
-  isWelcome = true,
-}: any) => {
+const UserDropdown: React.FC<{
+  handleOpenLoginModal: (value: boolean) => void;
+  handleLogOutclick: () => void;
+  isWelcome?: boolean;
+}> = ({ handleOpenLoginModal, handleLogOutclick, isWelcome = true }) => {
   const { userinfo, restaurantinfo } = useReduxData();
   const router = useRouter();
   const pathname = usePathname();
   // const selectedTheme = GetThemeDetails(restaurantinfo.themetype);
-  const selectedTheme = GetThemeDetails((restaurantinfo as GetAllRestaurantInfo )?.themetype); // Assuming this is intentional and safe
+  const selectedTheme = GetThemeDetails(
+    (restaurantinfo as GetAllRestaurantInfo)?.themetype
+  ); // Assuming this is intentional and safe
   const [isOpenDropdown, setisOpenDropdown] = useState(false);
 
   // Safely get location and restaurantURL
@@ -46,13 +48,14 @@ const UserDropdown = ({
 
   return (
     <>
-      {userinfo === null &&
+      {userinfo === null && (
         <button
           className="btn btn-sm btn-default login-btn d-none d-md-block"
           onClick={handleClikLogin}
         >
           Login
-        </button>}
+        </button>
+      )}
 
       {userinfo && (
         <li className="dropdown profile-dropdown">
@@ -63,7 +66,8 @@ const UserDropdown = ({
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fa fa-user-circle" /> {isWelcome ? "Welcome" : ""} {userinfo?.firstname}
+            <i className="fa fa-user-circle" /> {isWelcome ? "Welcome" : ""}{" "}
+            {userinfo?.firstname}
           </button>
 
           <ul className={`dropdown-menu ${isOpenDropdown ? "show" : ""}`}>
@@ -130,8 +134,8 @@ const UserDropdown = ({
 
 export default UserDropdown;
 
-
-{/* <Link legacyBehavior href={locationHrefLink + "myaccount"} as={`${locationFullLink}myaccount`}>
+{
+  /* <Link legacyBehavior href={locationHrefLink + "myaccount"} as={`${locationFullLink}myaccount`}>
               <a className={getDropdownClass("/myaccount")}>
                 <i className="fa fa-user me-3"></i>My Profile
               </a>
@@ -177,4 +181,5 @@ export default UserDropdown;
               <a className="dropdown-item" onClick={handleClickLogout}>
                 <i className="fa fa-sign-out me-3"></i>Logout
               </a>
-            </li> */}
+            </li> */
+}

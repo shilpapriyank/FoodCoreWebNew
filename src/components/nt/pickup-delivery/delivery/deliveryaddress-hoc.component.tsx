@@ -19,14 +19,17 @@ import {
   updateAddressId,
 } from "../../../../../redux/delivery-address/delivery-address.slice";
 import { selecteddeliveryaddress } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
-import { DeliveryAddressInput } from "../../../../../redux/delivery-address/delivery-address.types";
+import {
+  AddressListType,
+  GetDeliveryAddressServiceResultType,
+} from "../../../../../redux/delivery-address/delivery-address.types";
 
 interface DeliveryAddressHocProps {
-  handleChangeAddress: (address: DeliveryAddressInput) => void;
+  handleChangeAddress: (address: AddressListType) => void;
   handleDeleteAddress?: (e: React.MouseEvent, id: number) => void;
   id: number;
   isChecked: boolean;
-  address: DeliveryAddressInput;
+  address: AddressListType;
 }
 
 function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
@@ -37,7 +40,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
   ) => {
     const { userinfo, restaurantinfo, selecteddelivery, deliveryaddress } =
       useReduxData();
-    const [addresslist, setaddressList] = useState<DeliveryAddressInput[]>([]);
+    const [addresslist, setaddressList] = useState<AddressListType[]>([]);
     const customerId: number = userinfo?.customerId ?? 0;
     const selecteddeliveryaddres = selecteddelivery.selecteddeliveryaddress;
     const [loadComplete, setloadComplete] = useState<boolean>(false);
@@ -65,7 +68,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
           (userinfo as LoggedInUser).customerId,
           restaurantinfo?.restaurantId as number,
           restaurantinfo?.defaultLocation.locationId as number
-        ).then((response: any) => {
+        ).then((response) => {
           if (response) {
             if (response?.AddressLists) {
               dispatch(setDeliveryAddressData(response?.AddressLists));
@@ -105,13 +108,13 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
     };
 
     const handleDeleteItem = useCallback(() => {
+      debugger;
       if (restaurantinfo && deleteAddressId !== undefined) {
         DeliveryAddressServices.deleteDeliveryAddress(
           deleteAddressId,
           restaurantinfo?.restaurantId
         ).then((response) => {
           if (response) {
-            dispatch(deleteAddress(response as any));
             getDeliveryAddress(deleteAddressId);
             if (
               selecteddelivery?.selecteddeliveryaddress?.deliveryaddressId ===
@@ -127,7 +130,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
 
     //SELECT THE DELIVERY ADDRESS
     const handleClickSelectDeliveryAddress = useCallback(
-      (address: any) => {
+      (address: AddressListType) => {
         if (
           address?.deliveryaddressId !==
           deliveryaddress?.addressId?.customerAddressId
@@ -159,7 +162,7 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
       return (
         <>
           {selectedDeleteAddress?.address1},
-          {selectedDeleteAddress?.cityName || selectedDeleteAddress?.city},
+          {selectedDeleteAddress?.contactname || selectedDeleteAddress?.city},
           {selectedDeleteAddress?.zipcode}
         </>
       );

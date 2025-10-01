@@ -6,7 +6,9 @@ import handleNotify from "@/components/default/helpers/toaster/toaster-notify";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
 import { ToasterTypes } from "@/components/default/helpers/toaster/toaster-types";
 import { handleAxiosPostAsync } from "@/components/default/helpers/utility";
+
 let responseclass = new ResponseModel();
+
 import {
   AddOrderArgsTypes,
   CardPayment,
@@ -15,7 +17,6 @@ import {
   GenerateTimeSlotArgsTypes,
   GetOrderDeliveryServiceDetailsArgsTypes,
   GetOrderInfoArgsTypes,
-  GetOrderTimeArgsTypes,
   GetOrderTimingArgsTypes,
   GetPaymentDetailsArgsTypes,
   OrderAddress,

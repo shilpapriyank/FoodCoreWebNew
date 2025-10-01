@@ -53,6 +53,7 @@ import {
   ASAP_LATER_BTN_ENUM,
   MERIDIEM_TIME_ENUM,
 } from "@/components/common/enums";
+import { AddressListType, ObjTypeForVerifyDeliveryAddressType } from "../../../../redux/delivery-address/delivery-address.types";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
@@ -169,7 +170,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text ? 2 : 1;
   let selectedAddress =
     userinfo === null
-      ? (deliveryaddress as any)?.tempDeliveryAddress
+      ? (deliveryaddress)?.tempDeliveryAddress
       : selecteddelivery?.selecteddeliveryaddress;
   const { deliveryService } =
     restaurantinfo?.defaultLocation as DefaultLocation;
@@ -316,7 +317,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       restaurantId: Number(restaurantinfo?.restaurantId),
       locationId: Number(defaultLocation?.locationId),
       ordertype: ordertype,
-      obj: selectedAddress,
+      obj: selectedAddress as AddressListType,
       requestId: defaultRequestId,
     }).then((gettimeresponse) => {
       setTimeout(() => {
@@ -330,7 +331,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
               recievingTime: time[0],
               recieving: time[1],
               flg: Number(ordertype),
-              obj: selectedAddress,
+              obj: selectedAddress as AddressListType,
               requestId: requestID,
             }).then((response) => {
               if (
@@ -396,7 +397,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       restaurantId: Number(restaurantinfo?.restaurantId),
       locationId: Number(defaultLocation?.locationId),
       ordertype: ordertype,
-      obj: selectedAddress,
+      obj: selectedAddress as AddressListType,
       requestId: defaultRequestId,
     }).then((gettimeresponse) => {
       if (gettimeresponse) {
@@ -493,7 +494,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
       recievingTime: parseInt(hour) + ":" + parseInt(minute),
       recieving: meridiem,
       flg: ordertype,
-      obj: selectedAddress,
+      obj: selectedAddress as AddressListType,
       requestId: defaultRequestId,
     }).then((response) => {
       if (response.result != undefined && response.result !== null) {

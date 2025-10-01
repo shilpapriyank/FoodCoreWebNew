@@ -57,9 +57,7 @@ import { PAGES } from "../common/pages";
 import CommonModal from "../common/common-model.component";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { useParams, useRouter } from "next/navigation";
-import { DeliveryAddressInput } from "../../../../redux/delivery-address/delivery-address.types";
-import { DeliveryAddressInfo } from "@/components/default/Common/dominos/helpers/types/utility-type";
-import { SelectedDeliveryAddressType } from "@/types/selectdelivery-types/selectdelivery.types";
+import { AddressListType } from "../../../../redux/delivery-address/delivery-address.types";
 
 interface ModalState {
   openRegisterModal: boolean;
@@ -202,7 +200,7 @@ const CartPaymentButton: React.FC<{
     let address = userinfo !== null ? deliveryaddressinfo : tempDeliveryAddress;
     const deliveryError = handleSetDeliveryTypeError(
       pickupordelivery,
-      address as any,
+      address as AddressListType,
       carttotal as CartDetailOfCartTotal,
       dcharges,
       cart,
