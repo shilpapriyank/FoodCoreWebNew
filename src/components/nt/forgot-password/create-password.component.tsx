@@ -241,5 +241,4 @@ const CreatePasswordComponent: React.FC = () => {
     </div>
   );
 };
-
 export default CreatePasswordComponent;

@@ -48,12 +48,11 @@ export default async function RootLayout({
     // Fallback to default theme
   }
 
-  return (      
+  return (
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
         {/* Load theme-specific CSS */}
         <ThemeStyles themeType={themeType} />
       </head>
@@ -63,7 +62,6 @@ export default async function RootLayout({
           <ToastNotify position={ToasterPositions.TopRight} />
           {children}
         </ClientWrapper>
-
         {/* Load theme-specific scripts */}
         <ThemeScripts themeType={themeType} />
       </body>
