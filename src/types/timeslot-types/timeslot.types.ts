@@ -1,4 +1,3 @@
-import { FutureOrderingDayDate } from "../location-types/location.type";
 import { FutureOrderingDayDateTypes } from "../restaurant-types/restaurant.type";
 
 export interface TimeSlot {
@@ -31,10 +30,10 @@ export interface TimeSlotPopupComponentProps {
   futureDateList: FutureOrderingDayDateTypes[];
   handleToggleTimeSlotModal?: () => void;
   enablefutureordering: boolean;
-  locationId: number;
+  locationId?: number;
   clearData?: () => void;
   isRedirectMenu?: boolean;
   isload?: boolean;
-  locationUrl: string;
+  locationUrl?: string;
   clearMeaage?: () => void;
 }

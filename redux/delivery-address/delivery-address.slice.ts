@@ -23,46 +23,6 @@ const initialState: DeliveryAddressState = {
   addressId: null,
   tempDeliveryAddress: null,
 };
-//Async thunks
-// export const getAddress = createAsyncThunk(
-//   DeliveryAddressTypes.GET_ADDRESS,
-//   async ({
-//     customerId,
-//     restaurantId,
-//     locationId,
-//   }: {
-//     customerId: number;
-//     restaurantId: number;
-//     locationId: number;
-//   }) => {
-//     debugger
-//     const response = await DeliveryAddressServices.getDeliveryAddress(
-//       customerId,
-//       restaurantId,
-//       locationId
-//     );
-//     if (response) {
-//       return response;
-//     }
-//     return null;
-//   }
-// );
-
-// export const getAddress = createAsyncThunk<
-//   DeliveryAddressListNewType | null,
-//   { customerId: number; restaurantId: number; locationId: number }
-// >(
-//   DeliveryAddressTypes.GET_ADDRESS,
-//   ({ customerId, restaurantId, locationId }) => {
-//     return DeliveryAddressServices.getDeliveryAddress(
-//       customerId,
-//       restaurantId,
-//       locationId
-//     ).then((response) => {
-//       return response ?? null;
-//     });
-//   }
-// );
 
 export const deleteAddress = createAsyncThunk(
   DeliveryAddressTypes.DELETE_ADDRESS,
@@ -120,14 +80,20 @@ const deliveryAddressSlice = createSlice({
     updateAddressCheck(state, action: PayloadAction<boolean>) {
       state.updatedAddress = action.payload;
     },
-    updateAddressId(state, action: PayloadAction<AddDeliveryAddressServiceResultType>) {
+    updateAddressId(
+      state,
+      action: PayloadAction<AddDeliveryAddressServiceResultType>
+    ) {
       state.addressId = action.payload;
     },
     registerAddress(state, action: PayloadAction<AddressListType | {}>) {
       state.tempDeliveryAddress = null;
       state.registeraddress = action.payload;
     },
-    insertAddressId(state, action: PayloadAction<AddDeliveryAddressServiceResultType>) {
+    insertAddressId(
+      state,
+      action: PayloadAction<AddDeliveryAddressServiceResultType>
+    ) {
       state.addressId = action.payload;
     },
     AddTempDeliveryAddress(
