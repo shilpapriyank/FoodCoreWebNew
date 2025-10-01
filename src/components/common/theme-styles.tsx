@@ -3,6 +3,8 @@ interface ThemeStylesProps {
 }
 
 export function ThemeStyles({ themeType }: ThemeStylesProps) {
+  //console.log("SSR themeType", themeType)
+
   return (
     <>
       {/* {themeType === "default" && (
