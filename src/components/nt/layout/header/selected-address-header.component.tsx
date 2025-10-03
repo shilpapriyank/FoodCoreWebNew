@@ -1,21 +1,16 @@
 "use client";
 
 import React from "react";
+import { ORDER_TYPE } from "../../../common/utility";
 import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
-import { ORDER_TYPE } from "@/components/common/utility";
 
-interface SelectedAddressHeaderProps {
+const SelectedAddressHeader: React.FC<{
   handleToggleOrderTypeModal: (value: boolean) => void;
-  b2b?: boolean;
-}
-
-const SelectedAddressHeader: React.FC<SelectedAddressHeaderProps> = ({
-  handleToggleOrderTypeModal,
-  b2b = false,
-}) => {
+  b2b: any;
+}> = ({ handleToggleOrderTypeModal, b2b }) => {
   const { selecteddelivery, restaurantinfo, deliveryaddress } = useReduxData();
   const defaultLocation = restaurantinfo?.defaultLocation;
-  const tempDeliveryAddress = (deliveryaddress)?.tempDeliveryAddress;
+  const tempDeliveryAddress = deliveryaddress?.tempDeliveryAddress;
   const orderTypeName = selecteddelivery?.pickupordelivery;
   const address =
     orderTypeName === ORDER_TYPE.PICKUP.text ? defaultLocation : "";

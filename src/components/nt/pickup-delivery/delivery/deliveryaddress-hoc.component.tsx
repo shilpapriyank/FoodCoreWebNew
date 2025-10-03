@@ -13,15 +13,12 @@ import CommonModal from "../../common/common-model.component";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import {
-  deleteAddress,
   setDeliveryAddressData,
-  updateAddressCheck,
   updateAddressId,
 } from "../../../../../redux/delivery-address/delivery-address.slice";
 import { selecteddeliveryaddress } from "../../../../../redux/selected-delivery-data/selecteddelivery.slice";
 import {
   AddressListType,
-  GetDeliveryAddressServiceResultType,
 } from "../../../../../redux/delivery-address/delivery-address.types";
 
 interface DeliveryAddressHocProps {
@@ -108,7 +105,6 @@ function DeliveryAddressHoc<P extends DeliveryAddressHocProps>(
     };
 
     const handleDeleteItem = useCallback(() => {
-      debugger;
       if (restaurantinfo && deleteAddressId !== undefined) {
         DeliveryAddressServices.deleteDeliveryAddress(
           deleteAddressId,

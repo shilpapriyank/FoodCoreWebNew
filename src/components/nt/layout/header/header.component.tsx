@@ -35,12 +35,10 @@ import CartCounter from "../../common/cart-counter.component";
 import Link from "next/link";
 import { useWindowDimensions } from "@/components/customhooks/usewindowdimension-hook";
 import { LoggedInUser } from "../../../../../redux/login/login.types";
-import { ThemeType } from "@/types/common-types/common.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
 import {
   FutureOrderingDayDateTypes,
-  GetAllRestaurantInfo,
 } from "@/types/restaurant-types/restaurant.type";
 
 interface HeaderProps {
@@ -386,12 +384,6 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
 
       {!enabletimeslot && opentimingModal && !isSchoolProgramEnabled && (
         <PickupDeliveryTimeSelectPopup
-          // handleToggleTimingModal={handleToggleTimingModal}
-          // isOpenModal={opentimingModal}
-          // locationId={restaurantinfo?.defaultlocationId as number}
-          // isload={false}
-          // locationUrl={restaurantinfo?.restaurantURL ?? ""}
-          // clearMeaage={() => {}}
           handleToggleTimingModal={handleToggleTimingModal}
           isOpenModal={opentimingModal}
           locationId={restaurantinfo?.defaultlocationId as number}
@@ -401,16 +393,13 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         <TimeSlotPopupComponent
           handleToggleTimingModal={handleToggleTimingModal}
           futureDateList={
-            //restaurantinfo?.defaultLocation?.futureOrderingDayDates as  GetAllRestaurantInfo[]
-            restaurantinfo?.defaultLocation
-              ?.futureOrderingDayDates as FutureOrderingDayDateTypes[]
+            restaurantinfo?.defaultLocation?.futureOrderingDayDates as FutureOrderingDayDateTypes[]
           }
           enablefutureordering={
             restaurantinfo?.defaultLocation?.enablefutureordering as boolean
-          }
+          } 
           isOpenModal={true}
           locationId={restaurantinfo?.defaultlocationId as number}
-          locationUrl={restaurantinfo?.defaultLocation?.locationURL as string} //Add this
         />
       )}
 

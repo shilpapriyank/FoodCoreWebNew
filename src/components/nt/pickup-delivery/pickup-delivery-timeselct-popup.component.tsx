@@ -251,41 +251,6 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     });
   }, [defaultLocation?.locationId]);
 
-  // useEffect(() => {
-  //   if (
-  //     document.getElementById("datetimepicker4") !== null &&
-  //     isLaterOn === true &&
-  //     document.getElementById("datetimepicker4") !== undefined &&
-  //     isTimeLoad &&
-  //     !defaultLocation?.isOrderingDisable
-  //   ) {
-  //     let hour =
-  //       Meridiem === "AM"
-  //         ? parseInt(Hour)
-  //         : parseInt(Hour) + 12 === 24
-  //         ? 12
-  //         : parseInt(Hour) + 12;
-  //     let Time = `${hour}:${parseInt(Minute)}`;
-
-  //     $("#datetimepicker4")
-  //       ?.datetimepicker({
-  //         format: "LT",
-  //         inline: true,
-  //       })
-  //       .on("dp.change", function (ev: any) {
-  //         setTimeOrErrorMessage("");
-  //         setisConfirmDisable(false);
-  //       });
-  //     $("#datetimepicker4")?.data("DateTimePicker").date(Time, "HH:mm");
-  //   }
-  // }, [
-  //   document.getElementById("datetimepicker4"),
-  //   isLaterOn,
-  //   isTimeLoad,
-  //   Hour,
-  //   Minute,
-  // ]);
-
   const redirectOnTimeSelected = () => {
     if (isRedirectMenu) {
     } else {

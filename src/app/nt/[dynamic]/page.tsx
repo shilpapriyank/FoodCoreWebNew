@@ -9,7 +9,6 @@ const Page: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const dynamic = pathname?.split("/").pop() || "";
   const { restaurantinfo } = useReduxData();
 
