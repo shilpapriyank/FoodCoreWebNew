@@ -59,7 +59,7 @@ const LoadLocationDirectComponent = ({
   let ischangeurl = restaurant?.ischangeurl;
   const [isLoadAddress, setisLoadAddress] = useState<boolean>(false);
   const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-  const hasFetchedLocations = useRef(false);
+  const hasFetchedLocations = useRef<boolean>(false);
 
   useEffect(() => {
     if (hasFetchedLocations.current) return;

@@ -23,9 +23,8 @@ const LocationPage: React.FC = () => {
     menuitem,
     categoryItemsList,
     userinfo,
-    order
-  } =
-    useReduxData();
+    order,
+  } = useReduxData();
   const [isloadAddress, setIsLoadAddress] = useState<boolean>(true);
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
@@ -62,9 +61,20 @@ const LocationPage: React.FC = () => {
   //     );
   //   }
   // }, []);
+
   useEffect(() => {
-    if (selecteddelivery?.pickupordelivery === null || Object.keys(selecteddelivery?.pickupordelivery).length === 0 || selecteddelivery?.pickupordelivery === '') {
-      dispatch(setpickupordelivery(restaurantinfo?.defaultLocation?.defaultordertype ? ORDER_TYPE.DELIVERY.text : ORDER_TYPE.PICKUP.text));
+    if (
+      selecteddelivery?.pickupordelivery === null ||
+      Object.keys(selecteddelivery?.pickupordelivery).length === 0 ||
+      selecteddelivery?.pickupordelivery === ""
+    ) {
+      dispatch(
+        setpickupordelivery(
+          restaurantinfo?.defaultLocation?.defaultordertype
+            ? ORDER_TYPE.DELIVERY.text
+            : ORDER_TYPE.PICKUP.text
+        )
+      );
     }
   }, []);
 
@@ -133,4 +143,3 @@ const LocationPage: React.FC = () => {
   );
 };
 export default LocationPage;
-

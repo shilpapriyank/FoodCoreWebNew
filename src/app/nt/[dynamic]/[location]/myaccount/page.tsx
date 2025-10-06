@@ -24,7 +24,7 @@ const MyAccount = () => {
   );
   let defaultflag = document.querySelector(".iti-flag");
   let countryList = document.querySelector(".country-list");
-  const [openAddAddress, setopenAddAddress] = useState(false);
+  const [openAddAddress, setopenAddAddress] = useState<boolean>(false);
   const addresscount = deliveryaddress?.deliveryaddressdata?.length;
   const selectedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   let location = restaurantinfo?.defaultLocation?.locationURL;
@@ -39,6 +39,7 @@ const MyAccount = () => {
     location +
     "/";
   const b2b = restaurantinfo?.defaultLocation?.b2btype;
+
   useEffect(() => {
     if (dialCode === locationCountryData?.countryCode && userinfo) {
       onLoadSetDefaultFlag(defaultflag, countryList, locationCountryData);
@@ -86,9 +87,7 @@ const MyAccount = () => {
                       <strong>My addresses</strong>
                       <br />
                       <span className="color-black fs-12">
-                        <span className="color-green">
-                          {addresscount}
-                        </span>{" "}
+                        <span className="color-green">{addresscount}</span>{" "}
                         available address
                       </span>
                     </h4>

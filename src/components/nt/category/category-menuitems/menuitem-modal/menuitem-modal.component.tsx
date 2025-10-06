@@ -159,8 +159,11 @@ const MenuItemModal: React.FC<{
   }
 
   useEffect(() => {
+    console.log("Fetching menu items", { selectedmenuitemdetail, dependentId });
     setcurrentQty(
-      selectedmenuitemdetail?.qty !== undefined ? selectedmenuitemdetail.qty : 1
+      selectedmenuitemdetail && selectedmenuitemdetail.qty !== undefined
+        ? selectedmenuitemdetail.qty
+        : 1
     );
     if (isPreLoaded === true) {
       setisLoad(true);
@@ -177,7 +180,7 @@ const MenuItemModal: React.FC<{
         cartId: 0,
       }).then((response) => {
         if (response) {
-          dispatch(setMenuItemDetailList(response));
+          //dispatch(setMenuItemDetailList(response));
           dispatch(setMenuCategoryData(response));
           setisLoad(true);
         }

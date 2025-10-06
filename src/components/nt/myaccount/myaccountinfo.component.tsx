@@ -6,13 +6,9 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { getCountryList, GetCurrency } from "@/components/common/utility";
 import validate from "@/components/default/myaccount/myaccount-update.validationRules";
-import {
-  FormValues,
-  UpdateUserInfoObjTypes,
-} from "@/types/myaccount-types/myaccount.type";
+import { UpdateUserInfoObjTypes } from "@/types/myaccount-types/myaccount.type";
 import { CustomerServices } from "../../../../redux/customer/customer.services";
 import { setUserDetail } from "../../../../redux/login/login.slice";
-import { LoggedInUser } from "../../../../redux/login/login.types";
 import PhoneInput from "react-phone-input-2";
 import { BUTTON_TYPE_ENUM } from "@/components/common/enums";
 
@@ -23,10 +19,10 @@ const MyAccountInfo = () => {
   );
   const { restaurantinfo, userinfo, rewardpoints } = useReduxData();
   const dispatch = useAppDispatch();
-  const [count, setcount] = useState(0);
+  const [count, setcount] = useState<number>(0);
   var rewardamount =
     rewardpoints && rewardpoints?.rewardamount > 0
-      ? rewardpoints?.rewardamount.toFixed(2)
+      ? Number(rewardpoints?.rewardamount).toFixed(2)
       : 0.0;
   var currency = GetCurrency();
   const restaurantId = restaurantinfo?.restaurantId;
@@ -39,18 +35,18 @@ const MyAccountInfo = () => {
     fileList: null,
     type: "",
   });
-  const [oldpassword, setoldpassword] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [oldpassword, setoldpassword] = useState<string>("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMesssage] = useState<string>("");
-  const [showchangePassword, setShowchangePassword] = useState(false);
-  const [imageFileName, setimageFileName] = useState("");
-  const [imageUpload, setimageUpload] = useState(false);
-  const [imgType, setimgType] = useState("");
-  const [isSaveDisable, setisSaveDisable] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showchangePassword, setShowchangePassword] = useState<boolean>(false);
+  const [imageFileName, setimageFileName] = useState<string>("");
+  const [imageUpload, setimageUpload] = useState<boolean>(false);
+  const [imgType, setimgType] = useState<string>("");
+  const [isSaveDisable, setisSaveDisable] = useState<boolean>(true);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const locationCountry = restaurantinfo?.defaultLocation?.countryName;
-  const [isEdit, setisEdit] = useState(false);
-  const [dialCode, setDialCode] = useState(userinfo?.dialcode || "+1");
+  const [isEdit, setisEdit] = useState<boolean>(false);
+  const [dialCode, setDialCode] = useState<string>(userinfo?.dialcode || "+1");
 
   const getCropedImage = useCallback(
     (image: any) => {

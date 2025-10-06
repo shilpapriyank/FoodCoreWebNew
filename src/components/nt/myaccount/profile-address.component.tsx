@@ -7,7 +7,7 @@ const ProfileAddress: React.FC<{
   isChecked: boolean;
   handleChangeAddress: (address: AddressListType) => void;
   id: number;
-  handleDeleteAddress: (e: any, id: number) => void;
+  handleDeleteAddress: (e: React.MouseEvent, id: number) => void;
 }> = ({ address, isChecked, handleChangeAddress, id, handleDeleteAddress }) => {
   return (
     <div

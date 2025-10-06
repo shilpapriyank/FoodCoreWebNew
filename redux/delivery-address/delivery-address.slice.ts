@@ -50,7 +50,7 @@ export const addAddress = createAsyncThunk(
     restaurantId,
     locationId,
   }: {
-    obj: any;
+    obj: AddressListType;
     restaurantId: number;
     locationId: number;
   }) => {

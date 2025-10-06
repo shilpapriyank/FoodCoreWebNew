@@ -13,42 +13,39 @@ import { RelatedItemsList } from "../../common/related-items/related-items-list"
 import { GetCartItemsCount } from "@/types/cart-types/cartservice.type";
 
 const CategorySidebar: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { restaurantinfo, cart, restaurant } = useReduxData();
+  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
   const router = useRouter();
   const { isDisplayPrice, isRewardTip } = useUtility();
   const params = useParams();
-  const { location, dynamic } = params;
-  const [isOpenChangeLocation, setIsOpenChangeLocation] =
-    useState<boolean>(false);
-  const selctedTheme = GetThemeDetails(restaurantinfo?.themetype as number);
-  const addressList = restaurant?.restaurantslocationlistwithtime?.addressList;
+  const { dynamic, location } = params;
+  const [isOpenChangeLocation, setisOpenChangeLocation] = useState(false);
+  const dispatch = useAppDispatch();
+  const addresslist = restaurant?.restaurantslocationlistwithtime?.addressList;
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
 
   const handleClick = () => {
-    if (
-      restaurantinfo?.displayLocationPopUpChange &&
-      addressList &&
-      addressList.length > 1
-    ) {
-      setIsOpenChangeLocation(true);
+    if (restaurantinfo?.displayLocationPopUpChange && addresslist?.length > 1) {
+      setisOpenChangeLocation(true);
       return;
     }
     router.push(`/${selctedTheme?.url}/${dynamic}/${location}/checkout`);
   };
 
   const handleClickOk = () => {
-    setIsOpenChangeLocation(false);
+    setisOpenChangeLocation(false);
     router.push(`/${selctedTheme?.url}/${dynamic}/${location}/checkout`);
   };
-
   const handleToggle = (value: boolean) => {
-    setIsOpenChangeLocation(value);
+    setisOpenChangeLocation(value);
   };
-
   const handleClickBtn2 = () => {
-    setIsOpenChangeLocation(false);
+    setisOpenChangeLocation(false);
+    // closeModal("btn-close")
+    // dispatch(setpickupordelivery(ORDER_TYPE.PICKUP.text))
     document.getElementById("time-mdl")?.click();
+    // dispatch(emptyorder())
+    // router.push(`${locationFullLink}${PAGES.DELIVERY}`)
   };
 
   return (

@@ -53,7 +53,11 @@ import {
   ASAP_LATER_BTN_ENUM,
   MERIDIEM_TIME_ENUM,
 } from "@/components/common/enums";
-import { AddressListType, ObjTypeForVerifyDeliveryAddressType } from "../../../../redux/delivery-address/delivery-address.types";
+import {
+  AddressListType,
+  ObjTypeForVerifyDeliveryAddressType,
+} from "../../../../redux/delivery-address/delivery-address.types";
+import { StripeIssuingCardCopyButtonElement } from "@stripe/stripe-js";
 
 interface PickupDeliveryTimeSelectPopupProps {
   isOpenModal: boolean;
@@ -66,13 +70,6 @@ interface PickupDeliveryTimeSelectPopupProps {
   clearData?: boolean;
 }
 
-interface OrderTimeResponse {
-  result: {
-    message: string;
-    status: "success" | "error";
-    time?: string;
-  };
-}
 const PickupDeliveryTimeSelectPopup: React.FC<
   PickupDeliveryTimeSelectPopupProps
 > = ({
@@ -156,7 +153,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
   const [isConfirmDisable, setisConfirmDisable] = useState<boolean>(false);
   const [successMessage, setsuccessMessage] = useState<string>("");
   const [selectedDate, setselectedDate] = useState<string>(
-    order?.futureOrderDay?.futureDay as string ?? ""
+    (order?.futureOrderDay?.futureDay as string) ?? ""
   );
   const [Hour, setHour] = useState<string>("");
   const [Minute, setMinute] = useState<string>("");
@@ -170,7 +167,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
     selecteddelivery.pickupordelivery === ORDER_TYPE.DELIVERY.text ? 2 : 1;
   let selectedAddress =
     userinfo === null
-      ? (deliveryaddress)?.tempDeliveryAddress
+      ? deliveryaddress?.tempDeliveryAddress
       : selecteddelivery?.selecteddeliveryaddress;
   const { deliveryService } =
     restaurantinfo?.defaultLocation as DefaultLocation;
@@ -400,7 +397,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
 
   const handleClick = async (
     lid: number,
-    locationUrl: any,
+    locationUrl: string,
     isPickup?: boolean
   ) => {
     LocationServices.changeRestaurantLocation(
@@ -479,7 +476,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
             dispatch(setordertime(timedisplay));
             if (isRedirectMenu === true) {
               // FROM THE PICKUP POPUP TIME SELCTION
-              handleClick(locationId as number, locationUrl);
+              handleClick(locationId as number, locationUrl as string);
               handleToggleTimingModal(false);
             }
             handleToggleTimingModal(false);
@@ -491,7 +488,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
               dispatch(setordertime(timedisplay));
               if (isRedirectMenu === true) {
                 // FROM THE PICKUP POPUP TIME SELCTION
-                handleClick(locationId as number, locationUrl);
+                handleClick(locationId as number, locationUrl as string);
                 handleToggleTimingModal(false);
               } else {
                 setTimeout(() => {
@@ -511,7 +508,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
 
     handleToggleTimingModal(false);
     if (isRedirectMenu === true) {
-      handleClick(locationId as number, locationUrl, true);
+      handleClick(locationId as number, locationUrl as string, true);
       handleToggleTimingModal(false);
       return;
     }
@@ -604,7 +601,7 @@ const PickupDeliveryTimeSelectPopup: React.FC<
                                   {orderTime === "" ? selecetdtime : orderTime}
                                   ,&nbsp; Today,&nbsp; {currentDate?.getDate()}
                                   &nbsp;
-                                  {MonthList(currentDate?.getMonth() as number)}
+                                  {MonthList(currentDate?.getMonth() as any)}
                                 </h4>
                               )}
                               {isConfirmDisable ||
