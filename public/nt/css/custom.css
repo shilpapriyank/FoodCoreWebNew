@@ -191,8 +191,7 @@ div#datetimepicker4 {
 	box-shadow:none;
 } */
 
-.bootstrap-datetimepicker-widget button[data-action]:focus {
-}
+.bootstrap-datetimepicker-widget button[data-action]:focus {}
 
 .datepicker {
   padding: 0;
@@ -288,7 +287,7 @@ div#datetimepicker4 {
 }
 
 .border-color-dynamic {
-  border-color: var(--lbl_active_bg) !important ;
+  border-color: var(--lbl_active_bg) !important;
 }
 
 .time-pill input {
@@ -918,6 +917,7 @@ html {
 
 /* desktop only */
 @media screen and (min-width: 1024px) {
+
   /* Styles for desktop */
   .checkout-sidebar {
     position: sticky;
@@ -1186,4 +1186,8 @@ html {
 
 .subcat-inactive {
   color: var(--lbl_active_bg) !important;
+}
+
+.react-tel-input .country-list .country-name {
+  margin-left: 28px !important;
 }

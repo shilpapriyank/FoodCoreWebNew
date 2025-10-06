@@ -646,7 +646,6 @@ const Register: React.FC<{
                                                 onlyCountries={getCountryList()}
                                                 preferredCountries={[]}
                                                 enableAreaCodes={false}
-                                                enableSearch
                                                 disableSearchIcon
                                                 inputProps={{
                                                     name: 'phone',
