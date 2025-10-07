@@ -5,6 +5,8 @@ import { useReduxData } from "@/components/customhooks/useredux-data-hooks";
 import Layout from "@/components/nt/layout/layout";
 import { LocationItem } from "@/components/nt/location/location-item.component";
 import React, { useState } from "react";
+import { AddressListType } from "../../../../../../redux/delivery-address/delivery-address.types";
+import { AddressList } from "@/types/location-types/location.type";
 
 const LocationsPage = () => {
   const { restaurantinfo, restaurant } = useReduxData();
@@ -14,8 +16,8 @@ const LocationsPage = () => {
     locations,
     restaurantinfo?.defaultLocation?.locationId as number
   );
-  const [addressList, setAddressList] = useState(sordedLocation);
-  const [defaultLoactionId, setdefaultLoactionId] = useState(
+  const [addressList, setAddressList] = useState<AddressList[]>(sordedLocation);
+  const [defaultLoactionId, setdefaultLoactionId] = useState<number>(
     restaurantinfo?.defaultlocationId as number
   );
   return (

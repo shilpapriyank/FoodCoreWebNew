@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { useEffect, useRef, useState } from "react";
 import { setSelectedCategory } from "../../../../../redux/category/category.slice";
+import { MainCategoryList } from "@/types/mainservice-types/mainservice.type";
 
 const CategoryHeader = ({ selectedCatId }: any) => {
   const {
@@ -41,7 +42,7 @@ const CategoryHeader = ({ selectedCatId }: any) => {
   const activeItemRef = useRef<any>(null);
   const [activeSection, setActiveSection] = useState("");
 
-  const handleClick = (slug: any, catId: any) => {
+  const handleClick = (slug: string, catId: number) => {
     const selected = catWithSearch.filter((x) => x.catId === catId);
     setSelectedCategoryId(catId);
     dispatch(setSelectedCategory(selected as any));

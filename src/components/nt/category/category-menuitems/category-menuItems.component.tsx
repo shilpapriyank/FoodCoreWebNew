@@ -168,7 +168,7 @@ const CategoryMenuItems: React.FC<{
     //check category slug and selected category url not same then select  categoryslug category
     if (selectedCategory?.categoryslug !== categoryUrl && categoryUrl) {
       const findedCat = catWithSearch?.find(
-        (cat: any) => cat?.categoryslug === categoryUrl
+        (cat: MainCategoryList) => cat?.categoryslug === categoryUrl
       );
       // dispatch(setSelectedCategory(findedCat));
     }

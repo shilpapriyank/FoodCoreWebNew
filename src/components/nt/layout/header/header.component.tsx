@@ -37,9 +37,7 @@ import { useWindowDimensions } from "@/components/customhooks/usewindowdimension
 import { LoggedInUser } from "../../../../../redux/login/login.types";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { clearRedux } from "../../../../../redux/clearredux/clearredux.slice";
-import {
-  FutureOrderingDayDateTypes,
-} from "@/types/restaurant-types/restaurant.type";
+import { FutureOrderingDayDateTypes } from "@/types/restaurant-types/restaurant.type";
 
 interface HeaderProps {
   handleChangeAddress?: () => void;
@@ -67,12 +65,12 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
   const locationFullLink: string = `/${themeUrl}/${restaurantUrl}/${locationSlug}`;
   const b2b: boolean = restaurantinfo?.defaultLocation?.b2btype ?? false;
   const openLoginDefault = b2b && userinfo === null;
-  const pathname: string = usePathname();
+  const pathname = usePathname();
   const [isOpenOrderTypeModal, setisOpenOrderTypeModal] =
     useState<boolean>(false);
   const isSchoolProgramEnabled = restaurantinfo?.isSchoolProgramEnabled;
   const { enabletimeslot, isFutureOrder, futureDay } = useFutureOrder();
-  const openTimeModelDefault: boolean =
+  const openTimeModelDefault =
     pathname.includes(PAGES.CHECKOUT) &&
     order?.checktime === "" &&
     !b2b &&
@@ -393,11 +391,12 @@ const Header: React.FC<HeaderProps> = ({ handleChangeAddress, page }) => {
         <TimeSlotPopupComponent
           handleToggleTimingModal={handleToggleTimingModal}
           futureDateList={
-            restaurantinfo?.defaultLocation?.futureOrderingDayDates as FutureOrderingDayDateTypes[]
+            restaurantinfo?.defaultLocation
+              ?.futureOrderingDayDates as FutureOrderingDayDateTypes[]
           }
           enablefutureordering={
             restaurantinfo?.defaultLocation?.enablefutureordering as boolean
-          } 
+          }
           isOpenModal={true}
           locationId={restaurantinfo?.defaultlocationId as number}
         />
