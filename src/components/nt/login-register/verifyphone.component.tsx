@@ -220,27 +220,8 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({
               <div className="row">
                 <div className="col-lg-3 col-md-3 col-3 text-start">
                   <label className="text-start">Code</label>
-                  {/* <IntlTelInput
-                                    css={['intl-tel-input', 'form-control']}
-                                    utilsScript={'libphonenumber.js'}
-                                    fieldId="tel-p"
-                                    value={dialCode === "" ? "+1" : dialCode}
-                                    preferredCountries={[]}
-                                    onlyCountries={getCountryList()}
-                                    onSelectFlag={(num: number, country: any) => {
-                                        setDialCode("+" + country.dialCode)
-                                    }}
-                                    placeholder=""
-                                    className="dialCode"
-                                    inputClassName="codeinput form-control verify-country"
-                                    format={false}
-                                    autoFocus={false}
-                                    readonly={true}
-                                    cursorPosition={false}
-                                    style={{ caretColor: "transparent" }}
-                                /> */}
                   <PhoneInput
-                    country={"us"} // default country
+                    country={"us"}
                     value={dialCode}
                     onChange={(phone: string, country: any) => {
                       setDialCode("+" + country.dialCode);

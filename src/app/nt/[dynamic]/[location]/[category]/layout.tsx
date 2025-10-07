@@ -4,7 +4,8 @@ import React, { ReactNode } from "react";
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <RestaurantComponent>{children}</RestaurantComponent>
+      {children}
+      {/* <RestaurantComponent>{children}</RestaurantComponent> */}
     </>
   );
 };

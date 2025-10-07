@@ -118,7 +118,7 @@ const MyAccountInfo = () => {
     }
   };
 
-  const disableChange = () => {};
+  const disableChange = () => { };
   function submitSuccess() {
     //var croppedImg=null;
     let imgfilename = "";
@@ -264,36 +264,19 @@ const MyAccountInfo = () => {
             </div>
             <div className="col-lg-2 col-md-2 col-6 h-100">
               <label>Code</label>
-              {/* <IntlTelInput
-                css={["intl-tel-input", "form-control"]}
-                utilsScript={"libphonenumber.js"}
-                value={dialCode === "" ? "+1" : dialCode}
-                preferredCountries={[]}
-                onlyCountries={getCountryList()}
-                placeholder=""
-                className="dialCode disabled no-drop "
-                inputClassName="codeinput form-control no-drop "
-                format={false}
-                disabled={true}
-                autoFocus={false}
-                readonly={true}
-                fieldId="tel-x"
-                cursorPosition={false}
-                style={{ caretColor: "transparent" }}
-              /> */}
               <PhoneInput
                 value={dialCode === "" ? "+1" : dialCode}
-                onlyCountries={getCountryList()} // Same logic as your existing function
-                preferredCountries={[]} // Empty, same as before
+                onlyCountries={getCountryList()}
+                preferredCountries={[]}
                 enableSearch={false}
                 disableDropdown={true}
                 disabled={true}
                 inputClass="codeinput form-control dialCode"
                 containerClass="intl-tel-input form-control dialCode disabled no-drop"
                 inputStyle={{ caretColor: "transparent" }}
-                buttonStyle={{ display: "none" }} // hides dropdown arrow
-                isValid={() => true} // skip validation
-                //onChange={() => {}} // no-op since it's disabled
+                buttonStyle={{ display: "none" }}
+                isValid={() => true}
+              //onChange={() => {}} // no-op since it's disabled
               />
             </div>
             <div className="col-lg-4 col-md-4 col-12">
@@ -388,8 +371,8 @@ const MyAccountInfo = () => {
                   Object.keys(errors).length > 0
                     ? isDisabled
                     : !isSaveDisable
-                    ? isSaveDisable
-                    : isDisabled
+                      ? isSaveDisable
+                      : isDisabled
                 }
                 textName="Update"
               ></ButtonLoader>

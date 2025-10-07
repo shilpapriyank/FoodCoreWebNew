@@ -1,6 +1,6 @@
 "use client";
 
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import {
   getAuth,
   RecaptchaVerifier,
@@ -24,73 +24,95 @@ declare global {
 const useFireBaseAuth = () => {
   const { restaurantinfo } = useReduxData();
 
-  const apiKey: string | undefined = restaurantinfo?.firebaseConfig?.apikey;
-  const authDomain: string | undefined =
-    restaurantinfo?.firebaseConfig?.authdomain;
+  // Initialize Firebase App safely
+  const intializeFirebaseApp = (): FirebaseApp | null => {
+    const config = restaurantinfo?.firebaseConfig;
 
-  // Initialize Firebase App
-  const intializeFirebaseApp = (): void => {
-    if (!apiKey || !authDomain) {
+    if (!config) {
       console.warn("Firebase config is missing");
-      return;
+      return null;
     }
 
-    if (!getApps().length) {
-      initializeApp({
-        apiKey,
-        authDomain,
-      });
-    } else {
-      getApp(); // Optional: just ensures it's initialized
+    // Map to correct Firebase key names
+    const firebaseConfig = {
+      apiKey: config.apikey,
+      authDomain: config.authdomain,
+      projectId: config.projectId,
+      storageBucket: config.storagebucket,
+      messagingSenderId: config.messagingsenderId,
+      appId: config.appId,
+      measurementId: config.measurementId,
+    };
+
+    // Validate required keys
+    if (!firebaseConfig.apiKey || !firebaseConfig.authDomain) {
+      console.error("Invalid Firebase config:", firebaseConfig);
+      return null;
+    }
+
+    console.log("Initializing Firebase with:", firebaseConfig);
+
+    try {
+      if (!getApps().length) {
+        return initializeApp(firebaseConfig);
+      } else {
+        return getApp();
+      }
+    } catch (error) {
+      console.error("Firebase initialization failed:", error);
+      return null;
     }
   };
 
-  // Initialize Recaptcha
+  // Initialize Recaptcha (Invisible)
   const initializeRecaptcha = (): void => {
     const auth = getAuth();
     auth.languageCode = "en";
 
-    // ✅ Prevent re-initialization
-    if (window.recaptchaVerifier) {
-      return;
+    if (window.recaptchaVerifier) return; // Prevent re-init
+
+    try {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: () => {
+            console.log("reCAPTCHA verified");
+          },
+          "expired-callback": () => {
+            console.warn("reCAPTCHA expired");
+          },
+        }
+      );
+
+      // Render after small delay
+      setTimeout(() => {
+        window.recaptchaVerifier.render().then((widgetId: number) => {
+          window.recaptchaWidgetId = widgetId;
+        });
+
+        const $ = (window as any).$;
+        if ($) {
+          $("#recaptcha-container").css({
+            transform: "scale(0.77)",
+            "-webkit-transform": "scale(0.77)",
+            "transform-origin": "0 0",
+            "-webkit-transform-origin": "0 0",
+          });
+          $("#recaptcha-container #rc-anchor-container").css("width", "250px");
+        }
+      }, 500);
+    } catch (err) {
+      console.error("reCAPTCHA init error:", err);
     }
-
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      auth,
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: () => {
-          // Captcha solved
-        },
-        "expired-callback": () => {
-          // Expired
-        },
-      }
-    );
-
-    setTimeout(() => {
-      window.recaptchaVerifier.render().then((widgetId: number) => {
-        window.recaptchaWidgetId = widgetId;
-      });
-
-      const $ = (window as any).$;
-      if ($) {
-        $("#recaptcha-container").css("transform", "scale(0.77)");
-        $("#recaptcha-container").css("-webkit-transform", "scale(0.77)");
-        $("#recaptcha-container").css("transform-origin", "0 0");
-        $("#recaptcha-container").css("-webkit-transform-origin", "0 0");
-        $("#recaptcha-container #rc-anchor-container").css("width", "250px");
-      }
-    }, 500);
   };
 
-  // Safe reCAPTCHA re-initialization
+  // Verify Recaptcha if needed
   const intializeRecaptchaVerified = (): void => {
     const auth = getAuth();
     auth.languageCode = "en";
 
-    // ✅ Prevent double init
     if (window.recaptchaVerifier) return;
 
     setTimeout(() => {
@@ -111,7 +133,7 @@ const useFireBaseAuth = () => {
 
         recaptchaVerifier.render().then(() => {
           recaptchaVerifier.verify().then(() => {
-            // Verified
+            console.log("reCAPTCHA verified");
           });
         });
       }
@@ -123,42 +145,50 @@ const useFireBaseAuth = () => {
     dialCode: string,
     phone: string
   ): Promise<boolean> => {
-    const auth = getAuth();
+    const app = intializeFirebaseApp();
+    if (!app) {
+      handleNotify(
+        "Firebase not initialized correctly.",
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+      return false;
+    }
 
-    return new Promise((resolve, reject) => {
-      signInWithPhoneNumber(auth, dialCode + phone, window.recaptchaVerifier)
-        .then((confirmationResult: ConfirmationResult) => {
-          window.confirmationResult = confirmationResult;
-          resolve(true);
-        })
-        .catch((error: any) => {
-          handleNotify(
-            error.message,
-            ToasterPositions.TopRight,
-            ToasterTypes.Error
-          );
-          reject(false);
-        });
-    });
+    const auth = getAuth(app);
+
+    try {
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        dialCode + phone,
+        window.recaptchaVerifier
+      );
+      window.confirmationResult = confirmationResult;
+      return true;
+    } catch (error: any) {
+      console.error("OTP send failed:", error);
+      handleNotify(
+        error.message || "Network error. Please check your connection.",
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+      return false;
+    }
   };
 
   // Validate OTP
   const handleValidateOTP = async (OTP: string): Promise<boolean> => {
-    return new Promise((resolve, reject) => {
-      window.confirmationResult
-        .confirm(OTP)
-        .then(() => {
-          resolve(true);
-        })
-        .catch((err: any) => {
-          handleNotify(
-            err.message,
-            ToasterPositions.TopRight,
-            ToasterTypes.Error
-          );
-          reject(false);
-        });
-    });
+    try {
+      await window.confirmationResult.confirm(OTP);
+      return true;
+    } catch (err: any) {
+      handleNotify(
+        err.message || "Invalid OTP.",
+        ToasterPositions.TopRight,
+        ToasterTypes.Error
+      );
+      return false;
+    }
   };
 
   return {

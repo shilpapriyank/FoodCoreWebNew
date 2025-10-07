@@ -989,7 +989,7 @@ export const countryData = {
   },
 } as const;
 type CountryKey = keyof typeof countryData;
-type CountryDataType = (typeof countryData)[CountryKey];
+// type CountryDataType = (typeof countryData)[CountryKey];
 
 export const getCountryList = () => {
   let data = Object.values(countryData);
