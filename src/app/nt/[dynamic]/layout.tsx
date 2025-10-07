@@ -1,3 +1,4 @@
+import RestaurantComponent from "@/components/commonRestaurant/restaurant.component";
 import Footer from "@/components/nt/layout/footer/footer.component";
 import Header from "@/components/nt/layout/header/header.component";
 import React, { ReactNode } from "react";
@@ -16,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <>
       <Header handleChangeAddress={handleChangeAddress} page={page} />
-      {children}
+      <RestaurantComponent>{children}</RestaurantComponent>
       <Footer />
     </>
   );
