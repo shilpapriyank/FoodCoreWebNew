@@ -21,11 +21,9 @@ const Page: React.FC = () => {
     if (!selectedTheme) return;
     if (selectedTheme.name === ThemeObj.dominos) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
-    }
-    else if (selectedTheme.name === ThemeObj.default) {
+    } else if (selectedTheme.name === ThemeObj.default) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}/main`;
-    }
-    else if (selectedTheme.name === ThemeObj.newtheme) {
+    } else if (selectedTheme.name === ThemeObj.newtheme) {
       routepath = `/${selectedTheme.url}/${dynamic}/${restaurantinfo.defaultLocation.locationURL}`;
     }
     router.push(routepath);
@@ -34,8 +32,7 @@ const Page: React.FC = () => {
 
   return (
     <>
-      <div className="spinner-border text-info" role="status">
-      </div>
+      <div className="spinner-border text-info" role="status"></div>
     </>
   );
 };

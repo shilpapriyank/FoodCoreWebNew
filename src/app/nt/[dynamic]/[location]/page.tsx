@@ -47,21 +47,6 @@ const LocationPage: React.FC = () => {
     pickupordelivery
   );
 
-  // useEffect(() => {
-  //   if (
-  //     !selecteddelivery?.pickupordelivery ||
-  //     Object.keys(selecteddelivery?.pickupordelivery || {}).length === 0
-  //   ) {
-  //     dispatch(
-  //       setpickupordelivery(
-  //         restaurantinfo?.defaultLocation?.defaultordertype
-  //           ? ORDER_TYPE.DELIVERY.text
-  //           : ORDER_TYPE.PICKUP.text
-  //       )
-  //     );
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (
       selecteddelivery?.pickupordelivery === null ||
@@ -94,18 +79,6 @@ const LocationPage: React.FC = () => {
           }
         });
       }
-      // if (order?.checktime === "") {
-      //   OrderServices.getOrderTime(restaurantinfo.restaurantId, restaurantinfo.defaultlocationId, 1).then(response => {
-      //     dispatch(isasap(true));
-      //     const time = response?.ordertime?.split(":")
-      //     const timeWithMeridian = `${time?.[0]}:${time?.[1]} ${time?.[2]}`
-      //     if (response) {
-      //       dispatch(setordertime(timeWithMeridian));
-      //       return;
-      //     }
-
-      //   })
-      // }
     }
   }, [userinfo]);
 
