@@ -9,6 +9,7 @@ import { GetThemeDetails } from "@/components/common/utility";
 import ClientWrapper from "@/components/common/client-wrapper";
 import ToastNotify from "@/components/nt/helpers/toastnotify/toast-notify.component";
 import { ToasterPositions } from "@/components/default/helpers/toaster/toaster-positions";
+
 export const metadata: Metadata = {
   title: "Restaurant App",
   description: "Restaurant ordering application",

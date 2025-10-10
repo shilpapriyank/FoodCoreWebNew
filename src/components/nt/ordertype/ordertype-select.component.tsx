@@ -194,15 +194,12 @@ const OrderTypeSelect = ({
   };
 
   const handleClickConfirm = () => {
-    //retrive currentStoredLocationId from this function that not change the default location id
-    //because after selecting any location when i select the default location id is not set
-    const currentStoredLocationId = getLocationIdFromStorage();
-    //order type pickup then chnage location if location is not default location
+    //const currentStoredLocationId = getLocationIdFromStorage();
     if (
       ORDER_TYPE.PICKUP.text === selecteddelivery.pickupordelivery &&
       selectedLocationId > 0 &&
-      selectedLocationId !== currentStoredLocationId
-      // selectedLocationId !== restaurantinfo?.defaultlocationId
+      selectedLocationId !== restaurantinfo?.defaultlocationId
+      //selectedLocationId !== currentStoredLocationId
     ) {
       handleClickConfirmChangeLocation(selectedLocationId, "");
     } else {

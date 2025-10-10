@@ -293,7 +293,6 @@ export const checkCheckoutDisable = (
   pickupordelivery: string,
   dtotal: boolean
 ) => {
-  
   if (
     pickupordelivery === ORDER_TYPE.PICKUP.text ||
     pickupordelivery === ORDER_TYPE.DELIVERY.text
