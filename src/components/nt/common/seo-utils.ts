@@ -41,7 +41,7 @@ export async function fetchSeoMetadata(
       metaData = {
         title: `${itemDetail?.title !== "" ? `${itemDetail?.title} || ` : ""}${
           itemDetail?.restaurantname
-        } : Online Ordering `,
+        }`,
         description: itemDetail?.description ?? "",
         image: itemDetail?.imageurl ?? "",
         url: `${getorigin()}${pathname}`,

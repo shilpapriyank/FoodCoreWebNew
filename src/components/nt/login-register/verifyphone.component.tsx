@@ -226,15 +226,18 @@ const VerifyPhoneComponent: React.FC<VerifyPhoneComponentProps> = ({
                     onChange={(phone: string, country: any) => {
                       setDialCode("+" + country.dialCode);
                     }}
+                    preferredCountries={["ca", "in", "us"]}
                     inputProps={{
                       name: "phone",
                       required: true,
                       autoFocus: false,
                       readOnly: true,
                     }}
-                    containerClass="intl-tel-input form-control"
+                    containerClass="intl-tel-input"
                     inputClass="codeinput form-control verify-country"
-                    enableSearch
+                    buttonClass="dialCode"
+                    enableSearch={false}
+                    disableSearchIcon
                   />
                 </div>
                 <div className="col-lg-9 col-md-9 col-7 offset-2 offset-md-0 offset-lg-0 text-start">

@@ -368,7 +368,7 @@ const RestaurantComponent: React.FC<{
 
   return (
     <>
-      {!loadPaymentScreen && (
+      {/* {!loadPaymentScreen && (
         <SEOComponent
           title={isGetSeo ? metaData?.title : seoDefaultData?.title}
           ogUrl={metaData?.url}
@@ -377,7 +377,7 @@ const RestaurantComponent: React.FC<{
           }
           ogImgUrl={isGetSeo ? metaData?.image : seoDefaultData.image}
         />
-      )}
+      )} */}
       {loadrestaurant && selectedRestaurant && children}
       {(pathname === "/home" || pathname === "/" || pathname === "") &&
         children}
